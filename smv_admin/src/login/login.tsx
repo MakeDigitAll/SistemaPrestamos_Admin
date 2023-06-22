@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { Button, Input, useInput, Avatar, Card, Text } from "@nextui-org/react";
 import "./login.css";
+import service from "../services/service";
 
 const LoginForm = () => {
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [userNotFoundError, setUserNotFoundError] = useState(false);
+
   const {
     value: emailValue,
     reset: resetEmail,
@@ -13,17 +18,15 @@ const LoginForm = () => {
     reset: resetPassword,
     bindings: passwordBindings,
   } = useInput("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   const validateEmail = (value) => {
-    //return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
-    return value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
+    return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setEmailError("");
     setPasswordError("");
+    setUserNotFoundError(false);
 
     if (emailValue === "") {
       setEmailError("Ingrese su correo electrónico.");
@@ -42,15 +45,23 @@ const LoginForm = () => {
       return;
     }
 
-    // Obtener los datos del formulario
-    const email = emailValue;
-    const password = passwordValue;
+    try {
+      const response = await service.login(emailValue, passwordValue);
+      console.log(response);
+      if (response.data) {
+        console.log("Usuario logeado correctamente");
+        // window.location.href = "/admin";
+      } else {
+        setUserNotFoundError(true);
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        setUserNotFoundError(true);
+      } else {
+        console.log("Error en la solicitud. Compruebe su conexión a Internet.");
+      }
+    }
 
-    // TODO
-    console.log("Email:", email);
-    console.log("Password:", password);
-
-    // Reiniciar los valores de los campos de entrada después de obtener los datos
     resetEmail();
     resetPassword();
   };
@@ -64,13 +75,7 @@ const LoginForm = () => {
         marginTop: "10%",
       }}
     >
-      <Text
-        h2
-        css={{
-          margin: "auto",
-          marginTop: "2%",
-        }}
-      >
+      <Text h2 css={{ margin: "auto", marginTop: "2%" }}>
         Inicio de Sesion
       </Text>
       <Card.Header>
@@ -92,10 +97,12 @@ const LoginForm = () => {
           clearable
           shadow={false}
           onClearClick={resetEmail}
-          status={emailError ? "error" : "default"}
-          color={emailError ? "error" : "default"}
-          helperColor={emailError ? "error" : "default"}
-          helperText={emailError || ""}
+          status={emailError || userNotFoundError ? "error" : "default"}
+          color={emailError || userNotFoundError ? "error" : "default"}
+          helperColor={emailError || userNotFoundError ? "error" : "default"}
+          helperText={
+            emailError || (userNotFoundError ? "El usuario no existe." : "")
+          }
           type="email"
           label="Email"
         />
@@ -106,9 +113,7 @@ const LoginForm = () => {
           color={passwordError ? "error" : "default"}
           helperColor={passwordError ? "error" : "default"}
           helperText={passwordError || ""}
-          css={{
-            marginTop: "5%",
-          }}
+          css={{ marginTop: "5%" }}
         />
       </Card.Body>
 
