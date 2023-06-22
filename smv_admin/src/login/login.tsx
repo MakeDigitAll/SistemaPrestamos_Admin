@@ -1,82 +1,128 @@
 import React, { useState } from "react";
+import { Button, Input, useInput, Avatar, Card, Text } from "@nextui-org/react";
 import "./login.css";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const profileImageUrl =
-    "https://www.pngmart.com/files/21/Admin-Profile-Vector-PNG-Clipart.png";
+  const {
+    value: emailValue,
+    reset: resetEmail,
+    bindings: emailBindings,
+  } = useInput("");
+  const {
+    value: passwordValue,
+    reset: resetPassword,
+    bindings: passwordBindings,
+  } = useInput("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
+  const validateEmail = (value) => {
+    //return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
+    return value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
+  const handleLogin = () => {
+    setEmailError("");
+    setPasswordError("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email || !password) {
-      setErrorMessage("Por favor ingresa tu email y contraseña.");
-    } else if (!isValidEmail(email) || !email.endsWith("@makedigitall.com")) {
-      setErrorMessage(
-        "Solo se permiten correos electrónicos de la empresa MakeDigital."
-      );
-    } else {
-      // Logica para hacer login
-      console.log("Email:", email);
-      console.log("Password:", password);
-      setErrorMessage("");
+    if (emailValue === "") {
+      setEmailError("Ingrese su correo electrónico.");
+      return;
     }
-  };
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const validDomain = "@makedigitall.com";
-    const domainIndex = email.lastIndexOf(validDomain);
-    const isValid =
-      emailRegex.test(email) &&
-      domainIndex !== -1 &&
-      domainIndex === email.length - validDomain.length;
-    return isValid;
+    if (!validateEmail(emailValue)) {
+      setEmailError(
+        "Ingrese un correo electrónico válido de la empresa Makedigitall."
+      );
+      return;
+    }
+
+    if (passwordValue === "") {
+      setPasswordError("Ingrese su contraseña.");
+      return;
+    }
+
+    // Obtener los datos del formulario
+    const email = emailValue;
+    const password = passwordValue;
+
+    // TODO
+    console.log("Email:", email);
+    console.log("Password:", password);
+
+    // Reiniciar los valores de los campos de entrada después de obtener los datos
+    resetEmail();
+    resetPassword();
   };
 
   return (
-    <div className="login-form-container">
-      <div className="login-form">
-        <img src={profileImageUrl} alt="Profile" className="profile-image" />
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">Correo Electronico</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={handleEmailChange}
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Contraseña</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePasswordChange}
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="form-button">
-              Login
-            </button>
-          </div>
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-        </form>
-      </div>
-    </div>
+    <Card
+      css={{
+        width: "400px",
+        height: "500px",
+        margin: "auto",
+        marginTop: "10%",
+      }}
+    >
+      <Text
+        h2
+        css={{
+          margin: "auto",
+          marginTop: "2%",
+        }}
+      >
+        Inicio de Sesion
+      </Text>
+      <Card.Header>
+        <Avatar
+          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          zoomed
+          css={{
+            margin: "auto",
+            height: "150px",
+            width: "150px",
+            marginTop: "2%",
+          }}
+        />
+      </Card.Header>
+
+      <Card.Body css={{ py: "$2" }}>
+        <Input
+          {...emailBindings}
+          clearable
+          shadow={false}
+          onClearClick={resetEmail}
+          status={emailError ? "error" : "default"}
+          color={emailError ? "error" : "default"}
+          helperColor={emailError ? "error" : "default"}
+          helperText={emailError || ""}
+          type="email"
+          label="Email"
+        />
+        <Input.Password
+          {...passwordBindings}
+          label="Contraseña"
+          status={passwordError ? "error" : "default"}
+          color={passwordError ? "error" : "default"}
+          helperColor={passwordError ? "error" : "default"}
+          helperText={passwordError || ""}
+          css={{
+            marginTop: "5%",
+          }}
+        />
+      </Card.Body>
+
+      <Card.Footer>
+        <Button
+          color="gradient"
+          auto
+          css={{ width: "40%", margin: "auto" }}
+          onPress={handleLogin}
+        >
+          Login
+        </Button>
+      </Card.Footer>
+    </Card>
   );
 };
 
