@@ -1,24 +1,14 @@
-import './App.css';
-import { NextUIProvider } from '@nextui-org/react';
+import React from "react";
+import { NextUIProvider } from "@nextui-org/react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
-
-
-import Login from './Login/login.tsx';
-
-const container = document.getElementById("root");
-const root = createRoot(container);
-
+import Login from "./login/LoginForm.tsx";
 
 function App() {
   return (
     <NextUIProvider>
-        <Login />
+      <Login />
     </NextUIProvider>
-
   );
 }
 
 export default App;
-

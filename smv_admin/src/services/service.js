@@ -24,4 +24,5 @@ class AdminDataService {
     );
   }
 }
-export default new AdminDataService();
+const adminDataServiceInstance = new AdminDataService();
+export default adminDataServiceInstance;

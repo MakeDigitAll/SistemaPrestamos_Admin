@@ -1,12 +1,11 @@
 const db = require("../models");
-const Administradores = db.administradores;
-const Op = db.Sequelize.Op;
+const admin = db.administradores;
 
-// Create and Save a new
+// Crear y guardar un nuevo administrador
 exports.create = (req, res) => {
   if (!req.query.nombres) {
     res.status(400).send({
-      message: "El Nomre no puede estar vacío!",
+      message: "El Nombre no puede estar vacío!",
     });
     return;
   }
@@ -29,7 +28,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a
+  // Crear un administrador en la base de datos
   const administrador = {
     nombres: req.query.nombres,
     apellidos: req.query.apellidos,
@@ -38,8 +37,8 @@ exports.create = (req, res) => {
     estado: req.query.estado ? req.query.estado : false,
   };
 
-  // Save in the database
-  db.administradores
+  // Guardar administrador en la base de datos
+  admin
     .create(administrador)
     .then((data) => {
       res.send(data);
@@ -51,14 +50,116 @@ exports.create = (req, res) => {
     });
 };
 
-// Retrieve all from the database.
-exports.findAll = (req, res) => {};
+exports.findAll = (req, res) => {
+  //obtener todos los administradores de la base de datos
+  admin
+    .findAll()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los administradores de la base de datos.",
+      });
+    });
+};
 
-// Find a single with an id
-exports.findOne = (req, res) => {};
+// Actualizar solo la contraseña de un administrador identificado por el id en la solicitud
+exports.update = (req, res) => {
+  //actualizar la contraseña de un administrador en la base de datos por su id
+  const id = req.query.id;
+  admin
+    .update(
+      {
+        passwd: req.query.passwd,
+      },
+      {
+        where: { id: id },
+      }
+    )
+    .then((data) => {
+      if (data == 1) {
+        res.send({
+          message:
+            "La contraseña del administrador fue actualizada exitosamente!",
+        });
+      } else {
+        res.send({
+          message: `No se pudo actualizar la contraseña del administrador con id=${id}. Tal vez el administrador no exista!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al actualizar la contraseña del administrador con id=" +
+            id,
+      });
+    });
+};
 
-// Update a with the specified id in the request
-exports.update = (req, res) => {};
+// Eliminar un administrador con el id especificado en la solicitud
+exports.delete = (req, res) => {
+  //eliminar un administrador de la base de datos por su id
+  const id = req.query.id;
+  admin
+    .destroy({
+      where: { id: id },
+    })
+    .then((data) => {
+      if (data == 1) {
+        res.send({
+          message: "El administrador fue eliminado exitosamente!",
+        });
+      } else {
+        res.send({
+          message: `No se pudo eliminar el administrador con id=${id}. Tal vez el administrador no exista!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al eliminar el administrador con id=" + id,
+      });
+    });
+};
 
-// Delete a with the specified id in the request
-exports.delete = (req, res) => {};
+// Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
+exports.login = (req, res) => {
+  admin
+    .findOne({
+      where: {
+        correo_electronico: req.query.correo_electronico,
+      },
+    })
+    .then((data) => {
+      if (data) {
+        // El correo existe en la base de datos, verificar la contraseña
+        if (data.passwd === req.query.passwd) {
+          res.send(data); // Contraseña válida, enviar los datos del administrador
+        } else {
+          console.log("Contraseña incorrecta");
+          //crear un error personalizado para enviarlo al cliente
+          res.status(500).send({
+            message: "Contraseña incorrecta",
+          });
+        }
+      } else {
+        res.status(500).send({
+          message: "Correo no registrado",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al comprobar si el administrador existe en la base de datos.",
+      });
+    });
+};
