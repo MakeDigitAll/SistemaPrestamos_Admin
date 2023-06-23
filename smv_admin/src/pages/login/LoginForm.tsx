@@ -7,7 +7,6 @@ import {
   Card,
   Text,
   Spacer,
-  Switch,
   useTheme,
 } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
@@ -100,23 +99,36 @@ const LoginForm = () => {
         marginTop: "10%",
       }}
     >
-      <Switch
-        checked={isDark}
-        onChange={() => setTheme(type === "dark" ? "light" : "dark")}
-        iconOn={<SunIcon filled size={24} height={24} width={24} label="Sun" />}
-        iconOff={
-          <MoonIcon filled size={24} height={24} width={24} label="Moon" />
-        }
-        shadow
-        color="secondary"
-        //alineado a la derecha
-        css={{
-          position: "absolute",
-          right: "0",
-          margin: "5%",
-        }}
-      />
-      <Text h2 css={{ margin: "auto", marginTop: "1.3%" }}>
+      <Button
+        auto
+        rounded={true}
+        bordered={true}
+        size="sm"
+        borderWeight={"normal"}
+        color="gradient"
+        css={{ position: "absolute", top: "3%", right: "4%" }}
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+      >
+        {type === "dark" ? (
+          <SunIcon
+            filled={undefined}
+            size={undefined}
+            height={undefined}
+            width={undefined}
+            label={undefined}
+          />
+        ) : (
+          <MoonIcon
+            filled={undefined}
+            size={undefined}
+            height={undefined}
+            width={undefined}
+            label={undefined}
+          />
+        )}
+      </Button>
+
+      <Text h2 css={{ margin: "auto", marginTop: "0%" }}>
         Inicio de Sesion
       </Text>
 

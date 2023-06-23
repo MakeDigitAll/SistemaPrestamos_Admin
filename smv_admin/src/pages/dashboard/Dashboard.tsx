@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import service from "../../services/service";
-
+import { CustomNavBar } from "../../components/navbar/NavBar";
 interface User {
   correo_electronico: string;
   nombres: string;
@@ -91,6 +91,7 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
+      <CustomNavBar />
       <h1>Dashboard</h1>
       <h2>
         Bienvenido {user.nombres} {user.apellidos}
