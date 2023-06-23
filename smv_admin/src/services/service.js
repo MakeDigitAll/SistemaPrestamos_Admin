@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../api/axios";
 
 class AdminDataService {
   getAll() {
