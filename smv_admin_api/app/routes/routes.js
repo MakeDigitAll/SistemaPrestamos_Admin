@@ -1,14 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/controller.js");
+const { verifyToken } = require("../middlewares/authJwt");
 
 // Obtener todos los administradores de la base de datos (solo pruebas)
-router.get("/administradores", (req, res) => {
+router.get("/administradores", verifyToken, (req, res) => {
   controller.findAll(req, res);
 });
 
 // Crear y guardar un nuevo administrador
-router.post("/administradores", (req, res) => {
+router.post("/administradores", verifyToken, (req, res) => {
   controller.create(req, res);
 });
 

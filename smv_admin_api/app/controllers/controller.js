@@ -1,5 +1,8 @@
 const db = require("../models");
 const admin = db.administradores;
+const jwt = require("jsonwebtoken");
+//token key 32
+const TOKEN_KEY = "Z4najdPy7Ji7I21FHi2Hv4GfKvu0lixz";
 
 // Crear y guardar un nuevo administrador
 exports.create = (req, res) => {
@@ -157,7 +160,11 @@ exports.login = (req, res) => {
             apellidos: data.apellidos,
             correo_electronico: data.correo_electronico,
           };
-          res.send(datos);
+          //crear el token con duracion de 1 hora
+          const token = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
+          let datosToken = { ...datos, token: token };
+
+          res.status(200).send(datosToken);
         } else {
           console.log("Contraseña incorrecta");
           //crear un error personalizado para enviarlo al cliente

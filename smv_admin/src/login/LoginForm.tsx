@@ -4,6 +4,7 @@ import service from "../services/service";
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [datos, setDatos] = useState([]);
 
   const {
     value: emailValue,
@@ -45,6 +46,7 @@ const LoginForm = () => {
       const response = await service.login(emailValue, passwordValue);
       if (response.data) {
         console.log("Usuario logeado correctamente");
+        console.log(response.data);
         // window.location.href = "/admin";
       }
     } catch (error) {
