@@ -55,7 +55,16 @@ exports.findAll = (req, res) => {
   admin
     .findAll()
     .then((data) => {
-      res.send(data);
+      //solo enviar los datos que se necesitan menos la contraseña
+      const datos = data.map((admin) => {
+        return {
+          id: admin.idadmin,
+          nombres: admin.nombres,
+          apellidos: admin.apellidos,
+          correo_electronico: admin.correo_electronico,
+        };
+      });
+      res.send(datos);
     })
     .catch((err) => {
       res.status(500).send({
@@ -141,7 +150,14 @@ exports.login = (req, res) => {
       if (data) {
         // El correo existe en la base de datos, verificar la contraseña
         if (data.passwd === req.query.passwd) {
-          res.send(data); // Contraseña válida, enviar los datos del administrador
+          //regresar los datos del administrador menos la contraseña
+          const datos = {
+            id: data.idadmin,
+            nombres: data.nombres,
+            apellidos: data.apellidos,
+            correo_electronico: data.correo_electronico,
+          };
+          res.send(datos);
         } else {
           console.log("Contraseña incorrecta");
           //crear un error personalizado para enviarlo al cliente
