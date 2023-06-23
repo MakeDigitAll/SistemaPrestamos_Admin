@@ -1,4 +1,13 @@
-export const SearchIcon = ({
+import React from "react";
+
+interface SearchIconProps {
+  size?: number;
+  fill: string;
+  width?: number;
+  height?: number;
+}
+
+export const SearchIcon: React.FC<SearchIconProps> = ({
   size,
   fill,
   width = 24,

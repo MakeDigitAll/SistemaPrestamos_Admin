@@ -1,7 +1,6 @@
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "../pages/login/LoginForm.tsx";
-import Dashboard from "../pages/dashboard/Dashboard.tsx";
+import Login from "../pages/login/LoginForm";
+import Dashboard from "../pages/dashboard/Dashboard";
 import { createTheme, NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 

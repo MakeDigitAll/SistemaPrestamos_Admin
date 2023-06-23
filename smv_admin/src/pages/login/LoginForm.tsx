@@ -33,7 +33,7 @@ const LoginForm = () => {
     bindings: passwordBindings,
   } = useInput("");
 
-  const validateEmail = (value) => {
+  const validateEmail = (value: string) => {
     return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
   };
 
@@ -72,7 +72,7 @@ const LoginForm = () => {
         // Redireccionar a la página de dashboard
         window.location.href = "/dashboard";
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error.response && error.response.status === 500) {
         console.log(error.response.data.message);
         if (error.response.data.message === "Correo no registrado") {
@@ -107,7 +107,7 @@ const LoginForm = () => {
         borderWeight={"normal"}
         color="gradient"
         css={{ position: "absolute", top: "3%", right: "4%" }}
-        onClick={() => setTheme(isDark ? "light" : "dark")}
+        onPress={() => setTheme(isDark ? "light" : "dark")}
       >
         {type === "dark" ? (
           <SunIcon

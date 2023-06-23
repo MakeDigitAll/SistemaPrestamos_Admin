@@ -197,10 +197,10 @@ exports.login = (req, res) => {
 
 //refrescar el token de acceso
 exports.refreshToken = (req, res) => {
-  //obtener el token de actualización del cuerpo de la solicitud
+  // Obtener el token de actualización del cuerpo de la solicitud
   const refreshToken = req.query.refreshToken;
 
-  //si no hay token de actualización en el cuerpo de la solicitud, enviar un error
+  // Si no hay token de actualización en el cuerpo de la solicitud, enviar un error
   if (!refreshToken) {
     res.status(403).send({
       message: "No se proporcionó el token de actualización",
@@ -208,9 +208,9 @@ exports.refreshToken = (req, res) => {
     return;
   }
 
-  //verificar el token de actualización
+  // Verificar el token de actualización
   jwt.verify(refreshToken, TOKEN_KEY, (err, decoded) => {
-    //si hay un error, enviar un error
+    // Si hay un error, enviar un error
     if (err) {
       res.status(403).send({
         message: "El token de actualización no es válido",
@@ -218,8 +218,8 @@ exports.refreshToken = (req, res) => {
       return;
     }
 
-    //si el token de actualización es válido, crear un nuevo token de acceso y enviarlo al cliente
-    const accessToken = jwt.sign(
+    // Si el token de actualización es válido, crear un nuevo token de acceso y enviarlo al cliente
+    const newAccessToken = jwt.sign(
       {
         id: decoded.id,
         nombres: decoded.nombres,
@@ -231,7 +231,7 @@ exports.refreshToken = (req, res) => {
     );
 
     res.status(200).send({
-      accessToken: accessToken,
+      accessToken: newAccessToken,
     });
   });
 };
