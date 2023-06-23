@@ -1,13 +1,13 @@
 import React from "react";
-import { NextUIProvider } from "@nextui-org/react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Login from "./login/LoginForm.tsx";
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "./routes/routes.js";
 
 function App() {
   return (
-    <NextUIProvider>
-      <Login />
-    </NextUIProvider>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 }
 

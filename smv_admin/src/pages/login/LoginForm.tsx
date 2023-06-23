@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button, Input, useInput, Avatar, Card, Text } from "@nextui-org/react";
-import service from "../services/service";
+import service from "../../services/service";
+import Cookies from "js-cookie";
+
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [datos, setDatos] = useState([]);
 
   const {
     value: emailValue,
@@ -46,8 +47,10 @@ const LoginForm = () => {
       const response = await service.login(emailValue, passwordValue);
       if (response.data) {
         console.log("Usuario logeado correctamente");
-        console.log(response.data);
-        // window.location.href = "/admin";
+        // Guardar el token en una cookie
+        Cookies.set("token", response.data.token);
+        // Redireccionar a la página de dashboard
+        window.location.href = "/dashboard";
       }
     } catch (error) {
       if (error.response && error.response.status === 500) {
