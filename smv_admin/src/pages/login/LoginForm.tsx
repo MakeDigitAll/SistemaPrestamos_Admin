@@ -46,9 +46,14 @@ const LoginForm = () => {
     try {
       const response = await service.login(emailValue, passwordValue);
       if (response.data) {
-        console.log("Usuario logeado correctamente");
-        // Guardar el token en una cookie
-        Cookies.set("token", response.data.token);
+        // Obtener el access token y el refresh token de la respuesta
+        const accessToken = response.data.accessToken;
+        const refreshToken = response.data.refreshToken;
+
+        // Guardar los tokens en cookies o almacenarlos en el almacenamiento local según tus necesidades
+        Cookies.set("accessToken", accessToken, { expires: 1 / 24 }); // 1 hora de expiración
+        Cookies.set("refreshToken", refreshToken, { expires: 7 / 24 }); // 7 días de expiración
+
         // Redireccionar a la página de dashboard
         window.location.href = "/dashboard";
       }

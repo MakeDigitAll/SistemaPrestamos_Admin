@@ -4,6 +4,7 @@ const TOKEN_KEY = "Z4najdPy7Ji7I21FHi2Hv4GfKvu0lixz";
 //verificar token
 const verifyToken = (req, res, next) => {
   const token = req.headers["x-access-token"];
+  console.log(token);
   if (!token)
     return res.status(403).send({
       message: "No se proporcionó un token.",

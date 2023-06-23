@@ -2,7 +2,7 @@ const db = require("../models");
 const admin = db.administradores;
 const jwt = require("jsonwebtoken");
 //token key 32
-const TOKEN_KEY = "Z4najdPy7Ji7I21FHi2Hv4GfKvu0lixz";
+const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 
 // Crear y guardar un nuevo administrador
 exports.create = (req, res) => {
@@ -160,9 +160,17 @@ exports.login = (req, res) => {
             apellidos: data.apellidos,
             correo_electronico: data.correo_electronico,
           };
-          //crear el token con duracion de 1 hora
-          const token = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
-          let datosToken = { ...datos, token: token };
+          //crear el token de acceso con duración de 10 segundos
+          const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
+
+          //crear el token de actualización con una duración más larga, por ejemplo, 7 días
+          const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "7d" });
+
+          let datosToken = {
+            ...datos,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          };
 
           res.status(200).send(datosToken);
         } else {
@@ -185,4 +193,46 @@ exports.login = (req, res) => {
           "Ocurrió un error al comprobar si el administrador existe en la base de datos.",
       });
     });
+};
+
+//refrescar el token de acceso
+exports.refreshToken = (req, res) => {
+  //obtener el token de actualización del cuerpo de la solicitud
+  const refreshToken = req.query.refreshToken;
+  console.log(refreshToken);
+
+  //si no hay token de actualización en el cuerpo de la solicitud, enviar un error
+  if (!refreshToken) {
+    res.status(403).send({
+      message: "No se proporcionó el token de actualización",
+    });
+    return;
+  }
+
+  //verificar el token de actualización
+  jwt.verify(refreshToken, TOKEN_KEY, (err, decoded) => {
+    //si hay un error, enviar un error
+    if (err) {
+      res.status(403).send({
+        message: "El token de actualización no es válido",
+      });
+      return;
+    }
+
+    //si el token de actualización es válido, crear un nuevo token de acceso y enviarlo al cliente
+    const accessToken = jwt.sign(
+      {
+        id: decoded.id,
+        nombres: decoded.nombres,
+        apellidos: decoded.apellidos,
+        correo_electronico: decoded.correo_electronico,
+      },
+      TOKEN_KEY,
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).send({
+      accessToken: accessToken,
+    });
+  });
 };
