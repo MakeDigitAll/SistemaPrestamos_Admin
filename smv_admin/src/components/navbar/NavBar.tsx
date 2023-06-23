@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Navbar,
   Text,
@@ -13,42 +13,15 @@ import { SearchIcon } from "../../resources/icons/SearchIcon";
 import { SunIcon } from "../../resources/icons/SunIcon";
 import { MoonIcon } from "../../resources/icons/MoonIcon";
 import { useTheme as useNextTheme } from "next-themes";
-import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-  correo_electronico: string;
-  nombres: string;
-  apellidos: string;
-  id: number;
-}
+import { useGetUser } from "../../hooks/useGetUser";
 
 export const CustomNavBar: React.FC = () => {
   const { setTheme } = useNextTheme();
   const { isDark } = useTheme();
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    // Obtener el token de acceso desde una cookie
-    const accessToken = Cookies.get("accessToken");
-
-    if (accessToken) {
-      // Decodificar el token de acceso y obtener los datos del usuario
-      const decodedAccessToken: any = jwt_decode(accessToken);
-
-      // Establecer los datos del usuario en el estado
-      const currentUser: User = {
-        correo_electronico: decodedAccessToken.correo_electronico,
-        nombres: decodedAccessToken.nombres,
-        apellidos: decodedAccessToken.apellidos,
-        id: decodedAccessToken.id,
-      };
-
-      setUser(currentUser);
-    }
-  }, []);
+  const user = useGetUser();
 
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
