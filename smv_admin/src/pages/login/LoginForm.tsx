@@ -1,11 +1,27 @@
 import React, { useState } from "react";
-import { Button, Input, useInput, Avatar, Card, Text } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  useInput,
+  Avatar,
+  Card,
+  Text,
+  Spacer,
+  Switch,
+  useTheme,
+} from "@nextui-org/react";
+import { useTheme as useNextTheme } from "next-themes";
 import service from "../../services/service";
 import Cookies from "js-cookie";
+
+import { SunIcon } from "../../resources/icons/SunIcon";
+import { MoonIcon } from "../../resources/icons/MoonIcon";
 
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const { setTheme } = useNextTheme();
+  const { isDark, type } = useTheme();
 
   const {
     value: emailValue,
@@ -84,9 +100,26 @@ const LoginForm = () => {
         marginTop: "10%",
       }}
     >
-      <Text h2 css={{ margin: "auto", marginTop: "2%" }}>
+      <Switch
+        checked={isDark}
+        onChange={() => setTheme(type === "dark" ? "light" : "dark")}
+        iconOn={<SunIcon filled size={24} height={24} width={24} label="Sun" />}
+        iconOff={
+          <MoonIcon filled size={24} height={24} width={24} label="Moon" />
+        }
+        shadow
+        color="secondary"
+        //alineado a la derecha
+        css={{
+          position: "absolute",
+          right: "0",
+          margin: "5%",
+        }}
+      />
+      <Text h2 css={{ margin: "auto", marginTop: "1.3%" }}>
         Inicio de Sesion
       </Text>
+
       <Card.Header>
         <Avatar
           src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
@@ -103,6 +136,7 @@ const LoginForm = () => {
       <Card.Body css={{ py: "$2" }}>
         <Input
           {...emailBindings}
+          bordered
           clearable
           shadow={false}
           onClearClick={resetEmail}
@@ -113,14 +147,15 @@ const LoginForm = () => {
           type="email"
           label="Email"
         />
+        <Spacer y={1.0} />
         <Input.Password
           {...passwordBindings}
+          bordered
           label="Contraseña"
           status={passwordError ? "error" : "default"}
           color={passwordError ? "error" : "default"}
           helperColor={passwordError ? "error" : "default"}
           helperText={passwordError || ""}
-          css={{ marginTop: "5%" }}
           type="password"
         />
       </Card.Body>
