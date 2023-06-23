@@ -54,7 +54,6 @@ const Dashboard: React.FC = () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
     navigate("/");
-    service.getAll();
   };
 
   const renewToken = async () => {
