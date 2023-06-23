@@ -1,26 +1,41 @@
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = "Z4najdPy7Ji7I21FHi2Hv4GfKvu0lixz";
+const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 
-//verificar token
+// Verify token middleware
 const verifyToken = (req, res, next) => {
-  const token = req.headers["x-access-token"];
-  console.log(token);
-  if (!token)
+  const cookieHeader = req.headers.cookie;
+  const cookies = cookieHeader ? cookieHeader.split("; ") : [];
+  let accessToken, refreshToken;
+
+  for (const cookie of cookies) {
+    const [name, value] = cookie.split("=");
+    if (name.trim() === "accessToken") {
+      accessToken = value;
+    } else if (name.trim() === "refreshToken") {
+      refreshToken = value;
+    }
+  }
+
+  console.log("accessToken:", accessToken);
+  console.log("refreshToken:", refreshToken);
+
+  if (!accessToken) {
     return res.status(403).send({
       message: "No se proporcionó un token.",
     });
+  }
 
-  jwt.verify(token, TOKEN_KEY, (err, decoded) => {
-    if (err)
+  jwt.verify(accessToken, TOKEN_KEY, (err, decoded) => {
+    if (err) {
       return res.status(401).send({
         message: "No autorizado.",
       });
+    }
     req.userId = decoded.id;
     next();
   });
 };
 
-const authJwt = {
-  verifyToken: verifyToken,
+module.exports = {
+  verifyToken,
 };
-module.exports = authJwt;

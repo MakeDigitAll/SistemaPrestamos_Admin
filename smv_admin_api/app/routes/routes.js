@@ -8,7 +8,7 @@ router.get("/administradores/login", (req, res) => {
   controller.login(req, res);
 });
 
-//refrescar token
+// Refrescar token
 router.get("/administradores/refreshToken", (req, res) => {
   controller.refreshToken(req, res);
 });

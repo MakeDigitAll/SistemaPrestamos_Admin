@@ -199,7 +199,6 @@ exports.login = (req, res) => {
 exports.refreshToken = (req, res) => {
   //obtener el token de actualización del cuerpo de la solicitud
   const refreshToken = req.query.refreshToken;
-  console.log(refreshToken);
 
   //si no hay token de actualización en el cuerpo de la solicitud, enviar un error
   if (!refreshToken) {
