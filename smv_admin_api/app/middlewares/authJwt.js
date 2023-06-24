@@ -19,9 +19,6 @@ const verifyToken = (req, res, next) => {
     }
   }
 
-  console.log("accessToken:", accessToken);
-  console.log("refreshToken:", refreshToken);
-
   if (!accessToken) {
     return res.status(403).send({
       message: "No se proporcionó un token.",

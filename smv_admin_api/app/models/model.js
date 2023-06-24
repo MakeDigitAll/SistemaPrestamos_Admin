@@ -1,31 +1,43 @@
 module.exports = (sequelize, Sequelize) => {
-  const Model = sequelize.define(
-    "administradores",
-    {
-      idadmin: {
-        type: Sequelize.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      correo_electronico: {
-        type: Sequelize.STRING,
-      },
-      passwd: {
-        type: Sequelize.STRING,
-      },
-      nombres: {
-        type: Sequelize.STRING,
-      },
-      apellidos: {
-        type: Sequelize.STRING,
-      },
+  const Model = sequelize.define("administradores", {
+    idadmin: {
+      type: Sequelize.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
-    //Desactivar los timestamps de las tablas de la base de datos
-    {
-      timestamps: false,
-      createdAt: false,
-      updatedAt: false,
-    }
-  );
+    correo_electronico: {
+      type: Sequelize.STRING,
+      allowNull: false, // En lugar de "required: true"
+    },
+    passwd: {
+      type: Sequelize.STRING,
+      allowNull: false, // En lugar de "required: true"
+    },
+    nombres: {
+      type: Sequelize.STRING,
+      allowNull: false, // En lugar de "required: true"
+    },
+    apellidos: {
+      type: Sequelize.STRING,
+      allowNull: false, // En lugar de "required: true"
+    },
+    createdAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW, // Establece la fecha actual como valor predeterminado al crear un registro
+    },
+    updatedAt: {
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW, // Establece la fecha actual como valor predeterminado al actualizar un registro
+    },
+    isDeleted: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    isModified: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+  });
+
   return Model;
 };

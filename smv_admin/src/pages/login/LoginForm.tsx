@@ -59,7 +59,10 @@ const LoginForm = () => {
     }
 
     try {
-      const response = await service.login(emailValue, passwordValue);
+      const response = await service.login(
+        emailValue.toLowerCase(),
+        passwordValue
+      );
       if (response.data) {
         // Obtener el access token y el refresh token de la respuesta
         const accessToken = response.data.accessToken;
