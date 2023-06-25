@@ -62,7 +62,7 @@ const useTokenRenewal = () => {
       try {
         const decodedAccessToken: any = jwt_decode(accessToken);
         // Renovar el token de acceso si está a 5 minutos de expirar
-        if (decodedAccessToken.exp - Date.now() / 1000 < 59 * 60) {
+        if (decodedAccessToken.exp - Date.now() / 1000 < 5 * 60) {
           await renewToken();
           console.log("Token renovado");
         } else {

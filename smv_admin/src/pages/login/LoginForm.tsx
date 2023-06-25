@@ -15,7 +15,7 @@ import Cookies from "js-cookie";
 
 import { SunIcon } from "../../resources/icons/SunIcon";
 import { MoonIcon } from "../../resources/icons/MoonIcon";
-
+import { IconButton } from "../../resources/icons/IconButton";
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -102,34 +102,22 @@ const LoginForm = () => {
         marginTop: "10%",
       }}
     >
-      <Button
-        auto
-        rounded={true}
-        bordered={true}
-        size="sm"
-        borderWeight={"normal"}
-        color="gradient"
-        css={{ position: "absolute", top: "3%", right: "4%" }}
-        onPress={() => setTheme(isDark ? "light" : "dark")}
+      <IconButton
+        onClick={() => setTheme(isDark ? "light" : "dark")}
+        css={{ position: "absolute", top: "4%", right: "5%" }}
       >
-        {type === "dark" ? (
-          <SunIcon
-            filled={undefined}
-            size={undefined}
-            height={undefined}
-            width={undefined}
-            label={undefined}
-          />
+        {isDark ? (
+          <SunIcon filled={true} size={18} height={22} width={22} label="Sun" />
         ) : (
           <MoonIcon
-            filled={undefined}
-            size={undefined}
-            height={undefined}
-            width={undefined}
-            label={undefined}
+            filled={true}
+            size={19}
+            height={22}
+            width={22}
+            label="Moon"
           />
         )}
-      </Button>
+      </IconButton>
 
       <Text h2 css={{ margin: "auto", marginTop: "0%" }}>
         Inicio de Sesion

@@ -16,6 +16,7 @@ import { useTheme as useNextTheme } from "next-themes";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useGetUser } from "../../hooks/useGetUser";
+import { IconButton } from "../../resources/icons/IconButton";
 
 export const CustomNavBar: React.FC = () => {
   const { setTheme } = useNextTheme();
@@ -68,17 +69,7 @@ export const CustomNavBar: React.FC = () => {
               },
             }}
           >
-            <Button
-              auto
-              rounded
-              bordered={true}
-              borderWeight="normal"
-              size="sm"
-              ripple={true}
-              color="gradient"
-              onPress={() => setTheme(isDark ? "light" : "dark")}
-              aria-label={isDark ? "Toggle light mode" : "Toggle dark mode"}
-            >
+            <IconButton onClick={() => setTheme(isDark ? "light" : "dark")}>
               {isDark ? (
                 <SunIcon
                   filled={true}
@@ -96,7 +87,7 @@ export const CustomNavBar: React.FC = () => {
                   label="Moon"
                 />
               )}
-            </Button>
+            </IconButton>
           </Navbar.Item>
 
           <Navbar.Item
