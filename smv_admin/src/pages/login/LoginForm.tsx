@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Input,
@@ -7,20 +7,16 @@ import {
   Card,
   Text,
   Spacer,
-  useTheme,
 } from "@nextui-org/react";
-import { useTheme as useNextTheme } from "next-themes";
 import service from "../../services/service";
 import Cookies from "js-cookie";
+import ThemeToggleButton from "../../components/buttons/ThemeToggleButton";
+import useDarkLight from "../../hooks/useDarkLight"; // Importa el hook useDarkLight
 
-import { SunIcon } from "../../resources/icons/SunIcon";
-import { MoonIcon } from "../../resources/icons/MoonIcon";
-import { IconButton } from "../../resources/icons/IconButton";
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const { setTheme } = useNextTheme();
-  const { isDark, type } = useTheme();
+  const { theme, toggleTheme } = useDarkLight(); // Usa el hook useDarkLight
 
   const {
     value: emailValue,
@@ -102,25 +98,13 @@ const LoginForm = () => {
         marginTop: "10%",
       }}
     >
-      <IconButton
-        onClick={() => setTheme(isDark ? "light" : "dark")}
+      <ThemeToggleButton
+        theme={theme}
+        toggleTheme={toggleTheme}
         css={{ position: "absolute", top: "4%", right: "5%" }}
-      >
-        {isDark ? (
-          <SunIcon filled={true} size={18} height={22} width={22} label="Sun" />
-        ) : (
-          <MoonIcon
-            filled={true}
-            size={19}
-            height={22}
-            width={22}
-            label="Moon"
-          />
-        )}
-      </IconButton>
-
+      />
       <Text h2 css={{ margin: "auto", marginTop: "0%" }}>
-        Inicio de Sesion
+        Inicio de Sesión
       </Text>
 
       <Card.Header>
@@ -170,7 +154,7 @@ const LoginForm = () => {
           css={{ width: "40%", margin: "auto" }}
           onPress={handleLogin}
         >
-          Login
+          Iniciar Sesión
         </Button>
       </Card.Footer>
     </Card>

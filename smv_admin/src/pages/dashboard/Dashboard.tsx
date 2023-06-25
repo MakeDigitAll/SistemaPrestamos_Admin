@@ -1,5 +1,5 @@
 import React from "react";
-import { useGetUser } from "../../hooks/useGetUser";
+import { useGetUser } from "../../hooks/useGetAdmin";
 import useTokenRenewal from "../../hooks/useTokenRenewal";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";

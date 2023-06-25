@@ -1,28 +1,17 @@
 import React from "react";
-import {
-  Navbar,
-  Text,
-  Avatar,
-  Dropdown,
-  Input,
-  useTheme,
-  Button,
-} from "@nextui-org/react";
+import { Navbar, Text, Avatar, Dropdown, Input } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
-import { SunIcon } from "../../resources/icons/SunIcon";
-import { MoonIcon } from "../../resources/icons/MoonIcon";
-import { useTheme as useNextTheme } from "next-themes";
-import Cookies from "js-cookie";
+import useDarkLight from "../../hooks/useDarkLight";
 import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../../hooks/useGetUser";
-import { IconButton } from "../../resources/icons/IconButton";
+import { useGetUser } from "../../hooks/useGetAdmin";
+import Cookies from "js-cookie";
+import ThemeToggleButton from "../buttons/ThemeToggleButton";
 
 export const CustomNavBar: React.FC = () => {
-  const { setTheme } = useNextTheme();
-  const { isDark } = useTheme();
+  const { theme, toggleTheme } = useDarkLight();
   const navigate = useNavigate();
-  const user = useGetUser();
+  const admin = useGetUser();
 
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
@@ -38,7 +27,7 @@ export const CustomNavBar: React.FC = () => {
     }
   };
 
-  if (!user) {
+  if (!admin) {
     return null; // Opcional: Mostrar un spinner de carga o mensaje mientras se obtienen los datos del usuario
   }
 
@@ -69,25 +58,7 @@ export const CustomNavBar: React.FC = () => {
               },
             }}
           >
-            <IconButton onClick={() => setTheme(isDark ? "light" : "dark")}>
-              {isDark ? (
-                <SunIcon
-                  filled={true}
-                  size={18}
-                  height={22}
-                  width={22}
-                  label="Sun"
-                />
-              ) : (
-                <MoonIcon
-                  filled={true}
-                  size={19}
-                  height={22}
-                  width={22}
-                  label="Moon"
-                />
-              )}
-            </IconButton>
+            <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
           </Navbar.Item>
 
           <Navbar.Item
@@ -131,6 +102,7 @@ export const CustomNavBar: React.FC = () => {
                 />
               </Dropdown.Trigger>
             </Navbar.Item>
+
             <Dropdown.Menu
               aria-label="toggle navigation"
               color="secondary"
@@ -139,13 +111,13 @@ export const CustomNavBar: React.FC = () => {
               <Dropdown.Item
                 key="profile"
                 css={{ height: "$18" }}
-                textValue={`${user.correo_electronico}`}
+                textValue={`${admin.correo_electronico}`}
               >
                 <Text b color="inherit" css={{ display: "flex" }}>
-                  {user.nombres} {user.apellidos}
+                  {admin.nombres} {admin.apellidos}
                 </Text>
                 <Text b color="inherit" css={{ display: "flex" }}>
-                  {user.correo_electronico}
+                  {admin.correo_electronico}
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="logout" withDivider color="error">
