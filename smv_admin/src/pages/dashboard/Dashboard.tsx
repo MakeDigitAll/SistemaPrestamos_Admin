@@ -1,7 +1,8 @@
 import React from "react";
 import { useGetUser } from "../../hooks/useGetUser";
 import useTokenRenewal from "../../hooks/useTokenRenewal";
-import { CustomNavBar } from "../../components/navbar/NavBar";
+import Header from "../../components/header/Header";
+import Footer from "../../components/footer/Footer";
 
 const Dashboard: React.FC = () => {
   const user = useGetUser();
@@ -13,11 +14,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <CustomNavBar />
-      <h1>Dashboard</h1>
-      <h2>
-        Bienvenido {user.nombres} {user.apellidos}
-      </h2>
+      <Header />
+      <div className="container"></div>
+      <Footer />
     </div>
   );
 };
