@@ -12,14 +12,13 @@ app.options("*", cors());
 
 //por si la base de datos cambia
 db.sequelize.sync({ alter: true }).then(() => {});
-
-//insertar un administrador (correo_electronico, passwd, nombres, apellidos) (sesion iniciada y descomentar la linea 19  - 23) y regargar el servidor para que se cree el registro despues comentar la linea 19 - 23
+//force: true
 
 //db.administradores.create({
-//  correo_electronico: "hola@makedigitall.com",
-//  passwd: "rm7DS6YkR",
-//  nombres: "Prueba",
-//  apellidos: "App",
+//  correo_electronico: "pablo@makedigitall.com",
+//  passwd: "123",
+//  nombres: "Pablo",
+//  apellidos: "Alvarez",
 //});
 
 // Rutas

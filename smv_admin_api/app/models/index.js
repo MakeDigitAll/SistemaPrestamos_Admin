@@ -16,7 +16,9 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
 db.administradores = require("./modelAdmin.js")(sequelize, Sequelize);
+db.usuarios = require("./modelUsuarios.js")(sequelize, Sequelize);
+db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
+db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
 
 module.exports = db;
