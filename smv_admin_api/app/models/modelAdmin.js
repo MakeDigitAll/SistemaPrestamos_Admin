@@ -1,15 +1,15 @@
 module.exports = (sequelize, Sequelize) => {
   const Model = sequelize.define("administradores", {
-    idadmin: {
+    idAdministrador: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    correo_electronico: {
+    correoElectronico: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    passwd: {
+    adminPassword: {
       type: Sequelize.STRING,
       allowNull: false,
     },

@@ -18,9 +18,9 @@ class AdminDataService {
   }
 
   // Comprobar si el administrador existe en la base de datos y si la contraseña es correcta sin credenciales
-  login(correo_electronico: string, passwd: string) {
+  login(correoElectronico: string, adminPassword: string) {
     return http.get(
-      `/administradores/login?correo_electronico=${correo_electronico}&passwd=${passwd}`,
+      `/administradores/login?correoElectronico=${correoElectronico}&adminPassword=${adminPassword}`,
       { withCredentials: false }
     );
   }

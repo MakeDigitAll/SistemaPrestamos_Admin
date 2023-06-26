@@ -5,11 +5,11 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    correo_electronico: {
+    correoElectronico: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    passwd: {
+    usuarioPassword: {
       type: Sequelize.STRING,
       allowNull: false,
     },
@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize) => {
     tipoUsuario: {
       type: Sequelize.STRING,
       allowNull: false,
+    },
+    codigoReferencia: {
+      type: Sequelize.STRING,
     },
     createdAt: {
       type: Sequelize.DATE,

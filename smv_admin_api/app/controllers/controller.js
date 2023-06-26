@@ -18,13 +18,13 @@ exports.create = (req, res) => {
     });
     return;
   }
-  if (!req.query.correo_electronico) {
+  if (!req.query.correoElectronico) {
     res.status(400).send({
       message: "El Correo Electronico no puede estar vacío!",
     });
     return;
   }
-  if (!req.query.passwd) {
+  if (!req.query.adminPassword) {
     res.status(400).send({
       message: "La Contraseña no puede estar vacía!",
     });
@@ -35,8 +35,8 @@ exports.create = (req, res) => {
   const administrador = {
     nombres: req.query.nombres,
     apellidos: req.query.apellidos,
-    correo_electronico: req.query.correo_electronico,
-    passwd: req.query.passwd,
+    correoElectronico: req.query.correoElectronico,
+    adminPassword: req.query.adminPassword,
     estado: req.query.estado ? req.query.estado : false,
   };
 
@@ -61,10 +61,10 @@ exports.findAll = (req, res) => {
       //solo enviar los datos que se necesitan menos la contraseña
       const datos = data.map((admin) => {
         return {
-          id: admin.idadmin,
+          id: admin.idAdministrador,
           nombres: admin.nombres,
           apellidos: admin.apellidos,
-          correo_electronico: admin.correo_electronico,
+          correoElectronico: admin.correoElectronico,
         };
       });
       res.send(datos);
@@ -85,7 +85,7 @@ exports.update = (req, res) => {
   admin
     .update(
       {
-        passwd: req.query.passwd,
+        adminPassword: req.query.adminPassword,
       },
       {
         where: { id: id },
@@ -146,19 +146,19 @@ exports.login = (req, res) => {
   admin
     .findOne({
       where: {
-        correo_electronico: req.query.correo_electronico,
+        correoElectronico: req.query.correoElectronico,
       },
     })
     .then((data) => {
       if (data) {
         // El correo existe en la base de datos, verificar la contraseña
-        if (data.passwd === req.query.passwd) {
+        if (data.adminPassword === req.query.adminPassword) {
           //regresar los datos del administrador menos la contraseña
           const datos = {
-            id: data.idadmin,
+            id: data.idAdministrador,
             nombres: data.nombres,
             apellidos: data.apellidos,
-            correo_electronico: data.correo_electronico,
+            correoElectronico: data.correoElectronico,
           };
           //crear el token de acceso con duración de 10 segundos
           const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
@@ -224,7 +224,7 @@ exports.refreshToken = (req, res) => {
         id: decoded.id,
         nombres: decoded.nombres,
         apellidos: decoded.apellidos,
-        correo_electronico: decoded.correo_electronico,
+        correoElectronico: decoded.correoElectronico,
       },
       TOKEN_KEY,
       { expiresIn: "1h" }

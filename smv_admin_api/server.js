@@ -15,8 +15,8 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //force: true
 
 //db.administradores.create({
-//  correo_electronico: "pablo@makedigitall.com",
-//  passwd: "123",
+//  correoElectronico: "pablo@makedigitall.com",
+//  adminPassword: "123",
 //  nombres: "Pablo",
 //  apellidos: "Alvarez",
 //});
