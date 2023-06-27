@@ -100,6 +100,7 @@ exports.loginAdmin = (req, res) => {
             nombres: data.nombres,
             apellidos: data.apellidos,
             correoElectronico: data.correoElectronico,
+            imagenPerfil: data.imagenPerfil,
           };
 
           const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });

@@ -12,6 +12,8 @@ export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
   const navigate = useNavigate();
   const admin = useGetAdmin();
+  const isDashboardActive = window.location.pathname === "/dashboard";
+  const isSettingsActive = window.location.pathname === "/settings";
 
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
@@ -36,10 +38,12 @@ export const CustomNavBar: React.FC = () => {
       <Navbar isBordered variant="sticky" isCompact>
         <Navbar.Brand css={{ mr: "$4" }}>
           <Navbar.Content hideIn="xs" variant="highlight-rounded">
-            <Navbar.Link isActive href="/dashboard">
+            <Navbar.Link isActive={isDashboardActive} href="/dashboard">
               Dashboard
             </Navbar.Link>
-            <Navbar.Link href="/">Settings</Navbar.Link>
+            <Navbar.Link isActive={isSettingsActive} href="/settings">
+              Settings
+            </Navbar.Link>
           </Navbar.Content>
         </Navbar.Brand>
         <Navbar.Content
@@ -110,8 +114,13 @@ export const CustomNavBar: React.FC = () => {
               onAction={handleDropdownAction}
             >
               <Dropdown.Item>
-                <Text b color="inherit" css={{ display: "flex" }}>
-                  Opcion
+                <Text
+                  b
+                  color="inherit"
+                  css={{ display: "flex" }}
+                  onClick={() => navigate("/profile")}
+                >
+                  Mi Perfil
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="logout" withDivider color="error">

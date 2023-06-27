@@ -8,7 +8,8 @@ CREATE TABLE Administradores (
   correo_electronico VARCHAR(255),
   passwd VARCHAR(255),
   nombres VARCHAR(255),
-  apellidos VARCHAR(255)
+  apellidos VARCHAR(255),
+  imagenPerfil BLOB
 );
 
 CREATE TABLE Usuarios (
@@ -18,6 +19,7 @@ CREATE TABLE Usuarios (
     correo_electronico VARCHAR(255),
     passwd VARCHAR(255),
     tipoUsuario VARCHAR(255),
+    imagenPerfil BLOB
 );
 
 CREATE TABLE Prestamos (

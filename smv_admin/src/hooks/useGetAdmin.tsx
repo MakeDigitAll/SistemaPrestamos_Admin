@@ -8,6 +8,7 @@ interface Admin {
   nombres: string;
   apellidos: string;
   id: number;
+  imagenPerfil: Blob;
 }
 
 export const useGetAdmin = () => {
@@ -27,6 +28,7 @@ export const useGetAdmin = () => {
         correoElectronico: decodedAccessToken.correoElectronico,
         nombres: decodedAccessToken.nombres,
         apellidos: decodedAccessToken.apellidos,
+        imagenPerfil: decodedAccessToken.imagenPerfil,
         id: decodedAccessToken.id,
       };
 

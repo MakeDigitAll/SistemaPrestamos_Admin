@@ -21,6 +21,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    imagenPerfil: {
+      type: Sequelize.BLOB, // Almacena los datos binarios de la imagen
+      allowNull: true,
+    },
     createdAt: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW,
