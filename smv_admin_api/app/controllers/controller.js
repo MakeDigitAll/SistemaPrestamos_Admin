@@ -3,6 +3,19 @@ const admin = db.administradores;
 const jwt = require("jsonwebtoken");
 //token key 32
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
+const CryptoJS = require("crypto-js"); // Importa la biblioteca crypto-js
+const secret_key = "ee4fdd88fcc9afaff541caf9652ba6cc";
+
+function aesDecrypt(word) {
+  const keys = CryptoJS.enc.Utf8.parse(secret_key);
+  const base64 = CryptoJS.enc.Base64.parse(word);
+  const src = CryptoJS.enc.Base64.stringify(base64);
+  const decrypted = CryptoJS.AES.decrypt(src, keys, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
 
 // Crear y guardar un nuevo administrador
 exports.create = (req, res) => {
@@ -143,27 +156,27 @@ exports.delete = (req, res) => {
 
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
 exports.login = (req, res) => {
+  //desencriptar el correo y la contraseña
+  const decryptedEmail = aesDecrypt(req.query.correoElectronico);
+  const decryptedPassword = aesDecrypt(req.query.adminPassword);
   admin
     .findOne({
       where: {
-        correoElectronico: req.query.correoElectronico,
+        correoElectronico: decryptedEmail,
       },
     })
     .then((data) => {
       if (data) {
         // El correo existe en la base de datos, verificar la contraseña
-        if (data.adminPassword === req.query.adminPassword) {
-          //regresar los datos del administrador menos la contraseña
+        if (data.adminPassword === decryptedPassword) {
           const datos = {
             id: data.idAdministrador,
             nombres: data.nombres,
             apellidos: data.apellidos,
             correoElectronico: data.correoElectronico,
           };
-          //crear el token de acceso con duración de 10 segundos
-          const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
 
-          //crear el token de actualización con una duración más larga, por ejemplo, 7 días
+          const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
           const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "7d" });
 
           let datosToken = {
@@ -175,7 +188,6 @@ exports.login = (req, res) => {
           res.status(200).send(datosToken);
         } else {
           console.log("Contraseña incorrecta");
-          //crear un error personalizado para enviarlo al cliente
           res.status(500).send({
             message: "Contraseña incorrecta",
           });
