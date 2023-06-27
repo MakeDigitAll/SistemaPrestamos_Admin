@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Text, Avatar, Dropdown, Input } from "@nextui-org/react";
+import { Navbar, Text, Dropdown, Input, User } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
@@ -93,12 +93,13 @@ export const CustomNavBar: React.FC = () => {
           <Dropdown placement="bottom-right">
             <Navbar.Item>
               <Dropdown.Trigger>
-                <Avatar
+                <User
                   bordered
-                  as="button"
-                  color="primary"
+                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                  name={admin.nombres + " " + admin.apellidos}
+                  description={admin.correoElectronico}
                   size="md"
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                  color="primary"
                 />
               </Dropdown.Trigger>
             </Navbar.Item>
@@ -108,16 +109,9 @@ export const CustomNavBar: React.FC = () => {
               color="secondary"
               onAction={handleDropdownAction}
             >
-              <Dropdown.Item
-                key="profile"
-                css={{ height: "$18" }}
-                textValue={`${admin.correoElectronico}`}
-              >
+              <Dropdown.Item>
                 <Text b color="inherit" css={{ display: "flex" }}>
-                  {admin.nombres} {admin.apellidos}
-                </Text>
-                <Text b color="inherit" css={{ display: "flex" }}>
-                  {admin.correoElectronico}
+                  Opcion
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="logout" withDivider color="error">

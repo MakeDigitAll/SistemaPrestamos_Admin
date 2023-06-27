@@ -110,7 +110,7 @@ const LoginForm = () => {
 
       <Card.Header>
         <Avatar
-          src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
           zoomed
           css={{
             margin: "auto",
