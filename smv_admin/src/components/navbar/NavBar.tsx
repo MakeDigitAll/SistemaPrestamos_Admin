@@ -4,14 +4,14 @@ import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
 import { useNavigate } from "react-router-dom";
-import { useGetUser } from "../../hooks/useGetAdmin";
+import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
 
 export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
   const navigate = useNavigate();
-  const admin = useGetUser();
+  const admin = useGetAdmin();
 
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
@@ -111,13 +111,13 @@ export const CustomNavBar: React.FC = () => {
               <Dropdown.Item
                 key="profile"
                 css={{ height: "$18" }}
-                textValue={`${admin.correo_electronico}`}
+                textValue={`${admin.correoElectronico}`}
               >
                 <Text b color="inherit" css={{ display: "flex" }}>
                   {admin.nombres} {admin.apellidos}
                 </Text>
                 <Text b color="inherit" css={{ display: "flex" }}>
-                  {admin.correo_electronico}
+                  {admin.correoElectronico}
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="logout" withDivider color="error">

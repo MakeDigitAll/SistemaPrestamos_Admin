@@ -1,12 +1,12 @@
 import React from "react";
-import { useGetUser } from "../../hooks/useGetAdmin";
+import { useGetAdmin } from "../../hooks/useGetAdmin";
 import useTokenRenewal from "../../hooks/useTokenRenewal";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import CardDesign from "./CardDesign";
+import CardDesign from "./CardUsuariosPrestamistas";
 
 const Dashboard: React.FC = () => {
-  const user = useGetUser();
+  const user = useGetAdmin();
   useTokenRenewal();
 
   if (!user) {

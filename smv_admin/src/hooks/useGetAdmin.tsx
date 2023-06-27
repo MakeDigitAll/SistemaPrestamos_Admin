@@ -3,16 +3,16 @@ import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-interface User {
-  correo_electronico: string;
+interface Admin {
+  correoElectronico: string;
   nombres: string;
   apellidos: string;
   id: number;
 }
 
-export const useGetUser = () => {
+export const useGetAdmin = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<User | null>(null);
+  const [admin, setUser] = useState<Admin | null>(null);
 
   useEffect(() => {
     // Obtener el token de acceso desde una cookie
@@ -23,8 +23,8 @@ export const useGetUser = () => {
       const decodedAccessToken: any = jwt_decode(accessToken);
 
       // Establecer los datos del usuario en el estado
-      const currentUser: User = {
-        correo_electronico: decodedAccessToken.correo_electronico,
+      const currentUser: Admin = {
+        correoElectronico: decodedAccessToken.correoElectronico,
         nombres: decodedAccessToken.nombres,
         apellidos: decodedAccessToken.apellidos,
         id: decodedAccessToken.id,
@@ -36,5 +36,5 @@ export const useGetUser = () => {
     }
   }, [navigate]);
 
-  return user;
+  return admin;
 };

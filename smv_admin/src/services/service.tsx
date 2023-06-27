@@ -1,20 +1,8 @@
 import http from "../api/axios";
 
 class AdminDataService {
-  getAll() {
-    return http.get("/administradores");
-  }
-
-  get(id: number) {
-    return http.get(`/admin/${id}`);
-  }
-
-  create(data: any) {
-    return http.post("/admin", data);
-  }
-
   update(id: number, data: any) {
-    return http.put(`/admin/${id}`, data);
+    return http.put(`/administradores/${id}`, data);
   }
 
   // Comprobar si el administrador existe en la base de datos y si la contraseña es correcta sin credenciales
@@ -24,12 +12,16 @@ class AdminDataService {
       { withCredentials: false }
     );
   }
-
+  // Refrescar el token de administrador
   refreshToken(refreshToken: any) {
     return http.get(
       `/administradores/refreshToken?refreshToken=${refreshToken}`,
       { withCredentials: false }
     );
+  }
+  //obtener todos los usuarios
+  getAllUsuarios() {
+    return http.get("/usuarios-prestamistas");
   }
 }
 

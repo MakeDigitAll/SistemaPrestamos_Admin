@@ -3,9 +3,6 @@ const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 
 // Verify token middleware
 const verifyToken = (req, res, next) => {
-  console.log("req.headers:", req.headers);
-  console.log("req.headers.cookie:", req.headers.cookie);
-
   const cookieHeader = req.headers.cookie;
   const cookies = cookieHeader ? cookieHeader.split("; ") : [];
   let accessToken, refreshToken;

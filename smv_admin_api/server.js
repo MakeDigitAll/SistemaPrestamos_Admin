@@ -5,10 +5,15 @@ const app = express();
 const routes = require("./app/routes/routes");
 const db = require("./app/models");
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.options("*", cors());
+app.options("*", cors(corsOptions));
 
 //por si la base de datos cambia
 db.sequelize.sync({ alter: true }).then(() => {});

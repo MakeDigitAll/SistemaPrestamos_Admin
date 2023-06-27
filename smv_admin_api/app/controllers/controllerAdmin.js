@@ -6,7 +6,7 @@ const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("./cryptoUtils");
 
 // Crear y guardar un nuevo administrador
-exports.create = (req, res) => {
+exports.createAdmin = (req, res) => {
   if (!req.query.nombres) {
     res.status(400).send({
       message: "El Nombre no puede estar vacío!",
@@ -54,96 +54,34 @@ exports.create = (req, res) => {
     });
 };
 
-exports.findAll = (req, res) => {
-  //obtener todos los administradores de la base de datos
-  admin
-    .findAll()
-    .then((data) => {
-      //solo enviar los datos que se necesitan menos la contraseña
-      const datos = data.map((admin) => {
-        return {
-          id: admin.idAdministrador,
-          nombres: admin.nombres,
-          apellidos: admin.apellidos,
-          correoElectronico: admin.correoElectronico,
-        };
-      });
-      res.send(datos);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al obtener los administradores de la base de datos.",
-      });
-    });
-};
+// Actualizar los datos de un administrador por su id  http.put(`/administradores/${id}`, data);
+exports.updateAdmin = (req, res) => {
+  const id = req.params.id;
 
-// Actualizar solo la contraseña de un administrador identificado por el id en la solicitud
-exports.update = (req, res) => {
-  //actualizar la contraseña de un administrador en la base de datos por su id
-  const id = req.query.id;
   admin
-    .update(
-      {
-        adminPassword: req.query.adminPassword,
-      },
-      {
-        where: { id: id },
-      }
-    )
-    .then((data) => {
-      if (data == 1) {
+    .update(req.query, {
+      where: { idAdministrador: id },
+    })
+    .then((num) => {
+      if (num == 1) {
         res.send({
-          message:
-            "La contraseña del administrador fue actualizada exitosamente!",
+          message: "Administrador actualizado correctamente.",
         });
       } else {
         res.send({
-          message: `No se pudo actualizar la contraseña del administrador con id=${id}. Tal vez el administrador no exista!`,
+          message: `No se puede actualizar el administrador con id=${id}. Tal vez el administrador no fue encontrado o req.body está vacío!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al actualizar la contraseña del administrador con id=" +
-            id,
-      });
-    });
-};
-
-// Eliminar un administrador con el id especificado en la solicitud
-exports.delete = (req, res) => {
-  //eliminar un administrador de la base de datos por su id
-  const id = req.query.id;
-  admin
-    .destroy({
-      where: { id: id },
-    })
-    .then((data) => {
-      if (data == 1) {
-        res.send({
-          message: "El administrador fue eliminado exitosamente!",
-        });
-      } else {
-        res.send({
-          message: `No se pudo eliminar el administrador con id=${id}. Tal vez el administrador no exista!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al eliminar el administrador con id=" + id,
+        message: "Error al actualizar el administrador" + err,
       });
     });
 };
 
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
-exports.login = (req, res) => {
+exports.loginAdmin = (req, res) => {
   //desencriptar el correo y la contraseña
   const decryptedEmail = aesDecrypt(req.query.correoElectronico);
   const decryptedPassword = aesDecrypt(req.query.adminPassword);
@@ -196,7 +134,7 @@ exports.login = (req, res) => {
 };
 
 //refrescar el token de acceso
-exports.refreshToken = (req, res) => {
+exports.refreshTokenAdmin = (req, res) => {
   // Obtener el token de actualización del cuerpo de la solicitud
   const refreshToken = req.query.refreshToken;
 
