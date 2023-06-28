@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { BsFillPersonFill, BsFillPersonXFill } from "react-icons/bs";
-import { BiSolidDashboard, BiLogOut } from "react-icons/bi";
+import { BiSolidDashboard } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "@nextui-org/react";
@@ -21,7 +21,7 @@ const useDarkLight = () => {
       setLocalTheme(savedTheme);
       setTheme(savedTheme);
     }
-  }, [setTheme, theme, isDark]); // Agrega 'isDark' como dependencia
+  }, [setTheme, theme, isDark]);
 
   const toggleTheme = () => {
     setLocalTheme((prevTheme) => {
@@ -73,14 +73,6 @@ function SideBar() {
     }
   };
 
-  const handleCerrarSesionClick = () => {
-    if (isMenuItemActive("/cerrar-sesion")) {
-      window.location.reload();
-    } else {
-      navigate("/cerrar-sesion");
-    }
-  };
-
   const isMenuItemActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
@@ -120,7 +112,7 @@ function SideBar() {
         <MenuItem
           icon={<BsFillPersonFill />}
           onClick={handleUsuariosClick}
-          className={isMenuItemActive("/usuarios") ? "selected" : ""}
+          className={isMenuItemActive("/usuarios-activos") ? "selected" : ""}
         >
           Usuarios Activos
         </MenuItem>
@@ -137,13 +129,6 @@ function SideBar() {
           className={isMenuItemActive("/suscripciones") ? "selected" : ""}
         >
           Suscripciones
-        </MenuItem>
-        <MenuItem
-          icon={<BiLogOut />}
-          onClick={handleCerrarSesionClick}
-          className={isMenuItemActive("/cerrar-sesion") ? "selected" : ""}
-        >
-          Cerrar Sesión
         </MenuItem>
       </Menu>
     </Sidebar>

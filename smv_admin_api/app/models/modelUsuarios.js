@@ -29,6 +29,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: false,
     },
+    isActive: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     codigoReferencia: {
       type: Sequelize.STRING,
     },

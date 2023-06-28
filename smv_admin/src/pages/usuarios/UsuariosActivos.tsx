@@ -4,8 +4,9 @@ import useTokenRenewal from "../../hooks/useTokenRenewal";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import SideBar from "../../components/sidebar/SideBar";
+import CardUsuariosActivos from "../usuarios/CardUsuariosActivos";
 
-const Dashboard: React.FC = () => {
+const UsuariosActivos: React.FC = () => {
   const user = useGetAdmin();
   useTokenRenewal();
 
@@ -18,7 +19,9 @@ const Dashboard: React.FC = () => {
       <Header />
       <div style={styles.container}>
         <SideBar />
-        <div style={styles.content}></div>
+        <div style={styles.content}>
+          <CardUsuariosActivos />
+        </div>
       </div>
       <Footer />
     </div>
@@ -36,4 +39,4 @@ const styles = {
   },
 };
 
-export default Dashboard;
+export default UsuariosActivos;

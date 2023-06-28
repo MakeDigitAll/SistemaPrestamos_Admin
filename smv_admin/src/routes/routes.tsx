@@ -4,6 +4,9 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Login from "../pages/login/LoginForm";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Profile from "../pages/profile/Profile";
+import UsuariosActivos from "../pages/usuarios/UsuariosActivos";
+import UsuariosInactivos from "../pages/usuarios/UsuariosInactivos";
+
 const lightTheme = createTheme({
   type: "light",
   theme: {},
@@ -30,6 +33,8 @@ function AppRouter() {
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/usuarios-activos" element={<UsuariosActivos />} />
+            <Route path="/usuarios-inactivos" element={<UsuariosInactivos />} />
           </Routes>
         </NextUIProvider>
       </NextThemesProvider>
