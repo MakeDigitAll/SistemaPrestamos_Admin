@@ -3,10 +3,13 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { BsFillPersonFill, BsFillPersonXFill } from "react-icons/bs";
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
+import { HiUsers } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme, Divider } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
 import Cookies from "js-cookie";
+import logodark from "../../assets/images/logodark.png";
+import logolight from "../../assets/images/logolight.png";
 
 import "./Sidebar.css";
 
@@ -105,64 +108,75 @@ function SideBar() {
     );
   }, [isUsuariosSubMenuOpen]);
 
-  return (
-    <Sidebar
-      backgroundColor={isDark ? "dark-mode" : "light-mode"}
-      width="100%"
-      rootStyles={{
-        borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
-      }}
-    >
-      <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "60px" }}>
-        <Divider style={{ height: "0.5px" }} />
-        <MenuItem
-          style={{ marginTop: "10px" }}
-          icon={<BiSolidDashboard />}
-          onClick={handleDashboardClick}
-          className={isMenuItemActive("/dashboard") ? "selected" : ""}
-        >
-          Dashboard
-        </MenuItem>
+  const logo = isDark ? logodark : logolight;
 
-        <Divider style={{ height: "0.5px" }} />
-        <SubMenu
-          label="Usuarios"
-          className="custom-submenu"
-          open={isUsuariosSubMenuOpen}
-          onOpenChange={handleUsuariosClick}
-        >
+  return (
+    <>
+      <Sidebar
+        backgroundColor={isDark ? "dark-mode" : "light-mode"}
+        width="100%"
+        rootStyles={{
+          borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
+        }}
+      >
+        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "20px" }}>
+          <img
+            src={logo}
+            alt="Logo"
+            style={{ width: "150px", marginLeft: "20%" }}
+          />
+
+          <Divider style={{ height: "0.5px", marginTop: "10px" }} />
           <MenuItem
             style={{ marginTop: "10px" }}
-            icon={<BsFillPersonFill />}
-            onClick={handleUsuariosActivosClick}
-            className={`${
-              isMenuItemActive("/usuarios-activos") ? "selected" : ""
-            } ${isDark ? "dark-mode" : "light-mode"}`}
+            icon={<BiSolidDashboard />}
+            onClick={handleDashboardClick}
+            className={isMenuItemActive("/dashboard") ? "selected" : ""}
           >
-            Usuarios Activos
+            Dashboard
           </MenuItem>
+
+          <Divider style={{ height: "0.5px" }} />
+          <SubMenu
+            label="Usuarios"
+            className="custom-submenu"
+            open={isUsuariosSubMenuOpen}
+            onOpenChange={handleUsuariosClick}
+            icon={<HiUsers />}
+          >
+            <MenuItem
+              style={{ marginTop: "10px" }}
+              icon={<BsFillPersonFill />}
+              onClick={handleUsuariosActivosClick}
+              className={`${
+                isMenuItemActive("/usuarios-activos") ? "selected" : ""
+              } ${isDark ? "dark-mode" : "light-mode"}`}
+            >
+              Usuarios Activos
+            </MenuItem>
+            <MenuItem
+              icon={<BsFillPersonXFill />}
+              onClick={handleUsuariosInactivosClick}
+              className={`${
+                isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
+              } ${isDark ? "dark-mode" : "light-mode"}`}
+            >
+              Usuarios Inactivos
+            </MenuItem>
+          </SubMenu>
+          <Divider style={{ height: "0.5px" }} />
           <MenuItem
-            icon={<BsFillPersonXFill />}
-            onClick={handleUsuariosInactivosClick}
-            className={`${
-              isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
-            } ${isDark ? "dark-mode" : "light-mode"}`}
+            style={{ marginTop: "10px" }}
+            icon={<FaMoneyBillAlt />}
+            onClick={handleSuscripcionesClick}
+            className={isMenuItemActive("/suscripciones") ? "selected" : ""}
           >
-            Usuarios Inactivos
+            Suscripciones
           </MenuItem>
-        </SubMenu>
-        <Divider style={{ height: "0.5px" }} />
-        <MenuItem
-          style={{ marginTop: "10px" }}
-          icon={<FaMoneyBillAlt />}
-          onClick={handleSuscripcionesClick}
-          className={isMenuItemActive("/suscripciones") ? "selected" : ""}
-        >
-          Suscripciones
-        </MenuItem>
-        <Divider style={{ height: "0.5px" }} />
-      </Menu>
-    </Sidebar>
+          <Divider style={{ height: "0.5px" }} />
+        </Menu>
+      </Sidebar>
+    </>
   );
 }
 
