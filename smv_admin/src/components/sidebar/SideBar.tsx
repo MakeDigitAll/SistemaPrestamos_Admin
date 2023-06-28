@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { BsFillPersonFill, BsFillPersonXFill } from "react-icons/bs";
 import { BiSolidDashboard } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useTheme } from "@nextui-org/react";
+import { useTheme, Divider } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
 import Cookies from "js-cookie";
 
@@ -40,6 +40,9 @@ function SideBar() {
   const isDark = theme === "dark";
   const location = useLocation();
   const navigate = useNavigate();
+  const [isUsuariosSubMenuOpen, setIsUsuariosSubMenuOpen] = useState(
+    localStorage.getItem("isUsuariosSubMenuOpen") === "true"
+  );
 
   const handleDashboardClick = () => {
     if (isMenuItemActive("/dashboard")) {
@@ -50,19 +53,15 @@ function SideBar() {
   };
 
   const handleUsuariosClick = () => {
-    if (isMenuItemActive("/usuarios-activos")) {
-      window.location.reload();
-    } else {
-      navigate("/usuarios-activos");
-    }
+    setIsUsuariosSubMenuOpen(!isUsuariosSubMenuOpen);
   };
 
-  const handleInactivosClick = () => {
-    if (isMenuItemActive("/usuarios-inactivos")) {
-      window.location.reload();
-    } else {
-      navigate("/usuarios-inactivos");
-    }
+  const handleUsuariosActivosClick = () => {
+    navigate("/usuarios-activos");
+  };
+
+  const handleUsuariosInactivosClick = () => {
+    navigate("/usuarios-inactivos");
   };
 
   const handleSuscripcionesClick = () => {
@@ -84,8 +83,8 @@ function SideBar() {
           color: disabled ? "#eee" : isDark ? "#fff" : "#000000",
           backgroundColor: active ? "#fff" : "transparent",
           "&:hover": {
-            backgroundColor: isDark ? "#335B8C" : "#E2F1F8",
-            color: isDark ? "#fff" : "#000",
+            backgroundColor: isDark ? "#335B8C" : "#335B8C",
+            color: isDark ? "#fff" : "#fff",
             borderRadius: "15px",
           },
         };
@@ -93,43 +92,69 @@ function SideBar() {
     },
   };
 
+  useEffect(() => {
+    localStorage.setItem(
+      "isUsuariosSubMenuOpen",
+      String(isUsuariosSubMenuOpen)
+    );
+  }, [isUsuariosSubMenuOpen]);
+
   return (
     <Sidebar
       backgroundColor={isDark ? "dark-mode" : "light-mode"}
-      style={{
-        height: "100%",
-        width: "100%",
+      width="100%"
+      rootStyles={{
+        borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
       }}
     >
       <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "60px" }}>
+        <Divider style={{ height: "0.5px" }} />
         <MenuItem
+          style={{ marginTop: "10px" }}
           icon={<BiSolidDashboard />}
           onClick={handleDashboardClick}
           className={isMenuItemActive("/dashboard") ? "selected" : ""}
         >
           Dashboard
         </MenuItem>
-        <MenuItem
-          icon={<BsFillPersonFill />}
-          onClick={handleUsuariosClick}
-          className={isMenuItemActive("/usuarios-activos") ? "selected" : ""}
+
+        <Divider style={{ height: "0.5px" }} />
+        <SubMenu
+          label="Usuarios"
+          className="custom-submenu"
+          open={isUsuariosSubMenuOpen}
+          onOpenChange={handleUsuariosClick}
         >
-          Usuarios Activos
-        </MenuItem>
+          <MenuItem
+            style={{ marginTop: "10px" }}
+            icon={<BsFillPersonFill />}
+            onClick={handleUsuariosActivosClick}
+            className={`${
+              isMenuItemActive("/usuarios-activos") ? "selected" : ""
+            } ${isDark ? "dark-mode" : "light-mode"}`}
+          >
+            Usuarios Activos
+          </MenuItem>
+          <MenuItem
+            icon={<BsFillPersonXFill />}
+            onClick={handleUsuariosInactivosClick}
+            className={`${
+              isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
+            } ${isDark ? "dark-mode" : "light-mode"}`}
+          >
+            Usuarios Inactivos
+          </MenuItem>
+        </SubMenu>
+        <Divider style={{ height: "0.5px" }} />
         <MenuItem
-          icon={<BsFillPersonXFill />}
-          onClick={handleInactivosClick}
-          className={isMenuItemActive("/usuarios-inactivos") ? "selected" : ""}
-        >
-          Usuarios Inactivos
-        </MenuItem>
-        <MenuItem
+          style={{ marginTop: "10px" }}
           icon={<FaMoneyBillAlt />}
           onClick={handleSuscripcionesClick}
           className={isMenuItemActive("/suscripciones") ? "selected" : ""}
         >
           Suscripciones
         </MenuItem>
+        <Divider style={{ height: "0.5px" }} />
       </Menu>
     </Sidebar>
   );
