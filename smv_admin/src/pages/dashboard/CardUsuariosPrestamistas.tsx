@@ -39,14 +39,14 @@ const CardDesign: React.FC = () => {
   }
 
   return (
-    <Grid.Container justify="flex-start" gap={2} css={{ marginLeft: "120px" }}>
+    <Grid.Container justify="flex-start" gap={2} css={{ marginLeft: "50px" }}>
       {usuarios.map((usuario: User) => (
         <Grid xs={6} sm={3.4} key={usuario.idUsuario}>
           <Card
             css={{
               p: "$2",
               mw: "400px",
-              marginTop: "50px",
+              marginTop: "30px",
             }}
           >
             <Card.Header>

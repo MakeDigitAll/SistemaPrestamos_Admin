@@ -1,0 +1,17 @@
+/* Estilos para el modo oscuro */
+.dark-mode {
+    background-color: #222;
+    color: #fff;
+  }
+  
+  /* Estilos para el modo claro */
+  .light-mode {
+    background-color: #fff;
+    color: #222;
+  }
+  .selected {
+    background-color: #cdcbcb72; /* Color de fondo para el elemento seleccionado */
+    border-radius: 15px;
+  }
+
+  

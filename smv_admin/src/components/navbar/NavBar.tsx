@@ -30,22 +30,13 @@ export const CustomNavBar: React.FC = () => {
   };
 
   if (!admin) {
-    return null; // Opcional: Mostrar un spinner de carga o mensaje mientras se obtienen los datos del usuario
+    return null;
   }
 
   return (
     <Layout>
-      <Navbar isBordered variant="sticky" isCompact>
-        <Navbar.Brand css={{ mr: "$4" }}>
-          <Navbar.Content hideIn="xs" variant="highlight-rounded">
-            <Navbar.Link isActive={isDashboardActive} href="/dashboard">
-              Dashboard
-            </Navbar.Link>
-            <Navbar.Link isActive={isSettingsActive} href="/settings">
-              Settings
-            </Navbar.Link>
-          </Navbar.Content>
-        </Navbar.Brand>
+      <Navbar variant="sticky" isCompact>
+        <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
         <Navbar.Content
           css={{
             "@xsMax": {
