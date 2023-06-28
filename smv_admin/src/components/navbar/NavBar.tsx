@@ -12,9 +12,6 @@ export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
   const navigate = useNavigate();
   const admin = useGetAdmin();
-  const isDashboardActive = window.location.pathname === "/dashboard";
-  const isSettingsActive = window.location.pathname === "/settings";
-
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
     Cookies.remove("accessToken");
@@ -35,8 +32,7 @@ export const CustomNavBar: React.FC = () => {
 
   return (
     <Layout>
-      <Navbar variant="sticky" isCompact>
-        <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
+      <Navbar variant="floating" isCompact isBordered css={{}}>
         <Navbar.Content
           css={{
             "@xsMax": {
@@ -55,7 +51,7 @@ export const CustomNavBar: React.FC = () => {
           >
             <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
           </Navbar.Item>
-
+          <Navbar.Brand css={{ marginLeft: "370px" }}></Navbar.Brand>
           <Navbar.Item
             css={{
               "@xsMax": {
@@ -68,13 +64,13 @@ export const CustomNavBar: React.FC = () => {
               aria-label="Search"
               clearable
               contentLeft={
-                <SearchIcon fill="var(--nextui-colors-accents6)" size={16} />
+                <SearchIcon fill="var(--nextui-colors-accents6)" size={18} />
               }
               contentLeftStyling={false}
               css={{
                 w: "100%",
                 "@xsMax": {
-                  mw: "300px",
+                  mw: "500px",
                 },
                 "& .nextui-input-content--left": {
                   h: "100%",
@@ -85,6 +81,7 @@ export const CustomNavBar: React.FC = () => {
               placeholder="Search..."
             />
           </Navbar.Item>
+          <Navbar.Brand css={{ marginLeft: "280px" }}></Navbar.Brand>
           <Dropdown placement="bottom-right">
             <Navbar.Item>
               <Dropdown.Trigger>

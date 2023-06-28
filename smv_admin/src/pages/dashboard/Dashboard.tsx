@@ -15,10 +15,12 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
-      <Header />
       <div style={styles.container}>
         <SideBar />
-        <div style={styles.content}></div>
+        <div className="header-dashboard-container">
+          <Header />
+          <div style={styles.content}></div>
+        </div>
       </div>
       <Footer />
     </div>
@@ -28,7 +30,7 @@ const Dashboard: React.FC = () => {
 const styles = {
   container: {
     display: "grid",
-    gridTemplateColumns: "16.3% 83.7%", // Ajusta el valor del ancho del sidebar aquí
+    gridTemplateColumns: "16.3% auto", // Ajusta los porcentajes según tus necesidades
     minHeight: "100vh",
   },
   content: {

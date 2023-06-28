@@ -10,6 +10,12 @@ import Cookies from "js-cookie";
 
 import "./Sidebar.css";
 
+interface MenuItemStyleProps {
+  level: number;
+  active: boolean;
+  disabled: boolean;
+}
+
 const useDarkLight = () => {
   const { isDark } = useTheme();
   const { setTheme } = useNextTheme();
@@ -77,7 +83,7 @@ function SideBar() {
   };
 
   const menuItemStyles = {
-    button: ({ level, active, disabled }: any) => {
+    button: ({ level, active, disabled }: MenuItemStyleProps) => {
       if (level === 0) {
         return {
           color: disabled ? "#eee" : isDark ? "#fff" : "#000000",
