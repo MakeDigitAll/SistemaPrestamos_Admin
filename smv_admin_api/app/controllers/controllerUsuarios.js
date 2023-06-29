@@ -19,6 +19,7 @@ exports.findAllUsuariosPrestamista = (req, res) => {
         codigoReferencia: user.codigoReferencia,
         tipoUsuario: user.tipoUsuario,
         isActive: user.isActive,
+        isDeleted: user.isDeleted,
       }));
       const tokenUsuarios = jwt.sign({ usuarios }, TOKEN_KEY);
       res.send({ tokenUsuarios });

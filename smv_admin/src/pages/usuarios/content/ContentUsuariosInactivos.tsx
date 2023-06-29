@@ -18,12 +18,30 @@ import { User } from "../../../types/types";
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
   const usuarios = getUsuarios?.usuarios;
-  //obtener solos los usuarios inactivos
   const usuariosInactivos = usuarios?.filter(
-    (usuario: User) => usuario.isActive === false
+    (usuario: User) => usuario.isActive === false && usuario.isDeleted === false
   );
 
-  if (!usuarios || usuariosInactivos.length === 0) {
+  if (!usuarios) {
+    return (
+      <Grid.Container
+        justify="center"
+        alignContent="center"
+        gap={2}
+        style={{ height: "100vh" }}
+      >
+        <Loading
+          type="points-opacity"
+          loadingCss={{
+            $$loadingSize: "50px",
+            $$loadingBorder: "10px",
+          }}
+        />
+      </Grid.Container>
+    );
+  }
+
+  if (usuariosInactivos.length === 0) {
     return (
       <Grid.Container
         justify="center"
@@ -38,7 +56,7 @@ const ContentUsuariosInactivos: React.FC = () => {
 
   return (
     <Grid.Container justify="flex-start" gap={2} css={{ marginLeft: "50px" }}>
-      {usuarios.map((usuario: User) => (
+      {usuariosInactivos.map((usuario: User) => (
         <Grid xs={6} sm={3.4} key={usuario.idUsuario}>
           <Card
             css={{

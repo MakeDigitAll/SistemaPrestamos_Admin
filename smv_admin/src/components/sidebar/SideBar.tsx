@@ -65,24 +65,8 @@ function SideBar() {
     setIsUsuariosSubMenuOpen(!isUsuariosSubMenuOpen);
   };
 
-  const handleUsuariosActivosClick = () => {
-    navigate("/usuarios-activos");
-  };
-
-  const handleUsuariosInactivosClick = () => {
-    navigate("/usuarios-inactivos");
-  };
-
-  const handleAddUsuarioClick = () => {
-    navigate("/add-usuario");
-  };
-
-  const handleSuscripcionesClick = () => {
-    if (isMenuItemActive("/suscripciones")) {
-      window.location.reload();
-    } else {
-      navigate("/suscripciones");
-    }
+  const handleMenuItemClick = (path: string) => {
+    navigate(path);
   };
 
   const isMenuItemActive = (path: string) => {
@@ -151,29 +135,37 @@ function SideBar() {
             <MenuItem
               style={{ marginTop: "10px" }}
               icon={<BsFillPersonFill />}
-              onClick={handleUsuariosActivosClick}
-              className={`${
+              onClick={() => handleMenuItemClick("/usuarios-activos")}
+              className={
                 isMenuItemActive("/usuarios-activos") ? "selected" : ""
-              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
+              }
             >
               Usuarios Activos
             </MenuItem>
             <MenuItem
               icon={<BsFillPersonXFill />}
-              onClick={handleUsuariosInactivosClick}
-              className={`${
+              onClick={() => handleMenuItemClick("/usuarios-inactivos")}
+              className={
                 isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
-              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
+              }
             >
               Usuarios Inactivos
             </MenuItem>
 
             <MenuItem
               icon={<BsFillPersonXFill />}
-              onClick={handleAddUsuarioClick}
-              className={`${
-                isMenuItemActive("/add-usuario") ? "selected" : ""
-              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
+              onClick={() => handleMenuItemClick("/usuarios-eliminados")}
+              className={
+                isMenuItemActive("/usuarios-eliminados") ? "selected" : ""
+              }
+            >
+              Usuarios Eliminados
+            </MenuItem>
+
+            <MenuItem
+              icon={<BsFillPersonXFill />}
+              onClick={() => handleMenuItemClick("/add-usuario")}
+              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
             >
               Agregar Usuario
             </MenuItem>
@@ -182,7 +174,7 @@ function SideBar() {
           <MenuItem
             style={{ marginTop: "10px" }}
             icon={<FaMoneyBillAlt />}
-            onClick={handleSuscripcionesClick}
+            onClick={() => handleMenuItemClick("/suscripciones")}
             className={isMenuItemActive("/suscripciones") ? "selected" : ""}
           >
             Suscripciones

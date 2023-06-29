@@ -6,4 +6,5 @@ export interface User {
   codigoReferencia: string | null;
   tipoUsuario: string;
   isActive: boolean;
+  isDeleted: boolean;
 }

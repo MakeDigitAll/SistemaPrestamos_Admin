@@ -15,12 +15,11 @@ import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User } from "../../../types/types";
 
-const ContentUsuariosActivos: React.FC = () => {
+const ContentUsuariosEliminados: React.FC = () => {
   const getUsuarios = useGetUsuarios();
   const usuarios = getUsuarios?.usuarios;
-  // Obtener solo los usuarios activos
-  const usuariosActivos = usuarios?.filter(
-    (usuario: User) => usuario.isActive === true && usuario.isDeleted === false
+  const usuariosEliminados = usuarios?.filter(
+    (usuario: User) => usuario.isActive === true && usuario.isDeleted === true
   );
 
   if (!usuarios) {
@@ -42,7 +41,7 @@ const ContentUsuariosActivos: React.FC = () => {
     );
   }
 
-  if (usuariosActivos.length === 0) {
+  if (usuariosEliminados.length === 0) {
     return (
       <Grid.Container
         justify="center"
@@ -50,14 +49,14 @@ const ContentUsuariosActivos: React.FC = () => {
         gap={2}
         style={{ height: "100vh" }}
       >
-        <Text>No hay usuarios Activos.</Text>
+        <Text>No hay usuarios Eliminados.</Text>
       </Grid.Container>
     );
   }
 
   return (
     <Grid.Container justify="flex-start" gap={2} css={{ marginLeft: "50px" }}>
-      {usuariosActivos.map((usuario: User) => (
+      {usuariosEliminados.map((usuario: User) => (
         <Grid xs={6} sm={3.4} key={usuario.idUsuario}>
           <Card
             css={{
@@ -130,4 +129,4 @@ const ContentUsuariosActivos: React.FC = () => {
   );
 };
 
-export default ContentUsuariosActivos;
+export default ContentUsuariosEliminados;
