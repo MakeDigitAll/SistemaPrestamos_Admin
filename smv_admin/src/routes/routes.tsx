@@ -1,21 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { createTheme, NextUIProvider } from "@nextui-org/react";
+import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import Login from "../pages/login/LoginForm";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Profile from "../pages/profile/Profile";
 import UsuariosActivos from "../pages/usuarios/UsuariosActivos";
 import UsuariosInactivos from "../pages/usuarios/UsuariosInactivos";
-
-const lightTheme = createTheme({
-  type: "light",
-  theme: {},
-});
-
-const darkTheme = createTheme({
-  type: "dark",
-  theme: {},
-});
+import Suscripciones from "../pages/suscripciones/Suscripciones";
+import lightTheme from "./lightTheme";
+import darkTheme from "./darkTheme";
 
 function AppRouter() {
   return (
@@ -35,6 +28,7 @@ function AppRouter() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/usuarios-activos" element={<UsuariosActivos />} />
             <Route path="/usuarios-inactivos" element={<UsuariosInactivos />} />
+            <Route path="/suscripciones" element={<Suscripciones />} />
           </Routes>
         </NextUIProvider>
       </NextThemesProvider>

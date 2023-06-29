@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar, Text, Dropdown, Input, User } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
+import "./NavBar.css";
 
 export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
@@ -18,6 +19,10 @@ export const CustomNavBar: React.FC = () => {
     Cookies.remove("refreshToken");
     navigate("/");
   };
+
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", theme === "dark");
+  }, [theme]);
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
@@ -64,7 +69,10 @@ export const CustomNavBar: React.FC = () => {
               aria-label="Search"
               clearable
               contentLeft={
-                <SearchIcon fill="var(--nextui-colors-accents6)" size={18} />
+                <SearchIcon
+                  fill={theme === "dark" ? "white" : "black"}
+                  size={20}
+                />
               }
               contentLeftStyling={false}
               css={{

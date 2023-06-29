@@ -5,7 +5,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import SideBar from "../../components/sidebar/SideBar";
 
-const Dashboard: React.FC = () => {
+const Suscripciones: React.FC = () => {
   const user = useGetAdmin();
   useTokenRenewal();
 
@@ -20,7 +20,7 @@ const Dashboard: React.FC = () => {
         <div className="header-dashboard-container">
           <Header />
           <div style={styles.content}>
-            <h1>Dashboard</h1>
+            <h1>Suscripciones</h1>
           </div>
         </div>
       </div>
@@ -40,4 +40,4 @@ const styles = {
   },
 };
 
-export default Dashboard;
+export default Suscripciones;
