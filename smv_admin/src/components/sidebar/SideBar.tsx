@@ -73,6 +73,10 @@ function SideBar() {
     navigate("/usuarios-inactivos");
   };
 
+  const handleAddUsuarioClick = () => {
+    navigate("/add-usuario");
+  };
+
   const handleSuscripcionesClick = () => {
     if (isMenuItemActive("/suscripciones")) {
       window.location.reload();
@@ -162,6 +166,16 @@ function SideBar() {
               } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
             >
               Usuarios Inactivos
+            </MenuItem>
+
+            <MenuItem
+              icon={<BsFillPersonXFill />}
+              onClick={handleAddUsuarioClick}
+              className={`${
+                isMenuItemActive("/add-usuario") ? "selected" : ""
+              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
+            >
+              Agregar Usuario
             </MenuItem>
           </SubMenu>
           <Divider style={{ height: "0.5px" }} />

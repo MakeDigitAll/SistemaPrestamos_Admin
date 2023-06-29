@@ -7,6 +7,8 @@ import Profile from "../pages/profile/Profile";
 import UsuariosActivos from "../pages/usuarios/UsuariosActivos";
 import UsuariosInactivos from "../pages/usuarios/UsuariosInactivos";
 import Suscripciones from "../pages/suscripciones/Suscripciones";
+import AddUsuario from "../pages/usuarios/AddUsuario";
+
 import lightTheme from "./lightTheme";
 import darkTheme from "./darkTheme";
 
@@ -29,6 +31,7 @@ function AppRouter() {
             <Route path="/usuarios-activos" element={<UsuariosActivos />} />
             <Route path="/usuarios-inactivos" element={<UsuariosInactivos />} />
             <Route path="/suscripciones" element={<Suscripciones />} />
+            <Route path="/add-usuario" element={<AddUsuario />} />
           </Routes>
         </NextUIProvider>
       </NextThemesProvider>

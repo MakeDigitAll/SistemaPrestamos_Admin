@@ -1,9 +1,9 @@
 import React from "react";
-import { useGetAdmin } from "../../../hooks/useGetAdmin";
-import useTokenRenewal from "../../../hooks/useTokenRenewal";
+import { useGetAdmin } from "../../hooks/useGetAdmin";
+import useTokenRenewal from "../../hooks/useTokenRenewal";
 import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
 
-const ProfileCard: React.FC = () => {
+const ContentProfile: React.FC = () => {
   const user = useGetAdmin();
   useTokenRenewal();
 
@@ -76,4 +76,4 @@ const ProfileCard: React.FC = () => {
   );
 };
 
-export default ProfileCard;
+export default ContentProfile;

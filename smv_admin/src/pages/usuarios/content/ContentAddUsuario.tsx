@@ -1,21 +1,9 @@
 import React from "react";
-import { useGetAdmin } from "../../../hooks/useGetAdmin";
-import useTokenRenewal from "../../../hooks/useTokenRenewal";
-import Header from "../../../components/header/Header";
-import Footer from "../../../components/footer/Footer";
 import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
 
-const Profile: React.FC = () => {
-  const user = useGetAdmin();
-  useTokenRenewal();
-
-  if (!user) {
-    return null;
-  }
-
+const ContentAddUsuario: React.FC = () => {
   return (
     <div>
-      <Header />
       <Card
         css={{
           width: "450px",
@@ -39,46 +27,30 @@ const Profile: React.FC = () => {
 
         <Card.Body>
           <Text h3 css={{ textAlign: "center" }}>
-            ID Usuario
-          </Text>
-          <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
-              {user.id}
-            </Badge>
-          </Grid>
-          <Text h3 css={{ textAlign: "center" }}>
             Nombre
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
-              {user.nombres}
-            </Badge>
+            <Badge disableOutline variant="flat"></Badge>
           </Grid>
 
           <Text h3 css={{ textAlign: "center" }}>
             Apellidos
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
-              {user.apellidos}
-            </Badge>
+            <Badge disableOutline variant="flat"></Badge>
           </Grid>
           <Text h3 css={{ textAlign: "center" }}>
             Correo Electronico
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
-              {user.correoElectronico}
-            </Badge>
+            <Badge disableOutline variant="flat"></Badge>
           </Grid>
         </Card.Body>
 
         <Card.Footer></Card.Footer>
       </Card>
-
-      <Footer />
     </div>
   );
 };
 
-export default Profile;
+export default ContentAddUsuario;

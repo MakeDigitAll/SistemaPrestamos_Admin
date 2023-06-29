@@ -15,7 +15,7 @@ import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User } from "../../../types/types";
 
-const CardUsuariosActivos: React.FC = () => {
+const ContentUsuariosActivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
   const usuarios = getUsuarios?.usuarios;
 
@@ -113,4 +113,4 @@ const CardUsuariosActivos: React.FC = () => {
   );
 };
 
-export default CardUsuariosActivos;
+export default ContentUsuariosActivos;
