@@ -112,3 +112,31 @@ exports.createUsuarioPrestamista = (req, res) => {
       }
     });
 };
+
+//cambiar el estado isDeleted de un usuario a true
+exports.deleteUsuarioPrestamista = (req, res) => {
+  const idUsuario = req.params.id;
+  usuarios
+    .update(
+      { isDeleted: true },
+      {
+        where: { idUsuario: idUsuario },
+      }
+    )
+    .then((data) => {
+      if (data == 1) {
+        res.send({
+          message: "Usuario eliminado exitosamente.",
+        });
+      } else {
+        res.send({
+          message: `No se pudo eliminar el usuario con id=${idUsuario}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Ocurrió un error al eliminar el usuario con id=" + idUsuario,
+      });
+    });
+};

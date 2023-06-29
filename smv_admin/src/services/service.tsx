@@ -28,6 +28,11 @@ class AdminDataService {
   createUsuarioPrestamista(data: any) {
     return http.post("/new-usuario-prestamista", data);
   }
+
+  //deleteUsuarioPresamista
+  deleteUsuarioPrestamista(id: number) {
+    return http.delete(`/del-usuario-prestamista/${id}`);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

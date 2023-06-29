@@ -19,7 +19,7 @@ const ContentUsuariosEliminados: React.FC = () => {
   const getUsuarios = useGetUsuarios();
   const usuarios = getUsuarios?.usuarios;
   const usuariosEliminados = usuarios?.filter(
-    (usuario: User) => usuario.isActive === true && usuario.isDeleted === true
+    (usuario: User) => usuario.isActive === false && usuario.isDeleted === true
   );
 
   if (!usuarios) {
@@ -106,17 +106,6 @@ const ContentUsuariosEliminados: React.FC = () => {
                   <Tooltip content="Edit user">
                     <IconButton onClick={() => console.log("Edit user")}>
                       <EditIcon size={20} fill="#979797" />
-                    </IconButton>
-                  </Tooltip>
-                </Col>
-                <Col css={{ d: "flex", marginLeft: "70px" }}>
-                  <Tooltip
-                    content="Delete user"
-                    color="error"
-                    onClick={() => console.log("Delete user")}
-                  >
-                    <IconButton>
-                      <DeleteIcon size={20} fill="#FF0080" />
                     </IconButton>
                   </Tooltip>
                 </Col>

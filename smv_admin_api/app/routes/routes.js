@@ -29,4 +29,9 @@ router.post("/new-usuario-prestamista", verifyToken, (req, res) => {
   controllerUsuarios.createUsuarioPrestamista(req, res);
 });
 
+// Eliminar un usuario de tipo prestamista
+router.delete("/del-usuario-prestamista/:id", verifyToken, (req, res) => {
+  controllerUsuarios.deleteUsuarioPrestamista(req, res);
+});
+
 module.exports = router;

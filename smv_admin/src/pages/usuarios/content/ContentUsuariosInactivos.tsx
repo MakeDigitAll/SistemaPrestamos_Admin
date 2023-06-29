@@ -14,6 +14,7 @@ import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User } from "../../../types/types";
+import deleteUsuario from "../../../utils/deleteUser";
 
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
@@ -113,7 +114,7 @@ const ContentUsuariosInactivos: React.FC = () => {
                   <Tooltip
                     content="Delete user"
                     color="error"
-                    onClick={() => console.log("Delete user")}
+                    onClick={() => deleteUsuario(usuario.idUsuario)}
                   >
                     <IconButton>
                       <DeleteIcon size={20} fill="#FF0080" />
