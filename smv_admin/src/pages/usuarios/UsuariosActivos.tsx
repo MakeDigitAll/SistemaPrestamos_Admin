@@ -4,7 +4,7 @@ import useTokenRenewal from "../../hooks/useTokenRenewal";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import SideBar from "../../components/sidebar/SideBar";
-import CardUsuariosActivos from "../usuarios/CardUsuariosActivos";
+import CardUsuariosActivos from "./content/CardUsuariosActivos";
 
 const UsuariosActivos: React.FC = () => {
   const user = useGetAdmin();
@@ -23,9 +23,9 @@ const UsuariosActivos: React.FC = () => {
           <div style={styles.content}>
             <CardUsuariosActivos />
           </div>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

@@ -4,8 +4,9 @@ import useTokenRenewal from "../../hooks/useTokenRenewal";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import SideBar from "../../components/sidebar/SideBar";
+import CardUsuariosActivos from "./content/CardUsuariosActivos";
 
-const Suscripciones: React.FC = () => {
+const UsuariosActivos: React.FC = () => {
   const user = useGetAdmin();
   useTokenRenewal();
 
@@ -20,11 +21,11 @@ const Suscripciones: React.FC = () => {
         <div className="header-dashboard-container">
           <Header />
           <div style={styles.content}>
-            <h1>Suscripciones</h1>
+            <CardUsuariosActivos />
           </div>
-          <Footer />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
@@ -39,5 +40,4 @@ const styles = {
     padding: "0%",
   },
 };
-
-export default Suscripciones;
+export default UsuariosActivos;

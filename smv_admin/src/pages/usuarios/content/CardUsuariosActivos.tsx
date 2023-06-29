@@ -8,12 +8,12 @@ import {
   Col,
   Loading,
 } from "@nextui-org/react";
-import { DeleteIcon } from "../../resources/icons/DeleteIcon";
-import { EditIcon } from "../../resources/icons/EditIcon";
-import { EyeIcon } from "../../resources/icons/EyeIcon";
-import { IconButton } from "../../resources/icons/IconButton";
-import { useGetUsuarios } from "../../hooks/usegetUsuarios";
-import { User } from "../../types/types";
+import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
+import { EditIcon } from "../../../resources/icons/EditIcon";
+import { EyeIcon } from "../../../resources/icons/EyeIcon";
+import { IconButton } from "../../../resources/icons/IconButton";
+import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
+import { User } from "../../../types/types";
 
 const CardUsuariosActivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();

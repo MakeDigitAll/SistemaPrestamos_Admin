@@ -22,9 +22,9 @@ const Dashboard: React.FC = () => {
           <div style={styles.content}>
             <h1>Dashboard</h1>
           </div>
+          <Footer />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
