@@ -34,4 +34,9 @@ router.delete("/del-usuario-prestamista/:id", verifyToken, (req, res) => {
   controllerUsuarios.deleteUsuarioPrestamista(req, res);
 });
 
+// Actualizar un usuario de tipo prestamista
+router.put("/update-usuario-prestamista/:id", verifyToken, (req, res) => {
+  controllerUsuarios.updateUsuarioPrestamista(req, res);
+});
+
 module.exports = router;

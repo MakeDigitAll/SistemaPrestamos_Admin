@@ -8,7 +8,6 @@ import {
   Col,
   Loading,
 } from "@nextui-org/react";
-import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { EditIcon } from "../../../resources/icons/EditIcon";
 import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";

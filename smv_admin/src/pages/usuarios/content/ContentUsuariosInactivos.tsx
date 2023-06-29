@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   Grid,
@@ -15,6 +15,7 @@ import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User } from "../../../types/types";
 import deleteUsuario from "../../../utils/deleteUser";
+import EditUsuario from "./ModalEditUsuario";
 
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
@@ -22,6 +23,19 @@ const ContentUsuariosInactivos: React.FC = () => {
   const usuariosInactivos = usuarios?.filter(
     (usuario: User) => usuario.isActive === false && usuario.isDeleted === false
   );
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  const openModal = (usuario: User) => {
+    setSelectedUser(usuario);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedUser(null);
+    setModalVisible(false);
+  };
 
   if (!usuarios) {
     return (
@@ -98,14 +112,14 @@ const ContentUsuariosInactivos: React.FC = () => {
               <Row justify="center" align="center">
                 <Col css={{ d: "flex", marginLeft: "50px" }}>
                   <Tooltip content="Details">
-                    <IconButton onClick={() => console.log("View user")}>
+                    <IconButton onClick={() => console.log("info user")}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
                 </Col>
                 <Col css={{ d: "flex", marginLeft: "70px" }}>
                   <Tooltip content="Edit user">
-                    <IconButton onClick={() => console.log("Edit user")}>
+                    <IconButton onClick={() => openModal(usuario)}>
                       <EditIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
@@ -126,6 +140,9 @@ const ContentUsuariosInactivos: React.FC = () => {
           </Card>
         </Grid>
       ))}
+      {modalVisible && selectedUser && (
+        <EditUsuario user={selectedUser} onClose={closeModal} />
+      )}
     </Grid.Container>
   );
 };

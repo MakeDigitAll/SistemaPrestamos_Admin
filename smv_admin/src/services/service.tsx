@@ -33,6 +33,11 @@ class AdminDataService {
   deleteUsuarioPrestamista(id: number) {
     return http.delete(`/del-usuario-prestamista/${id}`);
   }
+
+  //updateUsuarioPrestamista
+  updateUsuarioPrestamista(id: number, data: any) {
+    return http.put(`/update-usuario-prestamista/${id}`, data);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

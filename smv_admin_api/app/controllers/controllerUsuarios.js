@@ -140,3 +140,39 @@ exports.deleteUsuarioPrestamista = (req, res) => {
       });
     });
 };
+
+//updateUsuarioPrestamista los datos de nombres apellido y tipoUsuario
+exports.updateUsuarioPrestamista = (req, res) => {
+  const idUsuario = req.params.id;
+  const decryptedNombre = aesDecrypt(req.body.nombres);
+  const decryptedApellido = aesDecrypt(req.body.apellidos);
+  const decryptedTipoUsuario = aesDecrypt(req.body.tipoUsuario);
+  usuarios
+    .update(
+      {
+        nombres: decryptedNombre,
+        apellidos: decryptedApellido,
+        tipoUsuario: decryptedTipoUsuario,
+      },
+      {
+        where: { idUsuario: idUsuario },
+      }
+    )
+    .then((data) => {
+      if (data == 1) {
+        res.send({
+          message: "Usuario actualizado exitosamente.",
+        });
+      } else {
+        res.send({
+          message: `No se pudo actualizar el usuario con id=${idUsuario}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          "Ocurrió un error al actualizar el usuario con id=" + idUsuario,
+      });
+    });
+};
