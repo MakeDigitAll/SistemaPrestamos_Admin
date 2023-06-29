@@ -23,6 +23,11 @@ class AdminDataService {
   getAllUsuarios() {
     return http.get("/usuarios-prestamistas");
   }
+
+  //registrar un usuario
+  createUsuarioPrestamista(data: any) {
+    return http.post("/new-usuario-prestamista", data);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

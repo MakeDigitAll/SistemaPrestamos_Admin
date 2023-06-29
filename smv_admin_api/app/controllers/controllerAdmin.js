@@ -3,7 +3,7 @@ const admin = db.administradores;
 const jwt = require("jsonwebtoken");
 //token key 32
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
-const { aesDecrypt } = require("./cryptoUtils");
+const { aesDecrypt } = require("../utils/cryptoUtils");
 
 // Crear y guardar un nuevo administrador
 exports.createAdmin = (req, res) => {

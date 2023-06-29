@@ -24,4 +24,9 @@ router.get("/usuarios-prestamistas", verifyToken, (req, res) => {
   controllerUsuarios.findAllUsuariosPrestamista(req, res);
 });
 
+// crear un nuevo usuario de tipo prestamista
+router.post("/new-usuario-prestamista", verifyToken, (req, res) => {
+  controllerUsuarios.createUsuarioPrestamista(req, res);
+});
+
 module.exports = router;
