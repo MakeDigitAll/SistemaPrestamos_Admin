@@ -1,11 +1,11 @@
 /* Estilos para el modo oscuro */
-.dark-mode {
-  background-color: #222;
+.dark-mode-sidebar {
+  color: #222;
   color: #fff;
 }
 
 /* Estilos para el modo claro */
-.light-mode {
+.light-mode-sidebar {
   background-color: #fff;
   color: #222;
 }
@@ -17,10 +17,6 @@
 
 .custom-submenu > .ps-submenu-content {
   background-color: transparent !important;
-}
-
-.custom-submenu {
-
 }
 
 .custom-submenu .ps-menuitem-root {

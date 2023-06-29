@@ -113,7 +113,7 @@ function SideBar() {
   return (
     <>
       <Sidebar
-        backgroundColor={isDark ? "dark-mode" : "light-mode"}
+        backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
         width="100%"
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
@@ -150,7 +150,7 @@ function SideBar() {
               onClick={handleUsuariosActivosClick}
               className={`${
                 isMenuItemActive("/usuarios-activos") ? "selected" : ""
-              } ${isDark ? "dark-mode" : "light-mode"}`}
+              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
             >
               Usuarios Activos
             </MenuItem>
@@ -159,7 +159,7 @@ function SideBar() {
               onClick={handleUsuariosInactivosClick}
               className={`${
                 isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
-              } ${isDark ? "dark-mode" : "light-mode"}`}
+              } ${isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}`}
             >
               Usuarios Inactivos
             </MenuItem>
