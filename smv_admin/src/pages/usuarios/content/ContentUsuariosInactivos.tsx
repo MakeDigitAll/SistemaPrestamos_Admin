@@ -18,8 +18,12 @@ import { User } from "../../../types/types";
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
   const usuarios = getUsuarios?.usuarios;
+  //obtener solos los usuarios inactivos
+  const usuariosInactivos = usuarios?.filter(
+    (usuario: User) => usuario.isActive === false
+  );
 
-  if (!usuarios) {
+  if (!usuarios || usuariosInactivos.length === 0) {
     return (
       <Grid.Container
         justify="center"
@@ -27,13 +31,7 @@ const ContentUsuariosInactivos: React.FC = () => {
         gap={2}
         style={{ height: "100vh" }}
       >
-        <Loading
-          type="points-opacity"
-          loadingCss={{
-            $$loadingSize: "50px",
-            $$loadingBorder: "10px",
-          }}
-        />
+        <Text>No hay usuarios inactivos.</Text>
       </Grid.Container>
     );
   }

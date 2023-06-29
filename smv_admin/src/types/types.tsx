@@ -5,4 +5,5 @@ export interface User {
   apellidos: string;
   codigoReferencia: string | null;
   tipoUsuario: string;
+  isActive: boolean;
 }
