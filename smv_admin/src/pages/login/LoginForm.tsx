@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Button,
   Input,
@@ -32,9 +32,6 @@ const LoginForm = () => {
   const validateEmail = (value: string) => {
     return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
   };
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", theme === "dark");
-  }, [theme]);
 
   const handleLogin = async () => {
     setEmailError("");

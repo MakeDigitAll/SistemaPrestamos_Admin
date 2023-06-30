@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Navbar, Text, Dropdown, Input, User } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
@@ -18,10 +18,6 @@ export const CustomNavBar: React.FC = () => {
     Cookies.remove("refreshToken");
     navigate("/");
   };
-
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", theme === "dark");
-  }, [theme]);
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);

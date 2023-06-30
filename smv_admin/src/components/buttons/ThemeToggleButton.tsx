@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { IconButton } from "../../resources/icons/IconButton";
 import { SunIcon } from "../../resources/icons/SunIcon";
 import { MoonIcon } from "../../resources/icons/MoonIcon";
@@ -14,6 +14,10 @@ const ThemeToggleButton: React.FC<ThemeToggleButtonProps> = ({
   toggleTheme,
   css,
 }) => {
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", theme === "dark");
+  }, [theme]);
+
   return (
     <IconButton
       onClick={toggleTheme}
