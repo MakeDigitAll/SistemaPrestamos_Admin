@@ -42,7 +42,7 @@
 
 /* Login */
 .nextui-c-eXOOPO {
-  background: rgb(211, 211, 211);
+  background: #bebdbd;
 }
 
 .dark-mode .nextui-c-eXOOPO {
@@ -81,7 +81,7 @@ background: rgb(65, 65, 65);
 }
 
 .nextui-c-jTSrtu-kYKDGo-cv {
-background-color: #d3d3d3;
+background-color: #b1b0b0;
 color: #222222;
 }
 
@@ -100,4 +100,294 @@ color: #fff;
 
 .footer-container p {
   font-size: 12px;
+}
+
+
+/* Notificaciones */
+.Toastify__toast--success {
+  border-radius: 20px !important;
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.dark-mode .Toastify__toast--success {
+  border-radius: 20px !important;
+  background: #222222 !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+
+}
+
+
+.Toastify__toast--success::before {
+  position:relative; 
+  z-index:100000;
+  left:12px;
+  top:6px;
+}
+
+.Toastify__toast--success::after {
+  position: absolute;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  left:265px;
+  padding-top: 14px !important;
+}
+
+.Toastify__toast--error {
+  border-radius: 20px !important;
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+  
+}
+
+.dark-mode .Toastify__toast--error {
+  border-radius: 20px !important;
+  background: #222222 !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+  
+}
+
+.Toastify__toast--error::before {
+  position:relative; 
+  z-index:100000;
+  left:12px;
+  top:6px;
+}
+
+.Toastify__toast--error::after {
+  position: absolute;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  left:265px;
+  padding-top: 14px !important;
+}
+
+.Toastify__toast--warning {
+  border-radius: 20px !important;
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.dark-mode .Toastify__toast--warning {
+  border-radius: 20px !important;
+  background: #222222 !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.Toastify__toast--warning::before {
+  position:relative; 
+  z-index:100000;
+  left:12px;
+  top:6px;
+}
+
+.Toastify__toast--warning::after {
+  position: absolute;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  left:265px;
+  padding-top: 14px !important;
+}
+
+.Toastify__toast--info {
+  border-radius: 20px !important;
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.dark-mode .Toastify__toast--info {
+  border-radius: 20px !important;
+  background: #222222 !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.Toastify__toast--info::before {
+  position:relative; 
+  z-index:100000;
+  left:12px;
+  top:6px;
+}
+
+.Toastify__toast--info::after {
+  position: absolute;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  left:265px;
+  padding-top: 14px !important;
+}
+
+.Toastify__toast--default {
+  border-radius: 20px !important;
+  background: #f9f9f9 !important;
+  color: #000000 !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.dark-mode .Toastify__toast--default {
+  border-radius: 20px !important;
+  background: #222222 !important;
+  color: #ffffff !important;
+  font-size: 17px;
+  width: auto !important;
+  max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.Toastify__toast--default::before {
+  position:relative; 
+  z-index:100000;
+  left:12px;
+  top:6px;
+}
+
+.Toastify__toast--default::after {
+  position: absolute;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 700;
+  left:265px;
+  padding-top: 14px !important;
+}
+
+.Toastify__toast-body {
+  padding: 0px !important;
+}
+
+.Toastify__close-button {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Toastify__close-button--default {
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button--default {
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Toastify__close-button--error {
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button--error {
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Toastify__close-button--success {
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button--success {
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Toastify__close-button--warning {
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button--warning {
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.Toastify__close-button--info {
+  color: #000000 !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.dark-mode .Toastify__close-button--info {
+  color: #ffffff !important;
+  opacity: 1;
+  font-size: 20px;
+  font-weight: 700;
 }

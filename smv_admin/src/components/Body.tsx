@@ -22,7 +22,7 @@ const Body: React.FC<BodyProps> = ({ children }) => {
 
   return (
     <div>
-      <ToastContainer />
+      <ToastContainer position="bottom-right" />
       <div style={styles.container}>
         <SideBar />
         <div className="header-dashboard-container">

@@ -5,10 +5,7 @@ const deleteUser = async (id: number) => {
   try {
     const response = await service.deleteUsuarioPrestamista(id);
     if (response.status === 200) {
-      toast.success("Usuario Eliminado Correctamente", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      toast.success("Usuario Eliminado Correctamente");
       return response.data;
     }
   } catch (error: any) {

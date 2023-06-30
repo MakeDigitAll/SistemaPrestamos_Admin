@@ -94,10 +94,7 @@ const ContentAddUsuario: React.FC = () => {
       const response = await service.createUsuarioPrestamista(data);
 
       if (response.status === 200) {
-        toast.success("Usuario registrado con éxito.", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        toast.success("Usuario registrado con éxito.");
         resetNombre();
         resetApellidos();
         resetEmail();

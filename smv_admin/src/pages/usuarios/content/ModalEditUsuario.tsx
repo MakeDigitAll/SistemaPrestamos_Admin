@@ -41,10 +41,7 @@ const InfoUsuario: React.FC<InformacionUsuarioProps> = ({ user, onClose }) => {
         data
       );
       if (response.status === 200) {
-        toast.success("Usuario Editado Correctamente", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        toast.success("Usuario Editado Correctamente");
         closeHandler();
       }
     } catch (error: any) {
