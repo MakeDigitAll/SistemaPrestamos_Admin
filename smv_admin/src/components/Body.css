@@ -64,9 +64,6 @@
 }
 
 /* NavBar */
-
-
-
 .nextui-c-hhqfap-ieXAFca-css {
   background: transparent;
 }
@@ -101,6 +98,30 @@ color: #fff;
 .footer-container p {
   font-size: 12px;
 }
+
+/* Modal */
+.nextui-c-bvsQQD {
+  color : #000000;
+}
+
+.dark-mode .nextui-c-bvsQQD {
+  color : #ffffff;
+}
+
+
+.nextui-c-eXOOPO-gvlAwB-disabled-true {
+  cursor: not-allowed;
+  background: #e6d6d6;
+  -webkit-text-fill-color: black;
+}
+.dark-mode .nextui-c-eXOOPO-gvlAwB-disabled-true {
+  cursor: not-allowed;
+  background: #6d6363;
+  -webkit-text-fill-color: white;
+}
+
+
+
 
 
 /* Notificaciones */

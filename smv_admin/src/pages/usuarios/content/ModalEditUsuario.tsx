@@ -116,7 +116,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
           </Radio.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button auto onClick={actualizarHandler}>
+          <Button auto onPress={actualizarHandler}>
             Actualizar
           </Button>
           <Button auto color="error" onPress={closeHandler}>

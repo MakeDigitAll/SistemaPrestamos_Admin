@@ -16,6 +16,7 @@ import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User } from "../../../types/types";
 import deleteUsuario from "../../../utils/deleteUser";
 import EditUsuario from "./ModalEditUsuario";
+import InfoUsuario from "./ModalInfoUsuario";
 
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
@@ -24,17 +25,25 @@ const ContentUsuariosInactivos: React.FC = () => {
     (usuario: User) => usuario.isActive === false && usuario.isDeleted === false
   );
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalEdit, setModalEditVisible] = useState(false);
+  const [modalInfo, setModalInfoVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
-  const openModal = (usuario: User) => {
+  const openModalEdit = (usuario: User) => {
     setSelectedUser(usuario);
-    setModalVisible(true);
+    setModalInfoVisible(false);
+    setModalEditVisible(true);
+  };
+
+  const openModalInfo = (usuario: User) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(true);
   };
 
   const closeModal = () => {
     setSelectedUser(null);
-    setModalVisible(false);
+    setModalEditVisible(false);
   };
 
   const handleUpdateUsuarios = () => {
@@ -127,14 +136,14 @@ const ContentUsuariosInactivos: React.FC = () => {
               <Row justify="center" align="center">
                 <Col css={{ d: "flex", marginLeft: "50px" }}>
                   <Tooltip content="Details">
-                    <IconButton onClick={() => console.log("info user")}>
+                    <IconButton onClick={() => openModalInfo(usuario)}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
                 </Col>
                 <Col css={{ d: "flex", marginLeft: "70px" }}>
                   <Tooltip content="Edit user">
-                    <IconButton onClick={() => openModal(usuario)}>
+                    <IconButton onClick={() => openModalEdit(usuario)}>
                       <EditIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
@@ -155,7 +164,10 @@ const ContentUsuariosInactivos: React.FC = () => {
           </Card>
         </Grid>
       ))}
-      {modalVisible && selectedUser && (
+      {modalInfo && selectedUser && (
+        <InfoUsuario user={selectedUser} onClose={closeModal} />
+      )}
+      {modalEdit && selectedUser && (
         <EditUsuario
           user={selectedUser}
           onClose={closeModal}
