@@ -13,7 +13,6 @@ import Cookies from "js-cookie";
 import ThemeToggleButton from "../../components/buttons/ThemeToggleButton";
 import useDarkLight from "../../hooks/useDarkLight"; // Importa el hook useDarkLight
 import { aesEncrypt } from "../../utils/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
-import "./LoginForm.css";
 
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
@@ -33,9 +32,8 @@ const LoginForm = () => {
   const validateEmail = (value: string) => {
     return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
   };
-
   useEffect(() => {
-    document.body.classList.toggle("dark-mode-login-form", theme === "dark");
+    document.body.classList.toggle("dark-mode", theme === "dark");
   }, [theme]);
 
   const handleLogin = async () => {

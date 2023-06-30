@@ -11,8 +11,6 @@ import Cookies from "js-cookie";
 import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 
-import "./Sidebar.css";
-
 interface MenuItemStyleProps {
   level: number;
   active: boolean;

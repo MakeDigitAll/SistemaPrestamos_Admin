@@ -1,0 +1,103 @@
+/* Estilos para el modo oscuro */
+/* Sideabar */
+.dark-mode {
+  color: #222;
+  color: #fff;
+}
+
+.light-mode {
+  background-color: #fff;
+  color: #222;
+}
+
+.selected {
+  background-color: #cdcbcb72;
+  border-radius: 15px;
+}
+
+.custom-submenu > .ps-submenu-content {
+  background-color: transparent !important;
+}
+
+.custom-submenu .ps-menuitem-root {
+  background-color: transparent;
+}
+
+.custom-submenu .ps-menuitem-root.selected {
+  background-color: #53535372;
+}
+
+.custom-submenu .ps-menuitem-root:hover,
+.custom-submenu .ps-menuitem-root:hover .ps-menu-button {
+  background-color: #335B8C;
+  color: #fff;
+  border-radius: 15px;
+}
+
+/* Agregar Usuario */
+.nextui-c-cwdhZi {
+  font-size: 0.9rem;
+}
+
+
+/* Login */
+.nextui-c-eXOOPO {
+  background: rgb(211, 211, 211);
+}
+
+.dark-mode .nextui-c-eXOOPO {
+  background: rgb(34, 34, 34);
+}
+
+.nextui-c-jeuecp {
+  padding: 0px;
+  font-size: var(--nextui--inputFontSize);
+  background: transparent;
+  border: none;
+  color: var(--nextui--inputTextColor);
+  border-radius: 0px;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  min-width: 0px;
+  appearance: none;
+}
+
+/* NavBar */
+
+
+
+.nextui-c-hhqfap-ieXAFca-css {
+  background: transparent;
+}
+
+.nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
+background: rgb(236, 236, 236);
+
+}
+.dark-mode .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
+background: rgb(65, 65, 65);
+
+}
+
+.nextui-c-jTSrtu-kYKDGo-cv {
+background-color: #d3d3d3;
+color: #222222;
+}
+
+.dark-mode .nextui-c-jTSrtu-kYKDGo-cv {
+background-color: #222222;
+color: #fff;
+}
+
+.footer-container {
+  position: fixed;
+  bottom: 0;
+  width: 83.7%;
+  padding: 0px;
+  text-align: center;
+}
+
+.footer-container p {
+  font-size: 12px;
+}

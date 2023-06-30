@@ -1,12 +1,9 @@
 import React from "react";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
-import useTokenRenewal from "../../hooks/useTokenRenewal";
 import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
 
 const ContentProfile: React.FC = () => {
   const user = useGetAdmin();
-  useTokenRenewal();
-
   if (!user) {
     return null;
   }

@@ -6,6 +6,7 @@ import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Body.css";
 
 interface BodyProps {
   children: React.ReactNode;

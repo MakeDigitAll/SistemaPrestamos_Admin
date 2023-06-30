@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Card, Avatar, Button, Grid, Input, useInput } from "@nextui-org/react";
 import { aesEncrypt } from "../../../utils/encryption";
-import "./css/AddUsuario.css";
 import service from "../../../services/service";
 import { toast } from "react-toastify";
 

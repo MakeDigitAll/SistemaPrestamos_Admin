@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
-import "./NavBar.css";
 
 export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
@@ -21,7 +20,7 @@ export const CustomNavBar: React.FC = () => {
   };
 
   useEffect(() => {
-    document.body.classList.toggle("dark-mode-navbar", theme === "dark");
+    document.body.classList.toggle("dark-mode", theme === "dark");
   }, [theme]);
 
   const handleDropdownAction = (key: React.Key) => {
