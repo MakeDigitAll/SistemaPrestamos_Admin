@@ -37,15 +37,17 @@ const ContentUsuariosInactivos: React.FC = () => {
     setModalVisible(false);
   };
 
+  const handleUpdateUsuarios = () => {
+    getUsuarios?.refetch();
+  };
+
   const deleteUser = async (usuario: User) => {
     try {
       const resp = await deleteUsuario(usuario.idUsuario);
       if (resp) {
-        // actualizar la lista de usuarios
         getUsuarios?.refetch();
       }
     } catch (error) {
-      // Handle error
       console.error("Error deleting user:", error);
     }
   };
@@ -154,7 +156,11 @@ const ContentUsuariosInactivos: React.FC = () => {
         </Grid>
       ))}
       {modalVisible && selectedUser && (
-        <EditUsuario user={selectedUser} onClose={closeModal} />
+        <EditUsuario
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleUpdateUsuarios}
+        />
       )}
     </Grid.Container>
   );

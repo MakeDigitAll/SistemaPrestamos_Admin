@@ -1,19 +1,26 @@
-import React, { useEffect } from "react";
+// ModalEditUsuario.tsx
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Text, Input, Avatar, Radio } from "@nextui-org/react";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { toast } from "react-toastify";
+import { User } from "../../../types/types";
 
 interface InformacionUsuarioProps {
-  user: any;
+  user: User;
   onClose: () => void;
+  handleUpdate: (usuario: User) => void;
 }
 
-const InfoUsuario: React.FC<InformacionUsuarioProps> = ({ user, onClose }) => {
-  const [visible, setVisible] = React.useState(false);
-  const [nombre, setNombre] = React.useState(user.nombres);
-  const [apellidos, setApellidos] = React.useState(user.apellidos);
-  const [rol, setRol] = React.useState(user.tipoUsuario);
+const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
+  user,
+  onClose,
+  handleUpdate,
+}) => {
+  const [visible, setVisible] = useState(false);
+  const [nombre, setNombre] = useState(user.nombres);
+  const [apellidos, setApellidos] = useState(user.apellidos);
+  const [rol, setRol] = useState(user.tipoUsuario);
 
   const closeHandler = () => {
     setVisible(false);
@@ -42,6 +49,7 @@ const InfoUsuario: React.FC<InformacionUsuarioProps> = ({ user, onClose }) => {
       );
       if (response.status === 200) {
         toast.success("Usuario Editado Correctamente");
+        handleUpdate(user);
         closeHandler();
       }
     } catch (error: any) {
@@ -120,4 +128,4 @@ const InfoUsuario: React.FC<InformacionUsuarioProps> = ({ user, onClose }) => {
   );
 };
 
-export default InfoUsuario;
+export default ModalEditUsuario;
