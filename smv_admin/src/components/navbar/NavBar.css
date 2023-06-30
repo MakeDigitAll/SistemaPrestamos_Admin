@@ -2,7 +2,7 @@
     background: rgb(211, 211, 211);
 }
   
-.dark-mode .nextui-c-eXOOPO {
+.dark-mode-navbar .nextui-c-eXOOPO {
     background: rgb(34, 34, 34);
 }
 
@@ -14,7 +14,17 @@
   background: rgb(236, 236, 236);
   
 }
-.dark-mode .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
+.dark-mode-navbar .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
   background: rgb(65, 65, 65);
   
+}
+
+.nextui-c-jTSrtu-kYKDGo-cv {
+  background-color: #d3d3d3;
+  color: #222222;
+}
+
+.dark-mode-navbar .nextui-c-jTSrtu-kYKDGo-cv {
+  background-color: #222222;
+  color: #fff;
 }

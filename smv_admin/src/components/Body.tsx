@@ -4,6 +4,8 @@ import useTokenRenewal from "../hooks/useTokenRenewal";
 import Header from "../components/header/Header";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -19,6 +21,7 @@ const Body: React.FC<BodyProps> = ({ children }) => {
 
   return (
     <div>
+      <ToastContainer />
       <div style={styles.container}>
         <SideBar />
         <div className="header-dashboard-container">

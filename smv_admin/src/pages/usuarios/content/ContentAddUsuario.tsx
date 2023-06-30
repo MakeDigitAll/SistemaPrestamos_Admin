@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  Card,
-  Avatar,
-  Text,
-  Button,
-  Grid,
-  Input,
-  useInput,
-} from "@nextui-org/react";
+import { Card, Avatar, Button, Grid, Input, useInput } from "@nextui-org/react";
 import { aesEncrypt } from "../../../utils/encryption";
 import "./css/AddUsuario.css";
 import service from "../../../services/service";
+import { toast } from "react-toastify";
 
 const ContentAddUsuario: React.FC = () => {
   const [emailError, setEmailError] = useState("");
@@ -102,7 +95,10 @@ const ContentAddUsuario: React.FC = () => {
       const response = await service.createUsuarioPrestamista(data);
 
       if (response.status === 200) {
-        alert("Usuario registrado correctamente.");
+        toast.success("Usuario registrado con éxito.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
         resetNombre();
         resetApellidos();
         resetEmail();
@@ -123,9 +119,6 @@ const ContentAddUsuario: React.FC = () => {
     autoComplete: string
   ) => (
     <>
-      <Text h4 css={{ textAlign: "center" }}>
-        {label}
-      </Text>
       <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
         <Input
           {...bindings}
@@ -133,8 +126,9 @@ const ContentAddUsuario: React.FC = () => {
           bordered
           width="300px"
           type={type}
+          label={label}
           status={error ? "default" : "default"}
-          color={error ? "error" : "primary"}
+          color={error ? "error" : "default"}
           helperColor={error ? "error" : "default"}
           helperText={error ? error : ""}
           name={label.toLowerCase()}

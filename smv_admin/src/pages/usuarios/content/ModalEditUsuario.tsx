@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Modal, Button, Text, Input, Avatar, Radio } from "@nextui-org/react";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
+import { toast } from "react-toastify";
 
 interface InformacionUsuarioProps {
   user: any;
@@ -40,8 +41,11 @@ const InfoUsuario: React.FC<InformacionUsuarioProps> = ({ user, onClose }) => {
         data
       );
       if (response.status === 200) {
+        toast.success("Usuario Editado Correctamente", {
+          position: "top-center",
+          autoClose: 3000,
+        });
         closeHandler();
-        window.location.reload();
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {

@@ -21,7 +21,7 @@ export const CustomNavBar: React.FC = () => {
   };
 
   useEffect(() => {
-    document.body.classList.toggle("dark-mode", theme === "dark");
+    document.body.classList.toggle("dark-mode-navbar", theme === "dark");
   }, [theme]);
 
   const handleDropdownAction = (key: React.Key) => {

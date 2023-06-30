@@ -39,7 +39,7 @@ const ContentProfile: React.FC = () => {
             ID Usuario
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
+            <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
               {user.id}
             </Badge>
           </Grid>
@@ -47,7 +47,7 @@ const ContentProfile: React.FC = () => {
             Nombre
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
+            <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
               {user.nombres}
             </Badge>
           </Grid>
@@ -56,7 +56,7 @@ const ContentProfile: React.FC = () => {
             Apellidos
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
+            <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
               {user.apellidos}
             </Badge>
           </Grid>
@@ -64,7 +64,7 @@ const ContentProfile: React.FC = () => {
             Correo Electronico
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
-            <Badge disableOutline variant="flat">
+            <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
               {user.correoElectronico}
             </Badge>
           </Grid>
