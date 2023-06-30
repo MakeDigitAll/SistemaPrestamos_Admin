@@ -17,7 +17,7 @@ import { User } from "../../../types/types";
 
 const ContentUsuariosActivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
-  const usuarios = getUsuarios?.usuarios;
+  const usuarios = getUsuarios?.decodedToken?.usuarios;
   // Obtener solo los usuarios activos
   const usuariosActivos = usuarios?.filter(
     (usuario: User) => usuario.isActive === true && usuario.isDeleted === false

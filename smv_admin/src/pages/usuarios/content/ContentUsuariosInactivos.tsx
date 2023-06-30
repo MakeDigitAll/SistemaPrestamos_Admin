@@ -19,7 +19,7 @@ import EditUsuario from "./ModalEditUsuario";
 
 const ContentUsuariosInactivos: React.FC = () => {
   const getUsuarios = useGetUsuarios();
-  const usuarios = getUsuarios?.usuarios;
+  const usuarios = getUsuarios?.decodedToken?.usuarios;
   const usuariosInactivos = usuarios?.filter(
     (usuario: User) => usuario.isActive === false && usuario.isDeleted === false
   );
@@ -35,6 +35,19 @@ const ContentUsuariosInactivos: React.FC = () => {
   const closeModal = () => {
     setSelectedUser(null);
     setModalVisible(false);
+  };
+
+  const deleteUser = async (usuario: User) => {
+    try {
+      const resp = await deleteUsuario(usuario.idUsuario);
+      if (resp) {
+        // actualizar la lista de usuarios
+        getUsuarios?.refetch();
+      }
+    } catch (error) {
+      // Handle error
+      console.error("Error deleting user:", error);
+    }
   };
 
   if (!usuarios) {
@@ -128,7 +141,7 @@ const ContentUsuariosInactivos: React.FC = () => {
                   <Tooltip
                     content="Delete user"
                     color="error"
-                    onClick={() => deleteUsuario(usuario.idUsuario)}
+                    onClick={() => deleteUser(usuario)}
                   >
                     <IconButton>
                       <DeleteIcon size={20} fill="#FF0080" />

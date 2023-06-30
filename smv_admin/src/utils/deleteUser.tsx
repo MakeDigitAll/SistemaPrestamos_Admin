@@ -7,6 +7,8 @@ const deleteUser = async (id: number) => {
     if (response.status === 200) {
       toast.success("Usuario Eliminado Correctamente");
       return response.data;
+    } else {
+      toast.error("Error al eliminar el usuario");
     }
   } catch (error: any) {
     if (error.response && error.response.status === 400) {
