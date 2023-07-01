@@ -1,15 +1,26 @@
 import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-import { BsFillPersonFill, BsFillPersonXFill } from "react-icons/bs";
-import { BiSolidDashboard } from "react-icons/bi";
-import { FaMoneyBillAlt } from "react-icons/fa";
-import { HiUsers } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme, Divider } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
 import Cookies from "js-cookie";
 import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
+
+// Icons
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { MdSpaceDashboard } from "react-icons/md";
+import {
+  FaUserCheck,
+  FaUserPlus,
+  FaUserSlash,
+  FaUserTimes,
+  FaUserFriends,
+} from "react-icons/fa";
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from "react-icons/bs";
 
 interface MenuItemStyleProps {
   level: number;
@@ -49,6 +60,12 @@ function SideBar() {
   const navigate = useNavigate();
   const [isUsuariosSubMenuOpen, setIsUsuariosSubMenuOpen] = useState(
     localStorage.getItem("isUsuariosSubMenuOpen") === "true"
+  );
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    localStorage.getItem("isSidebarCollapsed") === "true"
+  );
+  const [isSidebarPersistCollapsed, setIsSidebarPersistCollapsed] = useState(
+    localStorage.getItem("isSidebarPersistCollapsed") === "true"
   );
 
   const handleDashboardClick = () => {
@@ -92,9 +109,66 @@ function SideBar() {
       "isUsuariosSubMenuOpen",
       String(isUsuariosSubMenuOpen)
     );
-  }, [isUsuariosSubMenuOpen]);
+    localStorage.setItem("isSidebarCollapsed", String(isSidebarCollapsed));
+    localStorage.setItem(
+      "isSidebarPersistCollapsed",
+      String(isSidebarPersistCollapsed)
+    );
+  }, [isUsuariosSubMenuOpen, isSidebarCollapsed, isSidebarPersistCollapsed]);
 
   const logo = isDark ? logodark : logolight;
+
+  const handleSidebarToggle = () => {
+    setIsSidebarCollapsed((prevIsSidebarCollapsed) => !prevIsSidebarCollapsed);
+    setIsSidebarPersistCollapsed(
+      (prevIsSidebarPersistCollapsed) => !prevIsSidebarPersistCollapsed
+    );
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth < 1080) {
+      setIsSidebarCollapsed(true);
+    } else {
+      setIsSidebarCollapsed(isSidebarPersistCollapsed);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [isSidebarPersistCollapsed]);
+
+  const renderSidebarToggle = () => {
+    if (window.innerWidth < 1080) {
+      return null;
+    }
+
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <button
+          onClick={handleSidebarToggle}
+          style={{
+            border: "none",
+            background: "none",
+            marginRight: "10px",
+            marginTop: "10px",
+            cursor: "pointer",
+            fontSize: "24px", // Tamaño del icono
+          }}
+        >
+          {isSidebarCollapsed ? (
+            <BsFillArrowRightCircleFill />
+          ) : (
+            <BsFillArrowLeftCircleFill />
+          )}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -104,18 +178,22 @@ function SideBar() {
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
         }}
+        collapsed={isSidebarCollapsed}
       >
-        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "20px" }}>
+        {renderSidebarToggle()}
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <img
             src={logo}
             alt="Logo"
-            style={{ width: "150px", marginLeft: "20%" }}
+            style={{ width: "70%", marginLeft: "15%" }}
           />
+        </div>
 
+        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "20px" }}>
           <Divider style={{ height: "0.5px", marginTop: "10px" }} />
           <MenuItem
             style={{ marginTop: "10px" }}
-            icon={<BiSolidDashboard />}
+            icon={<MdSpaceDashboard />}
             onClick={handleDashboardClick}
             className={isMenuItemActive("/dashboard") ? "selected" : ""}
           >
@@ -128,11 +206,11 @@ function SideBar() {
             className="custom-submenu"
             open={isUsuariosSubMenuOpen}
             onOpenChange={handleUsuariosClick}
-            icon={<HiUsers />}
+            icon={<FaUserFriends />}
           >
             <MenuItem
               style={{ marginTop: "10px" }}
-              icon={<BsFillPersonFill />}
+              icon={<FaUserCheck />}
               onClick={() => handleMenuItemClick("/usuarios-activos")}
               className={
                 isMenuItemActive("/usuarios-activos") ? "selected" : ""
@@ -141,7 +219,7 @@ function SideBar() {
               Usuarios Activos
             </MenuItem>
             <MenuItem
-              icon={<BsFillPersonXFill />}
+              icon={<FaUserTimes />}
               onClick={() => handleMenuItemClick("/usuarios-inactivos")}
               className={
                 isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
@@ -151,7 +229,15 @@ function SideBar() {
             </MenuItem>
 
             <MenuItem
-              icon={<BsFillPersonXFill />}
+              icon={<FaUserPlus />}
+              onClick={() => handleMenuItemClick("/add-usuario")}
+              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
+            >
+              Nuevo Usuario
+            </MenuItem>
+
+            <MenuItem
+              icon={<FaUserSlash />}
               onClick={() => handleMenuItemClick("/usuarios-eliminados")}
               className={
                 isMenuItemActive("/usuarios-eliminados") ? "selected" : ""
@@ -159,25 +245,16 @@ function SideBar() {
             >
               Usuarios Eliminados
             </MenuItem>
-
-            <MenuItem
-              icon={<BsFillPersonXFill />}
-              onClick={() => handleMenuItemClick("/add-usuario")}
-              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
-            >
-              Agregar Usuario
-            </MenuItem>
           </SubMenu>
+
           <Divider style={{ height: "0.5px" }} />
           <MenuItem
-            style={{ marginTop: "10px" }}
             icon={<FaMoneyBillAlt />}
             onClick={() => handleMenuItemClick("/suscripciones")}
             className={isMenuItemActive("/suscripciones") ? "selected" : ""}
           >
             Suscripciones
           </MenuItem>
-          <Divider style={{ height: "0.5px" }} />
         </Menu>
       </Sidebar>
     </>
