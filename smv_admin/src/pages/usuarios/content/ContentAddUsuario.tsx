@@ -115,12 +115,17 @@ const ContentAddUsuario: React.FC = () => {
     autoComplete: string
   ) => (
     <>
-      <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
+      <Grid
+        css={{
+          justifyContent: "left",
+          alignSelf: "left",
+        }}
+      >
         <Input
           {...bindings}
           rounded
           bordered
-          width="300px"
+          width="100%"
           type={type}
           label={label}
           status={error ? "default" : "default"}
@@ -129,7 +134,7 @@ const ContentAddUsuario: React.FC = () => {
           helperText={error ? error : ""}
           name={label.toLowerCase()}
           aria-label={label.toLowerCase()}
-          css={{ marginBottom: "10px" }}
+          css={{ marginBottom: "7%" }}
           autoComplete={autoComplete}
         />
       </Grid>
@@ -140,10 +145,9 @@ const ContentAddUsuario: React.FC = () => {
     <div>
       <Card
         css={{
-          width: "450px",
-          height: "600px",
+          width: "30%",
           margin: "auto",
-          marginTop: "3%",
+          marginTop: "10%",
         }}
       >
         <Card.Header>
@@ -152,9 +156,8 @@ const ContentAddUsuario: React.FC = () => {
             zoomed
             css={{
               margin: "auto",
-              height: "100px",
-              width: "100px",
-              marginTop: "2%",
+              height: "30%",
+              width: "30%",
             }}
           />
         </Card.Header>
@@ -197,7 +200,7 @@ const ContentAddUsuario: React.FC = () => {
           <Button
             color="gradient"
             auto
-            css={{ width: "40%", margin: "auto" }}
+            css={{ width: "50%", margin: "auto" }}
             onPress={handleRegister}
           >
             Registrar

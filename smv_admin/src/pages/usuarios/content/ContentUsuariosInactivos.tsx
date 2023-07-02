@@ -94,14 +94,17 @@ const ContentUsuariosInactivos: React.FC = () => {
   }
 
   return (
-    <Grid.Container justify="flex-start" gap={2} css={{ marginLeft: "50px" }}>
+    <Grid.Container
+      justify="flex-start"
+      gap={1}
+      css={{ marginLeft: "4%", marginTop: "6%", mw: "95%" }}
+    >
       {usuariosInactivos.map((usuario: User) => (
-        <Grid xs={6} sm={3.4} key={usuario.idUsuario}>
+        <Grid sm={3.9} key={usuario.idUsuario}>
           <Card
             css={{
-              p: "$2",
-              mw: "400px",
-              marginTop: "30px",
+              p: "$1",
+              mw: "100%",
             }}
           >
             <Card.Header>
@@ -111,7 +114,7 @@ const ContentUsuariosInactivos: React.FC = () => {
                 width="60px"
                 height="60px"
               />
-              <Grid.Container css={{ pl: "$6" }}>
+              <Grid.Container css={{ pl: "$5" }}>
                 <Grid xs={12}>
                   <Text h4 css={{ lineHeight: "$xs" }}>
                     {usuario.nombres} {usuario.apellidos}
@@ -134,21 +137,21 @@ const ContentUsuariosInactivos: React.FC = () => {
 
             <Card.Footer>
               <Row justify="center" align="center">
-                <Col css={{ d: "flex", marginLeft: "50px" }}>
+                <Col css={{ d: "flex", marginLeft: "10%" }}>
                   <Tooltip content="Details">
                     <IconButton onClick={() => openModalInfo(usuario)}>
                       <EyeIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
                 </Col>
-                <Col css={{ d: "flex", marginLeft: "70px" }}>
+                <Col css={{ d: "flex", marginLeft: "20%" }}>
                   <Tooltip content="Edit user">
                     <IconButton onClick={() => openModalEdit(usuario)}>
                       <EditIcon size={20} fill="#979797" />
                     </IconButton>
                   </Tooltip>
                 </Col>
-                <Col css={{ d: "flex", marginLeft: "70px" }}>
+                <Col css={{ d: "flex", marginLeft: "20%" }}>
                   <Tooltip
                     content="Delete user"
                     color="error"
