@@ -1,3 +1,43 @@
+/*Body.css*/
+
+.header {
+  position: fixed; /* Hace que el encabezado sea fijo */
+  top: 0;
+  width: 100%;
+  z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
+}
+
+.sidebar {
+  position: fixed; /* Hace que la barra lateral sea fija */
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 1; /* Asegura que la barra lateral esté por encima del contenido */
+  overflow-y: auto; /* Agrega scroll vertical a la barra lateral si se requiere */
+}
+
+.content-container > .content,
+.content-container > .sidebar {
+  margin-left: 5%
+}
+
+
+.content-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+}
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto; /* Agrega scroll vertical solo al contenido */
+}
+
+.content-sidebar-collapsed {
+  margin-left: 0; /* Modifica el margen izquierdo cuando la barra lateral está contraída */
+}
+
 /* Estilos para el modo oscuro */
 /* Sideabar */
 .dark-mode {

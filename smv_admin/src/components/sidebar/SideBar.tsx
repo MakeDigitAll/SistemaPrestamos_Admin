@@ -174,7 +174,7 @@ function SideBar() {
     <>
       <Sidebar
         backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
-        width="100%"
+        width="16%"
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
         }}

@@ -2,7 +2,7 @@ import React from "react";
 import Body from "../../components/Body";
 import ContentAddUsuario from "./content/ContentAddUsuario";
 
-const UsuariosInactivos: React.FC = () => {
+const AddUsuarios: React.FC = () => {
   return (
     <Body>
       <ContentAddUsuario />
@@ -10,4 +10,4 @@ const UsuariosInactivos: React.FC = () => {
   );
 };
 
-export default UsuariosInactivos;
+export default AddUsuarios;
