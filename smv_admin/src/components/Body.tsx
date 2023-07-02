@@ -27,7 +27,6 @@ const Body: React.FC<BodyProps> = ({ children }) => {
   return (
     <div>
       <ToastContainer position="bottom-right" />
-
       <div className="content-container">
         <div />
         <SideBar />
@@ -36,11 +35,13 @@ const Body: React.FC<BodyProps> = ({ children }) => {
             isSidebarCollapsed ? "content-sidebar-collapsed" : ""
           }`}
         >
-          <Header />
+          <div className="header">
+            <Header />
+          </div>
           {children}
+          <Footer />
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

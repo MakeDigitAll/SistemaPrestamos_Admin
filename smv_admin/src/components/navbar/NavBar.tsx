@@ -32,7 +32,7 @@ export const CustomNavBar: React.FC = () => {
 
   return (
     <Layout>
-      <Navbar variant="floating" isCompact isBordered css={{}}>
+      <Navbar variant="floating" isCompact isBordered css={{}} maxWidth="lg">
         <Navbar.Content
           css={{
             "@xsMax": {
@@ -51,7 +51,7 @@ export const CustomNavBar: React.FC = () => {
           >
             <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
           </Navbar.Item>
-          <Navbar.Brand css={{ marginLeft: "370px" }}></Navbar.Brand>
+
           <Navbar.Item
             css={{
               "@xsMax": {
@@ -84,7 +84,6 @@ export const CustomNavBar: React.FC = () => {
               placeholder="Search..."
             />
           </Navbar.Item>
-          <Navbar.Brand css={{ marginLeft: "280px" }}></Navbar.Brand>
           <Dropdown placement="bottom-right">
             <Navbar.Item>
               <Dropdown.Trigger>
