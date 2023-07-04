@@ -7,7 +7,7 @@ import {
   Card,
   Text,
   Spacer,
-  useTheme
+  useTheme,
 } from "@nextui-org/react";
 import service from "../../services/service";
 import Cookies from "js-cookie";
@@ -17,7 +17,7 @@ import NavBarLogin from "./NavBarLogin";
 import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 import { useTheme as useNextTheme } from "next-themes";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -46,9 +46,7 @@ const LoginForm = () => {
     }
 
     if (!validateEmail(emailValue)) {
-      setEmailError(
-        "Ingrese un correo válido de Makedigitall."
-      );
+      setEmailError("Ingrese un correo válido de Makedigitall.");
       return;
     }
 
@@ -96,7 +94,7 @@ const LoginForm = () => {
     const { isDark } = useTheme();
     const { setTheme } = useNextTheme();
     const [theme, setLocalTheme] = useState(isDark ? "dark" : "light");
-  
+
     useEffect(() => {
       const savedTheme = Cookies.get("theme");
       if (savedTheme && savedTheme !== theme) {
@@ -104,16 +102,18 @@ const LoginForm = () => {
         setTheme(savedTheme);
       }
     }, [setTheme, theme, isDark]);
-  
+
     const toggleTheme = () => {
       setLocalTheme((prevTheme) => {
         const newTheme = prevTheme === "dark" ? "light" : "dark";
-        Cookies.set("theme", newTheme);
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Caducará en 10 años
+        Cookies.set("theme", newTheme, { expires: expirationDate });
         setTheme(newTheme);
         return newTheme;
       });
     };
-  
+
     return { theme, toggleTheme };
   };
   const { theme } = useDarkLight();
@@ -123,7 +123,7 @@ const LoginForm = () => {
 
   return (
     <Layout>
-      <NavBarLogin/>
+      <NavBarLogin />
       <Card
         css={{
           width: "400px",
@@ -133,7 +133,7 @@ const LoginForm = () => {
         }}
       >
         <Text h3 css={{ margin: "auto", marginTop: "15%" }}>
-        {t('login.bienvenido')}
+          {t("login.bienvenido")}
         </Text>
 
         <Card.Header>
@@ -149,7 +149,9 @@ const LoginForm = () => {
           />
         </Card.Header>
 
-        <Card.Body css={{ py: "$3", alignContent:"center", alignItems:"center" }}>
+        <Card.Body
+          css={{ py: "$3", alignContent: "center", alignItems: "center" }}
+        >
           <Input
             {...emailBindings}
             onClearClick={resetEmail}
@@ -158,19 +160,19 @@ const LoginForm = () => {
             helperColor={emailError ? "error" : "default"}
             helperText={emailError ? emailError : ""}
             type="email"
-            label={t('login.email')}
-            width="300px" 
+            label={t("login.email")}
+            width="300px"
           />
           <Spacer y={2} />
           <Input.Password
             {...passwordBindings}
-            label={t('login.password')}
+            label={t("login.password")}
             status={passwordError ? "error" : "default"}
             color={passwordError ? "error" : "default"}
             helperColor={passwordError ? "error" : "default"}
             helperText={passwordError || ""}
             type="password"
-            width="300px" 
+            width="300px"
           />
         </Card.Body>
 
@@ -178,10 +180,10 @@ const LoginForm = () => {
           <Button
             color="gradient"
             auto
-            css={{ width: "40%", margin: "auto", marginBottom:"10%"}}
+            css={{ width: "40%", margin: "auto", marginBottom: "10%" }}
             onPress={handleLogin}
           >
-           {t('login.login')}
+            {t("login.login")}
           </Button>
         </Card.Footer>
       </Card>

@@ -1,6 +1,6 @@
-// ModalEditUsuario.tsx
+// ModalInfoUsuaio.tsx
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Input, Avatar } from "@nextui-org/react";
+import { Modal, Button, Avatar, Card, Text } from "@nextui-org/react";
 import { User } from "../../../types/types";
 
 interface InformacionUsuarioProps {
@@ -8,7 +8,7 @@ interface InformacionUsuarioProps {
   onClose: () => void;
 }
 
-const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
+const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
   user,
   onClose,
 }) => {
@@ -29,48 +29,51 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   }, []);
 
   return (
-    <div>
-      <Modal
-        closeButton
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-      >
-        <Modal.Header>
+    <Modal
+      closeButton
+      aria-labelledby="modal-title"
+      open={visible}
+      onClose={closeHandler}
+      width="30%"
+    >
+      <Modal.Body>
+        <Card
+          variant="flat"
+          css={{ display: "flex", alignItems: "center", flexDirection: "row" }}
+        >
           <Avatar
-            src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
-            zoomed
+            src="https://i.pravatar.cc/300"
             css={{
-              margin: "auto",
-              height: "100px",
-              width: "100px",
-              marginTop: "2%",
+              marginRight: "10%",
+              width: "30%",
+              height: "30%",
             }}
           />
-        </Modal.Header>
-        <Modal.Body>
-          <Input disabled value={nombre} label="Nombre" />
-          <Input disabled value={apellidos} label="Apellidos" />
-          <Input disabled value={rol} label="Tipo de Usuario" />
-          <Input
-            disabled
-            value={correoElectronico}
-            label="Correo Electronico"
-          />
-          <Input
-            disabled
-            value={codigoReferencia || ""} // Utiliza un valor predeterminado en caso de que codigoReferencia sea null
-            label="Codigo de Referencia"
-          />
-        </Modal.Body>
-        <Modal.Footer css={{ alignSelf: "center" }}>
-          <Button auto color="error" onPress={closeHandler}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+          <div>
+            <Text h4 css={{ lineHeight: "$2xl" }}>
+              {nombre} {apellidos}
+            </Text>
+            <Text h5 css={{ lineHeight: "$xs" }}>
+              {correoElectronico}
+            </Text>
+            <Text h5 css={{ lineHeight: "$xs" }}>
+              <span>Código de Referencia: </span>
+              <span style={{ fontWeight: "bold" }}>{codigoReferencia}</span>
+            </Text>
+            <Text h5 css={{ lineHeight: "$xs" }}>
+              <span>Tipo de Usuario: </span>
+              <span style={{ fontWeight: "bold" }}>{rol}</span>
+            </Text>
+          </div>
+        </Card>
+      </Modal.Body>
+      <Modal.Footer css={{ alignSelf: "center" }}>
+        <Button auto color="error" onPress={closeHandler}>
+          Cerrar
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
-export default ModalEditUsuario;
+export default ModalInfoUsuaio;

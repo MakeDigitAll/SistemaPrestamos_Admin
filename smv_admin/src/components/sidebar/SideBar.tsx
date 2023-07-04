@@ -44,8 +44,9 @@ const useDarkLight = () => {
   const toggleTheme = () => {
     setLocalTheme((prevTheme) => {
       const newTheme = prevTheme === "dark" ? "light" : "dark";
-      Cookies.set("theme", newTheme);
-      setTheme(newTheme);
+      const expirationDate = new Date();
+      expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Caducará en 10 años
+      Cookies.set("theme", newTheme, { expires: expirationDate });
       return newTheme;
     });
   };

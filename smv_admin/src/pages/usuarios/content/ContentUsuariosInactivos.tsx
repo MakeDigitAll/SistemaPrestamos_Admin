@@ -121,12 +121,9 @@ const ContentUsuariosInactivos: React.FC = () => {
     const cellValue = usuario[columnKey as keyof UserType];
     switch (columnKey) {
       case "nombres":
+        return <Text>{usuario.nombres}</Text>;
       case "apellidos":
-        return (
-          <Text>
-            {usuario.nombres} {usuario.apellidos}
-          </Text>
-        );
+        return <Text>{usuario.apellidos}</Text>;
       case "tipoSuscripcion":
         return <Text>Tier 1</Text>;
       case "fechaPago":
