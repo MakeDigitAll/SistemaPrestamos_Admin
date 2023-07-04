@@ -153,6 +153,7 @@ exports.updateUsuarioPrestamista = (req, res) => {
         nombres: decryptedNombre,
         apellidos: decryptedApellido,
         tipoUsuario: decryptedTipoUsuario,
+        isModified: true,
       },
       {
         where: { idUsuario: idUsuario },

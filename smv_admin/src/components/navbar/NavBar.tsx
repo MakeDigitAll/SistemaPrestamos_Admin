@@ -32,7 +32,7 @@ export const CustomNavBar: React.FC = () => {
 
   return (
     <Layout>
-      <Navbar variant="floating" isCompact isBordered css={{}} maxWidth="lg">
+      <Navbar variant="floating" isCompact isBordered css={{}} maxWidth="fluid">
         <Navbar.Content
           css={{
             "@xsMax": {
