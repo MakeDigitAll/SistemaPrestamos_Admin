@@ -187,9 +187,7 @@ const ContentUsuariosInactivos: React.FC = () => {
     <Card
       css={{
         height: "auto",
-        marginTop: "6%",
-        maxWidth: "90%",
-        marginLeft: "5%",
+        maxWidth: "100%",
       }}
     >
       <Table
@@ -229,7 +227,7 @@ const ContentUsuariosInactivos: React.FC = () => {
           shadow
           noMargin
           align="center"
-          rowsPerPage={12}
+          rowsPerPage={13}
           onPageChange={(page) => console.log({ page })}
         />
       </Table>

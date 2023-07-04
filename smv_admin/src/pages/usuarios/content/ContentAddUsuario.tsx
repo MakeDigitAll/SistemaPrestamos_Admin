@@ -134,7 +134,7 @@ const ContentAddUsuario: React.FC = () => {
           helperText={error ? error : ""}
           name={label.toLowerCase()}
           aria-label={label.toLowerCase()}
-          css={{ marginBottom: "7%" }}
+          css={{ marginBottom: "5%" }}
           autoComplete={autoComplete}
         />
       </Grid>
