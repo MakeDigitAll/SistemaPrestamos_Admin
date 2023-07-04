@@ -36,6 +36,7 @@ const lightTheme = createTheme({
       secondarySolidHover: "#1E1946",
       secondarySolidContrast: "#ffffff",
       secondaryShadow: "#372E6C",
+      navbarBlurBackgroundColor: "#e1e1e1",
       neutralLight: "#E8E8E8",
       neutralLightHover: "#CCCCCC",
       neutralLightActive: "#BFBFBF",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Button,
   Input,
@@ -7,17 +7,20 @@ import {
   Card,
   Text,
   Spacer,
+  useTheme
 } from "@nextui-org/react";
 import service from "../../services/service";
 import Cookies from "js-cookie";
-import ThemeToggleButton from "../../components/buttons/ThemeToggleButton";
-import useDarkLight from "../../hooks/useDarkLight"; // Importa el hook useDarkLight
 import { aesEncrypt } from "../../utils/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
-
+import { Layout } from "../../components/navbar/Layout";
+import NavBarLogin from "./NavBarLogin";
+import logodark from "../../assets/images/logodark.png";
+import logolight from "../../assets/images/logolight.png";
+import { useTheme as useNextTheme } from "next-themes";
+import { useTranslation } from 'react-i18next';
 const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const { theme, toggleTheme } = useDarkLight(); // Usa el hook useDarkLight
   const {
     value: emailValue,
     reset: resetEmail,
@@ -89,76 +92,100 @@ const LoginForm = () => {
       }
     }
   };
+  const useDarkLight = () => {
+    const { isDark } = useTheme();
+    const { setTheme } = useNextTheme();
+    const [theme, setLocalTheme] = useState(isDark ? "dark" : "light");
+  
+    useEffect(() => {
+      const savedTheme = Cookies.get("theme");
+      if (savedTheme && savedTheme !== theme) {
+        setLocalTheme(savedTheme);
+        setTheme(savedTheme);
+      }
+    }, [setTheme, theme, isDark]);
+  
+    const toggleTheme = () => {
+      setLocalTheme((prevTheme) => {
+        const newTheme = prevTheme === "dark" ? "light" : "dark";
+        Cookies.set("theme", newTheme);
+        setTheme(newTheme);
+        return newTheme;
+      });
+    };
+  
+    return { theme, toggleTheme };
+  };
+  const { theme } = useDarkLight();
+  const isDark = theme === "dark";
+  const logo = isDark ? logodark : logolight;
+  const { t } = useTranslation();
 
   return (
-    <Card
-      css={{
-        width: "400px",
-        height: "500px",
-        margin: "auto",
-        marginTop: "10%",
-      }}
-    >
-      <ThemeToggleButton
-        theme={theme}
-        toggleTheme={toggleTheme}
-        css={{ position: "absolute", top: "4%", right: "5%" }}
-      />
-      <Text h2 css={{ margin: "auto", marginTop: "0%" }}>
-        Inicio de Sesión
-      </Text>
+    <Layout>
+      <NavBarLogin/>
+      <Card
+        css={{
+          width: "400px",
+          height: "550px",
+          margin: "auto",
+          marginTop: "5%",
+        }}
+      >
+        <Text h3 css={{ margin: "auto", marginTop: "15%" }}>
+        {t('login.bienvenido')}
+        </Text>
 
-      <Card.Header>
-        <Avatar
-          src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
-          zoomed
-          css={{
-            margin: "auto",
-            height: "150px",
-            width: "150px",
-            marginTop: "2%",
-          }}
-        />
-      </Card.Header>
+        <Card.Header>
+          <Avatar
+            src={logo}
+            zoomed
+            css={{
+              margin: "auto",
+              height: "100px",
+              width: "100px",
+              marginTop: "2%",
+            }}
+          />
+        </Card.Header>
 
-      <Card.Body css={{ py: "$2" }}>
-        <Input
-          {...emailBindings}
-          bordered
-          clearable
-          shadow={false}
-          onClearClick={resetEmail}
-          status={emailError ? "error" : "default"}
-          color={emailError ? "error" : "default"}
-          helperColor={emailError ? "error" : "default"}
-          helperText={emailError ? emailError : ""}
-          type="email"
-          label="Email"
-        />
-        <Spacer y={1.0} />
-        <Input.Password
-          {...passwordBindings}
-          bordered
-          label="Contraseña"
-          status={passwordError ? "error" : "default"}
-          color={passwordError ? "error" : "default"}
-          helperColor={passwordError ? "error" : "default"}
-          helperText={passwordError || ""}
-          type="password"
-        />
-      </Card.Body>
+        <Card.Body css={{ py: "$3", alignContent:"center", alignItems:"center" }}>
+          <Input
+            {...emailBindings}
+            onClearClick={resetEmail}
+            status={emailError ? "error" : "default"}
+            color={emailError ? "error" : "default"}
+            helperColor={emailError ? "error" : "default"}
+            helperText={emailError ? emailError : ""}
+            type="email"
+            label={t('login.email')}
+            width="300px" 
+          />
+          <Spacer y={1.0} />
+          <Input.Password
+            {...passwordBindings}
+            label={t('login.password')}
+            status={passwordError ? "error" : "default"}
+            color={passwordError ? "error" : "default"}
+            helperColor={passwordError ? "error" : "default"}
+            helperText={passwordError || ""}
+            type="password"
+            width="300px" 
+          />
+        </Card.Body>
 
-      <Card.Footer>
-        <Button
-          color="gradient"
-          auto
-          css={{ width: "40%", margin: "auto" }}
-          onPress={handleLogin}
-        >
-          Iniciar Sesión
-        </Button>
-      </Card.Footer>
-    </Card>
+        <Card.Footer>
+          <Button
+            color="gradient"
+            auto
+            css={{ width: "40%", margin: "auto", marginBottom:"15%"}}
+            onPress={handleLogin}
+          >
+           {t('login.login')}
+          </Button>
+        </Card.Footer>
+      </Card>
+    </Layout>
   );
 };
 

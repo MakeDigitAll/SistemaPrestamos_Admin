@@ -16,15 +16,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.options("*", cors(corsOptions));
 
 //por si la base de datos cambia
-db.sequelize.sync({ alter: true }).then(() => {});
+db.sequelize.sync({ force: true}).then(() => {});
 //force: true
 
-//db.administradores.create({
-//  correoElectronico: "pablo@makedigitall.com",
-//  adminPassword: "123",
-//  nombres: "Pablo",
-//  apellidos: "Alvarez",
-//});
+db.administradores.create({
+ correoElectronico: "christian@makedigitall.com",
+ adminPassword: "123",
+ nombres: "Christian",
+ apellidos: "Santillan",
+});
 
 // Rutas
 app.use("/", routes);
