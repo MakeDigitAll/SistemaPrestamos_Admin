@@ -103,7 +103,7 @@ const ContentUsuariosInactivos: React.FC = () => {
         gap={2}
         style={{ height: "100vh" }}
       >
-        <Text>No hay usuarios Eliminados.</Text>
+        <Text>No hay usuarios Inactivos.</Text>
       </Grid.Container>
     );
   }
@@ -197,7 +197,7 @@ const ContentUsuariosInactivos: React.FC = () => {
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
         bordered
-        aria-label="Usuarios Eliminados"
+        aria-label="Usuarios Inactivos"
         selectionMode="none"
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
       >
