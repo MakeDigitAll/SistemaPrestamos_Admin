@@ -132,7 +132,6 @@ function SideBar() {
       setIsSidebarCollapsed(isSidebarPersistCollapsed);
     }
   };
-
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     handleResize();
@@ -140,7 +139,7 @@ function SideBar() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isSidebarPersistCollapsed]);
+  });
 
   const renderSidebarToggle = () => {
     if (window.innerWidth < 1080) {

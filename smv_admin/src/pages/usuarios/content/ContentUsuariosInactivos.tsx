@@ -19,7 +19,6 @@ import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User as UserType } from "../../../types/types";
-import UsuariosInactivos from "../UsuariosInactivos";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 
 const ContentUsuariosInactivos: React.FC = () => {
