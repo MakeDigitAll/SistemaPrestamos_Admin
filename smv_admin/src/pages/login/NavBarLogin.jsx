@@ -7,7 +7,7 @@ const lngs = {
     es: { nativeName: 'Español' }
   };
 const NavBarLogin = () => {
-    const { t, i18n } = useTranslation();
+    const { i18n } = useTranslation();
     const { theme, toggleTheme } = useDarkLight(); // Usa el hook useDarkLight
   return (
       <Navbar isCompact disableBlur disableShadow variant="static" >

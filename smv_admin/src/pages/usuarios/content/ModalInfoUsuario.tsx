@@ -1,6 +1,6 @@
 // ModalEditUsuario.tsx
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Text, Input, Avatar, Radio } from "@nextui-org/react";
+import { Modal, Button, Input, Avatar } from "@nextui-org/react";
 import { User } from "../../../types/types";
 
 interface InformacionUsuarioProps {

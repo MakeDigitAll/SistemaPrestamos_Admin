@@ -47,7 +47,7 @@ const LoginForm = () => {
 
     if (!validateEmail(emailValue)) {
       setEmailError(
-        "Ingrese un correo electrónico válido de la empresa Makedigitall."
+        "Ingrese un correo válido de Makedigitall."
       );
       return;
     }
@@ -161,7 +161,7 @@ const LoginForm = () => {
             label={t('login.email')}
             width="300px" 
           />
-          <Spacer y={1.0} />
+          <Spacer y={2} />
           <Input.Password
             {...passwordBindings}
             label={t('login.password')}
@@ -178,7 +178,7 @@ const LoginForm = () => {
           <Button
             color="gradient"
             auto
-            css={{ width: "40%", margin: "auto", marginBottom:"15%"}}
+            css={{ width: "40%", margin: "auto", marginBottom:"10%"}}
             onPress={handleLogin}
           >
            {t('login.login')}
