@@ -32,93 +32,104 @@ export const CustomNavBar: React.FC = () => {
 
   return (
     <Layout>
-      <Navbar variant="floating" isCompact isBordered css={{}} maxWidth="fluid">
-        <Navbar.Content
-          css={{
-            "@xsMax": {
-              w: "100%",
-              jc: "space-between",
-            },
-          }}
-        >
-          <Navbar.Item
-            css={{
-              "@xsMax": {
-                w: "100%",
-                jc: "center",
-              },
-            }}
-          >
-            <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
-          </Navbar.Item>
+      <Navbar
+        variant="static"
+        isCompact
+        css={{}}
+        maxWidth="fluid"
+        isBordered={false}
+        disableShadow={true}
+      >
+        <Navbar.Brand css={{ mr: "$4" }}>
+          <Navbar.Content hideIn="xs">
+            <Navbar.Item>
+              <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
+            </Navbar.Item>
+          </Navbar.Content>
+        </Navbar.Brand>
 
-          <Navbar.Item
-            css={{
-              "@xsMax": {
-                w: "100%",
-                jc: "center",
-              },
-            }}
-          >
-            <Input
-              aria-label="Search"
-              clearable
-              contentLeft={
-                <SearchIcon
-                  fill={theme === "dark" ? "white" : "black"}
-                  size={20}
-                />
-              }
-              contentLeftStyling={false}
+        <Navbar.Brand css={{ mr: "$4" }}>
+          <Navbar.Content hideIn="xs">
+            <Navbar.Item
               css={{
-                w: "100%",
                 "@xsMax": {
-                  mw: "500px",
-                },
-                "& .nextui-input-content--left": {
-                  h: "100%",
-                  ml: "$4",
-                  dflex: "center",
+                  w: "100%",
+                  jc: "center",
                 },
               }}
-              placeholder="Search..."
-            />
-          </Navbar.Item>
-          <Dropdown placement="bottom-right">
-            <Navbar.Item>
-              <Dropdown.Trigger>
-                <User
-                  bordered
-                  src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                  name={admin.nombres + " " + admin.apellidos}
-                  description={admin.correoElectronico}
-                  size="md"
-                  color="primary"
-                />
-              </Dropdown.Trigger>
-            </Navbar.Item>
-
-            <Dropdown.Menu
-              aria-label="toggle navigation"
-              color="secondary"
-              onAction={handleDropdownAction}
             >
-              <Dropdown.Item>
-                <Text
-                  b
-                  color="inherit"
-                  css={{ display: "flex" }}
-                  onClick={() => navigate("/profile")}
-                >
-                  Mi Perfil
-                </Text>
-              </Dropdown.Item>
-              <Dropdown.Item key="logout" withDivider color="error">
-                Logout
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Navbar.Content>
+              <Input
+                aria-label="Search"
+                clearable
+                contentLeft={
+                  <SearchIcon
+                    fill={theme === "dark" ? "white" : "black"}
+                    size={20}
+                  />
+                }
+                contentLeftStyling={false}
+                css={{
+                  w: "100%",
+                  "@xsMax": {
+                    mw: "500px",
+                  },
+                  "& .nextui-input-content--left": {
+                    h: "100%",
+                    ml: "$4",
+                    dflex: "center",
+                  },
+                }}
+                placeholder="Search..."
+              />
+            </Navbar.Item>
+          </Navbar.Content>
+        </Navbar.Brand>
+
+        <Navbar.Brand css={{ mr: "$4" }}>
+          <Navbar.Content
+            css={{
+              "@xsMax": {
+                w: "100%",
+                jc: "space-between",
+              },
+            }}
+          >
+            <Dropdown placement="bottom-right">
+              <Navbar.Item>
+                <Dropdown.Trigger>
+                  <User
+                    bordered
+                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
+                    name={admin.nombres + " " + admin.apellidos}
+                    description={admin.correoElectronico}
+                    size="md"
+                    color="primary"
+                  />
+                </Dropdown.Trigger>
+              </Navbar.Item>
+
+              <Dropdown.Menu
+                aria-label="toggle navigation"
+                color="secondary"
+                onAction={handleDropdownAction}
+              >
+                <Dropdown.Item>
+                  <Text
+                    b
+                    color="inherit"
+                    css={{ display: "flex" }}
+                    onClick={() => navigate("/profile")}
+                  >
+                    Mi Perfil
+                  </Text>
+                </Dropdown.Item>
+                <Dropdown.Item key="logout" withDivider color="error">
+                  Logout
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Navbar.Content>
+        </Navbar.Brand>
       </Navbar>
     </Layout>
   );

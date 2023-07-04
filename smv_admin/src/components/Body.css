@@ -3,14 +3,15 @@
   position: fixed; /* Hace que el encabezado sea fijo */
   z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
   /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
-  width: 75%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
+  width: 95%;
   margin-top: 0%;
+  transition: width 0.3s ease; /* Transición gradual de 0.3 segundos */
 }
 
+.ps-sidebar-root:not(.ps-collapsed) + .content .header {
+  /* Si la barra lateral no está colapsada, ajusta el ancho del encabezado */
+  width: 84%;
+}
 
 .sidebar {
   position: fixed; /* Hace que la barra lateral sea fija */
@@ -110,16 +111,19 @@
 }
 
 /* NavBar */
+
+
+
 .nextui-c-hhqfap-ieXAFca-css {
   background: transparent;
 }
 
 .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
-background: rgb(236, 236, 236);
+background: rgb(225, 225, 225)
 
 }
 .dark-mode .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
-background: rgb(65, 65, 65);
+background: rgb(54, 54, 54);
 
 }
 
