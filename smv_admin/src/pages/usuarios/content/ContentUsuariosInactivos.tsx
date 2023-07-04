@@ -194,7 +194,6 @@ const ContentUsuariosInactivos: React.FC = () => {
         lined
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
-        bordered
         aria-label="Usuarios Inactivos"
         selectionMode="none"
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}

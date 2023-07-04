@@ -175,7 +175,6 @@ const ContentUsuariosEliminados: React.FC = () => {
         lined
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
-        bordered
         aria-label="Usuarios Eliminados"
         selectionMode="none"
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}

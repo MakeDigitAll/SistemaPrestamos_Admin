@@ -39,8 +39,10 @@ const Body: React.FC<BodyProps> = ({ children }) => {
             <Header />
           </div>
           <div className="content-body">{children}</div>
-          <Footer />
         </div>
+      </div>
+      <div className="footer">
+        <Footer />
       </div>
     </div>
   );

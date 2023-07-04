@@ -2,9 +2,9 @@ export const Footer = () => {
   return (
     <div className="footer-container">
       <div className="footer-content">
-        <div className="footer-section about">
+        <div>
           <p>Sistema de Ventas</p>
-          <div className="contact">
+          <div>
             <span>
               <h1>
                 <p>Make DigitAll</p>
