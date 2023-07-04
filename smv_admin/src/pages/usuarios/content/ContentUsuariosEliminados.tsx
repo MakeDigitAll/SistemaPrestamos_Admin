@@ -16,6 +16,8 @@ import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
 import { User as UserType } from "../../../types/types";
+import EditUsuario from "./ModalEditUsuario";
+import InfoUsuario from "./ModalInfoUsuario";
 
 const ContentUsuariosEliminados: React.FC = () => {
   const collator = useCollator({ numeric: true });
@@ -35,6 +37,31 @@ const ContentUsuariosEliminados: React.FC = () => {
       setUsuariosEliminados(filteredUsuarios);
     }
   }, [usuarios]);
+
+  const [modalEdit, setModalEditVisible] = useState(false);
+  const [modalInfo, setModalInfoVisible] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+
+  const openModalEdit = (usuario: UserType) => {
+    setSelectedUser(usuario);
+    setModalInfoVisible(false);
+    setModalEditVisible(true);
+  };
+
+  const openModalInfo = (usuario: UserType) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(true);
+  };
+
+  const closeModal = () => {
+    setSelectedUser(null);
+    setModalEditVisible(false);
+  };
+
+  const handleUpdateUsuarios = () => {
+    getUsuarios?.refetch();
+  };
 
   if (!usuarios) {
     return (
@@ -102,14 +129,14 @@ const ContentUsuariosEliminados: React.FC = () => {
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
               <Tooltip content="Details">
-                <IconButton onClick={() => console.log("View user")}>
+                <IconButton onClick={() => openModalInfo(usuario)}>
                   <EyeIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
               <Tooltip content="Edit user">
-                <IconButton onClick={() => console.log("Edit user")}>
+                <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
@@ -150,6 +177,7 @@ const ContentUsuariosEliminados: React.FC = () => {
       }}
     >
       <Table
+        lined
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
         bordered
@@ -158,8 +186,9 @@ const ContentUsuariosEliminados: React.FC = () => {
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
       >
         <Table.Header columns={columns}>
-          {(column) => (
+          {(column: any) => (
             <Table.Column
+              isRowHeader
               key={column.uid}
               hideHeader={column.uid === "acciones"}
               align={column.uid === "acciones" ? "center" : "start"}
@@ -172,7 +201,7 @@ const ContentUsuariosEliminados: React.FC = () => {
         <Table.Body items={usuariosEliminados}>
           {(item: UserType) => (
             <Table.Row key={item.idUsuario}>
-              {(columnKey) => (
+              {(columnKey: any) => (
                 <Table.Cell key={columnKey}>
                   {renderCell(item, columnKey)}
                 </Table.Cell>
@@ -180,7 +209,24 @@ const ContentUsuariosEliminados: React.FC = () => {
             </Table.Row>
           )}
         </Table.Body>
+        <Table.Pagination
+          shadow
+          noMargin
+          align="center"
+          rowsPerPage={12}
+          onPageChange={(page) => console.log({ page })}
+        />
       </Table>
+      {modalInfo && selectedUser && (
+        <InfoUsuario user={selectedUser} onClose={closeModal} />
+      )}
+      {modalEdit && selectedUser && (
+        <EditUsuario
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleUpdateUsuarios}
+        />
+      )}
     </Card>
   );
 };

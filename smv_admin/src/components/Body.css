@@ -154,6 +154,16 @@ color: #fff;
   color : #ffffff;
 }
 
+.nextui-c-kNgzEX {
+  background: #bebdbd;
+  color: #000000;
+}
+
+.dark-mode .nextui-c-kNgzEX {
+  background: #222222;
+  color: #ffffff;
+}
+
 
 .nextui-c-eXOOPO-gvlAwB-disabled-true {
   cursor: not-allowed;

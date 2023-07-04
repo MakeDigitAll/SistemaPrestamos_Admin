@@ -229,14 +229,6 @@ function SideBar() {
             </MenuItem>
 
             <MenuItem
-              icon={<FaUserPlus />}
-              onClick={() => handleMenuItemClick("/add-usuario")}
-              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
-            >
-              Nuevo Usuario
-            </MenuItem>
-
-            <MenuItem
               icon={<FaUserSlash />}
               onClick={() => handleMenuItemClick("/usuarios-eliminados")}
               className={
@@ -244,6 +236,14 @@ function SideBar() {
               }
             >
               Usuarios Eliminados
+            </MenuItem>
+
+            <MenuItem
+              icon={<FaUserPlus />}
+              onClick={() => handleMenuItemClick("/add-usuario")}
+              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
+            >
+              Nuevo Usuario
             </MenuItem>
           </SubMenu>
 
