@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+          len: [1, 50], // Mínimo 1 caracter, máximo 50 caracteres
         },
       },
       fechaInicio: {
@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+          len: [1, 30], // Mínimo 1 caracter, máximo 30 caracteres
         },
       },
     },
