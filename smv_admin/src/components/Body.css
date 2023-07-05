@@ -5,19 +5,25 @@
   /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
   width: 95%;
   margin-top: 0%;
-  transition: width 0.3s ease; /* Transición gradual de 0.3 segundos */
+  transition: width .7s ease; /* Transición gradual de 0.3 segundos */
 }
 
 .ps-sidebar-root:not(.ps-collapsed) + .content .header {
   /* Si la barra lateral no está colapsada, ajusta el ancho del encabezado */
   width: 84%;
+  transition: width 0.7s ease;
 }
 
 .sidebar {
-  position: fixed; /* Hace que la barra lateral sea fija */
+  position: fixed;
   top: 0;
-  z-index: 1; /* Asegura que la barra lateral esté por encima del contenido */
+  z-index: 1;
 }
+
+.sidebar.collapsed {
+  width: 50px;
+}
+
 
 .content-container {
   display: flex;

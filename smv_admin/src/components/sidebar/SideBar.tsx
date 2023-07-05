@@ -175,7 +175,6 @@ function SideBar() {
     <>
       <Sidebar
         backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
-        width="auto"
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
         }}
@@ -190,7 +189,11 @@ function SideBar() {
           />
         </div>
 
-        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "40px" }}>
+        <Menu
+          transitionDuration={400}
+          menuItemStyles={menuItemStyles}
+          style={{ marginTop: "40px" }}
+        >
           <Divider style={{ height: "0.5px", marginTop: "10px" }} />
           <MenuItem
             style={{ marginTop: "10px" }}
