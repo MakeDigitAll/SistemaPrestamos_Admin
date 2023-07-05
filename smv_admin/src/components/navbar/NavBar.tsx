@@ -8,9 +8,11 @@ import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
 import LanguageDropdown from "../lenguaje/LanguageDropdown";
+import { useTranslation } from "react-i18next";
 
 export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const admin = useGetAdmin();
   const handleLogout = () => {
@@ -74,7 +76,7 @@ export const CustomNavBar: React.FC = () => {
                     dflex: "center",
                   },
                 }}
-                placeholder="Search..."
+                placeholder={t("navbar.search")}
               />
             </Navbar.Item>
           </Navbar.Content>
@@ -125,11 +127,11 @@ export const CustomNavBar: React.FC = () => {
                     css={{ display: "flex" }}
                     onClick={() => navigate("/profile")}
                   >
-                    Mi Perfil
+                    {t("navbar.profile")}
                   </Text>
                 </Dropdown.Item>
                 <Dropdown.Item key="logout" withDivider color="error">
-                  Logout
+                  {t("navbar.logout")}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>

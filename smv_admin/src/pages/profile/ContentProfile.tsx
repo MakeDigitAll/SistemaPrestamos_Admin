@@ -1,9 +1,12 @@
 import React from "react";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
+import { useTranslation } from "react-i18next";
 
 const ContentProfile: React.FC = () => {
   const user = useGetAdmin();
+  const { t } = useTranslation();
+
   if (!user) {
     return null;
   }
@@ -33,7 +36,7 @@ const ContentProfile: React.FC = () => {
 
         <Card.Body>
           <Text h3 css={{ textAlign: "center" }}>
-            ID Usuario
+            {t("profile.idUsuario")}
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
             <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
@@ -41,7 +44,7 @@ const ContentProfile: React.FC = () => {
             </Badge>
           </Grid>
           <Text h3 css={{ textAlign: "center" }}>
-            Nombre
+            {t("profile.nombres")}
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
             <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
@@ -50,7 +53,7 @@ const ContentProfile: React.FC = () => {
           </Grid>
 
           <Text h3 css={{ textAlign: "center" }}>
-            Apellidos
+            {t("profile.apellidos")}
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
             <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>
@@ -58,7 +61,7 @@ const ContentProfile: React.FC = () => {
             </Badge>
           </Grid>
           <Text h3 css={{ textAlign: "center" }}>
-            Correo Electronico
+            {t("profile.email")}
           </Text>
           <Grid css={{ justifyContent: "center", alignSelf: "center" }}>
             <Badge disableOutline variant="flat" css={{ fontSize: "20px" }}>

@@ -6,7 +6,7 @@ import { useTheme as useNextTheme } from "next-themes";
 import Cookies from "js-cookie";
 import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
-
+import { useTranslation } from "react-i18next";
 // Icons
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -55,6 +55,7 @@ const useDarkLight = () => {
 };
 
 function SideBar() {
+  const { t } = useTranslation();
   const { theme } = useDarkLight();
   const isDark = theme === "dark";
   const location = useLocation();
@@ -174,7 +175,7 @@ function SideBar() {
     <>
       <Sidebar
         backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
-        width="16%"
+        width="13%"
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
         }}
@@ -185,7 +186,7 @@ function SideBar() {
           <img
             src={logo}
             alt="Logo"
-            style={{ width: "70%", marginLeft: "15%" }}
+            style={{ width: "60%", marginLeft: "23%" }}
           />
         </div>
 
@@ -197,12 +198,12 @@ function SideBar() {
             onClick={handleDashboardClick}
             className={isMenuItemActive("/dashboard") ? "selected" : ""}
           >
-            Dashboard
+            {t("sidebar.dashboard")}
           </MenuItem>
 
           <Divider style={{ height: "0.5px" }} />
           <SubMenu
-            label="Usuarios"
+            label={t("sidebar.usuarios")}
             className="custom-submenu"
             open={isUsuariosSubMenuOpen}
             onOpenChange={handleUsuariosClick}
@@ -216,7 +217,7 @@ function SideBar() {
                 isMenuItemActive("/usuarios-activos") ? "selected" : ""
               }
             >
-              Usuarios Activos
+              {t("sidebar.usuariosActivos")}
             </MenuItem>
             <MenuItem
               icon={<FaUserTimes />}
@@ -225,7 +226,7 @@ function SideBar() {
                 isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
               }
             >
-              Usuarios Inactivos
+              {t("sidebar.usuariosInactivos")}
             </MenuItem>
 
             <MenuItem
@@ -235,7 +236,7 @@ function SideBar() {
                 isMenuItemActive("/usuarios-eliminados") ? "selected" : ""
               }
             >
-              Usuarios Eliminados
+              {t("sidebar.usuariosEliminados")}
             </MenuItem>
 
             <MenuItem
@@ -243,7 +244,7 @@ function SideBar() {
               onClick={() => handleMenuItemClick("/add-usuario")}
               className={isMenuItemActive("/add-usuario") ? "selected" : ""}
             >
-              Nuevo Usuario
+              {t("sidebar.addUsuario")}
             </MenuItem>
           </SubMenu>
 
@@ -253,7 +254,7 @@ function SideBar() {
             onClick={() => handleMenuItemClick("/suscripciones")}
             className={isMenuItemActive("/suscripciones") ? "selected" : ""}
           >
-            Suscripciones
+            {t("sidebar.suscripciones")}
           </MenuItem>
         </Menu>
       </Sidebar>
