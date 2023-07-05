@@ -7,7 +7,15 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      idUsuario: {
+      idUsuarioPrestamista: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "usuarios",
+          key: "idUsuario",
+        },
+      },
+      idUsuarioAfiliado: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
