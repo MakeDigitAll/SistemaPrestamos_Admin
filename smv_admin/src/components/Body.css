@@ -104,6 +104,23 @@
   background-color: rgb(65, 65, 65);
 }
 
+.nextui-c-kpzpMf-kIthQh-isFocused-true {
+  color: #000000;
+}
+.dark-mode .nextui-c-kpzpMf-kIthQh-isFocused-true {
+  color: #ffffff;
+}
+
+.nextui-c-kpzpMf-ichwWp-isDisabled-true {
+  background: rgb(190, 189, 189);
+  color: rgb(0, 0, 0);
+}
+
+.dark-mode .nextui-c-kpzpMf-ichwWp-isDisabled-true {
+  background: #676767;
+  color: #e1e1e1;
+}
+
 .dark-mode .nextui-c-eXOOPO {
   background: rgb(34, 34, 34);
 }
