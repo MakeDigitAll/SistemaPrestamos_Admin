@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Text, Dropdown, Input, User } from "@nextui-org/react";
+import { Navbar, Text, Dropdown, Input, User, Button } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
+import LanguageDropdown from "../lenguaje/LanguageDropdown";
 
 export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
@@ -40,16 +41,10 @@ export const CustomNavBar: React.FC = () => {
         isBordered={false}
         disableShadow={true}
       >
-        <Navbar.Brand css={{ mr: "$4" }}>
-          <Navbar.Content hideIn="xs">
-            <Navbar.Item>
-              <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
-            </Navbar.Item>
-          </Navbar.Content>
-        </Navbar.Brand>
+        <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
 
         <Navbar.Brand css={{ mr: "$4" }}>
-          <Navbar.Content hideIn="xs">
+          <Navbar.Content>
             <Navbar.Item
               css={{
                 "@xsMax": {
@@ -85,7 +80,7 @@ export const CustomNavBar: React.FC = () => {
           </Navbar.Content>
         </Navbar.Brand>
 
-        <Navbar.Brand css={{ mr: "$4" }}>
+        <Navbar.Brand css={{ mr: "$2" }}>
           <Navbar.Content
             css={{
               "@xsMax": {
@@ -94,16 +89,26 @@ export const CustomNavBar: React.FC = () => {
               },
             }}
           >
+            <Navbar.Content hideIn="xs">
+              <Navbar.Item style={{ marginRight: "-20px" }}>
+                <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
+              </Navbar.Item>
+              <Navbar.Item style={{ marginRight: "-30px" }}>
+                <Button.Group size="sm" flat color="gradient" light>
+                  <LanguageDropdown />
+                </Button.Group>
+              </Navbar.Item>
+            </Navbar.Content>
+
             <Dropdown placement="bottom-right">
               <Navbar.Item>
                 <Dropdown.Trigger>
                   <User
-                    bordered
                     src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                    name={admin.nombres + " " + admin.apellidos}
-                    description={admin.correoElectronico}
                     size="md"
-                    color="primary"
+                    name={""}
+                    zoomed
+                    pointer
                   />
                 </Dropdown.Trigger>
               </Navbar.Item>
