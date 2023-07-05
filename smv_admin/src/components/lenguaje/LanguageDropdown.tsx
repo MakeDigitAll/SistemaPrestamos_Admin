@@ -32,12 +32,12 @@ const LanguageDropdown: React.FC = () => {
       i18n.changeLanguage(cookieLanguage);
       setSelected(new Set([cookieLanguage]));
     }
-  }, []);
+  }, [i18n]);
 
   React.useEffect(() => {
     i18n.changeLanguage(selectedValue);
     Cookies.set("language", selectedValue, { expires: 365 });
-  }, [selectedValue]);
+  }, [selectedValue, i18n]);
 
   return (
     <Dropdown>
