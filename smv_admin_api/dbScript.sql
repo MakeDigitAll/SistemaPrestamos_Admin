@@ -2,47 +2,63 @@ CREATE DATABASE sistema_prestamos;
 
 -- Conectar a la base de datos
 \c sistema_prestamos;
-
-CREATE TABLE Administradores (
-  idAdmin SERIAL PRIMARY KEY,
-  correo_electronico VARCHAR(255),
-  passwd VARCHAR(255),
-  nombres VARCHAR(255),
-  apellidos VARCHAR(255),
-  imagenPerfil BLOB
+ 
+CREATE TABLE administradores (
+  idAdministrador SERIAL PRIMARY KEY,
+  correoElectronico VARCHAR(100) NOT NULL,
+  adminPassword VARCHAR(100) NOT NULL,
+  nombres VARCHAR(50) NOT NULL,
+  apellidos VARCHAR(50) NOT NULL,
+  imagenPerfil BYTEA,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  isDeleted BOOLEAN DEFAULT false,
+  isModified BOOLEAN DEFAULT false
 );
 
-CREATE TABLE Usuarios (
-    idUsuario SERIAL PRIMARY KEY,
-    nombres VARCHAR(255),
-    apellidos VARCHAR(255),
-    correo_electronico VARCHAR(255),
-    passwd VARCHAR(255),
-    tipoUsuario VARCHAR(255),
-    imagenPerfil BLOB
+CREATE TABLE usuarios (
+  idUsuario SERIAL PRIMARY KEY,
+  correoElectronico VARCHAR(100) NOT NULL,
+  usuarioPassword VARCHAR(100) NOT NULL,
+  nombres VARCHAR(50) NOT NULL,
+  apellidos VARCHAR(50) NOT NULL,
+  imagenPerfil BYTEA,
+  tipoUsuario VARCHAR(30) NOT NULL,
+  isActive BOOLEAN DEFAULT false,
+  codigoReferencia VARCHAR(6),
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  isDeleted BOOLEAN DEFAULT false,
+  isModified BOOLEAN DEFAULT false
 );
 
-CREATE TABLE Prestamos (
-    idPrestamo SERIAL PRIMARY KEY,
-    idUsuario INT REFERENCES Usuarios(ID_Usuario),
-    Monto DECIMAL,
-    tasaInteres DECIMAL,
-    fechaPrestamo DATE,
-    fechaProximoPago DATE,
-    fechaFinPago DATE,
-    historialPagos VARCHAR(255),
-    estado VARCHAR(255),
+
+CREATE TABLE prestamos (
+  idPrestamo SERIAL PRIMARY KEY,
+  idUsuarioPrestamista INTEGER NOT NULL REFERENCES usuarios(idUsuario),
+  idUsuarioAfiliado INTEGER NOT NULL REFERENCES usuarios(idUsuario),
+  monto DECIMAL NOT NULL,
+  tasaInteres DECIMAL NOT NULL,
+  fechaPrestamo DATE NOT NULL,
+  fechaProximoPago DATE NOT NULL,
+  fechaFinPago DATE NOT NULL,
+  historialPagos VARCHAR(255) NOT NULL,
+  estado VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE Suscripciones (
-    idSuscipcion SERIAL PRIMARY KEY,
-    idUsuario INT REFERENCES Usuarios(ID_Usuario),
-    tipoSuscripcion VARCHAR(255),
-    fechaInicio DATE,
-    fechaFin DATE,
-    estadoSuscripcion VARCHAR(255),
+CREATE TABLE suscripciones (
+  idSuscripcion SERIAL PRIMARY KEY,
+  idUsuario INTEGER NOT NULL REFERENCES usuarios(idUsuario),
+  tipoSuscripcion VARCHAR(50) NOT NULL,
+  fechaInicio DATE NOT NULL,
+  fechaFin DATE NOT NULL,
+  estadoSuscripcion VARCHAR(30) NOT NULL
 );
+
 
 --Insertar un administrador
 INSERT INTO Administradores (correo_electronico, passwd, nombres, apellidos)
-VALUES ('pablo@makedigitall.com', 'rm7DS6YkR', 'Pablo Javier', 'Alvarez Ramos');
+VALUES ('pablo@makedigitall.com', '123', 'Pablo', 'Alvarez');
+
+--Para mostrar todas las tablas
+\dt
