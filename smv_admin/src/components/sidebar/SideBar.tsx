@@ -175,22 +175,22 @@ function SideBar() {
     <>
       <Sidebar
         backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
-        width="13%"
+        width="auto"
         rootStyles={{
           borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
         }}
         collapsed={isSidebarCollapsed}
       >
         {renderSidebarToggle()}
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <img
             src={logo}
             alt="Logo"
-            style={{ width: "60%", marginLeft: "23%" }}
+            style={{ width: "auto", maxWidth: "130px", minWidth: "50px" }}
           />
         </div>
 
-        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "20px" }}>
+        <Menu menuItemStyles={menuItemStyles} style={{ marginTop: "40px" }}>
           <Divider style={{ height: "0.5px", marginTop: "10px" }} />
           <MenuItem
             style={{ marginTop: "10px" }}
