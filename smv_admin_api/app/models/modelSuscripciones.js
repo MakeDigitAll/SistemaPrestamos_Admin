@@ -18,6 +18,9 @@ module.exports = (sequelize, Sequelize) => {
       tipoSuscripcion: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+        },
       },
       fechaInicio: {
         type: Sequelize.DATE,
@@ -30,6 +33,9 @@ module.exports = (sequelize, Sequelize) => {
       estadoSuscripcion: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+        },
       },
     },
     {

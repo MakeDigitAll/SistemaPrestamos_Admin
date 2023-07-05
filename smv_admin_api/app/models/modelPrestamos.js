@@ -38,10 +38,16 @@ module.exports = (sequelize, Sequelize) => {
       historialPagos: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+        },
       },
       estado: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+        },
       },
     },
     {

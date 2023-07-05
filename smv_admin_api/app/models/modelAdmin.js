@@ -8,18 +8,30 @@ module.exports = (sequelize, Sequelize) => {
     correoElectronico: {
       type: Sequelize.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+      },
     },
     adminPassword: {
       type: Sequelize.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+      },
     },
     nombres: {
       type: Sequelize.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+      },
     },
     apellidos: {
       type: Sequelize.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
+      },
     },
     imagenPerfil: {
       type: Sequelize.BLOB, // Almacena los datos binarios de la imagen
