@@ -31,4 +31,24 @@ db.suscripciones.belongsTo(db.usuarios, {
   as: "usuarios",
 });
 
+// Asociación entre usuarios prestamistas y préstamos
+db.usuarios.hasMany(db.prestamos, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamosPrestamista",
+});
+db.prestamos.belongsTo(db.usuarios, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "usuarioPrestamista",
+});
+
+// Asociación entre usuarios afiliados y préstamos
+db.usuarios.hasMany(db.prestamos, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "prestamosAfiliado",
+});
+db.prestamos.belongsTo(db.usuarios, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "usuarioAfiliado",
+});
+
 module.exports = db;

@@ -64,7 +64,12 @@ const ContentDashboard: React.FC = () => {
   };
 
   return usuariosActivos.length > 0 ? (
-    <Card style={{ marginTop: "7%" }} css={{ width: "20%" }}>
+    <Card
+      style={{
+        marginTop: "7%",
+        width: "20%",
+      }}
+    >
       <div>
         <Card.Header style={{ display: "flex", justifyContent: "center" }}>
           <h3>Usuarios</h3>
