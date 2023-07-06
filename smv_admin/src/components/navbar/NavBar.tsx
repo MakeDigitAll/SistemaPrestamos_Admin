@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Navbar, Text, Dropdown, Input, User, Button } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
@@ -9,8 +9,10 @@ import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
 import LanguageDropdown from "../lenguaje/LanguageDropdown";
 import { useTranslation } from "react-i18next";
+import { SearchContext } from "../../context/SearchContext";
 
 export const CustomNavBar: React.FC = () => {
+  const { setSearchTerm } = useContext(SearchContext);
   const { theme, toggleTheme } = useDarkLight();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,6 +29,10 @@ export const CustomNavBar: React.FC = () => {
     if (actionKey === "logout") {
       handleLogout();
     }
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value as string);
   };
 
   if (!admin) {
@@ -58,6 +64,7 @@ export const CustomNavBar: React.FC = () => {
               <Input
                 aria-label="Search"
                 clearable
+                onChange={handleSearch as any}
                 contentLeft={
                   <SearchIcon
                     fill={theme === "dark" ? "white" : "black"}
