@@ -139,6 +139,49 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     }
   };
 
+  //Formatea las fechas 2023-12-31T06:00:00.000Z,
+  const formatDate = (date: Date | null | undefined) => {
+    if (!date) {
+      return ""; // or any other appropriate handling for null or undefined values
+    }
+
+    const fecha = new Date(date);
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const year = fecha.getFullYear();
+    return `${dia}/${mes}/${year}`;
+  };
+
+  const formatDateFin = (date: Date | null | undefined) => {
+    if (!date) {
+      return ""; // o cualquier otro manejo apropiado para valores nulos o indefinidos
+    }
+    const fecha = new Date(date);
+    const today = new Date();
+    const differenceInDays = Math.floor(
+      (today.getTime() - fecha.getTime()) / (1000 * 3600 * 24)
+    );
+
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const year = fecha.getFullYear();
+
+    let textColor = "black"; // color predeterminado
+
+    if (differenceInDays < 0) {
+      textColor = "black"; // fecha pasada, color negro
+    } else if (differenceInDays <= 7) {
+      textColor = "red"; // menos de 7 días, color rojo
+    } else if (differenceInDays <= 14) {
+      textColor = "yellow"; // entre 7 y 14 días, color amarillo
+    } else if (differenceInDays <= 30) {
+      textColor = "green"; // entre 15 y mas días, color verde
+    }
+    console.log(differenceInDays);
+
+    return <span style={{ color: textColor }}>{`${dia}/${mes}/${year}`}</span>;
+  };
+
   //Si no hay usuarios entonces muestra un loading
   if (!usuarios) {
     return (
@@ -197,7 +240,8 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     ...(isActive
       ? [
           { name: "TIPO DE SUSCRIPCIÓN", uid: "tipoSuscripcion" },
-          { name: "FECHA DE PAGO", uid: "fechaPago" },
+          { name: "FECHA DE INICIO", uid: "fechaInicio" },
+          { name: "FECHA DE PAGO", uid: "fechaFin" },
         ]
       : []),
     { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
@@ -213,11 +257,17 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
       case "apellidos":
         return <Text>{usuario.apellidos}</Text>;
       case "tipoSuscripcion":
-        return isActive ? <Text>Tier 1</Text> : null;
-      case "fechaPago":
+        return isActive ? (
+          <Text>{usuario.suscripcion?.tipoSuscripcion}</Text>
+        ) : null;
+      case "fechaInicio":
+        return isActive ? (
+          <Text>{formatDate(usuario.suscripcion?.fechaInicio)}</Text>
+        ) : null;
+      case "fechaFin":
         return isActive ? (
           <Text>
-            <strong style={{ color: "green" }}>10/10/2023</strong>
+            <strong>{formatDateFin(usuario.suscripcion?.fechaFin)}</strong>
           </Text>
         ) : null;
       case "codigoReferencia":
@@ -272,7 +322,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
           );
         }
       default:
-        return cellValue;
+        return cellValue as React.ReactNode;
     }
   };
 

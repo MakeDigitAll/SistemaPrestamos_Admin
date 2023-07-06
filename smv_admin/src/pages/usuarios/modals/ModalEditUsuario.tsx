@@ -76,7 +76,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
         onClose={closeHandler}
         preventClose
         blur
-        width="25%"
+        width="30%"
       >
         <Card
           variant="flat"

@@ -1,17 +1,25 @@
 const db = require("../models");
 const usuarios = db.usuarios;
+const suscripciones = db.suscripciones;
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
-// obtener todos los usuarios de tipo prestamista (tipoUsuario = Prestamista)
 
+// obtener todos los usuarios de tipo prestamista (tipoUsuario = Prestamista) con sus suscripciones
 exports.findAllUsuariosPrestamista = (req, res) => {
   usuarios
-    .findAll({ where: { tipoUsuario: "Prestamista" } }) // Filtrar usuarios por tipo "Prestamista"
+    .findAll({
+      where: { tipoUsuario: "Prestamista" },
+      include: [
+        {
+          model: suscripciones,
+          as: "suscripcion",
+        },
+      ],
+    })
     .then((data) => {
       const usuarios = data.map((user) => ({
-        // Cambiar el nombre de la variable para evitar conflicto con la importación anterior
         idUsuario: user.idUsuario,
         correoElectronico: user.correoElectronico,
         nombres: user.nombres,
@@ -20,6 +28,15 @@ exports.findAllUsuariosPrestamista = (req, res) => {
         tipoUsuario: user.tipoUsuario,
         isActive: user.isActive,
         isDeleted: user.isDeleted,
+        suscripcion: user.suscripcion?.idSuscripcion
+          ? {
+              idSuscripcion: user.suscripcion.idSuscripcion,
+              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
+              fechaInicio: user.suscripcion.fechaInicio,
+              fechaFin: user.suscripcion.fechaFin,
+              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
+            }
+          : null,
       }));
       const tokenUsuarios = jwt.sign({ usuarios }, TOKEN_KEY);
       res.send({ tokenUsuarios });
@@ -28,6 +45,7 @@ exports.findAllUsuariosPrestamista = (req, res) => {
       res.status(500).send({
         message: err.message || "Ocurrió un error al obtener los usuarios.",
       });
+      console.log(err);
     });
 };
 

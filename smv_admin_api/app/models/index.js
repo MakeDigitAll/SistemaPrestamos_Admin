@@ -21,4 +21,14 @@ db.usuarios = require("./modelUsuarios.js")(sequelize, Sequelize);
 db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
 db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
 
+// Asociaciones entre usuarios y suscripciones
+db.usuarios.hasOne(db.suscripciones, {
+  foreignKey: "idUsuario",
+  as: "suscripcion",
+});
+db.suscripciones.belongsTo(db.usuarios, {
+  foreignKey: "idUsuario",
+  as: "usuarios",
+});
+
 module.exports = db;

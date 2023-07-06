@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Model = sequelize.define(
+  const Suscripciones = sequelize.define(
     "suscripciones",
     {
       idSuscripcion: {
@@ -43,5 +43,6 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt: false,
     }
   );
-  return Model;
+
+  return Suscripciones;
 };

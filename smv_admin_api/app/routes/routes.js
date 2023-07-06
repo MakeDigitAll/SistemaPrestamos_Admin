@@ -19,7 +19,7 @@ router.put("/administradores/:id", verifyToken, (req, res) => {
   controllerAdmin.updateAdmin(req, res);
 });
 
-// obtener todos los usuarios de la base de datos
+// obtener todos los usuarios prestamistas de la base de datos
 router.get("/usuarios-prestamistas", verifyToken, (req, res) => {
   controllerUsuarios.findAllUsuariosPrestamista(req, res);
 });

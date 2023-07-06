@@ -7,4 +7,11 @@ export interface User {
   tipoUsuario: string;
   isActive: boolean;
   isDeleted: boolean;
+  suscripcion: {
+    idSuscripcion: number | null;
+    tipoSuscripcion: string | null;
+    fechaInicio: Date | null;
+    fechaFin: Date | null;
+    estadoSuscripcion: string | null;
+  } | null;
 }
