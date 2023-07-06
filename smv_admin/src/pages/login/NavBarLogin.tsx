@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Text, Button } from "@nextui-org/react";
 import ThemeToggleButton from "../../components/buttons/ThemeToggleButton";
 import useDarkLight from "../../hooks/useDarkLight";
-import LanguageDropdown from "../../components/lenguaje/LanguageDropdown";
+import LanguageDropdown from "../../components/buttons/LanguageDropdown";
 
 const NavBarLogin: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
@@ -20,7 +20,7 @@ const NavBarLogin: React.FC = () => {
             css={{ marginLeft: "100%" }}
           />
         </Navbar.Item>
-        <Button.Group size="sm" flat color="gradient" light>
+        <Button.Group size="sm" flat>
           <LanguageDropdown />
         </Button.Group>
       </Navbar.Content>

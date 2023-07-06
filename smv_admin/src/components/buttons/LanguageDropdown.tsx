@@ -9,35 +9,41 @@ interface Language {
 }
 
 const lngs: Language = {
-  en: { nativeName: "English" },
   es: { nativeName: "Español" },
+  en: { nativeName: "English" },
 };
 
 const LanguageDropdown: React.FC = () => {
   const { i18n } = useTranslation();
-  const [selected, setSelected] = React.useState(new Set([""]));
+  const [selected, setSelected] = React.useState(() => {
+    const cookieLanguage = Cookies.get("language");
+    return new Set([cookieLanguage || "es"]);
+  });
 
   const selectedValue = React.useMemo(
     () => Array.from(selected).join(", ").replaceAll("_", " "),
     [selected]
   );
 
-  if (!Cookies.get("language")) {
-    Cookies.set("language", "es", { expires: 365 });
-  }
-
+  //si no hay cookie, se selecciona el idioma por defecto selected
   React.useEffect(() => {
-    const cookieLanguage = Cookies.get("language");
-    if (cookieLanguage) {
-      i18n.changeLanguage(cookieLanguage);
-      setSelected(new Set([cookieLanguage]));
+    if (!Cookies.get("language")) {
+      i18n.changeLanguage(Array.from(selected)[0]);
     }
-  }, [i18n]);
+  }, [i18n, selected]);
 
-  React.useEffect(() => {
-    i18n.changeLanguage(selectedValue);
-    Cookies.set("language", selectedValue, { expires: 365 });
-  }, [selectedValue, i18n]);
+  //cambiar el idioma
+  const handleSelectionChange = React.useCallback(
+    (keys: any) => {
+      setSelected(keys);
+      const selectedLanguage = Array.from(keys)[0];
+      if (selectedLanguage) {
+        i18n.changeLanguage(selectedLanguage as string);
+        Cookies.set("language", selectedLanguage as string, { expires: 365 });
+      }
+    },
+    [i18n]
+  );
 
   return (
     <Dropdown>
@@ -50,7 +56,7 @@ const LanguageDropdown: React.FC = () => {
         aria-label="Actions"
         disabledKeys={selected}
         selectedKeys={selected}
-        onSelectionChange={(keys: any) => setSelected(keys)}
+        onSelectionChange={handleSelectionChange}
       >
         {Object.keys(lngs).map((lng) => (
           <Dropdown.Item key={lng}>{lngs[lng].nativeName}</Dropdown.Item>

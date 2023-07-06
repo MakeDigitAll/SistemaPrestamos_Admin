@@ -12,8 +12,8 @@ import {
   SortDescriptor,
 } from "@nextui-org/react";
 import deleteUsuario from "../../../utils/deleteUser";
-import EditUsuario from "./ModalEditUsuario";
-import InfoUsuario from "./ModalInfoUsuario";
+import EditUsuario from "../modals/ModalEditUsuario";
+import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
 import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
@@ -64,7 +64,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
       );
       setUsuarios(filteredUsuarios);
     }
-  }, [usuarios, isActive]);
+  }, [usuarios, isActive, isDeleted]);
 
   //Función para realizar la búsqueda de usuarios
   function realizarBusqueda(usuario: UserType, searchTerm: string): boolean {
@@ -102,7 +102,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
       );
       setUsuarios(filteredUsuarios);
     }
-  }, [searchTerm, usuarios, isActive]);
+  }, [searchTerm, usuarios, isActive, isDeleted]);
 
   //Al abrir el modal de editar usuario se cierra el modal de información de usuario
   const openModalEdit = (usuario: UserType) => {

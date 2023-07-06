@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
-import LanguageDropdown from "../lenguaje/LanguageDropdown";
+import LanguageDropdown from "../buttons/LanguageDropdown";
 import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 
@@ -103,7 +103,7 @@ export const CustomNavBar: React.FC = () => {
                 <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
               </Navbar.Item>
               <Navbar.Item style={{ marginRight: "-30px" }}>
-                <Button.Group size="sm" flat color="gradient" light>
+                <Button.Group size="sm" flat>
                   <LanguageDropdown />
                 </Button.Group>
               </Navbar.Item>

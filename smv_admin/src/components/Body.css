@@ -110,6 +110,16 @@
   background-color: rgb(65, 65, 65);
 }
 
+.nextui-c-iWjDFM-kaRBtV-cv {
+  background-color: transparent;
+  color: #222222;
+}
+
+.dark-mode .nextui-c-iWjDFM-kaRBtV-cv {
+  background-color: transparent;
+  color: #fff;
+}
+
 .nextui-c-kpzpMf-kIthQh-isFocused-true {
   color: #000000;
 }
