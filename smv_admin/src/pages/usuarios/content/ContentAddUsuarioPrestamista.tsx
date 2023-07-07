@@ -12,6 +12,7 @@ const ContentAddUsuario: React.FC = () => {
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
+
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
@@ -84,6 +85,16 @@ const ContentAddUsuario: React.FC = () => {
       hasError = true;
     } else {
       setPasswordError("");
+    }
+
+    if (numeroTelefonoValue === "") {
+      setNumeroTelefonoError("Ingrese su número de teléfono.");
+      hasError = true;
+    } else if (numeroTelefonoValue.length !== 10) {
+      setNumeroTelefonoError("El número de teléfono debe tener 10 dígitos.");
+      hasError = true;
+    } else {
+      setNumeroTelefonoError("");
     }
 
     if (hasError) {
@@ -163,6 +174,7 @@ const ContentAddUsuario: React.FC = () => {
   const handleUserSliderChange = (value: number | number[]): void => {
     setUserSliderValue(value);
   };
+
   const renderInputField = (
     label: string,
     value: string,
@@ -185,7 +197,7 @@ const ContentAddUsuario: React.FC = () => {
           width="100%"
           type={type}
           label={label}
-          status={error ? "default" : "default"}
+          status={error ? "error" : "default"}
           color={error ? "error" : "default"}
           helperColor={error ? "error" : "default"}
           helperText={error ? error : ""}
@@ -197,6 +209,7 @@ const ContentAddUsuario: React.FC = () => {
       </Grid>
     </>
   );
+
   return (
     <div>
       <Card
@@ -226,15 +239,8 @@ const ContentAddUsuario: React.FC = () => {
                 height: "20%",
               }}
             />
-
             <div style={{ flex: 1 }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                }}
-              >
+              <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ flex: 1, marginRight: "1%" }}>
                   {renderInputField(
                     "Nombre",
