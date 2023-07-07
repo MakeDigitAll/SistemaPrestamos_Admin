@@ -17,36 +17,43 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.administradores = require("./modelAdmin.js")(sequelize, Sequelize);
-db.usuarios = require("./modelUsuarios.js")(sequelize, Sequelize);
+db.usuariosPrestamistas = require("./modelUsuariosPrestamistas.js")(
+  sequelize,
+  Sequelize
+);
+db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(
+  sequelize,
+  Sequelize
+);
 db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
 db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
 
 // Asociaciones entre usuarios y suscripciones
-db.usuarios.hasOne(db.suscripciones, {
-  foreignKey: "idUsuario",
+db.usuariosPrestamistas.hasOne(db.suscripciones, {
+  foreignKey: "idUsuarioPrestamista",
   as: "suscripcion",
 });
-db.suscripciones.belongsTo(db.usuarios, {
-  foreignKey: "idUsuario",
-  as: "usuarios",
+db.suscripciones.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "usuariosPrestamistas",
 });
 
 // Asociación entre usuarios prestamistas y préstamos
-db.usuarios.hasMany(db.prestamos, {
+db.usuariosPrestamistas.hasMany(db.prestamos, {
   foreignKey: "idUsuarioPrestamista",
   as: "prestamosPrestamista",
 });
-db.prestamos.belongsTo(db.usuarios, {
+db.prestamos.belongsTo(db.usuariosPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
   as: "usuarioPrestamista",
 });
 
 // Asociación entre usuarios afiliados y préstamos
-db.usuarios.hasMany(db.prestamos, {
+db.usuariosAfiliados.hasMany(db.prestamos, {
   foreignKey: "idUsuarioAfiliado",
   as: "prestamosAfiliado",
 });
-db.prestamos.belongsTo(db.usuarios, {
+db.prestamos.belongsTo(db.usuariosAfiliados, {
   foreignKey: "idUsuarioAfiliado",
   as: "usuarioAfiliado",
 });

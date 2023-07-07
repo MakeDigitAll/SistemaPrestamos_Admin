@@ -1,23 +1,15 @@
 // ModalEditUsuario.tsx
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Button,
-  Text,
-  Input,
-  Avatar,
-  Radio,
-  Card,
-} from "@nextui-org/react";
+import { Modal, Button, Text, Input, Avatar, Card } from "@nextui-org/react";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { toast } from "react-toastify";
-import { User } from "../../../types/types";
+import { UserPrestamista } from "../../../types/types";
 
 interface InformacionUsuarioProps {
-  user: User;
+  user: UserPrestamista;
   onClose: () => void;
-  handleUpdate: (usuario: User) => void;
+  handleUpdate: (usuario: UserPrestamista) => void;
 }
 
 const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
@@ -28,7 +20,6 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const [visible, setVisible] = useState(false);
   const [nombre, setNombre] = useState(user.nombres);
   const [apellidos, setApellidos] = useState(user.apellidos);
-  const [rol, setRol] = useState(user.tipoUsuario);
 
   const closeHandler = () => {
     setVisible(false);
@@ -42,17 +33,15 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const actualizarHandler = async () => {
     const encryptedNombre = aesEncrypt(nombre);
     const encryptedApellidos = aesEncrypt(apellidos);
-    const encryptedRol = aesEncrypt(rol);
 
     const data = {
       nombres: encryptedNombre,
       apellidos: encryptedApellidos,
-      tipoUsuario: encryptedRol,
     };
 
     try {
       const response = await service.updateUsuarioPrestamista(
-        user.idUsuario,
+        user.idUsuarioPrestamista,
         data
       );
       if (response.status === 200) {
@@ -114,24 +103,6 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
             <Text h5 css={{ textAlign: "center" }}>
               Rol del Usuario
             </Text>
-            <Radio.Group
-              orientation="horizontal"
-              value={rol}
-              onChange={(value) => setRol(value)}
-              color="primary"
-              aria-labelledby="Afiliado"
-            >
-              <Radio
-                size="sm"
-                value="Prestamista"
-                aria-labelledby="Prestamista"
-              >
-                Prestamista
-              </Radio>
-              <Radio size="sm" value="Afiliados" aria-labelledby="Afiliado">
-                Afiliado
-              </Radio>
-            </Radio.Group>
           </Modal.Body>
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>

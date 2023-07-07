@@ -17,8 +17,8 @@ import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
 import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
-import { useGetUsuarios } from "../../../hooks/usegetUsuarios";
-import { User as UserType } from "../../../types/types";
+import { useGetUsuarios } from "../../../hooks/usegetUsuariosPrestamistas";
+import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
 
@@ -35,39 +35,44 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
 }) => {
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
-  //Obtiene el collator para ordenar los usuarios
+  //Obtiene el collator para ordenar los usuariosPrestamistas
   const collator = useCollator({ numeric: true });
-  //Obtiene los usuarios del hook useGetUsuarios
+  //Obtiene los usuariosPrestamistas del hook useGetUsuarios
   const getUsuarios = useGetUsuarios();
-  //Estado para definir el orden de los usuarios
+  //Estado para definir el orden de los usuariosPrestamistas
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: undefined,
     direction: undefined,
   });
-  //Obtiene los usuarios del token decodificado
-  const usuarios = getUsuarios?.decodedToken?.usuarios;
-  //Estado para definir los usuarios a mostrar
-  const [Usuarios, setUsuarios] = useState<UserType[]>([]);
+  //Obtiene los usuariosPrestamistas del token decodificado
+  const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
+  //Estado para definir los usuariosPrestamistas a mostrar
+  const [Usuarios, setUsuarios] = useState<UserTypePrestamista[]>([]);
   //Función para mostrar el modal de editar usuario
   const [modalEdit, setModalEditVisible] = useState(false);
   //Función para mostrar el modal de información de usuario
   const [modalInfo, setModalInfoVisible] = useState(false);
   //Estado para definir el usuario seleccionado
-  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserTypePrestamista | null>(
+    null
+  );
 
-  //Ordena los usuarios
+  //Ordena los usuariosPrestamistas
   useEffect(() => {
-    if (usuarios) {
-      const filteredUsuarios = usuarios.filter(
-        (usuario: UserType) =>
+    if (usuariosPrestamistas) {
+      const filteredUsuarios = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
           usuario.isActive === isActive && usuario.isDeleted === isDeleted
       );
       setUsuarios(filteredUsuarios);
     }
-  }, [usuarios, isActive, isDeleted]);
+  }, [usuariosPrestamistas, isActive, isDeleted]);
 
-  //Función para realizar la búsqueda de usuarios
-  function realizarBusqueda(usuario: UserType, searchTerm: string): boolean {
+  //Función para realizar la búsqueda de usuariosPrestamistas
+  function realizarBusqueda(
+    usuario: UserTypePrestamista,
+    searchTerm: string
+  ): boolean {
     const terminos = searchTerm.toLowerCase().split(" ");
     for (const termino of terminos) {
       if (
@@ -83,35 +88,35 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     return true;
   }
 
-  //Filtra los usuarios
+  //Filtra los usuariosPrestamistas
   useEffect(() => {
-    //Si hay un término de búsqueda y hay usuarios en el estado Usuarios entonces filtra los usuarios
-    if (searchTerm && usuarios) {
-      const filteredUsuarios = usuarios.filter(
-        (usuario: UserType) =>
+    //Si hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces filtra los usuariosPrestamistas
+    if (searchTerm && usuariosPrestamistas) {
+      const filteredUsuarios = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
           usuario.isActive === isActive &&
           usuario.isDeleted === isDeleted &&
           realizarBusqueda(usuario, searchTerm)
       );
       setUsuarios(filteredUsuarios);
-      //Si no hay un término de búsqueda y hay usuarios en el estado Usuarios entonces  mostrar todos los usuarios
-    } else if (!searchTerm && usuarios) {
-      const filteredUsuarios = usuarios.filter(
-        (usuario: UserType) =>
+      //Si no hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces  mostrar todos los usuariosPrestamistas
+    } else if (!searchTerm && usuariosPrestamistas) {
+      const filteredUsuarios = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
           usuario.isActive === isActive && usuario.isDeleted === isDeleted
       );
       setUsuarios(filteredUsuarios);
     }
-  }, [searchTerm, usuarios, isActive, isDeleted]);
+  }, [searchTerm, usuariosPrestamistas, isActive, isDeleted]);
 
   //Al abrir el modal de editar usuario se cierra el modal de información de usuario
-  const openModalEdit = (usuario: UserType) => {
+  const openModalEdit = (usuario: UserTypePrestamista) => {
     setSelectedUser(usuario);
     setModalInfoVisible(false);
     setModalEditVisible(true);
   };
   //Al abrir el modal de información de usuario se cierra el modal de editar usuario
-  const openModalInfo = (usuario: UserType) => {
+  const openModalInfo = (usuario: UserTypePrestamista) => {
     setSelectedUser(usuario);
     setModalEditVisible(false);
     setModalInfoVisible(true);
@@ -122,15 +127,15 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     setModalEditVisible(false);
   };
 
-  //Función para actualizar los usuarios al eliminar un usuario o al editar un usuario
+  //Función para actualizar los usuariosPrestamistas al eliminar un usuario o al editar un usuario
   const handleUpdateUsuarios = () => {
     getUsuarios?.refetch();
   };
 
   //Función para eliminar un usuario
-  const deleteUser = async (usuario: UserType) => {
+  const deleteUser = async (usuario: UserTypePrestamista) => {
     try {
-      const resp = await deleteUsuario(usuario.idUsuario);
+      const resp = await deleteUsuario(usuario.idUsuarioPrestamista);
       if (resp) {
         getUsuarios?.refetch();
       }
@@ -182,8 +187,8 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     return <span style={{ color: textColor }}>{`${dia}/${mes}/${year}`}</span>;
   };
 
-  //Si no hay usuarios entonces muestra un loading
-  if (!usuarios) {
+  //Si no hay usuariosPrestamistas entonces muestra un loading
+  if (!usuariosPrestamistas) {
     return (
       <Grid.Container
         justify="center"
@@ -202,7 +207,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     );
   }
 
-  //Si no hay usuarios activos, inactivos o eliminados entonces muestra un mensaje
+  //Si no hay usuariosPrestamistas activos, inactivos o eliminados entonces muestra un mensaje
   if (Usuarios.length === 0 && !searchTerm) {
     return (
       <Grid.Container
@@ -213,13 +218,15 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
       >
         <Text>
           {isDeleted
-            ? "No hay usuarios eliminados."
-            : `No hay usuarios ${isActive ? "activos" : "inactivos"}.`}
+            ? "No hay usuariosPrestamistas eliminados."
+            : `No hay usuariosPrestamistas ${
+                isActive ? "activos" : "inactivos"
+              }.`}
         </Text>
       </Grid.Container>
     );
   }
-  //Si no hay usuarios activos, inactivos o eliminados con la búsqueda entonces muestra un mensaje
+  //Si no hay usuariosPrestamistas activos, inactivos o eliminados con la búsqueda entonces muestra un mensaje
   if (Usuarios.length === 0 && searchTerm) {
     return (
       <Grid.Container
@@ -228,11 +235,11 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
         gap={2}
         style={{ height: "100vh" }}
       >
-        <Text>No hay usuarios con esa búsqueda.</Text>
+        <Text>No hay usuariosPrestamistas con esa búsqueda.</Text>
       </Grid.Container>
     );
   }
-  //Si hay usuarios entonces muestra la tabla de usuarios
+  //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
   const columns = [
     { name: "NOMBRES", uid: "nombres" },
     { name: "APELLIDOS", uid: "apellidos" },
@@ -249,8 +256,8 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   ];
 
   //Función para renderizar las celdas de la tabla
-  const renderCell = (usuario: UserType, columnKey: React.Key) => {
-    const cellValue = usuario[columnKey as keyof UserType];
+  const renderCell = (usuario: UserTypePrestamista, columnKey: React.Key) => {
+    const cellValue = usuario[columnKey as keyof UserTypePrestamista];
     switch (columnKey) {
       case "nombres":
         return <Text>{usuario.nombres}</Text>;
@@ -331,9 +338,9 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     if (descriptor.column && descriptor.direction !== undefined) {
       let sortedData = [...Usuarios];
 
-      sortedData.sort((a: UserType, b: UserType) => {
-        const aValue = a[descriptor.column as keyof UserType];
-        const bValue = b[descriptor.column as keyof UserType];
+      sortedData.sort((a: UserTypePrestamista, b: UserTypePrestamista) => {
+        const aValue = a[descriptor.column as keyof UserTypePrestamista];
+        const bValue = b[descriptor.column as keyof UserTypePrestamista];
 
         if (descriptor.direction === "ascending") {
           return collator.compare(String(aValue), String(bValue));
@@ -346,7 +353,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     }
   };
 
-  //Función para renderizar las tabla de usuarios dependiendo si esta activo, inactivo o eliminado
+  //Función para renderizar las tabla de usuariosPrestamistas dependiendo si esta activo, inactivo o eliminado
   return (
     <Card
       css={{
@@ -375,8 +382,8 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
           )}
         </Table.Header>
         <Table.Body items={Usuarios}>
-          {(item: UserType) => (
-            <Table.Row key={item.idUsuario}>
+          {(item: UserTypePrestamista) => (
+            <Table.Row key={item.idUsuarioPrestamista}>
               {(columnKey: any) => (
                 <Table.Cell key={columnKey}>
                   {renderCell(item, columnKey)}
@@ -407,7 +414,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   );
 };
 
-//Componentes para renderizar las tablas de usuarios activos, inactivos y eliminados
+//Componentes para renderizar las tablas de usuariosPrestamistas activos, inactivos y eliminados
 export const ContentUsuariosActivos: React.FC = () => {
   return <ContentUsuarios isActive={true} isDeleted={false} />;
 };

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Model = sequelize.define(
+  const Prestamos = sequelize.define(
     "prestamos",
     {
       idPrestamo: {
@@ -11,16 +11,16 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "usuarios",
-          key: "idUsuario",
+          model: "usuariosPrestamistas",
+          key: "idUsuarioPrestamista",
         },
       },
       idUsuarioAfiliado: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "usuarios",
-          key: "idUsuario",
+          model: "usuariosAfiliados",
+          key: "idUsuarioAfiliado",
         },
       },
       monto: {
@@ -63,5 +63,5 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt: false,
     }
   );
-  return Model;
+  return Prestamos;
 };

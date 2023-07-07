@@ -12,7 +12,6 @@ export const useGetUsuarios = () => {
 
       // Decodificar el token utilizando jwt-decode
       const decoded = jwtDecode(token);
-
       setDecodedToken(decoded);
     } catch (error) {
       console.error("Error decoding token:", error);

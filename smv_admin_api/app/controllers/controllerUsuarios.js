@@ -1,16 +1,16 @@
 const db = require("../models");
-const usuarios = db.usuarios;
+const usuariosPrestamistas = db.usuariosPrestamistas;
+const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 
-// obtener todos los usuarios de tipo prestamista (tipoUsuario = Prestamista) con sus suscripciones
+// obtener todos los usuariosPrestamistas de tipo prestamista (tipoUsuario = Prestamista) con sus suscripciones
 exports.findAllUsuariosPrestamista = (req, res) => {
-  usuarios
+  usuariosPrestamistas
     .findAll({
-      where: { tipoUsuario: "Prestamista" },
       include: [
         {
           model: suscripciones,
@@ -19,13 +19,12 @@ exports.findAllUsuariosPrestamista = (req, res) => {
       ],
     })
     .then((data) => {
-      const usuarios = data.map((user) => ({
-        idUsuario: user.idUsuario,
+      const usuariosPrestamistas = data.map((user) => ({
+        idUsuarioPrestamista: user.idUsuarioPrestamista,
         correoElectronico: user.correoElectronico,
         nombres: user.nombres,
         apellidos: user.apellidos,
         codigoReferencia: user.codigoReferencia,
-        tipoUsuario: user.tipoUsuario,
         isActive: user.isActive,
         isDeleted: user.isDeleted,
         suscripcion: user.suscripcion?.idSuscripcion
@@ -38,36 +37,40 @@ exports.findAllUsuariosPrestamista = (req, res) => {
             }
           : null,
       }));
-      const tokenUsuarios = jwt.sign({ usuarios }, TOKEN_KEY);
+      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
       res.send({ tokenUsuarios });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Ocurrió un error al obtener los usuarios.",
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
       });
       console.log(err);
     });
 };
 
 exports.findAllUsuariosAfiliado = (req, res) => {
-  usuarios
-    .findAll({ where: { tipoUsuario: "Afiliado" } }) // Filtrar usuarios por tipo "Prestamista"
+  usuariosPrestamistas
+    .findAll({ where: { tipoUsuario: "Afiliado" } }) // Filtrar usuariosPrestamistas por tipo "Prestamista"
     .then((data) => {
-      const usuarios = data.map((user) => ({
+      const usuariosPrestamistas = data.map((user) => ({
         // Cambiar el nombre de la variable para evitar conflicto con la importación anterior
-        idUsuario: user.idUsuario,
+        idUsuarioPrestamista: user.idUsuarioPrestamista,
         correoElectronico: user.correoElectronico,
         nombres: user.nombres,
         apellidos: user.apellidos,
         codigoReferencia: user.codigoReferencia,
         tipoUsuario: user.tipoUsuario,
       }));
-      const tokenUsuarios = jwt.sign({ usuarios }, TOKEN_KEY);
+      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
       res.send({ tokenUsuarios });
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Ocurrió un error al obtener los usuarios.",
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
       });
     });
 };
@@ -83,62 +86,87 @@ exports.createUsuarioPrestamista = (req, res) => {
 
   // Función para comprobar si el código de referencia existe en la base de datos
   const checkReferralCode = () => {
-    return usuarios.findOne({ where: { codigoReferencia: referralCode } });
+    return usuariosPrestamistas.findOne({
+      where: { codigoReferencia: referralCode },
+    });
   };
 
   // Validar que el correo electrónico no esté registrado en la base de datos
-  usuarios
+  usuariosPrestamistas
     .findOne({ where: { correoElectronico: decryptedCorreo } })
-    .then((data) => {
-      if (data) {
-        // Si el correo ya está registrado, enviar mensaje de error
+    .then((prestamista) => {
+      if (prestamista) {
+        // Si el correo está registrado en usuariosPrestamistas, enviar mensaje de error
         res.status(400).send({
-          message: "El correo electrónico ya está registrado.",
+          message: "El correo electrónico ya está registrado como prestamista.",
         });
       } else {
-        // Verificar si el código de referencia ya existe en la base de datos
-        checkReferralCode().then((existingUser) => {
-          // Generar un nuevo código de referencia si el actual ya existe
-          while (existingUser) {
-            referralCode = generateReferralCode();
-            existingUser = checkReferralCode();
-          }
-
-          // Crear el usuario con el código de referencia único
-          usuarios
-            .create({
-              nombres: decryptedNombre,
-              apellidos: decryptedApellido,
-              correoElectronico: decryptedCorreo,
-              usuarioPassword: decryptedPasswd,
-              codigoReferencia: referralCode,
-              tipoUsuario: "Prestamista",
-            })
-            .then(() => {
-              res.send({
-                message: "Usuario creado exitosamente.",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
+        usuariosAfiliados
+          .findOne({ where: { correoElectronico: decryptedCorreo } })
+          .then((afiliado) => {
+            if (afiliado) {
+              // Si el correo está registrado en usuariosAfiliados, enviar mensaje de error
+              res.status(400).send({
                 message:
-                  err.message ||
-                  "Ocurrió un error al crear el usuario en la base de datos.",
+                  "El correo electrónico ya está registrado como afiliado.",
               });
+            } else {
+              // El correo no está registrado en ninguna de las tablas, proceder con la creación del usuario
+              // Verificar si el código de referencia ya existe en la base de datos
+              checkReferralCode().then((existingUser) => {
+                // Generar un nuevo código de referencia si el actual ya existe
+                while (existingUser) {
+                  referralCode = generateReferralCode();
+                  existingUser = checkReferralCode();
+                }
+
+                // Crear el usuario con el código de referencia único
+                usuariosPrestamistas
+                  .create({
+                    nombres: decryptedNombre,
+                    apellidos: decryptedApellido,
+                    correoElectronico: decryptedCorreo,
+                    usuarioPassword: decryptedPasswd,
+                    codigoReferencia: referralCode,
+                    tipoUsuario: "Prestamista",
+                  })
+                  .then(() => {
+                    res.send({ message: "Usuario creado exitosamente." });
+                  })
+                  .catch((err) => {
+                    res.status(500).send({
+                      message:
+                        err.message ||
+                        "Ocurrió un error al crear el usuario en la base de datos.",
+                    });
+                  });
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Ocurrió un error al consultar la base de datos.",
+              console: err,
             });
-        });
+          });
       }
+    })
+    .catch((err) => {
+      res
+        .status(500)
+        .send({ message: "Ocurrió un error al consultar la base de datos." });
+      console.log(err);
     });
 };
 
 //cambiar el estado isDeleted de un usuario a true
 exports.deleteUsuarioPrestamista = (req, res) => {
-  const idUsuario = req.params.id;
-  usuarios
+  const idUsuarioPrestamista = req.params.id;
+  usuariosPrestamistas
     .update(
       { isDeleted: true },
       {
-        where: { idUsuario: idUsuario },
+        where: { idUsuarioPrestamista: idUsuarioPrestamista },
       }
     )
     .then((data) => {
@@ -148,33 +176,34 @@ exports.deleteUsuarioPrestamista = (req, res) => {
         });
       } else {
         res.send({
-          message: `No se pudo eliminar el usuario con id=${idUsuario}.`,
+          message: `No se pudo eliminar el usuario con id=${idUsuarioPrestamista}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Ocurrió un error al eliminar el usuario con id=" + idUsuario,
+        message:
+          "Ocurrió un error al eliminar el usuario con id=" +
+          idUsuarioPrestamista,
       });
     });
 };
 
 //updateUsuarioPrestamista los datos de nombres apellido y tipoUsuario
 exports.updateUsuarioPrestamista = (req, res) => {
-  const idUsuario = req.params.id;
+  const idUsuarioPrestamista = req.params.id;
   const decryptedNombre = aesDecrypt(req.body.nombres);
   const decryptedApellido = aesDecrypt(req.body.apellidos);
-  const decryptedTipoUsuario = aesDecrypt(req.body.tipoUsuario);
-  usuarios
+
+  usuariosPrestamistas
     .update(
       {
         nombres: decryptedNombre,
         apellidos: decryptedApellido,
-        tipoUsuario: decryptedTipoUsuario,
         isModified: true,
       },
       {
-        where: { idUsuario: idUsuario },
+        where: { idUsuarioPrestamista: idUsuarioPrestamista },
       }
     )
     .then((data) => {
@@ -184,14 +213,15 @@ exports.updateUsuarioPrestamista = (req, res) => {
         });
       } else {
         res.send({
-          message: `No se pudo actualizar el usuario con id=${idUsuario}.`,
+          message: `No se pudo actualizar el usuario con id=${idUsuarioPrestamista}.`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          "Ocurrió un error al actualizar el usuario con id=" + idUsuario,
+          "Ocurrió un error al actualizar el usuario con id=" +
+          idUsuarioPrestamista,
       });
     });
 };

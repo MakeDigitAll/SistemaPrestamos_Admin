@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const Usuarios = sequelize.define("usuarios", {
-    idUsuario: {
+  const UsuariosPrestamistas = sequelize.define("usuariosPrestamistas", {
+    idUsuarioPrestamista: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true,
@@ -33,16 +33,16 @@ module.exports = (sequelize, Sequelize) => {
         len: [1, 50], // Mínimo 1 caracter, máximo 50 caracteres
       },
     },
+    numeroTelefono: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        len: [9, 9], // Mínimo 1 caracter, máximo 20 caracteres
+      },
+    },
     imagenPerfil: {
       type: Sequelize.BLOB, // Almacena los datos binarios de la imagen
       allowNull: true,
-    },
-    tipoUsuario: {
-      type: Sequelize.STRING,
-      allowNull: false,
-      validate: {
-        len: [1, 30], // Mínimo 1 caracter, máximo 30 caracteres
-      },
     },
     isActive: {
       type: Sequelize.BOOLEAN,
@@ -72,5 +72,5 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
 
-  return Usuarios;
+  return UsuariosPrestamistas;
 };

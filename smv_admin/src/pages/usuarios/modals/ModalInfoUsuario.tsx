@@ -1,10 +1,10 @@
 // ModalInfoUsuaio.tsx
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Avatar, Card, Text } from "@nextui-org/react";
-import { User } from "../../../types/types";
+import { UserPrestamista } from "../../../types/types";
 
 interface InformacionUsuarioProps {
-  user: User;
+  user: UserPrestamista;
   onClose: () => void;
 }
 
@@ -15,7 +15,6 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
   const [visible, setVisible] = useState(false);
   const [nombre] = useState(user.nombres);
   const [apellidos] = useState(user.apellidos);
-  const [rol] = useState(user.tipoUsuario);
   const [correoElectronico] = useState(user.correoElectronico);
   const [codigoReferencia] = useState(user.codigoReferencia);
 
@@ -59,10 +58,6 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
             <Text h5 css={{ lineHeight: "$xs" }}>
               <span>Código de Referencia: </span>
               <span style={{ fontWeight: "bold" }}>{codigoReferencia}</span>
-            </Text>
-            <Text h5 css={{ lineHeight: "$xs" }}>
-              <span>Tipo de Usuario: </span>
-              <span style={{ fontWeight: "bold" }}>{rol}</span>
             </Text>
           </div>
         </Card>

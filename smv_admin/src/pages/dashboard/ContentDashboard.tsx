@@ -9,61 +9,88 @@ import {
 } from "recharts";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { useGetUsuarios } from "../../hooks/usegetUsuarios";
-import { User as UserType } from "../../types/types";
+import { useGetUsuarios } from "../../hooks/usegetUsuariosPrestamistas";
+import { UserPrestamista as UserTypePrestamista } from "../../types/types";
 
 const ContentDashboard: React.FC = () => {
   const navigate = useNavigate();
   const getUsuarios = useGetUsuarios();
-  const usuarios = getUsuarios?.decodedToken?.usuarios;
-  const [usuariosActivos, setUsuariosActivos] = useState<UserType[]>([]);
-  const [usuariosInactivos, setUsuariosInactivos] = useState<UserType[]>([]);
-  const [usuariosEliminados, setUsuariosEliminados] = useState<UserType[]>([]);
+  const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
+  const [usuariosActivos, setUsuariosActivos] = useState<UserTypePrestamista[]>(
+    []
+  );
+  const [usuariosInactivos, setUsuariosInactivos] = useState<
+    UserTypePrestamista[]
+  >([]);
+  const [usuariosEliminados, setUsuariosEliminados] = useState<
+    UserTypePrestamista[]
+  >([]);
 
-  // Filtra los usuarios activos
+  // Filtra los usuariosPrestamistas activos
   useEffect(() => {
-    if (usuarios && usuarios.length > 0) {
-      const filteredUsuariosActivos = usuarios.filter(
-        (usuario: UserType) => usuario.isActive && !usuario.isDeleted
+    if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
+      const filteredUsuariosActivos = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) => usuario.isActive && !usuario.isDeleted
       );
       setUsuariosActivos(filteredUsuariosActivos);
 
-      const filteredUsuariosInactivos = usuarios.filter(
-        (usuario: UserType) => !usuario.isActive && !usuario.isDeleted
+      const filteredUsuariosInactivos = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
+          !usuario.isActive && !usuario.isDeleted
       );
       setUsuariosInactivos(filteredUsuariosInactivos);
 
-      const filteredUsuariosEliminados = usuarios.filter(
-        (usuario: UserType) => !usuario.isActive && usuario.isDeleted
+      const filteredUsuariosEliminados = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) => !usuario.isActive && usuario.isDeleted
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
     }
-  }, [usuarios]);
+  }, [usuariosPrestamistas]);
 
-  const data = [
-    { name: "Activos", value: usuariosActivos.length, fill: "#749DC3" },
-    { name: "Inactivos", value: usuariosInactivos.length, fill: "#A9A9A9" },
-    { name: "Eliminados", value: usuariosEliminados.length, fill: "#E57373" },
-  ];
+  const data = [];
+
+  if (usuariosActivos.length > 0) {
+    data.push({
+      name: "Activos",
+      value: usuariosActivos.length,
+      fill: "#749DC3",
+    });
+  }
+
+  if (usuariosInactivos.length > 0) {
+    data.push({
+      name: "Inactivos",
+      value: usuariosInactivos.length,
+      fill: "#A9A9A9",
+    });
+  }
+
+  if (usuariosEliminados.length > 0) {
+    data.push({
+      name: "Eliminados",
+      value: usuariosEliminados.length,
+      fill: "#E57373",
+    });
+  }
 
   const handlePieClick = (entry: any) => {
     // Realiza la redirección a la ubicación deseada según el nombre de la sección
     switch (entry.name) {
       case "Activos":
-        navigate("/usuarios-activos");
+        navigate("/usuariosPrestamistas-activos");
         break;
       case "Inactivos":
-        navigate("/usuarios-inactivos");
+        navigate("/usuariosPrestamistas-inactivos");
         break;
       case "Eliminados":
-        navigate("/usuarios-eliminados");
+        navigate("/usuariosPrestamistas-eliminados");
         break;
       default:
         break;
     }
   };
 
-  return usuariosActivos.length > 0 ? (
+  return (
     <Card
       style={{
         marginTop: "7%",
@@ -75,33 +102,37 @@ const ContentDashboard: React.FC = () => {
           <h3>Usuarios</h3>
         </Card.Header>
         <Card.Body style={{ marginTop: "-25%", marginBottom: "-10%" }}>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart width={400} height={400}>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                dataKey="value"
-                label
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.fill}
-                    onClick={() => handlePieClick(entry)}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          {data.length > 0 ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart width={400} height={400}>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  dataKey="value"
+                  label
+                >
+                  {data.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.fill}
+                      onClick={() => handlePieClick(entry)}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          ) : (
+            <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+              No hay datos disponibles para graficar
+            </h4>
+          )}
         </Card.Body>
       </div>
     </Card>
-  ) : (
-    <div style={{ marginTop: "10%" }}></div>
   );
 };
 
