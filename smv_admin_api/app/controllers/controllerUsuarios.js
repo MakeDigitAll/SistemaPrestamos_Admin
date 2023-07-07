@@ -2,6 +2,8 @@ const db = require("../models");
 const usuariosPrestamistas = db.usuariosPrestamistas;
 const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
+const calidadPrestamista = db.calidadPrestamista;
+
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("../utils/cryptoUtils");
@@ -82,6 +84,11 @@ exports.createUsuarioPrestamista = (req, res) => {
   const decryptedApellido = aesDecrypt(req.body.apellidos);
   const decryptedCorreo = aesDecrypt(req.body.email);
   const decryptedPasswd = aesDecrypt(req.body.password);
+  const decryptedMontoMinimo = aesDecrypt(req.body.montoMinimo);
+  const decryptedMontoMaximo = aesDecrypt(req.body.montoMaximo);
+  const decryptedNumeroClientes = aesDecrypt(req.body.numeroClientes);
+  const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
+
   let referralCode = generateReferralCode();
 
   // Función para comprobar si el código de referencia existe en la base de datos
@@ -119,7 +126,6 @@ exports.createUsuarioPrestamista = (req, res) => {
                   referralCode = generateReferralCode();
                   existingUser = checkReferralCode();
                 }
-
                 // Crear el usuario con el código de referencia único
                 usuariosPrestamistas
                   .create({
@@ -128,12 +134,31 @@ exports.createUsuarioPrestamista = (req, res) => {
                     correoElectronico: decryptedCorreo,
                     usuarioPassword: decryptedPasswd,
                     codigoReferencia: referralCode,
-                    tipoUsuario: "Prestamista",
+                    numeroTelefono: decryptedNumeroTelefono.toString(),
                   })
-                  .then(() => {
-                    res.send({ message: "Usuario creado exitosamente." });
+                  .then((prestamista) => {
+                    // Insertar datos en la tabla calidadPrestamista
+                    calidadPrestamista
+                      .create({
+                        idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
+                        montoDesde: decryptedMontoMinimo,
+                        montoHasta: decryptedMontoMaximo,
+                        numeroUsuarios: decryptedNumeroClientes,
+                      })
+                      .then(() => {
+                        res.send({ message: "Usuario creado exitosamente." });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        res.status(500).send({
+                          message:
+                            err.message ||
+                            "Ocurrió un error al crear los datos de calidad en la base de datos.",
+                        });
+                      });
                   })
                   .catch((err) => {
+                    console.log(err);
                     res.status(500).send({
                       message:
                         err.message ||

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const Prestamos = sequelize.define(
+  const CalidadPrestamista = sequelize.define(
     "calidadPrestamista",
     {
       idCalidadPrestamista: {
@@ -14,18 +14,19 @@ module.exports = (sequelize, Sequelize) => {
           model: "usuariosPrestamistas",
           key: "idUsuarioPrestamista",
         },
-        montoDesde: {
-          type: Sequelize.DECIMAL,
-          allowNull: false,
-        },
-        montoHasta: {
-          type: Sequelize.DECIMAL,
-          allowNull: false,
-        },
-        numeroUsuarios: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
+      },
+      montoDesde: {
+        //money
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      montoHasta: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      numeroUsuarios: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
       },
     },
     {
@@ -33,5 +34,5 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt: false,
     }
   );
-  return Prestamos;
+  return CalidadPrestamista;
 };

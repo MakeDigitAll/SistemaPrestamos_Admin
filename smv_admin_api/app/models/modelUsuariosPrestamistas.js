@@ -37,7 +37,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       allowNull: true,
       validate: {
-        len: [9, 9], // Mínimo 1 caracter, máximo 20 caracteres
+        len: [10, 10], // Mínimo 1 caracter, máximo 20 caracteres
       },
     },
     imagenPerfil: {

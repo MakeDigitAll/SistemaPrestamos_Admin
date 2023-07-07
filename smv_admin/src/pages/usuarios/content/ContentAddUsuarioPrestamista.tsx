@@ -11,6 +11,7 @@ const ContentAddUsuario: React.FC = () => {
   const [passwordError, setPasswordError] = useState("");
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
+  const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
@@ -43,6 +44,12 @@ const ContentAddUsuario: React.FC = () => {
     value: apellidosValue,
     reset: resetApellidos,
     bindings: apellidosBindings,
+  } = useInput("");
+
+  const {
+    value: numeroTelefonoValue,
+    reset: resetNumeroTelefono,
+    bindings: numeroTelefonoBindings,
   } = useInput("");
 
   const handleRegister = async () => {
@@ -89,12 +96,28 @@ const ContentAddUsuario: React.FC = () => {
       const encryptedApellidos = aesEncrypt(apellidosValue);
       const encryptedEmail = aesEncrypt(emailValue.toLowerCase());
       const encryptedPassword = aesEncrypt(passwordValue);
+      const encryptedMontoMinimo = aesEncrypt(
+        Array.isArray(sliderValue)
+          ? sliderValue[0].toString()
+          : sliderValue.toString()
+      );
+      const encryptedMontoMaximo = aesEncrypt(
+        Array.isArray(sliderValue)
+          ? sliderValue[1].toString()
+          : sliderValue.toString()
+      );
+      const encryptedNumeroTelefono = aesEncrypt(numeroTelefonoValue);
+      const encryptedNumeroClientes = aesEncrypt(userSliderValue.toString());
 
       const data = {
         nombre: encryptedNombre,
         apellidos: encryptedApellidos,
         email: encryptedEmail,
         password: encryptedPassword,
+        montoMinimo: encryptedMontoMinimo,
+        montoMaximo: encryptedMontoMaximo,
+        numeroTelefono: encryptedNumeroTelefono,
+        numeroClientes: encryptedNumeroClientes,
       };
 
       const response = await service.createUsuarioPrestamista(data);
@@ -105,6 +128,9 @@ const ContentAddUsuario: React.FC = () => {
         resetApellidos();
         resetEmail();
         resetPassword();
+        resetNumeroTelefono();
+        setSliderValue([1000, 10000]);
+        setUserSliderValue(20);
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -179,7 +205,7 @@ const ContentAddUsuario: React.FC = () => {
           alignItems: "center",
           flexDirection: "row",
           width: "70%",
-          height: "600px",
+          height: "700px",
           marginLeft: "15%",
           marginTop: "8%",
         }}
@@ -259,6 +285,27 @@ const ContentAddUsuario: React.FC = () => {
                   )}
                 </div>
               </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Numero de Teléfono",
+                    numeroTelefonoValue,
+                    numeroTelefonoError,
+                    numeroTelefonoBindings,
+                    "number",
+                    "new-telefono"
+                  )}
+                </div>
+                <div style={{ flex: 1, marginLeft: "1%" }}></div>
+              </div>
+
               <div style={{ flex: 1 }}>
                 <h5>¿Cuánto dinero se va a prestar?</h5>
                 <div>
