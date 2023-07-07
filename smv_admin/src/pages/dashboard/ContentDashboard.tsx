@@ -99,7 +99,7 @@ const ContentDashboard: React.FC = () => {
     >
       <div>
         <Card.Header style={{ display: "flex", justifyContent: "center" }}>
-          <h3>Usuarios</h3>
+          <h3>Usuarios Prestamistas</h3>
         </Card.Header>
         <Card.Body style={{ marginTop: "-25%", marginBottom: "-10%" }}>
           {data.length > 0 ? (
