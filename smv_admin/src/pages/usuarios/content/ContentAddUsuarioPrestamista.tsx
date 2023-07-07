@@ -3,12 +3,18 @@ import { Card, Avatar, Button, Grid, Input, useInput } from "@nextui-org/react";
 import { aesEncrypt } from "../../../utils/encryption";
 import service from "../../../services/service";
 import { toast } from "react-toastify";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 const ContentAddUsuario: React.FC = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
+  const [sliderValue, setSliderValue] = useState<number | number[]>([
+    1000, 10000,
+  ]);
+  const [userSliderValue, setUserSliderValue] = useState<number | number[]>(20);
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -106,6 +112,31 @@ const ContentAddUsuario: React.FC = () => {
       }
     }
   };
+
+  const formatValue = (value: number | number[]): string => {
+    let minValue = 0;
+    let maxValue = 0;
+
+    if (typeof value === "number") {
+      minValue = value;
+      maxValue = value;
+    } else if (Array.isArray(value)) {
+      [minValue, maxValue] = value;
+    }
+
+    const formattedMinValue = minValue.toLocaleString();
+    const formattedMaxValue = maxValue.toLocaleString();
+
+    return `Desde: $${formattedMinValue} Hasta: $${formattedMaxValue}`;
+  };
+
+  const handleSliderChange = (value: number | number[]): void => {
+    setSliderValue(value);
+  };
+
+  const handleUserSliderChange = (value: number | number[]): void => {
+    setUserSliderValue(value);
+  };
   const renderInputField = (
     label: string,
     value: string,
@@ -148,7 +179,7 @@ const ContentAddUsuario: React.FC = () => {
           alignItems: "center",
           flexDirection: "row",
           width: "70%",
-          height: "400px",
+          height: "600px",
           marginLeft: "15%",
           marginTop: "8%",
         }}
@@ -228,9 +259,42 @@ const ContentAddUsuario: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div style={{ flex: 1 }}>{/* Componente adicional */}</div>
+              <div style={{ flex: 1 }}>
+                <h5>¿Cuánto dinero se va a prestar?</h5>
+                <div>
+                  <Slider
+                    ariaLabelledByForHandle={"slider-handle-1"}
+                    range
+                    railStyle={{ backgroundColor: "#000000" }}
+                    min={1000}
+                    max={1000000}
+                    step={1000}
+                    defaultValue={[1000, 10000]}
+                    onChange={handleSliderChange}
+                  />
+                  <div>{formatValue(sliderValue)}</div>
+                </div>
+              </div>
+              <div style={{ flex: 1, marginTop: "5%" }}>
+                <h5>¿A Cuántos Usuarios Planeas Prestar?</h5>
+                <div>
+                  <Slider
+                    ariaLabelledByForHandle={"slider-handle-1"}
+                    railStyle={{ backgroundColor: "#000000" }}
+                    min={10}
+                    max={10000}
+                    step={10}
+                    defaultValue={userSliderValue}
+                    onChange={handleUserSliderChange}
+                  />
+                  <div>{`${userSliderValue} Usuarios`}</div>
+                </div>
+              </div>
             </div>
           </div>
+          <Button style={{ marginTop: "10%" }} onClick={handleRegister}>
+            Registrar
+          </Button>
         </Card.Body>
       </Card>
     </div>
