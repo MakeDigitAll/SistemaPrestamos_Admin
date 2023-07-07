@@ -27,6 +27,10 @@ db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(
 );
 db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
 db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
+db.calidadPrestamista = require("./modelCalidadPrestamista.js")(
+  sequelize,
+  Sequelize
+);
 
 // Asociaciones entre usuarios y suscripciones
 db.usuariosPrestamistas.hasOne(db.suscripciones, {
@@ -56,6 +60,16 @@ db.usuariosAfiliados.hasMany(db.prestamos, {
 db.prestamos.belongsTo(db.usuariosAfiliados, {
   foreignKey: "idUsuarioAfiliado",
   as: "usuarioAfiliado",
+});
+
+// Asociación entre usuarios Prestamistas y Calidad Prestamista, 1 usuario prestamista solo puede tener 1 calidad prestamista (1 a 1) y 1 calidad prestamista puede pertenecer a 1 usuario prestamista (1 a 1)
+db.usuariosPrestamistas.hasOne(db.calidadPrestamista, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "calidadPrestamista",
+});
+db.calidadPrestamista.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "usuariosPrestamistas",
 });
 
 module.exports = db;

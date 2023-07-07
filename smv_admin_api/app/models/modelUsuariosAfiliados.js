@@ -70,6 +70,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    isPasswordChanged: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
+    isEmailConfirmed: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return UsuariosAfiliados;

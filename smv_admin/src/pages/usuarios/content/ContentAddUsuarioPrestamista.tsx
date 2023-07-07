@@ -134,78 +134,104 @@ const ContentAddUsuario: React.FC = () => {
           helperText={error ? error : ""}
           name={label.toLowerCase()}
           aria-label={label.toLowerCase()}
-          css={{ marginBottom: "5%" }}
+          css={{ marginBottom: "10%" }}
           autoComplete={autoComplete}
         />
       </Grid>
     </>
   );
-
   return (
     <div>
       <Card
         css={{
-          width: "30%",
-          margin: "auto",
-          marginTop: "10%",
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "row",
+          width: "70%",
+          height: "400px",
+          marginLeft: "15%",
+          marginTop: "8%",
         }}
       >
-        <Card.Header>
-          <Avatar
-            src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
-            zoomed
-            css={{
-              margin: "auto",
-              height: "30%",
-              width: "30%",
-            }}
-          />
-        </Card.Header>
-
         <Card.Body>
-          {renderInputField(
-            "Nombre",
-            nombreValue,
-            nombreError,
-            nombreBindings,
-            "text",
-            "new-nombre"
-          )}
-          {renderInputField(
-            "Apellidos",
-            apellidosValue,
-            apellidosError,
-            apellidosBindings,
-            "text",
-            "new-apellidos"
-          )}
-          {renderInputField(
-            "Correo Electrónico",
-            emailValue,
-            emailError,
-            emailBindings,
-            "email",
-            "new-correo"
-          )}
-          {renderInputField(
-            "Contraseña",
-            passwordValue,
-            passwordError,
-            passwordBindings,
-            "password",
-            "new-password"
-          )}
-        </Card.Body>
-        <Card.Footer>
-          <Button
-            color="gradient"
-            auto
-            css={{ width: "50%", margin: "auto" }}
-            onPress={handleRegister}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+            }}
           >
-            Registrar
-          </Button>
-        </Card.Footer>
+            <Avatar
+              src="https://i.pravatar.cc/300"
+              css={{
+                marginRight: "10%",
+                width: "20%",
+                height: "20%",
+              }}
+            />
+
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Nombre",
+                    nombreValue,
+                    nombreError,
+                    nombreBindings,
+                    "text",
+                    "new-nombre"
+                  )}
+                </div>
+                <div style={{ flex: 1, marginLeft: "1%" }}>
+                  {renderInputField(
+                    "Apellidos",
+                    apellidosValue,
+                    apellidosError,
+                    apellidosBindings,
+                    "text",
+                    "new-apellidos"
+                  )}
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Correo Electrónico",
+                    emailValue,
+                    emailError,
+                    emailBindings,
+                    "email",
+                    "new-correo"
+                  )}
+                </div>
+                <div style={{ flex: 1, marginLeft: "1%" }}>
+                  {renderInputField(
+                    "Contraseña",
+                    passwordValue,
+                    passwordError,
+                    passwordBindings,
+                    "password",
+                    "new-password"
+                  )}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>{/* Componente adicional */}</div>
+            </div>
+          </div>
+        </Card.Body>
       </Card>
     </div>
   );
