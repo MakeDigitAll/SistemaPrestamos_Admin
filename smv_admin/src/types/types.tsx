@@ -4,6 +4,8 @@ export interface UserPrestamista {
   nombres: string;
   apellidos: string;
   codigoReferencia: string | null;
+  numeroTelefono: string | null;
+  imagenPerfil: string | null;
   isActive: boolean;
   isDeleted: boolean;
   suscripcion: {
