@@ -12,7 +12,8 @@ const ContentAddUsuario: React.FC = () => {
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
-
+  let montoMinValue;
+  let montoMaxValue;
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
@@ -22,6 +23,14 @@ const ContentAddUsuario: React.FC = () => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailRegex.test(value);
   };
+
+  if (Array.isArray(sliderValue)) {
+    montoMinValue = sliderValue[0];
+    montoMaxValue = sliderValue[1];
+  } else {
+    montoMinValue = sliderValue;
+    montoMaxValue = sliderValue;
+  }
 
   const {
     value: emailValue,
@@ -164,7 +173,7 @@ const ContentAddUsuario: React.FC = () => {
     const formattedMinValue = minValue.toLocaleString();
     const formattedMaxValue = maxValue.toLocaleString();
 
-    return `Desde: $${formattedMinValue} Hasta: $${formattedMaxValue}`;
+    return `$${formattedMinValue} - $${formattedMaxValue}`;
   };
 
   const handleSliderChange = (value: number | number[]): void => {
@@ -175,6 +184,37 @@ const ContentAddUsuario: React.FC = () => {
     setUserSliderValue(value);
   };
 
+  const handleMontoMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.replace(/[^0-9]/g, "");
+    const parsedValue = parseInt(value, 10);
+
+    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 1000000) {
+      const newSliderValue = Array.isArray(sliderValue)
+        ? [parsedValue, sliderValue[1]]
+        : parsedValue;
+      setSliderValue(newSliderValue);
+    }
+  };
+
+  const handleMontoMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.replace(/[^0-9]/g, "");
+    const parsedValue = parseInt(value, 10);
+
+    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 1000000) {
+      const newSliderValue = Array.isArray(sliderValue)
+        ? [sliderValue[0], parsedValue]
+        : parsedValue;
+      setSliderValue(newSliderValue);
+    }
+  };
+
+  const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value) && value >= 1 && value <= 10000) {
+      setUserSliderValue(value);
+    }
+  };
+
   const renderInputField = (
     label: string,
     value: string,
@@ -183,31 +223,29 @@ const ContentAddUsuario: React.FC = () => {
     type: string,
     autoComplete: string
   ) => (
-    <>
-      <Grid
-        css={{
-          justifyContent: "left",
-          alignSelf: "left",
-        }}
-      >
-        <Input
-          {...bindings}
-          rounded
-          bordered
-          width="100%"
-          type={type}
-          label={label}
-          status={error ? "error" : "default"}
-          color={error ? "error" : "default"}
-          helperColor={error ? "error" : "default"}
-          helperText={error ? error : ""}
-          name={label.toLowerCase()}
-          aria-label={label.toLowerCase()}
-          css={{ marginBottom: "10%" }}
-          autoComplete={autoComplete}
-        />
-      </Grid>
-    </>
+    <Grid
+      css={{
+        justifyContent: "left",
+        alignSelf: "left",
+      }}
+    >
+      <Input
+        {...bindings}
+        rounded
+        bordered
+        width="100%"
+        type={type}
+        label={label}
+        status={error ? "error" : "default"}
+        color={error ? "error" : "default"}
+        helperColor={error ? "error" : "default"}
+        helperText={error ? error : ""}
+        name={label.toLowerCase()}
+        aria-label={label.toLowerCase()}
+        css={{ marginBottom: "10%" }}
+        autoComplete={autoComplete}
+      />
+    </Grid>
   );
 
   return (
@@ -218,7 +256,7 @@ const ContentAddUsuario: React.FC = () => {
           alignItems: "center",
           flexDirection: "row",
           width: "70%",
-          height: "700px",
+          height: "75%",
           marginLeft: "15%",
           marginTop: "8%",
         }}
@@ -309,7 +347,7 @@ const ContentAddUsuario: React.FC = () => {
                     "new-telefono"
                   )}
                 </div>
-                <div style={{ flex: 1, marginLeft: "1%" }}></div>
+                <div style={{ flex: 1, marginRight: "1%" }}></div>
               </div>
 
               <div style={{ flex: 1 }}>
@@ -319,13 +357,40 @@ const ContentAddUsuario: React.FC = () => {
                     ariaLabelledByForHandle={"slider-handle-1"}
                     range
                     railStyle={{ backgroundColor: "#000000" }}
-                    min={1000}
+                    min={1}
+                    value={sliderValue}
                     max={1000000}
                     step={1000}
-                    defaultValue={[1000, 10000]}
                     onChange={handleSliderChange}
                   />
-                  <div>{formatValue(sliderValue)}</div>
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              >
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Monto Mínimo",
+                    montoMinValue.toLocaleString(),
+                    "",
+                    { value: montoMinValue, onChange: handleMontoMinChange },
+                    "number",
+                    "new-monto-min"
+                  )}
+                </div>
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Monto Máximo",
+                    montoMaxValue.toLocaleString(),
+                    "",
+                    { value: montoMaxValue, onChange: handleMontoMaxChange },
+                    "number",
+                    "new-monto-max"
+                  )}
                 </div>
               </div>
               <div style={{ flex: 1, marginTop: "5%" }}>
@@ -334,13 +399,32 @@ const ContentAddUsuario: React.FC = () => {
                   <Slider
                     ariaLabelledByForHandle={"slider-handle-1"}
                     railStyle={{ backgroundColor: "#000000" }}
-                    min={10}
+                    min={1}
                     max={10000}
                     step={10}
-                    defaultValue={userSliderValue}
+                    value={userSliderValue}
                     onChange={handleUserSliderChange}
                   />
-                  <div>{`${userSliderValue} Usuarios`}</div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      marginBottom: "1%",
+                    }}
+                  >
+                    <div style={{ flex: 1, marginRight: "1%" }}>
+                      {renderInputField(
+                        "Usuarios",
+                        userSliderValue.toString(),
+                        "", // Puedes agregar un mensaje de error si es necesario
+                        { value: userSliderValue, onChange: handleUserChange }, // Actualiza el valor y el evento onChange
+                        "number",
+                        "new-usuarios"
+                      )}
+                    </div>
+
+                    <div style={{ flex: 1, marginRight: "1%" }}></div>
+                  </div>
                 </div>
               </div>
             </div>
