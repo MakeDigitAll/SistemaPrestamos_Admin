@@ -9,12 +9,12 @@ import {
 } from "recharts";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { useGetUsuarios } from "../../hooks/usegetUsuariosPrestamistas";
+import { useGetUsuariosPrestamistas } from "../../hooks/usegetUsuariosPrestamistas";
 import { UserPrestamista as UserTypePrestamista } from "../../types/types";
 
 const ContentDashboard: React.FC = () => {
   const navigate = useNavigate();
-  const getUsuarios = useGetUsuarios();
+  const getUsuarios = useGetUsuariosPrestamistas();
   const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
   const [usuariosActivos, setUsuariosActivos] = useState<UserTypePrestamista[]>(
     []

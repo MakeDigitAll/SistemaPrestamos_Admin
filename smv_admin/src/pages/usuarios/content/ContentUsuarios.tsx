@@ -17,7 +17,7 @@ import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
 import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
-import { useGetUsuarios } from "../../../hooks/usegetUsuariosPrestamistas";
+import { useGetUsuariosPrestamistas } from "../../../hooks/usegetUsuariosPrestamistas";
 import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
@@ -38,7 +38,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   //Obtiene el collator para ordenar los usuariosPrestamistas
   const collator = useCollator({ numeric: true });
   //Obtiene los usuariosPrestamistas del hook useGetUsuarios
-  const getUsuarios = useGetUsuarios();
+  const getUsuarios = useGetUsuariosPrestamistas();
   //Estado para definir el orden de los usuariosPrestamistas
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: undefined,

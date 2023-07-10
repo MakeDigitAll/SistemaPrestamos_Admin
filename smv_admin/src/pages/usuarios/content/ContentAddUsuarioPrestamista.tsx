@@ -136,6 +136,7 @@ const ContentAddUsuario: React.FC = () => {
       );
       const encryptedNumeroTelefono = aesEncrypt(numeroTelefonoValue);
       const encryptedNumeroClientes = aesEncrypt(userSliderValue.toString());
+      const encryptedNombreNivel = aesEncrypt("tier1");
 
       const data = {
         nombre: encryptedNombre,
@@ -146,6 +147,7 @@ const ContentAddUsuario: React.FC = () => {
         montoMaximo: encryptedMontoMaximo,
         numeroTelefono: encryptedNumeroTelefono,
         numeroClientes: encryptedNumeroClientes,
+        nombreNivel: encryptedNombreNivel,
       };
 
       const response = await service.createUsuarioPrestamista(data);

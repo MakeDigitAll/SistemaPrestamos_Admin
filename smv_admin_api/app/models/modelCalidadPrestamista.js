@@ -16,7 +16,6 @@ module.exports = (sequelize, Sequelize) => {
         },
       },
       montoDesde: {
-        //money
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
@@ -27,6 +26,14 @@ module.exports = (sequelize, Sequelize) => {
       numeroUsuarios: {
         type: Sequelize.DECIMAL,
         allowNull: false,
+      },
+      nombreNivel: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      costoMembresia: {
+        type: Sequelize.DECIMAL,
+        allowNull: true,
       },
     },
     {

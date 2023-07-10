@@ -17,6 +17,8 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
   const [apellidos] = useState(user.apellidos);
   const [correoElectronico] = useState(user.correoElectronico);
   const [codigoReferencia] = useState(user.codigoReferencia);
+  const [telefono] = useState(user.numeroTelefono);
+  //const [imagenPerfil] = useState(user.imagenPerfil);
 
   const closeHandler = () => {
     setVisible(false);
@@ -58,6 +60,10 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
             <Text h5 css={{ lineHeight: "$xs" }}>
               <span>Código de Referencia: </span>
               <span style={{ fontWeight: "bold" }}>{codigoReferencia}</span>
+            </Text>
+            <Text h5 css={{ lineHeight: "$xs" }}>
+              <span>Numero de Telefono: </span>
+              <span style={{ fontWeight: "bold" }}>{telefono}</span>
             </Text>
           </div>
         </Card>

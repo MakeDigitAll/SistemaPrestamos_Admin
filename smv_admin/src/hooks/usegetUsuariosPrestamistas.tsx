@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import services from "../services/service";
 
-export const useGetUsuarios = () => {
+export const useGetUsuariosPrestamistas = () => {
   const [decodedToken, setDecodedToken] = useState<any>(null);
 
   const fetchData = async () => {

@@ -17,6 +17,8 @@ exports.findAllUsuariosPrestamista = (req, res) => {
         {
           model: suscripciones,
           as: "suscripcion",
+          model: calidadPrestamista,
+          as: "calidadPrestamista",
         },
       ],
     })
@@ -29,6 +31,7 @@ exports.findAllUsuariosPrestamista = (req, res) => {
         codigoReferencia: user.codigoReferencia,
         isActive: user.isActive,
         isDeleted: user.isDeleted,
+        numeroTelefono: user.numeroTelefono,
         suscripcion: user.suscripcion?.idSuscripcion
           ? {
               idSuscripcion: user.suscripcion.idSuscripcion,
@@ -36,6 +39,16 @@ exports.findAllUsuariosPrestamista = (req, res) => {
               fechaInicio: user.suscripcion.fechaInicio,
               fechaFin: user.suscripcion.fechaFin,
               estadoSuscripcion: user.suscripcion.estadoSuscripcion,
+            }
+          : null,
+        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
+          ? {
+              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
+              montoDesde: user.calidadPrestamista.montoDesde,
+              montoHasta: user.calidadPrestamista.montoHasta,
+              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
+              nombreNivel : user.calidadPrestamista.nombreNivel,
+              costoMembresia : user.calidadPrestamista.costoMembresia,
             }
           : null,
       }));
@@ -52,31 +65,6 @@ exports.findAllUsuariosPrestamista = (req, res) => {
     });
 };
 
-exports.findAllUsuariosAfiliado = (req, res) => {
-  usuariosPrestamistas
-    .findAll({ where: { tipoUsuario: "Afiliado" } }) // Filtrar usuariosPrestamistas por tipo "Prestamista"
-    .then((data) => {
-      const usuariosPrestamistas = data.map((user) => ({
-        // Cambiar el nombre de la variable para evitar conflicto con la importación anterior
-        idUsuarioPrestamista: user.idUsuarioPrestamista,
-        correoElectronico: user.correoElectronico,
-        nombres: user.nombres,
-        apellidos: user.apellidos,
-        codigoReferencia: user.codigoReferencia,
-        tipoUsuario: user.tipoUsuario,
-      }));
-      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-      res.send({ tokenUsuarios });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al obtener los usuariosPrestamistas.",
-      });
-    });
-};
-
 //crear un nuevo usuario de tipo prestamista
 
 exports.createUsuarioPrestamista = (req, res) => {
@@ -88,6 +76,7 @@ exports.createUsuarioPrestamista = (req, res) => {
   const decryptedMontoMaximo = aesDecrypt(req.body.montoMaximo);
   const decryptedNumeroClientes = aesDecrypt(req.body.numeroClientes);
   const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
+  const decryptedNombreNivel = aesDecrypt(req.body.nombreNivel);
 
   let referralCode = generateReferralCode();
 
@@ -144,6 +133,7 @@ exports.createUsuarioPrestamista = (req, res) => {
                         montoDesde: decryptedMontoMinimo,
                         montoHasta: decryptedMontoMaximo,
                         numeroUsuarios: decryptedNumeroClientes,
+                        nombreNivel: decryptedNombreNivel,
                       })
                       .then(() => {
                         res.send({ message: "Usuario creado exitosamente." });

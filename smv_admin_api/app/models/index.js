@@ -31,7 +31,6 @@ db.calidadPrestamista = require("./modelCalidadPrestamista.js")(
   sequelize,
   Sequelize
 );
-db.nivelesPrestamistas = require("./modelNivelesPrestamistas.js")(sequelize, Sequelize);
 
 // Asociaciones entre usuarios y suscripciones
 db.usuariosPrestamistas.hasOne(db.suscripciones, {
@@ -69,16 +68,6 @@ db.usuariosPrestamistas.hasOne(db.calidadPrestamista, {
   as: "calidadPrestamista",
 });
 db.calidadPrestamista.belongsTo(db.usuariosPrestamistas, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "usuariosPrestamistas",
-});
-
-//asociacion entre usuarios prestamistas y niveles un prestamita solo puede tener un nivel y un nivel puede pertenecer a un prestamista
-db.usuariosPrestamistas.hasOne(db.nivelesPrestamistas, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "nivelesPrestamistas",
-});
-db.nivelesPrestamistas.belongsTo(db.usuariosPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
   as: "usuariosPrestamistas",
 });

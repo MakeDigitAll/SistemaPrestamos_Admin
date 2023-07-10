@@ -15,4 +15,12 @@ export interface UserPrestamista {
     fechaFin: Date | null;
     estadoSuscripcion: string | null;
   } | null;
+  calidadPrestamista: {
+    idCalidadPrestamista: number | null;
+    montoDesde: number | null;
+    montoHasta: number | null;
+    numeroUsuarios: number | null;
+    nombreNivel: string | null;
+    costoMembresia: number | null;
+  } | null;
 }
