@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Card, Avatar, Button, Grid, Input, useInput } from "@nextui-org/react";
+import {
+  Card,
+  Avatar,
+  Button,
+  Grid,
+  Input,
+  useInput,
+  Dropdown,
+} from "@nextui-org/react";
 import { aesEncrypt } from "../../../utils/encryption";
 import service from "../../../services/service";
 import { toast } from "react-toastify";
@@ -159,23 +167,6 @@ const ContentAddUsuario: React.FC = () => {
     }
   };
 
-  const formatValue = (value: number | number[]): string => {
-    let minValue = 0;
-    let maxValue = 0;
-
-    if (typeof value === "number") {
-      minValue = value;
-      maxValue = value;
-    } else if (Array.isArray(value)) {
-      [minValue, maxValue] = value;
-    }
-
-    const formattedMinValue = minValue.toLocaleString();
-    const formattedMaxValue = maxValue.toLocaleString();
-
-    return `$${formattedMinValue} - $${formattedMaxValue}`;
-  };
-
   const handleSliderChange = (value: number | number[]): void => {
     setSliderValue(value);
   };
@@ -233,7 +224,6 @@ const ContentAddUsuario: React.FC = () => {
         {...bindings}
         rounded
         bordered
-        width="100%"
         type={type}
         label={label}
         status={error ? "error" : "default"}
@@ -252,31 +242,29 @@ const ContentAddUsuario: React.FC = () => {
     <div>
       <Card
         css={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "row",
-          width: "70%",
-          height: "75%",
-          marginLeft: "15%",
-          marginTop: "8%",
+          width: "fit-content",
+          margin: "auto",
         }}
       >
+        <Card.Header>
+          <Avatar
+            src="https://i.pravatar.cc/300"
+            css={{
+              width: "20%",
+              height: "20%",
+              margin: "auto",
+            }}
+          />
+        </Card.Header>
         <Card.Body>
           <div
             style={{
               display: "flex",
               flexDirection: "row",
               justifyContent: "center",
+              marginBottom: "-10%",
             }}
           >
-            <Avatar
-              src="https://i.pravatar.cc/300"
-              css={{
-                marginRight: "10%",
-                width: "20%",
-                height: "20%",
-              }}
-            />
             <div style={{ flex: 1 }}>
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ flex: 1, marginRight: "1%" }}>
@@ -338,16 +326,52 @@ const ContentAddUsuario: React.FC = () => {
                 }}
               >
                 <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Numero de Teléfono",
-                    numeroTelefonoValue,
-                    numeroTelefonoError,
-                    numeroTelefonoBindings,
-                    "number",
-                    "new-telefono"
-                  )}
+                  <Input
+                    {...numeroTelefonoBindings}
+                    rounded
+                    bordered
+                    width="100%"
+                    type="number"
+                    label="Numero de Teléfono a 10 dígitos"
+                    status={numeroTelefonoError ? "error" : "default"}
+                    color={numeroTelefonoError ? "error" : "default"}
+                    helperColor={numeroTelefonoError ? "error" : "default"}
+                    helperText={numeroTelefonoError ? numeroTelefonoError : ""}
+                    name="numero-telefono"
+                    aria-label="numero-telefono"
+                    css={{ marginBottom: "10%" }}
+                    autoComplete="new-telefono"
+                    min="0" // Evita números negativos
+                    onInput={(event) => {
+                      const target = event.target as HTMLInputElement;
+                      target.value = Math.max(0, parseInt(target.value))
+                        .toString()
+                        .slice(0, 10); // Limita a 10 dígitos
+                    }}
+                  />
                 </div>
-                <div style={{ flex: 1, marginRight: "1%" }}></div>
+
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  <Dropdown isDisabled={true}>
+                    <Dropdown.Button
+                      style={{
+                        width: "200px",
+                        marginTop: "10%",
+                        marginLeft: "13%",
+                      }}
+                    >
+                      Suscripcion
+                    </Dropdown.Button>
+                    <Dropdown.Menu aria-label="Tipos de Suscrpcion">
+                      <Dropdown.Item key="tier1">Estandar</Dropdown.Item>
+                      <Dropdown.Item key="tier2">Avanzado</Dropdown.Item>
+                      <Dropdown.Item key="tier3">Premium</Dropdown.Item>
+                      <Dropdown.Item key="tierCustom" withDivider>
+                        Personalizar
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
               </div>
 
               <div style={{ flex: 1 }}>
@@ -374,7 +398,7 @@ const ContentAddUsuario: React.FC = () => {
               >
                 <div style={{ flex: 1, marginRight: "1%" }}>
                   {renderInputField(
-                    "Monto Mínimo",
+                    "Monto Mínimo $Mxn",
                     montoMinValue.toLocaleString(),
                     "",
                     { value: montoMinValue, onChange: handleMontoMinChange },
@@ -384,7 +408,7 @@ const ContentAddUsuario: React.FC = () => {
                 </div>
                 <div style={{ flex: 1, marginRight: "1%" }}>
                   {renderInputField(
-                    "Monto Máximo",
+                    "Monto Máximo $Mxn",
                     montoMaxValue.toLocaleString(),
                     "",
                     { value: montoMaxValue, onChange: handleMontoMaxChange },

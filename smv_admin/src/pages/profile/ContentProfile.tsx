@@ -15,10 +15,10 @@ const ContentProfile: React.FC = () => {
     <div>
       <Card
         css={{
-          width: "450px",
-          height: "600px",
+          width: "fit-content",
+          height: "fit-content",
           margin: "auto",
-          marginTop: "3%",
+          marginTop: "10%",
         }}
       >
         <Card.Header>

@@ -94,7 +94,7 @@ const ContentDashboard: React.FC = () => {
     <Card
       style={{
         marginTop: "7%",
-        width: "20%",
+        width: "fit-content",
       }}
     >
       <div>

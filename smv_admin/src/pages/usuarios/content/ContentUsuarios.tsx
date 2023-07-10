@@ -357,8 +357,8 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   return (
     <Card
       css={{
-        height: "auto",
-        maxWidth: "100%",
+        height: "fit-content",
+        width: "100%",
       }}
     >
       <Table
