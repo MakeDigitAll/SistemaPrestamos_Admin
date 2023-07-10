@@ -1,11 +1,54 @@
 /*Body.css*/
+
+.app-container {
+  display: flex;
+  overflow: hidden; /* Evita el desbordamiento de contenido en dispositivos pequeños */
+  height: calc(100vh - 32px); /* Resta la altura del header */
+}
+
 .header {
-  position: fixed; /* Hace que el encabezado sea fijo */
-  z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
-  /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
-  width: 95%;
-  margin-top: 0%;
-  transition: width .7s ease; /* Transición gradual de 0.3 segundos */
+  flex-shrink: 0; /* Evita que el header se contraiga */
+  width: 100%; /* Establece el ancho del header al 100% */
+}
+
+.sidebar {
+  height: 100vh; /* Altura total de la pantalla */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+
+}
+.content-scrollable {
+  /* Ajusta el contenido para que se ajuste al encabezado y al pie de página */
+  padding-top: 2.5%; /* Altura del header */
+  padding-bottom: 5%; /* Altura del footer */
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  /* scroll solo si el contenido excede la altura del contenedor */
+  height: 100%;
+  overflow-y: auto; /* Permite el desplazamiento vertical cuando el contenido excede la altura del contenedor */
+  overflow-x: hidden; /* Oculta el desplazamiento horizontal */
+}
+
+.sidebar.collapsed {
+  width: 50px;
+}
+.content-body {
+  flex-grow: 1;
+}
+
+
+.footer-container {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  margin-bottom: -10px;
+  text-align: center;
+}
+
+.footer-container p {
+  font-size:10px;
 }
 
 .ps-sidebar-root:not(.ps-collapsed) + .content .header {
@@ -13,40 +56,6 @@
   width: 84%;
   transition: width 0.7s ease;
 }
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  z-index: 1;
-}
-
-.sidebar.collapsed {
-  width: 50px;
-}
-
-
-.content-container {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  position: fixed; /* Hace que la barra lateral sea fija */
-  width: 100%;
-  background-color: transparent;
-}
-
-.content {
-  flex-grow: 1;
-  overflow-y: auto; /* Agrega scroll vertical solo al contenido */
-}
-
-.content-body{
-  flex-grow: 1;
-  margin-top: 5%;
-  margin-left: 3%;
-  margin-right: 3%;
-  margin-bottom: 3%;
-}
-
 /* Estilos para el modo oscuro */
 /* Sideabar */
 .dark-mode {
@@ -98,7 +107,6 @@
   font-size: 0.9rem;
 }
 
-/* Agregar Usuario */
 
 /* Login */
 .nextui-c-eXOOPO {
@@ -186,21 +194,6 @@ background-color: #222222;
 color: #fff;
 }
 
-.footer-container {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  text-align: center;
-}
-
-.footer-container p {
-  font-size:10px;
-}
-
-.footer{
-  margin-left: 2.5%;
-}
-
 /* Modal */
 .nextui-c-bvsQQD {
   color : #000000;
@@ -235,6 +228,9 @@ color: #fff;
   background: #6d6363;
   -webkit-text-fill-color: white;
 }
+
+
+
 
 
 /* Notificaciones */

@@ -12,55 +12,78 @@ import UsuariosEliminados from "../pages/usuarios/UsuariosEliminados";
 import cookies from "js-cookie";
 import lightTheme from "./lightTheme";
 import darkTheme from "./darkTheme";
+import { SearchContextProvider } from "../context/SearchContext";
+
+import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
+import SideBar from "../components/sidebar/SideBar";
 
 function AppRouter() {
   const accessToken = cookies.get("accessToken");
   const isLoggedIn = !!accessToken;
 
   return (
-    <BrowserRouter>
-      <NextThemesProvider
-        defaultTheme="system"
-        attribute="class"
-        value={{
-          light: lightTheme.className,
-          dark: darkTheme.className,
-        }}
-      >
-        <NextUIProvider>
-          <Routes>
-            <Route path="/admin-login" element={<Login />} />
-            <Route path="/admin-dashboard" element={<Dashboard />} />
-            <Route path="/admin-profile" element={<Profile />} />
-            <Route
-              path="/admin-usuarios-activos"
-              element={<UsuariosActivos />}
-            />
-            <Route
-              path="/admin-usuarios-inactivos"
-              element={<UsuariosInactivos />}
-            />
-            <Route path="/admin-suscripciones" element={<Suscripciones />} />
-            <Route path="/admin-add-usuario" element={<AddUsuario />} />
-            <Route
-              path="/admin-usuarios-eliminados"
-              element={<UsuariosEliminados />}
-            />
-            {isLoggedIn ? (
-              <Route
-                path="/"
-                element={<Navigate to="/admin-dashboard" replace />}
-              />
-            ) : (
-              <Route
-                path="/"
-                element={<Navigate to="/admin-login" replace />}
-              />
-            )}
-          </Routes>
-        </NextUIProvider>
-      </NextThemesProvider>
-    </BrowserRouter>
+    <SearchContextProvider>
+      <BrowserRouter>
+        <NextThemesProvider
+          defaultTheme="system"
+          attribute="class"
+          value={{
+            light: lightTheme.className,
+            dark: darkTheme.className,
+          }}
+        >
+          <NextUIProvider>
+            <div className="app-container">
+              <SideBar />
+              <div className="content-body">
+                <div className="header">
+                  <Header />
+                </div>
+                <div className="content-scrollable">
+                  <Routes>
+                    <Route path="/admin-login" element={<Login />} />
+                    <Route path="/admin-dashboard" element={<Dashboard />} />
+                    <Route path="/admin-profile" element={<Profile />} />
+                    <Route
+                      path="/admin-usuarios-activos"
+                      element={<UsuariosActivos />}
+                    />
+                    <Route
+                      path="/admin-usuarios-inactivos"
+                      element={<UsuariosInactivos />}
+                    />
+                    <Route
+                      path="/admin-suscripciones"
+                      element={<Suscripciones />}
+                    />
+                    <Route path="/admin-add-usuario" element={<AddUsuario />} />
+                    <Route
+                      path="/admin-usuarios-eliminados"
+                      element={<UsuariosEliminados />}
+                    />
+                    {isLoggedIn ? (
+                      <Route
+                        path="/"
+                        element={<Navigate to="/admin-dashboard" replace />}
+                      />
+                    ) : (
+                      <Route
+                        path="/"
+                        element={<Navigate to="/admin-login" replace />}
+                      />
+                    )}
+                  </Routes>
+                </div>
+              </div>
+            </div>
+            <div className="footer">
+              <Footer />
+            </div>
+          </NextUIProvider>
+        </NextThemesProvider>
+      </BrowserRouter>
+    </SearchContextProvider>
   );
 }
 

@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import { useGetAdmin } from "../hooks/useGetAdmin";
 import useTokenRenewal from "../hooks/useTokenRenewal";
-import Header from "../components/header/Header";
-import Footer from "../components/footer/Footer";
-import SideBar from "../components/sidebar/SideBar";
 import { ToastContainer } from "react-toastify";
-import { SearchContextProvider } from "../context/SearchContext";
 import "react-toastify/dist/ReactToastify.css";
 import "./Body.css";
 
@@ -26,28 +22,16 @@ const Body: React.FC<BodyProps> = ({ children }) => {
   }
 
   return (
-    <SearchContextProvider>
-      <div>
-        <ToastContainer position="bottom-right" />
-        <div className="content-container">
-          <div />
-          <SideBar />
-          <div
-            className={`content ${
-              isSidebarCollapsed ? "content-sidebar-collapsed" : ""
-            }`}
-          >
-            <div className="header">
-              <Header />
-            </div>
-            <div className="content-body">{children}</div>
-          </div>
-        </div>
-        <div className="footer">
-          <Footer />
-        </div>
+    <div>
+      <ToastContainer position="bottom-right" />
+      <div
+        className={`content ${
+          isSidebarCollapsed ? "content-sidebar-collapsed" : ""
+        }`}
+      >
+        <div className="content-body">{children}</div>
       </div>
-    </SearchContextProvider>
+    </div>
   );
 };
 

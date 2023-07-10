@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navbar, Text, Dropdown, Input, User, Button } from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import Cookies from "js-cookie";
 import ThemeToggleButton from "../buttons/ThemeToggleButton";
@@ -16,12 +16,15 @@ export const CustomNavBar: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const admin = useGetAdmin();
+
+  const [searchValue, setSearchValue] = useState("");
   const handleLogout = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    navigate("/admin-login");
+    navigate("/");
   };
 
   const handleDropdownAction = (key: React.Key) => {
@@ -32,8 +35,15 @@ export const CustomNavBar: React.FC = () => {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value as string);
+    const value = e.target.value;
+    setSearchTerm(value);
+    setSearchValue(value);
   };
+
+  useEffect(() => {
+    setSearchTerm(""); // Restablecer el término de búsqueda al cambiar de página
+    setSearchValue(""); // Borrar el contenido de la barra de búsqueda
+  }, [location.pathname]);
 
   if (!admin) {
     return null;
@@ -65,6 +75,7 @@ export const CustomNavBar: React.FC = () => {
                 aria-label="Search"
                 clearable
                 onChange={handleSearch as any}
+                value={searchValue}
                 contentLeft={
                   <SearchIcon
                     fill={theme === "dark" ? "white" : "black"}
