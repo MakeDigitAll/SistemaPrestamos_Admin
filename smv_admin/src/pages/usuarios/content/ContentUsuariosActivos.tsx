@@ -248,23 +248,16 @@ const ContentUsuariosActivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Details">
+              <Tooltip content="Informacion del Usuario">
                 <IconButton onClick={() => openModalInfo(usuario)}>
                   <EyeIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Edit user">
+              <Tooltip content="Editar Usuario">
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Delete user">
-                <IconButton onClick={() => deleteUser(usuario)}>
-                  <DeleteIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>

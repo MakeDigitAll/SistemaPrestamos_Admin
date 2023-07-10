@@ -97,18 +97,23 @@ const ContentDashboard: React.FC = () => {
       }}
     >
       <div>
-        <Card.Header style={{ display: "flex", justifyContent: "center" }}>
+        <Card.Header
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <h3>Usuarios Prestamistas</h3>
         </Card.Header>
-        <Card.Body style={{ marginTop: "-25%", marginBottom: "-10%" }}>
+        <Card.Body style={{ marginTop: "-20%" }}>
           {data.length > 0 ? (
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width={250} height={350}>
               <PieChart width={400} height={400}>
                 <Pie
                   data={data}
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
+                  outerRadius={70}
                   dataKey="value"
                   label
                 >
