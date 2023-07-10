@@ -71,7 +71,7 @@ const LoginForm = () => {
         Cookies.set("refreshToken", refreshToken, { expires: 7 / 24 }); // 7 días de expiración
 
         // Redireccionar a la página de dashboard
-        window.location.href = "/dashboard";
+        window.location.href = "/admin-dashboard";
       }
     } catch (error: any) {
       if (error.response && error.response.status === 500) {

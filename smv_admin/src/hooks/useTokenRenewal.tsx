@@ -42,7 +42,7 @@ const useTokenRenewal = () => {
     } catch (error) {
       // Error al renovar el token, redireccionar a la página de inicio de sesión
       console.log(error);
-      navigate("/");
+      navigate("/admin-login");
     }
   }, [navigate]);
 
@@ -54,7 +54,7 @@ const useTokenRenewal = () => {
 
       if (!accessToken || !refreshToken) {
         // No se encontró el token en la cookie, redireccionar a la página de inicio de sesión
-        navigate("/");
+        navigate("/admin-login");
         return;
       }
 
@@ -64,7 +64,6 @@ const useTokenRenewal = () => {
         // Renovar el token de acceso si está a 5 minutos de expirar
         if (decodedAccessToken.exp - Date.now() / 1000 < 5 * 60) {
           await renewToken();
-          console.log("Token renovado");
         } else {
           // El token de acceso es válido, establecer los datos del usuario
           const currentUser: User = {
@@ -78,7 +77,7 @@ const useTokenRenewal = () => {
         }
       } catch (error) {
         // El token no es válido, redireccionar a la página de inicio de sesión
-        navigate("/");
+        navigate("/admin-login");
       }
     };
 

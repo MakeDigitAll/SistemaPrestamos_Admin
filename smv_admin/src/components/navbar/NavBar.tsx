@@ -21,7 +21,7 @@ export const CustomNavBar: React.FC = () => {
     // Eliminar las cookies y redireccionar a la página de inicio de sesión
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
-    navigate("/");
+    navigate("/admin-login");
   };
 
   const handleDropdownAction = (key: React.Key) => {
@@ -132,7 +132,7 @@ export const CustomNavBar: React.FC = () => {
                     b
                     color="inherit"
                     css={{ display: "flex" }}
-                    onClick={() => navigate("/profile")}
+                    onClick={() => navigate("/admin-profile")}
                   >
                     {t("navbar.profile")}
                   </Text>

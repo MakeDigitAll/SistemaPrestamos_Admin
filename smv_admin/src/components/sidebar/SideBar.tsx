@@ -71,10 +71,10 @@ function SideBar() {
   );
 
   const handleDashboardClick = () => {
-    if (isMenuItemActive("/dashboard")) {
+    if (isMenuItemActive("/admin-dashboard")) {
       window.location.reload();
     } else {
-      navigate("/dashboard");
+      navigate("/admin-dashboard");
     }
   };
 
@@ -199,7 +199,7 @@ function SideBar() {
             style={{ marginTop: "10px" }}
             icon={<MdSpaceDashboard />}
             onClick={handleDashboardClick}
-            className={isMenuItemActive("/dashboard") ? "selected" : ""}
+            className={isMenuItemActive("/admin-dashboard") ? "selected" : ""}
           >
             {t("sidebar.dashboard")}
           </MenuItem>
@@ -215,18 +215,18 @@ function SideBar() {
             <MenuItem
               style={{ marginTop: "10px" }}
               icon={<FaUserCheck />}
-              onClick={() => handleMenuItemClick("/usuarios-activos")}
+              onClick={() => handleMenuItemClick("/admin-usuarios-activos")}
               className={
-                isMenuItemActive("/usuarios-activos") ? "selected" : ""
+                isMenuItemActive("/admin-usuarios-activos") ? "selected" : ""
               }
             >
               {t("sidebar.usuariosActivos")}
             </MenuItem>
             <MenuItem
               icon={<FaUserTimes />}
-              onClick={() => handleMenuItemClick("/usuarios-inactivos")}
+              onClick={() => handleMenuItemClick("/admin-usuarios-inactivos")}
               className={
-                isMenuItemActive("/usuarios-inactivos") ? "selected" : ""
+                isMenuItemActive("/admin-usuarios-inactivos") ? "selected" : ""
               }
             >
               {t("sidebar.usuariosInactivos")}
@@ -234,9 +234,9 @@ function SideBar() {
 
             <MenuItem
               icon={<FaUserSlash />}
-              onClick={() => handleMenuItemClick("/usuarios-eliminados")}
+              onClick={() => handleMenuItemClick("/admin-usuarios-eliminados")}
               className={
-                isMenuItemActive("/usuarios-eliminados") ? "selected" : ""
+                isMenuItemActive("/admin-usuarios-eliminados") ? "selected" : ""
               }
             >
               {t("sidebar.usuariosEliminados")}
@@ -244,8 +244,10 @@ function SideBar() {
 
             <MenuItem
               icon={<FaUserPlus />}
-              onClick={() => handleMenuItemClick("/add-usuario")}
-              className={isMenuItemActive("/add-usuario") ? "selected" : ""}
+              onClick={() => handleMenuItemClick("/admin-add-usuario")}
+              className={
+                isMenuItemActive("/admin-add-usuario") ? "selected" : ""
+              }
             >
               {t("sidebar.addUsuario")}
             </MenuItem>
@@ -254,8 +256,10 @@ function SideBar() {
           <Divider style={{ height: "0.5px" }} />
           <MenuItem
             icon={<FaMoneyBillAlt />}
-            onClick={() => handleMenuItemClick("/suscripciones")}
-            className={isMenuItemActive("/suscripciones") ? "selected" : ""}
+            onClick={() => handleMenuItemClick("/admin-suscripciones")}
+            className={
+              isMenuItemActive("/admin-suscripciones") ? "selected" : ""
+            }
           >
             {t("sidebar.suscripciones")}
           </MenuItem>
