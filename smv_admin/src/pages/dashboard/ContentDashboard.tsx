@@ -59,7 +59,7 @@ const ContentDashboard: React.FC = () => {
 
   if (usuariosInactivos.length > 0) {
     data.push({
-      name: "Inactivos",
+      name: "Pendiendes de Suscripción",
       value: usuariosInactivos.length,
       fill: "#A9A9A9",
     });
@@ -77,13 +77,13 @@ const ContentDashboard: React.FC = () => {
     // Realiza la redirección a la ubicación deseada según el nombre de la sección
     switch (entry.name) {
       case "Activos":
-        navigate("/usuariosPrestamistas-activos");
+        navigate("/admin-usuarios-activos");
         break;
-      case "Inactivos":
-        navigate("/usuariosPrestamistas-inactivos");
+      case "Pendiendes de Suscripción":
+        navigate("/admin-suscripciones");
         break;
       case "Eliminados":
-        navigate("/usuariosPrestamistas-eliminados");
+        navigate("/admin-usuarios-eliminados");
         break;
       default:
         break;

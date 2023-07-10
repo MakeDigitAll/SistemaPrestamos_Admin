@@ -14,7 +14,6 @@ import {
   FaUserCheck,
   FaUserPlus,
   FaUserSlash,
-  FaUserTimes,
   FaUserFriends,
 } from "react-icons/fa";
 import {
@@ -221,15 +220,6 @@ function SideBar() {
               }
             >
               {t("sidebar.usuariosActivos")}
-            </MenuItem>
-            <MenuItem
-              icon={<FaUserTimes />}
-              onClick={() => handleMenuItemClick("/admin-usuarios-inactivos")}
-              className={
-                isMenuItemActive("/admin-usuarios-inactivos") ? "selected" : ""
-              }
-            >
-              {t("sidebar.usuariosInactivos")}
             </MenuItem>
 
             <MenuItem

@@ -419,7 +419,7 @@ export const ContentUsuariosActivos: React.FC = () => {
   return <ContentUsuarios isActive={true} isDeleted={false} />;
 };
 
-export const ContentUsuariosInactivos: React.FC = () => {
+export const ContentSuscripciones: React.FC = () => {
   return <ContentUsuarios isActive={false} isDeleted={false} />;
 };
 

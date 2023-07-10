@@ -1,8 +1,8 @@
 import React from "react";
 import Body from "../../components/Body";
-import ContentSuscripciones from "./ContentSuscripciones";
+import { ContentSuscripciones } from "../usuarios/content/ContentUsuarios";
 
-const Suscripciones: React.FC = () => {
+const UsuariosInactivos: React.FC = () => {
   return (
     <Body>
       <ContentSuscripciones />
@@ -10,4 +10,4 @@ const Suscripciones: React.FC = () => {
   );
 };
 
-export default Suscripciones;
+export default UsuariosInactivos;
