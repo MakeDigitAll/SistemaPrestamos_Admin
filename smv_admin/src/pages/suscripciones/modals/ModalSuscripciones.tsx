@@ -1,4 +1,4 @@
-// ModalEditUsuario.tsx
+// ModalSuscripciones.tsx
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Text, Input, Avatar, Card } from "@nextui-org/react";
 import service from "../../../services/service";
@@ -12,7 +12,7 @@ interface InformacionUsuarioProps {
   handleUpdate: (usuario: UserPrestamista) => void;
 }
 
-const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
+const ModalSuscripciones: React.FC<InformacionUsuarioProps> = ({
   user,
   onClose,
   handleUpdate,
@@ -30,7 +30,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
     setVisible(true);
   }, []);
 
-  const actualizarHandler = async () => {
+  const ActivarSuscripcionHandle = async () => {
     const encryptedNombre = aesEncrypt(nombre);
     const encryptedApellidos = aesEncrypt(apellidos);
 
@@ -87,6 +87,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
               Nombre del Usuario
             </Text>
             <Input
+              disabled
               value={nombre}
               onChange={(event) => setNombre(event.target.value)}
               aria-labelledby="Nombre"
@@ -95,19 +96,16 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
               Apellidos del Usuario
             </Text>
             <Input
+              disabled
               value={apellidos}
               onChange={(event) => setApellidos(event.target.value)}
               aria-labelledby="Apellidos"
             />
-
-            <Text h5 css={{ textAlign: "center" }}>
-              Rol del Usuario
-            </Text>
           </Modal.Body>
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
-          <Button auto onPress={actualizarHandler}>
-            Actualizar
+          <Button auto onPress={ActivarSuscripcionHandle}>
+            Activar
           </Button>
           <Button auto color="error" onPress={closeHandler}>
             Cerrar
@@ -118,4 +116,4 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   );
 };
 
-export default ModalEditUsuario;
+export default ModalSuscripciones;

@@ -11,7 +11,6 @@ import {
   useCollator,
   SortDescriptor,
 } from "@nextui-org/react";
-import deleteUsuario from "../../../utils/deleteUser";
 import EditUsuario from "../modals/ModalEditUsuario";
 import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
@@ -19,7 +18,6 @@ import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuariosEliminados } from "../../../hooks/userPrestamistas/usegetEliminados";
 import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
-import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
 
 //Componente funcional que recibe isActive y isDeleted como props
@@ -106,18 +104,6 @@ const ContentUsuariosActivos: React.FC = () => {
   //Función para actualizar los usuariosPrestamistas al eliminar un usuario o al editar un usuario
   const handleUpdateUsuarios = () => {
     getUsuarios?.refetch();
-  };
-
-  //Función para eliminar un usuario
-  const deleteUser = async (usuario: UserTypePrestamista) => {
-    try {
-      const resp = await deleteUsuario(usuario.idUsuarioPrestamista);
-      if (resp) {
-        getUsuarios?.refetch();
-      }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
   };
 
   //Si no hay usuariosPrestamistas entonces muestra un loading

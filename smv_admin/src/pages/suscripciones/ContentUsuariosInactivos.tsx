@@ -21,6 +21,8 @@ import { useGetUsuariosInactivos } from "../../hooks/userPrestamistas/usegetInac
 import { UserPrestamista as UserTypePrestamista } from "../../types/types";
 import { DeleteIcon } from "../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../context/SearchContext";
+import SuscripcionesUsuario from "./modals/ModalSuscripciones";
+import { BsCartPlus } from "react-icons/bs";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
@@ -43,6 +45,8 @@ const ContentUsuariosActivos: React.FC = () => {
   const [modalEdit, setModalEditVisible] = useState(false);
   //Función para mostrar el modal de información de usuario
   const [modalInfo, setModalInfoVisible] = useState(false);
+  //Función para mostrar el modal de suscripciones
+  const [modalSuscripciones, setModalSuscripciones] = useState(false);
   //Estado para definir el usuario seleccionado
   const [selectedUser, setSelectedUser] = useState<UserTypePrestamista | null>(
     null
@@ -90,12 +94,21 @@ const ContentUsuariosActivos: React.FC = () => {
     setSelectedUser(usuario);
     setModalInfoVisible(false);
     setModalEditVisible(true);
+    setModalSuscripciones(false);
   };
   //Al abrir el modal de información de usuario se cierra el modal de editar usuario
   const openModalInfo = (usuario: UserTypePrestamista) => {
     setSelectedUser(usuario);
     setModalEditVisible(false);
     setModalInfoVisible(true);
+    setModalSuscripciones(false);
+  };
+  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
+  const openModalSuscripciones = (usuario: UserTypePrestamista) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(false);
+    setModalSuscripciones(true);
   };
   //Cierra el modal de editar usuario
   const closeModal = () => {
@@ -197,6 +210,13 @@ const ContentUsuariosActivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
+              <Tooltip content="Agregar Suscripcion">
+                <IconButton onClick={() => openModalSuscripciones(usuario)}>
+                  <BsCartPlus size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+            <Col css={{ d: "flex", marginLeft: "20%" }}>
               <Tooltip content="Informacion del Usuario">
                 <IconButton onClick={() => openModalInfo(usuario)}>
                   <EyeIcon size={20} fill="#979797" />
@@ -289,6 +309,13 @@ const ContentUsuariosActivos: React.FC = () => {
           onPageChange={(page) => console.log({ page })}
         />
       </Table>
+      {modalSuscripciones && selectedUser && (
+        <SuscripcionesUsuario
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleUpdateUsuarios}
+        />
+      )}
       {modalInfo && selectedUser && (
         <InfoUsuario user={selectedUser} onClose={closeModal} />
       )}

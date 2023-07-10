@@ -99,10 +99,6 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
               onChange={(event) => setApellidos(event.target.value)}
               aria-labelledby="Apellidos"
             />
-
-            <Text h5 css={{ textAlign: "center" }}>
-              Rol del Usuario
-            </Text>
           </Modal.Body>
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
