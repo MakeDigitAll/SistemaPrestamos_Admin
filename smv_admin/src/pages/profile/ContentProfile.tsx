@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
 import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
@@ -6,6 +6,19 @@ import { useTranslation } from "react-i18next";
 const ContentProfile: React.FC = () => {
   const user = useGetAdmin();
   const { t } = useTranslation();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files && event.target.files[0];
+    // Realiza las operaciones necesarias con la imagen seleccionada
+    console.log(file);
+  };
 
   if (!user) {
     return null;
@@ -18,7 +31,6 @@ const ContentProfile: React.FC = () => {
           width: "fit-content",
           height: "fit-content",
           margin: "auto",
-          marginTop: "10%",
         }}
       >
         <Card.Header>
@@ -30,7 +42,16 @@ const ContentProfile: React.FC = () => {
               height: "150px",
               width: "150px",
               marginTop: "2%",
+              cursor: "pointer",
             }}
+            onClick={handleImageClick}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageChange}
           />
         </Card.Header>
 
