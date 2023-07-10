@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { NextUIProvider } from "@nextui-org/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { useState, useEffect, useCallback } from "react";
 import Login from "../pages/login/LoginForm";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Profile from "../pages/profile/Profile";
@@ -13,14 +14,27 @@ import cookies from "js-cookie";
 import lightTheme from "./lightTheme";
 import darkTheme from "./darkTheme";
 import { SearchContextProvider } from "../context/SearchContext";
-
-import Header from "../components/header/Header";
+import { CustomNavBar } from "../components/navbar/NavBar";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
 
+const handleLogout = () => {
+  // Eliminar las cookies y actualizar el estado de autenticación
+  cookies.remove("accessToken");
+  cookies.remove("refreshToken");
+  // Redirigir a la página de inicio de sesión
+  window.location.reload();
+};
+
 function AppRouter() {
-  const accessToken = cookies.get("accessToken");
-  const isLoggedIn = !!accessToken;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const accessToken = cookies.get("accessToken");
+    const authenticated = !!accessToken;
+    setIsLoggedIn(authenticated);
+  }, []);
+
+  const handleLogoutCallback = useCallback(handleLogout, []);
 
   return (
     <SearchContextProvider>
@@ -35,11 +49,13 @@ function AppRouter() {
         >
           <NextUIProvider>
             <div className="app-container">
-              <SideBar />
+              {isLoggedIn && <SideBar />}
               <div className="content-body">
-                <div className="header">
-                  <Header />
-                </div>
+                {isLoggedIn && (
+                  <div className="header">
+                    <CustomNavBar handleLogout={handleLogoutCallback} />
+                  </div>
+                )}
                 <div className="content-scrollable">
                   <Routes>
                     <Route path="/admin-login" element={<Login />} />

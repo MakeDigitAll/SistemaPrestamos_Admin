@@ -11,7 +11,11 @@ import LanguageDropdown from "../buttons/LanguageDropdown";
 import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 
-export const CustomNavBar: React.FC = () => {
+interface NavBarProps {
+  handleLogout: () => void;
+}
+
+export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
   const { setSearchTerm } = useContext(SearchContext);
   const { theme, toggleTheme } = useDarkLight();
   const { t } = useTranslation();
@@ -20,12 +24,6 @@ export const CustomNavBar: React.FC = () => {
   const admin = useGetAdmin();
 
   const [searchValue, setSearchValue] = useState("");
-  const handleLogout = () => {
-    // Eliminar las cookies y redireccionar a la página de inicio de sesión
-    Cookies.remove("accessToken");
-    Cookies.remove("refreshToken");
-    navigate("/");
-  };
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
