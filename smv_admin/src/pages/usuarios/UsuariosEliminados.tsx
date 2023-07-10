@@ -1,6 +1,6 @@
 import React from "react";
 import Body from "../../components/Body";
-import { ContentUsuariosEliminados } from "./content/ContentUsuarios";
+import ContentUsuariosEliminados from "../usuarios/content/ContentUsuariosEliminados";
 
 const UsuariosEliminados: React.FC = () => {
   return (

@@ -1,7 +1,6 @@
 import React from "react";
 import Body from "../../components/Body";
-import { ContentUsuariosActivos } from "./content/ContentUsuarios";
-
+import ContentUsuariosActivos from "./content/ContentUsuariosActivos";
 const UsuariosActivos: React.FC = () => {
   return (
     <Body>

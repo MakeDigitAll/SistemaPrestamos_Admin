@@ -17,28 +17,19 @@ import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
 import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
-import { useGetUsuariosPrestamistas } from "../../../hooks/usegetUsuariosPrestamistas";
+import { useGetUsuariosEliminados } from "../../../hooks/userPrestamistas/usegetEliminados";
 import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
 
-//Interface para definir las props que recibe el componente
-interface ContentUsuariosProps {
-  isActive: boolean;
-  isDeleted: boolean;
-}
-
 //Componente funcional que recibe isActive y isDeleted como props
-const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
-  isActive,
-  isDeleted,
-}) => {
+const ContentUsuariosActivos: React.FC = () => {
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los usuariosPrestamistas
   const collator = useCollator({ numeric: true });
   //Obtiene los usuariosPrestamistas del hook useGetUsuarios
-  const getUsuarios = useGetUsuariosPrestamistas();
+  const getUsuarios = useGetUsuariosEliminados();
   //Estado para definir el orden de los usuariosPrestamistas
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: undefined,
@@ -57,16 +48,22 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     null
   );
 
-  //Ordena los usuariosPrestamistas
+  //Filtra los usuariosPrestamistas
   useEffect(() => {
-    if (usuariosPrestamistas) {
+    //Si hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces filtra los usuariosPrestamistas
+    if (searchTerm && usuariosPrestamistas) {
       const filteredUsuarios = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
-          usuario.isActive === isActive && usuario.isDeleted === isDeleted
+        (usuario: UserTypePrestamista) => realizarBusqueda(usuario, searchTerm)
+      );
+      setUsuarios(filteredUsuarios);
+      //Si no hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces  mostrar todos los usuariosPrestamistas
+    } else if (!searchTerm && usuariosPrestamistas) {
+      const filteredUsuarios = usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) => realizarBusqueda(usuario, searchTerm)
       );
       setUsuarios(filteredUsuarios);
     }
-  }, [usuariosPrestamistas, isActive, isDeleted]);
+  }, [searchTerm, usuariosPrestamistas]);
 
   //Función para realizar la búsqueda de usuariosPrestamistas
   function realizarBusqueda(
@@ -87,27 +84,6 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
 
     return true;
   }
-
-  //Filtra los usuariosPrestamistas
-  useEffect(() => {
-    //Si hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces filtra los usuariosPrestamistas
-    if (searchTerm && usuariosPrestamistas) {
-      const filteredUsuarios = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
-          usuario.isActive === isActive &&
-          usuario.isDeleted === isDeleted &&
-          realizarBusqueda(usuario, searchTerm)
-      );
-      setUsuarios(filteredUsuarios);
-      //Si no hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces  mostrar todos los usuariosPrestamistas
-    } else if (!searchTerm && usuariosPrestamistas) {
-      const filteredUsuarios = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
-          usuario.isActive === isActive && usuario.isDeleted === isDeleted
-      );
-      setUsuarios(filteredUsuarios);
-    }
-  }, [searchTerm, usuariosPrestamistas, isActive, isDeleted]);
 
   //Al abrir el modal de editar usuario se cierra el modal de información de usuario
   const openModalEdit = (usuario: UserTypePrestamista) => {
@@ -144,49 +120,6 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
     }
   };
 
-  //Formatea las fechas 2023-12-31T06:00:00.000Z,
-  const formatDate = (date: Date | null | undefined) => {
-    if (!date) {
-      return ""; // or any other appropriate handling for null or undefined values
-    }
-
-    const fecha = new Date(date);
-    const dia = fecha.getDate();
-    const mes = fecha.getMonth() + 1;
-    const year = fecha.getFullYear();
-    return `${dia}/${mes}/${year}`;
-  };
-
-  const formatDateFin = (date: Date | null | undefined) => {
-    if (!date) {
-      return ""; // o cualquier otro manejo apropiado para valores nulos o indefinidos
-    }
-    const fecha = new Date(date);
-    const today = new Date();
-    const differenceInDays = Math.floor(
-      (today.getTime() - fecha.getTime()) / (1000 * 3600 * 24)
-    );
-
-    const dia = fecha.getDate();
-    const mes = fecha.getMonth() + 1;
-    const year = fecha.getFullYear();
-
-    let textColor = "black"; // color predeterminado
-
-    if (differenceInDays < 0) {
-      textColor = "black"; // fecha pasada, color negro
-    } else if (differenceInDays <= 7) {
-      textColor = "red"; // menos de 7 días, color rojo
-    } else if (differenceInDays <= 14) {
-      textColor = "yellow"; // entre 7 y 14 días, color amarillo
-    } else if (differenceInDays <= 30) {
-      textColor = "green"; // entre 15 y mas días, color verde
-    }
-    console.log(differenceInDays);
-
-    return <span style={{ color: textColor }}>{`${dia}/${mes}/${year}`}</span>;
-  };
-
   //Si no hay usuariosPrestamistas entonces muestra un loading
   if (!usuariosPrestamistas) {
     return (
@@ -217,11 +150,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
         style={{ height: "100vh" }}
       >
         <Text>
-          {isDeleted
-            ? "No hay usuariosPrestamistas eliminados."
-            : `No hay usuariosPrestamistas ${
-                isActive ? "activos" : "inactivos"
-              }.`}
+          No hay usuariosPrestamistas activos, inactivos o eliminados.
         </Text>
       </Grid.Container>
     );
@@ -243,17 +172,13 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   const columns = [
     { name: "NOMBRES", uid: "nombres" },
     { name: "APELLIDOS", uid: "apellidos" },
-    //Si el usuario es activo entonces muestra el tipo de suscripción y la fecha de pago
-    ...(isActive
-      ? [
-          { name: "TIPO DE SUSCRIPCIÓN", uid: "tipoSuscripcion" },
-          { name: "FECHA DE INICIO", uid: "fechaInicio" },
-          { name: "FECHA DE PAGO", uid: "fechaFin" },
-        ]
-      : []),
     { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
+    { name: "TELÉFONO", uid: "telefono" },
+
     { name: "ACCIONES", uid: "acciones" },
   ];
+
+  console.log(Usuarios);
 
   //Función para renderizar las celdas de la tabla
   const renderCell = (usuario: UserTypePrestamista, columnKey: React.Key) => {
@@ -263,74 +188,39 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
         return <Text>{usuario.nombres}</Text>;
       case "apellidos":
         return <Text>{usuario.apellidos}</Text>;
-      case "tipoSuscripcion":
-        return isActive ? (
-          <Text>{usuario.suscripcion?.tipoSuscripcion}</Text>
-        ) : null;
-      case "fechaInicio":
-        return isActive ? (
-          <Text>{formatDate(usuario.suscripcion?.fechaInicio)}</Text>
-        ) : null;
-      case "fechaFin":
-        return isActive ? (
-          <Text>
-            <strong>{formatDateFin(usuario.suscripcion?.fechaFin)}</strong>
-          </Text>
-        ) : null;
       case "codigoReferencia":
         return <Text>{usuario.codigoReferencia}</Text>;
+      case "telefono":
+        return <Text>{usuario.numeroTelefono}</Text>;
+
       case "acciones":
-        //Si el usuario no esta activo o eliminado entonces muestra los botones de detalles, editar y eliminar
-        if (!isActive && !isDeleted) {
-          return (
-            <Row justify="center" align="center">
-              <Col css={{ d: "flex", marginLeft: "20%" }}>
-                <Tooltip content="Details">
-                  <IconButton onClick={() => openModalInfo(usuario)}>
-                    <EyeIcon size={20} fill="#979797" />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-              <Col css={{ d: "flex", marginLeft: "20%" }}>
-                <Tooltip content="Edit user">
-                  <IconButton onClick={() => openModalEdit(usuario)}>
-                    <EditIcon size={20} fill="#979797" />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-              <Col css={{ d: "flex", marginLeft: "20%" }}>
-                <Tooltip content="Delete user">
-                  <IconButton onClick={() => deleteUser(usuario)}>
-                    <DeleteIcon size={20} fill="#979797" />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-            </Row>
-          );
-        } else {
-          //Si el usuario esta activo o eliminado entonces muestra solo los botones de detalles y editar
-          return (
-            <Row justify="center" align="center">
-              <Col css={{ d: "flex", marginLeft: "20%" }}>
-                <Tooltip content="Details">
-                  <IconButton onClick={() => openModalInfo(usuario)}>
-                    <EyeIcon size={20} fill="#979797" />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-              <Col css={{ d: "flex", marginLeft: "20%" }}>
-                <Tooltip content="Edit user">
-                  <IconButton onClick={() => openModalEdit(usuario)}>
-                    <EditIcon size={20} fill="#979797" />
-                  </IconButton>
-                </Tooltip>
-              </Col>
-            </Row>
-          );
-        }
-      default:
-        return cellValue as React.ReactNode;
+        return (
+          <Row justify="center" align="center">
+            <Col css={{ d: "flex", marginLeft: "20%" }}>
+              <Tooltip content="Details">
+                <IconButton onClick={() => openModalInfo(usuario)}>
+                  <EyeIcon size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+            <Col css={{ d: "flex", marginLeft: "20%" }}>
+              <Tooltip content="Edit user">
+                <IconButton onClick={() => openModalEdit(usuario)}>
+                  <EditIcon size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+            <Col css={{ d: "flex", marginLeft: "20%" }}>
+              <Tooltip content="Delete user">
+                <IconButton onClick={() => deleteUser(usuario)}>
+                  <DeleteIcon size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+          </Row>
+        );
     }
+    return cellValue as React.ReactNode;
   };
 
   //Función para ordenar las columnas de la tabla
@@ -365,7 +255,7 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
         lined
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
-        aria-label={isActive ? "Usuarios Activos" : "Usuarios Inactivos"}
+        aria-label={"Usuarios Activos"}
         selectionMode="none"
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
       >
@@ -373,7 +263,6 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
           {(column: any) => (
             <Table.Column
               key={column.uid}
-              hideHeader={column.uid === "acciones"}
               align={column.uid === "acciones" ? "center" : "start"}
               allowsSorting
             >
@@ -414,15 +303,4 @@ const ContentUsuarios: React.FC<ContentUsuariosProps> = ({
   );
 };
 
-//Componentes para renderizar las tablas de usuariosPrestamistas activos, inactivos y eliminados
-export const ContentUsuariosActivos: React.FC = () => {
-  return <ContentUsuarios isActive={true} isDeleted={false} />;
-};
-
-export const ContentSuscripciones: React.FC = () => {
-  return <ContentUsuarios isActive={false} isDeleted={false} />;
-};
-
-export const ContentUsuariosEliminados: React.FC = () => {
-  return <ContentUsuarios isActive={false} isDeleted={true} />;
-};
+export default ContentUsuariosActivos;

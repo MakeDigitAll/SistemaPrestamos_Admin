@@ -18,9 +18,24 @@ class AdminDataService {
       withCredentials: false,
     });
   }
-  //obtener todos los usuarios
-  getAllUsuarios() {
-    return http.get("/admin-usuarios-prestamistas");
+  //obtener todos los usuarios prestamistas
+  getAllUsuariosPrestamistas() {
+    return http.get("/admin-allusuarios-prestamistas");
+  }
+
+  //obtener todos los usuarios prestamistas activos
+  getAllUsuariosActivos() {
+    return http.get("/admin-allusuarios-prestamistas-activos");
+  }
+
+  //obtener todos los usuarios prestamistas pendientes de activar suscripción
+  getAllUsuariosInactivos() {
+    return http.get("/admin-allusuarios-prestamistas-inactivos");
+  }
+
+  //obtener todos los usuarios prestamistas eliminados
+  getAllUsuariosEliminados() {
+    return http.get("/admin-allusuarios-prestamistas-eliminados");
   }
 
   //registrar un usuario

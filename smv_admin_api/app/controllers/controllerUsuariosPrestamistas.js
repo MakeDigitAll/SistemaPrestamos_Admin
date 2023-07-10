@@ -17,6 +17,8 @@ exports.findAllUsuariosPrestamista = (req, res) => {
         {
           model: suscripciones,
           as: "suscripcion",
+        },
+        {
           model: calidadPrestamista,
           as: "calidadPrestamista",
         },
@@ -65,7 +67,191 @@ exports.findAllUsuariosPrestamista = (req, res) => {
     });
 };
 
-//crear un nuevo usuario de tipo prestamista
+//findAllUsuariosPrestamistaActivos
+exports.findAllUsuariosPrestamistaActivos = (req, res) => {
+  usuariosPrestamistas
+    .findAll({
+      where: {
+        isActive: true,
+        isDeleted: false,
+      },
+      include: [
+        {
+          model: suscripciones,
+          as: "suscripcion",
+        },
+        {
+          model: calidadPrestamista,
+          as: "calidadPrestamista",
+        },
+      ],
+    })
+    .then((data) => {
+      const usuariosPrestamistas = data.map((user) => ({
+        idUsuarioPrestamista: user.idUsuarioPrestamista,
+        correoElectronico: user.correoElectronico,
+        nombres: user.nombres,
+        apellidos: user.apellidos,
+        codigoReferencia: user.codigoReferencia,
+        isActive: user.isActive,
+        isDeleted: user.isDeleted,
+        numeroTelefono: user.numeroTelefono,
+        suscripcion: user.suscripcion?.idSuscripcion
+          ? {
+              idSuscripcion: user.suscripcion.idSuscripcion,
+              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
+              fechaInicio: user.suscripcion.fechaInicio,
+              fechaFin: user.suscripcion.fechaFin,
+              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
+            }
+          : null,
+        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
+          ? {
+              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
+              montoDesde: user.calidadPrestamista.montoDesde,
+              montoHasta: user.calidadPrestamista.montoHasta,
+              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
+              nombreNivel : user.calidadPrestamista.nombreNivel,
+              costoMembresia : user.calidadPrestamista.costoMembresia,
+            }
+          : null,
+        }));
+        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+        res.send({ tokenUsuarios });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Ocurrió un error al obtener los usuariosPrestamistas.",
+        });
+        console.log(err);
+      });
+  };
+  
+//findAllUsuariosPrestamistaActivos
+exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
+  usuariosPrestamistas
+    .findAll({
+      where: {
+        isActive: false,
+        isDeleted: false,
+      },
+      include: [
+        {
+          model: suscripciones,
+          as: "suscripcion",
+        },
+        {
+          model: calidadPrestamista,
+          as: "calidadPrestamista",
+        },
+      ],
+    })
+    .then((data) => {
+      const usuariosPrestamistas = data.map((user) => ({
+        idUsuarioPrestamista: user.idUsuarioPrestamista,
+        correoElectronico: user.correoElectronico,
+        nombres: user.nombres,
+        apellidos: user.apellidos,
+        codigoReferencia: user.codigoReferencia,
+        isActive: user.isActive,
+        isDeleted: user.isDeleted,
+        numeroTelefono: user.numeroTelefono,
+        suscripcion: user.suscripcion?.idSuscripcion
+          ? {
+              idSuscripcion: user.suscripcion.idSuscripcion,
+              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
+              fechaInicio: user.suscripcion.fechaInicio,
+              fechaFin: user.suscripcion.fechaFin,
+              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
+            }
+          : null,
+        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
+          ? {
+              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
+              montoDesde: user.calidadPrestamista.montoDesde,
+              montoHasta: user.calidadPrestamista.montoHasta,
+              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
+              nombreNivel : user.calidadPrestamista.nombreNivel,
+              costoMembresia : user.calidadPrestamista.costoMembresia,
+            }
+          : null,
+        }));
+        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+        res.send({ tokenUsuarios });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Ocurrió un error al obtener los usuariosPrestamistas.",
+        });
+        console.log(err);
+      });
+  };
+
+  //findAllUsuariosPrestamistaActivos
+exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
+  usuariosPrestamistas
+    .findAll({
+      where: {
+        isActive: false,
+        isDeleted: true,
+      },
+      include: [
+        {
+          model: suscripciones,
+          as: "suscripcion",
+        },
+        {
+          model: calidadPrestamista,
+          as: "calidadPrestamista",
+        },
+      ],
+    })
+    .then((data) => {
+      const usuariosPrestamistas = data.map((user) => ({
+        idUsuarioPrestamista: user.idUsuarioPrestamista,
+        correoElectronico: user.correoElectronico,
+        nombres: user.nombres,
+        apellidos: user.apellidos,
+        codigoReferencia: user.codigoReferencia,
+        isActive: user.isActive,
+        isDeleted: user.isDeleted,
+        numeroTelefono: user.numeroTelefono,
+        suscripcion: user.suscripcion?.idSuscripcion
+          ? {
+              idSuscripcion: user.suscripcion.idSuscripcion,
+              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
+              fechaInicio: user.suscripcion.fechaInicio,
+              fechaFin: user.suscripcion.fechaFin,
+              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
+            }
+          : null,
+        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
+          ? {
+              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
+              montoDesde: user.calidadPrestamista.montoDesde,
+              montoHasta: user.calidadPrestamista.montoHasta,
+              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
+              nombreNivel : user.calidadPrestamista.nombreNivel,
+              costoMembresia : user.calidadPrestamista.costoMembresia,
+            }
+          : null,
+        }));
+        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+        res.send({ tokenUsuarios });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message ||
+            "Ocurrió un error al obtener los usuariosPrestamistas.",
+        });
+        console.log(err);
+      });
+  };
 
 exports.createUsuarioPrestamista = (req, res) => {
   const decryptedNombre = aesDecrypt(req.body.nombre);

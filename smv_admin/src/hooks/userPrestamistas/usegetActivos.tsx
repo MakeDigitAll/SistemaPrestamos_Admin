@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
-import services from "../services/service";
+import services from "../../services/service";
 
-export const useGetUsuariosPrestamistas = () => {
+export const useGetUsuariosActivos = () => {
   const [decodedToken, setDecodedToken] = useState<any>(null);
 
   const fetchData = async () => {
     try {
-      const response = await services.getAllUsuarios();
+      const response = await services.getAllUsuariosActivos();
       const token = response.data.tokenUsuarios;
 
       // Decodificar el token utilizando jwt-decode

@@ -1,13 +1,12 @@
 import React from "react";
 import Body from "../../components/Body";
-import { ContentSuscripciones } from "../usuarios/content/ContentUsuarios";
-
-const UsuariosInactivos: React.FC = () => {
+import ContentUsuariosInactivos from "./ContentUsuariosInactivos";
+const Suscripciones: React.FC = () => {
   return (
     <Body>
-      <ContentSuscripciones />
+      <ContentUsuariosInactivos />
     </Body>
   );
 };
 
-export default UsuariosInactivos;
+export default Suscripciones;

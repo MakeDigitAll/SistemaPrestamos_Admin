@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controllerAdmin = require("../controllers/controllerAdmin.js");
-const controllerUsuarios = require("../controllers/controllerUsuarios.js");
+const controllerUsuarios = require("../controllers/controllerUsuariosPrestamistas.js");
 const { verifyToken } = require("../middlewares/authJwt");
 
 // Verificar si el administrador existe en la base de datos y si la contraseña es correcta
@@ -20,8 +20,23 @@ router.put("/admin/:id", verifyToken, (req, res) => {
 });
 
 // obtener todos los usuarios prestamistas de la base de datos
-router.get("/admin-usuarios-prestamistas", verifyToken, (req, res) => {
+router.get("/admin-allusuarios-prestamistas", verifyToken, (req, res) => {
   controllerUsuarios.findAllUsuariosPrestamista(req, res);
+});
+
+//obtener todos los usuarios prestamistas activos de la base de datos
+router.get("/admin-allusuarios-prestamistas-activos", verifyToken, (req, res) => {
+  controllerUsuarios.findAllUsuariosPrestamistaActivos(req, res);
+});
+
+//obtener todos los usuarios prestamistas inactivos de la base de datos
+router.get("/admin-allusuarios-prestamistas-inactivos", verifyToken, (req, res) => {
+  controllerUsuarios.findAllUsuariosPrestamistaInactivos(req, res);
+});
+
+//obtener todos los usuarios prestamistas eliminados de la base de datos
+router.get("/admin-allusuarios-prestamistas-eliminados", verifyToken, (req, res) => {
+  controllerUsuarios.findAllUsuariosPrestamistaEliminados(req, res);
 });
 
 // crear un nuevo usuario de tipo prestamista
