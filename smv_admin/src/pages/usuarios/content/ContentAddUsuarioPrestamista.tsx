@@ -246,16 +246,18 @@ const ContentAddUsuario: React.FC = () => {
     <div>
       <Card
         css={{
-          width: "fit-content",
+          maxWidth: "900px",
+          width: "100%",
           margin: "auto",
+          overflow: "hidden",
         }}
       >
         <Card.Header>
           <Avatar
             src="https://i.pravatar.cc/300"
             css={{
-              width: "20%",
-              height: "20%",
+              width: "15%",
+              height: "15%",
               margin: "auto",
             }}
           />
@@ -267,11 +269,12 @@ const ContentAddUsuario: React.FC = () => {
               flexDirection: "row",
               justifyContent: "center",
               marginBottom: "-10%",
+              overflow: "hidden",
             }}
           >
             <div style={{ flex: 1 }}>
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ flex: 1, marginRight: "1%" }}>
+                <div style={{ flex: 1, marginRight: "1%", marginLeft: "1%" }}>
                   {renderInputField(
                     "Nombre",
                     nombreValue,
@@ -281,7 +284,7 @@ const ContentAddUsuario: React.FC = () => {
                     "new-nombre"
                   )}
                 </div>
-                <div style={{ flex: 1, marginLeft: "1%" }}>
+                <div style={{ flex: 1, marginRight: "1%" }}>
                   {renderInputField(
                     "Apellidos",
                     apellidosValue,
@@ -291,44 +294,7 @@ const ContentAddUsuario: React.FC = () => {
                     "new-apellidos"
                   )}
                 </div>
-              </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                }}
-              >
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Correo Electrónico",
-                    emailValue,
-                    emailError,
-                    emailBindings,
-                    "email",
-                    "new-correo"
-                  )}
-                </div>
-                <div style={{ flex: 1, marginLeft: "1%" }}>
-                  {renderInputField(
-                    "Contraseña",
-                    passwordValue,
-                    passwordError,
-                    passwordBindings,
-                    "password",
-                    "new-password"
-                  )}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                }}
-              >
                 <div style={{ flex: 1, marginRight: "1%" }}>
                   <Input
                     {...numeroTelefonoBindings}
@@ -354,6 +320,37 @@ const ContentAddUsuario: React.FC = () => {
                     }}
                   />
                 </div>
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                  marginLeft: "1%",
+                }}
+              >
+                <div style={{ flex: 1 }}>
+                  {renderInputField(
+                    "Correo Electrónico",
+                    emailValue,
+                    emailError,
+                    emailBindings,
+                    "email",
+                    "new-correo"
+                  )}
+                </div>
+
+                <div style={{ flex: 1, marginRight: "1%" }}>
+                  {renderInputField(
+                    "Contraseña",
+                    passwordValue,
+                    passwordError,
+                    passwordBindings,
+                    "password",
+                    "new-password"
+                  )}
+                </div>
 
                 <div style={{ flex: 1, marginRight: "1%" }}>
                   <Dropdown isDisabled={true}>
@@ -377,6 +374,14 @@ const ContentAddUsuario: React.FC = () => {
                   </Dropdown>
                 </div>
               </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  marginBottom: "1%",
+                }}
+              ></div>
 
               <div style={{ flex: 1 }}>
                 <h5>¿Cuánto dinero se va a prestar?</h5>
@@ -421,7 +426,7 @@ const ContentAddUsuario: React.FC = () => {
                   )}
                 </div>
               </div>
-              <div style={{ flex: 1, marginTop: "5%" }}>
+              <div style={{ flex: 1, marginTop: "-3%" }}>
                 <h5>¿A Cuántos Usuarios Planeas Prestar?</h5>
                 <div>
                   <Slider
