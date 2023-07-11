@@ -17,7 +17,6 @@ import { CustomNavBar } from "../components/navbar/NavBar";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
 import SuscribirUsuario from "../pages/usuarios/SuscribirUsuario";
-
 const handleLogout = () => {
   // Eliminar las cookies y actualizar el estado de autenticación
   cookies.remove("accessToken");
@@ -28,6 +27,7 @@ const handleLogout = () => {
 
 function AppRouter() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   useEffect(() => {
     const accessToken = cookies.get("accessToken");
     const authenticated = !!accessToken;

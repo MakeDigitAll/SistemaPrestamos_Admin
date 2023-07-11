@@ -18,9 +18,14 @@ import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 import { useTheme as useNextTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
+import cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+
 const LoginForm = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
   const {
     value: emailValue,
     reset: resetEmail,
@@ -31,6 +36,17 @@ const LoginForm = () => {
     reset: resetPassword,
     bindings: passwordBindings,
   } = useInput("");
+
+  useEffect(() => {
+    const accessToken = cookies.get("accessToken");
+    const authenticated = !!accessToken;
+    setIsLoggedIn(authenticated);
+  }, []);
+
+  //si esta logueado redirige al dashboard
+  if (isLoggedIn) {
+    navigate("/admin-dashboard");
+  }
 
   const validateEmail = (value: string) => {
     return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);

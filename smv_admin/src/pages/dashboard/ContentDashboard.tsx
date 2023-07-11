@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  PieChart,
-  Pie,
-  Legend,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from "recharts";
+import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "../../hooks/userPrestamistas/usegetAllUsuarios";
@@ -80,7 +73,7 @@ const ContentDashboard: React.FC = () => {
         navigate("/admin-usuarios-activos");
         break;
       case "Por Suscribir":
-        navigate("/admin-suscripciones");
+        navigate("/admin-suscribir-usuario");
         break;
       case "Eliminados":
         navigate("/admin-usuarios-eliminados");
@@ -107,28 +100,26 @@ const ContentDashboard: React.FC = () => {
         </Card.Header>
         <Card.Body style={{ marginTop: "-20%" }}>
           {data.length > 0 ? (
-            <ResponsiveContainer width={250} height={350}>
-              <PieChart width={400} height={400}>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={70}
-                  dataKey="value"
-                  label
-                >
-                  {data.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={entry.fill}
-                      onClick={() => handlePieClick(entry)}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-              </PieChart>
-            </ResponsiveContainer>
+            <PieChart width={300} height={400}>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                outerRadius={70}
+                dataKey="value"
+                label
+              >
+                {data.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.fill}
+                    onClick={() => handlePieClick(entry)}
+                  />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
           ) : (
             <h4 style={{ textAlign: "center", marginTop: "20%" }}>
               No hay datos disponibles para graficar
