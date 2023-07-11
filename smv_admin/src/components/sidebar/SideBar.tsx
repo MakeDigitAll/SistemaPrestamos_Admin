@@ -221,6 +221,16 @@ function SideBar() {
             >
               {t("sidebar.usuariosActivos")}
             </MenuItem>
+            <MenuItem
+              style={{ marginTop: "10px" }}
+              icon={<FaMoneyBillAlt />}
+              onClick={() => handleMenuItemClick("/admin-suscribir-usuario")}
+              className={
+                isMenuItemActive("/admin-suscribir-usuario") ? "selected" : ""
+              }
+            >
+              {t("sidebar.suscribir")}
+            </MenuItem>
 
             <MenuItem
               icon={<FaUserSlash />}

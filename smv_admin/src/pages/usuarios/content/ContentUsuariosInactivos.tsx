@@ -11,21 +11,21 @@ import {
   useCollator,
   SortDescriptor,
 } from "@nextui-org/react";
-import deleteUsuario from "../../utils/deleteUser";
-import EditUsuario from "../usuarios/modals/ModalEditUsuario";
-import InfoUsuario from "../usuarios/modals/ModalInfoUsuario";
-import { EditIcon } from "../../resources/icons/EditIcon";
-import { EyeIcon } from "../../resources/icons/EyeIcon";
-import { IconButton } from "../../resources/icons/IconButton";
-import { useGetUsuariosInactivos } from "../../hooks/userPrestamistas/usegetInactivos";
-import { UserPrestamista as UserTypePrestamista } from "../../types/types";
-import { DeleteIcon } from "../../resources/icons/DeleteIcon";
-import { SearchContext } from "../../context/SearchContext";
-import SuscripcionesUsuario from "./modals/ModalSuscripciones";
+import deleteUsuario from "../../../utils/deleteUser";
+import EditUsuario from "../../usuarios/modals/ModalEditUsuario";
+import InfoUsuario from "../../usuarios/modals/ModalInfoUsuario";
+import { EditIcon } from "../../../resources/icons/EditIcon";
+import { EyeIcon } from "../../../resources/icons/EyeIcon";
+import { IconButton } from "../../../resources/icons/IconButton";
+import { useGetUsuariosInactivos } from "../../../hooks/userPrestamistas/usegetInactivos";
+import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
+import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
+import { SearchContext } from "../../../context/SearchContext";
+import SuscripcionesUsuario from "./../modals/ModalSuscripciones";
 import { BsCartPlus } from "react-icons/bs";
 
 //Componente funcional que recibe isActive y isDeleted como props
-const ContentUsuariosActivos: React.FC = () => {
+const ContentUsuariosInactivos: React.FC = () => {
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los usuariosPrestamistas
@@ -330,4 +330,4 @@ const ContentUsuariosActivos: React.FC = () => {
   );
 };
 
-export default ContentUsuariosActivos;
+export default ContentUsuariosInactivos;

@@ -21,6 +21,7 @@ const esTranslation = {
     usuarios: "Usuarios",
     settings: "Configuración",
     usuariosActivos: "Activos",
+    suscribir: "Suscribir",
     usuariosInactivos: "Inactivos",
     usuariosEliminados: "Eliminados",
     addUsuario: "Agregar",

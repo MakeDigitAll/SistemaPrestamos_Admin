@@ -16,6 +16,7 @@ import { SearchContextProvider } from "../context/SearchContext";
 import { CustomNavBar } from "../components/navbar/NavBar";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
+import SuscribirUsuario from "../pages/usuarios/SuscribirUsuario";
 
 const handleLogout = () => {
   // Eliminar las cookies y actualizar el estado de autenticación
@@ -63,6 +64,10 @@ function AppRouter() {
                     <Route
                       path="/admin-usuarios-activos"
                       element={<UsuariosActivos />}
+                    />
+                    <Route
+                      path="/admin-suscribir-usuario"
+                      element={<SuscribirUsuario />}
                     />
                     <Route
                       path="/admin-suscripciones"

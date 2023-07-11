@@ -21,6 +21,7 @@ const enTranslation = {
     usuarios: "Users",
     settings: "Settings",
     usuariosActivos: "Active",
+    suscribir: "Subscribe",
     usuariosInactivos: "Inactive",
     usuariosEliminados: "Deleted",
     addUsuario: "Add",
