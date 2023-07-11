@@ -25,7 +25,9 @@ const ContentAddUsuario: React.FC = () => {
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
-  const [userSliderValue, setUserSliderValue] = useState<number | number[]>(20);
+  const [userSliderValue, setUserSliderValue] = useState<number | number[]>(
+    100
+  );
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -160,7 +162,7 @@ const ContentAddUsuario: React.FC = () => {
         resetPassword();
         resetNumeroTelefono();
         setSliderValue([1000, 10000]);
-        setUserSliderValue(20);
+        setUserSliderValue(100);
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -181,7 +183,7 @@ const ContentAddUsuario: React.FC = () => {
     const value = event.target.value.replace(/[^0-9]/g, "");
     const parsedValue = parseInt(value, 10);
 
-    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 1000000) {
+    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 100000) {
       const newSliderValue = Array.isArray(sliderValue)
         ? [parsedValue, sliderValue[1]]
         : parsedValue;
@@ -193,7 +195,7 @@ const ContentAddUsuario: React.FC = () => {
     const value = event.target.value.replace(/[^0-9]/g, "");
     const parsedValue = parseInt(value, 10);
 
-    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 1000000) {
+    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 100000) {
       const newSliderValue = Array.isArray(sliderValue)
         ? [sliderValue[0], parsedValue]
         : parsedValue;
@@ -203,7 +205,7 @@ const ContentAddUsuario: React.FC = () => {
 
   const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value >= 1 && value <= 10000) {
+    if (!isNaN(value) && value >= 1 && value <= 2000) {
       setUserSliderValue(value);
     }
   };
@@ -385,7 +387,7 @@ const ContentAddUsuario: React.FC = () => {
                     railStyle={{ backgroundColor: "#000000" }}
                     min={1}
                     value={sliderValue}
-                    max={1000000}
+                    max={100000}
                     step={1000}
                     onChange={handleSliderChange}
                   />
@@ -426,7 +428,7 @@ const ContentAddUsuario: React.FC = () => {
                     ariaLabelledByForHandle={"slider-handle-1"}
                     railStyle={{ backgroundColor: "#000000" }}
                     min={1}
-                    max={10000}
+                    max={2000}
                     step={10}
                     value={userSliderValue}
                     onChange={handleUserSliderChange}
