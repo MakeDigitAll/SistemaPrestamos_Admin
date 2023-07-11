@@ -57,7 +57,7 @@ const LoginForm = () => {
 
     try {
       // Encriptar correo electrónico y contraseña
-      const encryptedEmail = aesEncrypt(emailValue.toLowerCase());
+      const encryptedEmail = aesEncrypt(emailValue);
       const encryptedPassword = aesEncrypt(passwordValue);
       const response = await service.login(encryptedEmail, encryptedPassword);
 

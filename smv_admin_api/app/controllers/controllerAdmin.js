@@ -1,5 +1,6 @@
 const db = require("../models");
 const admin = db.administradores;
+const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 //token key 32
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
@@ -82,13 +83,15 @@ exports.updateAdmin = (req, res) => {
 
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
 exports.loginAdmin = (req, res) => {
-  //desencriptar el correo y la contraseña
-  const decryptedEmail = aesDecrypt(req.query.correoElectronico);
+  // Desencriptar el correo y la contraseña
+  const decryptedEmail = aesDecrypt(req.query.correoElectronico).toLowerCase();
   const decryptedPassword = aesDecrypt(req.query.adminPassword);
   admin
     .findOne({
       where: {
-        correoElectronico: decryptedEmail,
+        correoElectronico: {
+          [Op.iLike]: `%${decryptedEmail}%`,
+        },
       },
     })
     .then((data) => {
@@ -133,6 +136,7 @@ exports.loginAdmin = (req, res) => {
       });
     });
 };
+
 
 //refrescar el token de acceso
 exports.refreshTokenAdmin = (req, res) => {
