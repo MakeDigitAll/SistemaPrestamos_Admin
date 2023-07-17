@@ -1,6 +1,6 @@
 import React from "react";
 import Body from "../../components/Body";
-import ContentAddUsuario from "./content/ContentAddUsuarioPrestamista";
+import ContentAddUsuario from "./ContentAddUsuarioPrestamista";
 
 const AddUsuarios: React.FC = () => {
   return (

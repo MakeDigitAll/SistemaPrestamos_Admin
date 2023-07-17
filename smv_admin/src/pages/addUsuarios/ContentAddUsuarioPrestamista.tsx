@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
   Avatar,
@@ -8,15 +8,15 @@ import {
   useInput,
   Dropdown,
 } from "@nextui-org/react";
-import { aesEncrypt } from "../../../utils/encryption";
-import service from "../../../services/service";
+import { aesEncrypt } from "../../utils/encryption";
+import service from "../../services/service";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useNavigate } from "react-router-dom";
 import { Tabs, Tab } from "@mui/material";
-import defaultImage from "../../../assets/images/defaultProfile.png";
-import { useGetTipoSuscripciones } from "../../../hooks/useGetTipoSuscripciones";
-import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
+import defaultImage from "../../assets/images/defaultProfile.png";
+import { useGetTipoSuscripciones } from "../../hooks/useGetTipoSuscripciones";
+import { TipoSuscripcion } from "../../types/TipoSuscripcion";
 
 const ContentAddUsuario: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -37,6 +37,27 @@ const ContentAddUsuario: React.FC = () => {
 
   let montoMinValue = 100;
   let montoMaxValue = 100;
+
+  const getSelectedSubscription = useCallback(
+    (usuariosAPrestar: number, montoMinimo: number, montoMaximo: number) => {
+      // Iterar sobre cada tipo de suscripción
+      for (const tipoSuscripcion of TipoSuscripciones) {
+        // Verificar si los datos del usuario están dentro del rango de la suscripción actual
+        if (
+          usuariosAPrestar <= tipoSuscripcion.numeroUsuariosMax &&
+          montoMinimo >= tipoSuscripcion.montoDesde &&
+          montoMaximo <= tipoSuscripcion.montoHasta
+        ) {
+          return tipoSuscripcion.nombreSuscripcion;
+        }
+      }
+
+      // Si no se encontró ninguna suscripción que cumpla con los criterios, devolver un valor por defecto o null
+      return "Suscripción no encontrada";
+    },
+    [TipoSuscripciones]
+  );
+
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
@@ -51,43 +72,20 @@ const ContentAddUsuario: React.FC = () => {
     }
   }, [arrayTipoSuscripciones]);
 
-  // useEffect para actualizar el valor del slider de monto máximo
   useEffect(() => {
-    let minValue, maxValue;
-    if (Array.isArray(sliderValue)) {
-      minValue = sliderValue[0];
-      maxValue = sliderValue[1];
-    } else {
-      minValue = sliderValue;
-      maxValue = sliderValue;
-    }
-
-    const selectedSubscription = getSelectedSubscription(
-      userSliderValue as number,
-      minValue,
-      montoMaxValue
-    );
-    setSelectedSubscription(selectedSubscription);
-  }, [sliderValue, userSliderValue, montoMaxValue]);
-
-  // useEffect para actualizar el valor del slider de monto mínimo
-  useEffect(() => {
-    let minValue, maxValue;
-    if (Array.isArray(sliderValue)) {
-      minValue = sliderValue[0];
-      maxValue = sliderValue[1];
-    } else {
-      minValue = sliderValue;
-      maxValue = sliderValue;
-    }
-
     const selectedSubscription = getSelectedSubscription(
       userSliderValue as number,
       montoMinValue,
-      maxValue
+      montoMaxValue
     );
     setSelectedSubscription(selectedSubscription);
-  }, [montoMinValue, sliderValue, userSliderValue]);
+  }, [
+    sliderValue,
+    userSliderValue,
+    montoMinValue,
+    montoMaxValue,
+    getSelectedSubscription,
+  ]);
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -200,28 +198,6 @@ const ContentAddUsuario: React.FC = () => {
         }
       }
     }
-  };
-
-  const getSelectedSubscription = (
-    usuariosAPrestar: number,
-    montoMinimo: number,
-    montoMaximo: number
-  ) => {
-    // Iterar sobre cada tipo de suscripción
-    for (const tipoSuscripcion of TipoSuscripciones) {
-      // Verificar si los datos del usuario están dentro del rango de la suscripción actual
-      if (
-        usuariosAPrestar <= tipoSuscripcion.numeroUsuariosMax &&
-        montoMinimo >= tipoSuscripcion.montoDesde &&
-        montoMaximo <= tipoSuscripcion.montoHasta
-      ) {
-        return tipoSuscripcion.nombreSuscripcion;
-      }
-    }
-
-    // Si no se encontró ninguna suscripción que cumpla con los criterios, devolver un valor por defecto o null
-    console.log("Suscripción no encontrada");
-    return "Suscripción no encontrada";
   };
 
   const handleSliderChange = (value: number | number[]): void => {

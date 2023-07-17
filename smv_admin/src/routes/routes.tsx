@@ -8,7 +8,7 @@ import Profile from "../pages/profile/Profile";
 import UsuariosActivos from "../pages/usuarios/UsuariosActivos";
 import Suscripciones from "../pages/suscripciones/Suscripciones";
 import Fidelidad from "../pages/fidelidad/Fidelidad";
-import AddUsuario from "../pages/usuarios/AddUsuario";
+import AddUsuario from "../pages/addUsuarios/AddUsuario";
 import UsuariosEliminados from "../pages/usuarios/UsuariosEliminados";
 import cookies from "js-cookie";
 import lightTheme from "./lightTheme";
