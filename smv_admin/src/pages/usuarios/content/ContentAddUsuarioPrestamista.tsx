@@ -33,6 +33,8 @@ const ContentAddUsuario: React.FC = () => {
     []
   );
   const navigate = useNavigate();
+  const [selectedSubscription, setSelectedSubscription] = useState<string>("");
+
   let montoMinValue = 100;
   let montoMaxValue = 100;
   const [sliderValue, setSliderValue] = useState<number | number[]>([
@@ -48,6 +50,44 @@ const ContentAddUsuario: React.FC = () => {
       setTipoSuscripciones(arrayTipoSuscripciones);
     }
   }, [arrayTipoSuscripciones]);
+
+  // useEffect para actualizar el valor del slider de monto máximo
+  useEffect(() => {
+    let minValue, maxValue;
+    if (Array.isArray(sliderValue)) {
+      minValue = sliderValue[0];
+      maxValue = sliderValue[1];
+    } else {
+      minValue = sliderValue;
+      maxValue = sliderValue;
+    }
+
+    const selectedSubscription = getSelectedSubscription(
+      userSliderValue as number,
+      minValue,
+      montoMaxValue
+    );
+    setSelectedSubscription(selectedSubscription);
+  }, [sliderValue, userSliderValue, montoMaxValue]);
+
+  // useEffect para actualizar el valor del slider de monto mínimo
+  useEffect(() => {
+    let minValue, maxValue;
+    if (Array.isArray(sliderValue)) {
+      minValue = sliderValue[0];
+      maxValue = sliderValue[1];
+    } else {
+      minValue = sliderValue;
+      maxValue = sliderValue;
+    }
+
+    const selectedSubscription = getSelectedSubscription(
+      userSliderValue as number,
+      montoMinValue,
+      maxValue
+    );
+    setSelectedSubscription(selectedSubscription);
+  }, [montoMinValue, sliderValue, userSliderValue]);
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -162,6 +202,28 @@ const ContentAddUsuario: React.FC = () => {
     }
   };
 
+  const getSelectedSubscription = (
+    usuariosAPrestar: number,
+    montoMinimo: number,
+    montoMaximo: number
+  ) => {
+    // Iterar sobre cada tipo de suscripción
+    for (const tipoSuscripcion of TipoSuscripciones) {
+      // Verificar si los datos del usuario están dentro del rango de la suscripción actual
+      if (
+        usuariosAPrestar <= tipoSuscripcion.numeroUsuariosMax &&
+        montoMinimo >= tipoSuscripcion.montoDesde &&
+        montoMaximo <= tipoSuscripcion.montoHasta
+      ) {
+        return tipoSuscripcion.nombreSuscripcion;
+      }
+    }
+
+    // Si no se encontró ninguna suscripción que cumpla con los criterios, devolver un valor por defecto o null
+    console.log("Suscripción no encontrada");
+    return "Suscripción no encontrada";
+  };
+
   const handleSliderChange = (value: number | number[]): void => {
     setSliderValue(value);
   };
@@ -180,6 +242,13 @@ const ContentAddUsuario: React.FC = () => {
         : parsedValue;
       setSliderValue(newSliderValue);
     }
+
+    const selectedSubscription = getSelectedSubscription(
+      userSliderValue as number,
+      parsedValue,
+      montoMaxValue
+    );
+    setSelectedSubscription(selectedSubscription);
   };
 
   const handleMontoMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,6 +261,13 @@ const ContentAddUsuario: React.FC = () => {
         : parsedValue;
       setSliderValue(newSliderValue);
     }
+
+    const selectedSubscription = getSelectedSubscription(
+      userSliderValue as number,
+      montoMinValue,
+      parsedValue
+    );
+    setSelectedSubscription(selectedSubscription);
   };
 
   const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +275,13 @@ const ContentAddUsuario: React.FC = () => {
     if (!isNaN(value) && value >= 1 && value <= 2000) {
       setUserSliderValue(value);
     }
+
+    const selectedSubscription = getSelectedSubscription(
+      value,
+      montoMinValue,
+      montoMaxValue
+    );
+    setSelectedSubscription(selectedSubscription);
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -206,6 +289,7 @@ const ContentAddUsuario: React.FC = () => {
   };
 
   const handleNext = () => {
+    console.log("Tab value: " + tabValue);
     if (tabValue === 0) {
       // Comprobar errores en los datos personales
       let hasPersonalInfoError = false;
@@ -270,6 +354,20 @@ const ContentAddUsuario: React.FC = () => {
         setSubscriptionTabEnabled(true); // Habilitar la pestaña de suscripciones
         setTabValue(1); // Avanzar a la siguiente pestaña
       }
+
+      const subscriptionName = getSelectedSubscription(
+        userSliderValue as number,
+        montoMinValue,
+        montoMaxValue
+      );
+      setSelectedSubscription(subscriptionName);
+    } else if (tabValue === 1) {
+      const subscriptionName = getSelectedSubscription(
+        userSliderValue as number,
+        montoMinValue,
+        montoMaxValue
+      );
+      setSelectedSubscription(subscriptionName);
     } else {
       handleRegister();
     }
@@ -511,13 +609,17 @@ const ContentAddUsuario: React.FC = () => {
                   <div style={{ flex: 1, marginRight: "1%" }}>
                     <Dropdown isDisabled={!subscriptionTabEnabled}>
                       <Dropdown.Button
+                        value={selectedSubscription}
+                        onChange={(value: any) =>
+                          setSelectedSubscription(value)
+                        }
                         style={{
                           width: "200px",
                           marginTop: "14%",
                           marginLeft: "33%",
                         }}
                       >
-                        Suscripcion
+                        {selectedSubscription || "Suscripción"}
                       </Dropdown.Button>
                       <Dropdown.Menu aria-label="Tipos de Suscrpcion">
                         {TipoSuscripciones.map((tipoSuscripcion) => (
