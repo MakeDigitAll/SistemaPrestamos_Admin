@@ -108,6 +108,11 @@ class AdminDataService {
   agregarTipoSuscripcion(data: any) {
     return http.post("/admin-add-tipo-suscripcion", data);
   }
+
+  //obtener los tipos de suscripciónes
+  getTipoSuscripciones() {
+    return http.get("/admin-get-all-tipos-suscripciones-activas");
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

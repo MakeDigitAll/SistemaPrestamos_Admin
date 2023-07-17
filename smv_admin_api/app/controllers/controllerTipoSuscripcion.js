@@ -155,4 +155,36 @@ exports.createTipoSuscripcion = (req, res) => {
             console.log(err);
         });
 };
-        
+
+//obtener todas las suscripciones activas de la base de datos que no son isDeleted = true
+exports.getAllTiposSuscripcionesActivas = (req, res) => {
+    tipoSuscripcion
+        .findAll({
+            where: {
+                isDeleted: false,
+            },
+        })
+        .then((data) => {
+            const tipoSuscripcion = data.map((tipoSuscripcion) => ({
+                idTipoSuscripcion: tipoSuscripcion.idTipoSuscripcion,
+                nombreSuscripcion: tipoSuscripcion.nombreSuscripcion,
+                montoDesde: tipoSuscripcion.montoDesde,
+                montoHasta: tipoSuscripcion.montoHasta,
+                numeroUsuariosMax: tipoSuscripcion.numeroUsuariosMax,
+                costoMembresia: tipoSuscripcion.costoMembresia,
+                isUpdated: tipoSuscripcion.isUpdated,
+            }));
+            const tokenTipoSuscripciones = jwt.sign(
+                { tipoSuscripcion },
+                TOKEN_KEY
+            );
+            res.send({ tokenTipoSuscripciones });
+        })
+        .catch((err) => {
+            res.status(500).send({
+                message:
+                    err.message || "Ocurrió un error al obtener los tipoSuscripcion.",
+            });
+            console.log(err);
+        });
+}

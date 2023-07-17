@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Avatar,
@@ -15,6 +15,8 @@ import "rc-slider/assets/index.css";
 import { useNavigate } from "react-router-dom";
 import { Tabs, Tab } from "@mui/material";
 import defaultImage from "../../../assets/images/defaultProfile.png";
+import { useGetTipoSuscripciones } from "../../../hooks/useGetTipoSuscripciones";
+import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
 
 const ContentAddUsuario: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -23,7 +25,13 @@ const ContentAddUsuario: React.FC = () => {
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
-  const [subscriptionTabEnabled, setSubscriptionTabEnabled] = useState(false);
+  const [subscriptionTabEnabled, setSubscriptionTabEnabled] = useState(true);
+  const getTipoSubcripciones = useGetTipoSuscripciones();
+  const arrayTipoSuscripciones =
+    getTipoSubcripciones?.decodedToken?.tipoSuscripcion;
+  const [TipoSuscripciones, setTipoSuscripciones] = useState<TipoSuscripcion[]>(
+    []
+  );
   const navigate = useNavigate();
   let montoMinValue = 100;
   let montoMaxValue = 100;
@@ -33,6 +41,13 @@ const ContentAddUsuario: React.FC = () => {
   const [userSliderValue, setUserSliderValue] = useState<number | number[]>(
     100
   );
+
+  //useEffect para setear los tipos de suscripciones
+  useEffect(() => {
+    if (arrayTipoSuscripciones) {
+      setTipoSuscripciones(arrayTipoSuscripciones);
+    }
+  }, [arrayTipoSuscripciones]);
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -436,7 +451,7 @@ const ContentAddUsuario: React.FC = () => {
             >
               <div style={{ flex: 1, marginRight: "1%" }}>
                 {renderInputField(
-                  "Monto Mínimo $Mxn",
+                  "Monto Mínimo a Prestar $Mxn",
                   montoMinValue.toLocaleString(),
                   "",
                   { value: montoMinValue, onChange: handleMontoMinChange },
@@ -447,7 +462,7 @@ const ContentAddUsuario: React.FC = () => {
               </div>
               <div style={{ flex: 1, marginRight: "1%" }}>
                 {renderInputField(
-                  "Monto Máximo $Mxn",
+                  "Monto Máximo a Prestar  $Mxn",
                   montoMaxValue.toLocaleString(),
                   "",
                   { value: montoMaxValue, onChange: handleMontoMaxChange },
@@ -494,7 +509,7 @@ const ContentAddUsuario: React.FC = () => {
                   </div>
 
                   <div style={{ flex: 1, marginRight: "1%" }}>
-                    <Dropdown isDisabled={true}>
+                    <Dropdown isDisabled={!subscriptionTabEnabled}>
                       <Dropdown.Button
                         style={{
                           width: "200px",
@@ -505,16 +520,16 @@ const ContentAddUsuario: React.FC = () => {
                         Suscripcion
                       </Dropdown.Button>
                       <Dropdown.Menu aria-label="Tipos de Suscrpcion">
-                        <Dropdown.Item key="tier1">Estandar</Dropdown.Item>
-                        <Dropdown.Item key="tier2">Avanzado</Dropdown.Item>
-                        <Dropdown.Item key="tier3">Premium</Dropdown.Item>
-                        <Dropdown.Item key="tierCustom" withDivider>
-                          Personalizar
-                        </Dropdown.Item>
+                        {TipoSuscripciones.map((tipoSuscripcion) => (
+                          <Dropdown.Item
+                            key={tipoSuscripcion.idTipoSuscripcion}
+                          >
+                            {tipoSuscripcion.nombreSuscripcion}
+                          </Dropdown.Item>
+                        ))}
                       </Dropdown.Menu>
                     </Dropdown>
                   </div>
-
                   <div style={{ flex: 1, marginRight: "1%" }}></div>
                 </div>
               </div>

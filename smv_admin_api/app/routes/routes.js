@@ -143,5 +143,10 @@ router.post("/admin-add-tipo-suscripcion", verifyToken, (req, res) => {
   controllerTipoSuscripcion.createTipoSuscripcion(req, res);
 });
 
+//obtener todos los tipos de suscripciones
+router.get("/admin-get-all-tipos-suscripciones-activas", verifyToken, (req, res) => {
+  controllerTipoSuscripcion.getAllTiposSuscripcionesActivas(req, res);
+});
+
 
 module.exports = router;
