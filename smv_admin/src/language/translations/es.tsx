@@ -10,6 +10,10 @@ const esTranslation = {
     nombres: "Nombres",
     apellidos: "Apellidos",
     email: "Correo electrónico",
+    errorTipoArchivo: "El archivo debe ser una imagen PNG o JPEG",
+    imagenActualizada: "Imagen actualizada",
+    errorSolicitud: "Error en la solicitud",
+    errorTamanoArchivo: "El archivo debe pesar menos de 4 MB",
   },
   navbar: {
     logout: "Cerrar sesión",
@@ -26,6 +30,8 @@ const esTranslation = {
     usuariosEliminados: "Eliminados",
     addUsuario: "Agregar",
     suscripciones: "Suscripciones",
+    fidelidad: "Niveles de fidelidad",
+    administracion: "Administración",
   },
 };
 

@@ -15,11 +15,20 @@ module.exports = (sequelize, Sequelize) => {
           key: "idUsuarioPrestamista",
         },
       },
-      tipoSuscripcion: {
-        type: Sequelize.STRING,
+      idNivelFidelidad: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        validate: {
-          len: [1, 50], // Mínimo 1 caracter, máximo 50 caracteres
+        references: {
+          model: "nivelesFidelidad",
+          key: "idNivelFidelidad",
+        },
+      },
+      idTipoSuscripcion: {
+        type: Sequelize.INTEGER,
+        allowNull: false, 
+        references: {
+          model: "tipoSuscripciones",
+          key: "idTipoSuscripcion",
         },
       },
       fechaInicio: {
@@ -30,12 +39,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      estadoSuscripcion: {
-        type: Sequelize.STRING,
+      isActive: {
+        type: Sequelize.BOOLEAN,
         allowNull: false,
-        validate: {
-          len: [1, 30], // Mínimo 1 caracter, máximo 30 caracteres
-        },
+        defaultValue: false,
       },
     },
     {

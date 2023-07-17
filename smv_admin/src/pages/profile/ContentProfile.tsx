@@ -1,24 +1,14 @@
-import React, { useRef } from "react";
-import { useGetAdmin } from "../../hooks/useGetAdmin";
-import { Card, Avatar, Text, Badge, Grid } from "@nextui-org/react";
+import { Card, Text, Badge, Grid } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
+import { useGetAdmin } from "../../hooks/useGetAdmin";
+import useGetImagenAdmin from "../../hooks/useGetImagenAdmin";
+import ProfileImageUpload from "../../utils/imagenProfileAdmin";
 
-const ContentProfile: React.FC = () => {
+const ContentProfile = () => {
   const user = useGetAdmin();
   const { t } = useTranslation();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const handleImageClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files && event.target.files[0];
-    // Realiza las operaciones necesarias con la imagen seleccionada
-    console.log(file);
-  };
+  const idAdmin = user?.id;
+  const imagenPerfil = useGetImagenAdmin(idAdmin);
 
   if (!user) {
     return null;
@@ -33,26 +23,16 @@ const ContentProfile: React.FC = () => {
           margin: "auto",
         }}
       >
-        <Card.Header>
-          <Avatar
-            src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
-            zoomed
-            css={{
-              margin: "auto",
-              height: "150px",
-              width: "150px",
-              marginTop: "2%",
-              cursor: "pointer",
-            }}
-            onClick={handleImageClick}
-          />
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
+        <Card.Header
+          css={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {idAdmin && (
+            <ProfileImageUpload idAdmin={idAdmin} imagenPerfil={imagenPerfil} />
+          )}
         </Card.Header>
 
         <Card.Body>

@@ -7,6 +7,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Profile from "../pages/profile/Profile";
 import UsuariosActivos from "../pages/usuarios/UsuariosActivos";
 import Suscripciones from "../pages/suscripciones/Suscripciones";
+import Fidelidad from "../pages/fidelidad/Fidelidad";
 import AddUsuario from "../pages/usuarios/AddUsuario";
 import UsuariosEliminados from "../pages/usuarios/UsuariosEliminados";
 import cookies from "js-cookie";
@@ -17,6 +18,9 @@ import { CustomNavBar } from "../components/navbar/NavBar";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
 import SuscribirUsuario from "../pages/usuarios/SuscribirUsuario";
+import { ImageProvider } from "../context/ImageContext";
+import TipoSuscripcion from "../pages/tipoSuscripcion/TipoSuscripcion";
+
 const handleLogout = () => {
   // Eliminar las cookies y actualizar el estado de autenticación
   cookies.remove("accessToken");
@@ -38,67 +42,78 @@ function AppRouter() {
 
   return (
     <SearchContextProvider>
-      <BrowserRouter>
-        <NextThemesProvider
-          defaultTheme="system"
-          attribute="class"
-          value={{
-            light: lightTheme.className,
-            dark: darkTheme.className,
-          }}
-        >
-          <NextUIProvider>
-            <div className="app-container">
-              {isLoggedIn && <SideBar />}
-              <div className="content-body">
-                {isLoggedIn && (
-                  <div className="header">
-                    <CustomNavBar handleLogout={handleLogoutCallback} />
+      <ImageProvider>
+        <BrowserRouter>
+          <NextThemesProvider
+            defaultTheme="system"
+            attribute="class"
+            value={{
+              light: lightTheme.className,
+              dark: darkTheme.className,
+            }}
+          >
+            <NextUIProvider>
+              <div className="app-container">
+                {isLoggedIn && <SideBar />}
+                <div className="content-body">
+                  {isLoggedIn && (
+                    <div className="header">
+                      <CustomNavBar handleLogout={handleLogoutCallback} />
+                    </div>
+                  )}
+                  <div className="content-scrollable">
+                    <Routes>
+                      <Route path="/admin-login" element={<Login />} />
+                      <Route path="/admin-dashboard" element={<Dashboard />} />
+                      <Route path="/admin-profile" element={<Profile />} />
+                      <Route
+                        path="/admin-usuarios-activos"
+                        element={<UsuariosActivos />}
+                      />
+                      <Route
+                        path="/admin-suscribir-usuario"
+                        element={<SuscribirUsuario />}
+                      />
+                      <Route
+                        path="/admin-suscripciones"
+                        element={<Suscripciones />}
+                      />
+                      <Route
+                        path="/admin-add-usuario"
+                        element={<AddUsuario />}
+                      />
+                      <Route
+                        path="/admin-usuarios-eliminados"
+                        element={<UsuariosEliminados />}
+                      />
+                      <Route path="/admin-fidelidad" element={<Fidelidad />} />
+                      <Route
+                        path="/admin-tipo-suscripcion"
+                        element={<TipoSuscripcion />}
+                      />
+
+                      {isLoggedIn ? (
+                        <Route
+                          path="/"
+                          element={<Navigate to="/admin-dashboard" replace />}
+                        />
+                      ) : (
+                        <Route
+                          path="/"
+                          element={<Navigate to="/admin-login" replace />}
+                        />
+                      )}
+                    </Routes>
                   </div>
-                )}
-                <div className="content-scrollable">
-                  <Routes>
-                    <Route path="/admin-login" element={<Login />} />
-                    <Route path="/admin-dashboard" element={<Dashboard />} />
-                    <Route path="/admin-profile" element={<Profile />} />
-                    <Route
-                      path="/admin-usuarios-activos"
-                      element={<UsuariosActivos />}
-                    />
-                    <Route
-                      path="/admin-suscribir-usuario"
-                      element={<SuscribirUsuario />}
-                    />
-                    <Route
-                      path="/admin-suscripciones"
-                      element={<Suscripciones />}
-                    />
-                    <Route path="/admin-add-usuario" element={<AddUsuario />} />
-                    <Route
-                      path="/admin-usuarios-eliminados"
-                      element={<UsuariosEliminados />}
-                    />
-                    {isLoggedIn ? (
-                      <Route
-                        path="/"
-                        element={<Navigate to="/admin-dashboard" replace />}
-                      />
-                    ) : (
-                      <Route
-                        path="/"
-                        element={<Navigate to="/admin-login" replace />}
-                      />
-                    )}
-                  </Routes>
                 </div>
               </div>
-            </div>
-            <div className="footer">
-              <Footer />
-            </div>
-          </NextUIProvider>
-        </NextThemesProvider>
-      </BrowserRouter>
+              <div className="footer">
+                <Footer />
+              </div>
+            </NextUIProvider>
+          </NextThemesProvider>
+        </BrowserRouter>
+      </ImageProvider>
     </SearchContextProvider>
   );
 }

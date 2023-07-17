@@ -5,12 +5,12 @@ import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useGetAdmin } from "../../hooks/useGetAdmin";
-import Cookies from "js-cookie";
-import ThemeToggleButton from "../buttons/ThemeToggleButton";
-import LanguageDropdown from "../buttons/LanguageDropdown";
+import ThemeToggleButton from "../../utils/buttons/ThemeToggleButton";
+import LanguageDropdown from "../../utils/buttons/LanguageDropdown";
 import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
-
+import { ImageContext } from "../../context/ImageContext";
+import useGetImagenAdmin from "../../hooks/useGetImagenAdmin";
 interface NavBarProps {
   handleLogout: () => void;
 }
@@ -22,8 +22,21 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const admin = useGetAdmin();
-
+  var { profileImage } = useContext(ImageContext);
+  const idAdmin = admin?.id;
+  const imagenPerfil = useGetImagenAdmin(idAdmin);
+  const hideSearch =
+    location.pathname === "/admin-suscripciones" ||
+    location.pathname === "/admin-add-usuario" ||
+    location.pathname === "/admin-add-suscripcion" ||
+    location.pathname === "/admin-dashboard" ||
+    location.pathname === "/admin-profile";
   const [searchValue, setSearchValue] = useState("");
+
+  //si no hay conexion de la imagen de perfil
+  if (!profileImage) {
+    profileImage = imagenPerfil;
+  }
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
@@ -41,7 +54,7 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
   useEffect(() => {
     setSearchTerm(""); // Restablecer el término de búsqueda al cambiar de página
     setSearchValue(""); // Borrar el contenido de la barra de búsqueda
-  }, [location.pathname]);
+  }, [location.pathname, setSearchTerm]);
 
   if (!admin) {
     return null;
@@ -61,40 +74,43 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
 
         <Navbar.Brand css={{ mr: "$4" }}>
           <Navbar.Content>
-            <Navbar.Item
-              css={{
-                "@xsMax": {
-                  w: "100%",
-                  jc: "center",
-                },
-              }}
-            >
-              <Input
-                aria-label="Search"
-                clearable
-                onChange={handleSearch as any}
-                value={searchValue}
-                contentLeft={
-                  <SearchIcon
-                    fill={theme === "dark" ? "white" : "black"}
-                    size={20}
-                  />
-                }
-                contentLeftStyling={false}
+            {/* Verifica si hideSearch es verdadero antes de renderizar el componente */}
+            {!hideSearch && (
+              <Navbar.Item
                 css={{
-                  w: "100%",
                   "@xsMax": {
-                    mw: "500px",
-                  },
-                  "& .nextui-input-content--left": {
-                    h: "100%",
-                    ml: "$4",
-                    dflex: "center",
+                    w: "100%",
+                    jc: "center",
                   },
                 }}
-                placeholder={t("navbar.search")}
-              />
-            </Navbar.Item>
+              >
+                <Input
+                  aria-label="Search"
+                  clearable
+                  onChange={handleSearch as any}
+                  value={searchValue}
+                  contentLeft={
+                    <SearchIcon
+                      fill={theme === "dark" ? "white" : "black"}
+                      size={20}
+                    />
+                  }
+                  contentLeftStyling={false}
+                  css={{
+                    w: "100%",
+                    "@xsMax": {
+                      mw: "500px",
+                    },
+                    "& .nextui-input-content--left": {
+                      h: "100%",
+                      ml: "$4",
+                      dflex: "center",
+                    },
+                  }}
+                  placeholder={t("navbar.search")}
+                />
+              </Navbar.Item>
+            )}
           </Navbar.Content>
         </Navbar.Brand>
 
@@ -121,13 +137,7 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
             <Dropdown placement="bottom-right">
               <Navbar.Item>
                 <Dropdown.Trigger>
-                  <User
-                    src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
-                    size="md"
-                    name={""}
-                    zoomed
-                    pointer
-                  />
+                  <User src={profileImage} size="md" name={""} zoomed pointer />
                 </Dropdown.Trigger>
               </Navbar.Item>
 
@@ -136,17 +146,23 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
                 color="secondary"
                 onAction={handleDropdownAction}
               >
-                <Dropdown.Item>
+                <Dropdown.Item textValue={t("navbar.profile")}>
                   <Text
                     b
                     color="inherit"
                     css={{ display: "flex" }}
                     onClick={() => navigate("/admin-profile")}
                   >
+                    {" "}
                     {t("navbar.profile")}
                   </Text>
                 </Dropdown.Item>
-                <Dropdown.Item key="logout" withDivider color="error">
+                <Dropdown.Item
+                  key="logout"
+                  withDivider
+                  color="error"
+                  textValue={t("navbar.logout")}
+                >
                   {t("navbar.logout")}
                 </Dropdown.Item>
               </Dropdown.Menu>

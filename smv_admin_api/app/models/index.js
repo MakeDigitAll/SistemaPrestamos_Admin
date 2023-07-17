@@ -16,61 +16,125 @@ const db = {};
 
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-db.administradores = require("./modelAdmin.js")(sequelize, Sequelize);
-db.usuariosPrestamistas = require("./modelUsuariosPrestamistas.js")(
-  sequelize,
-  Sequelize
-);
-db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(
-  sequelize,
-  Sequelize
-);
-db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
-db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
-db.calidadPrestamista = require("./modelCalidadPrestamista.js")(
-  sequelize,
-  Sequelize
-);
 
-// Asociaciones entre usuarios y suscripciones
+//Modelos Usuarios
+db.administradores = require("./modelAdmin.js")(sequelize, Sequelize);
+db.usuariosPrestamistas = require("./modelUsuariosPrestamistas.js")(sequelize,Sequelize);
+db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(sequelize,Sequelize);
+//Modelos Imagenes
+db.imagenAdministrador = require("./images/modelImagenAdmin.js")(sequelize,Sequelize);
+db.imagenPrestamista = require("./images/modelImagenPrestamistas.js")(sequelize,Sequelize);
+db.imagenAfiliado = require("./images/modelImagenAfiliados.js")(sequelize,Sequelize);
+//Modelo Prestamos
+db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
+//Modelo DatosUsuarioSuscripcion
+db.datosUsuarioSuscripciones = require("./modelDatosUsuarioSuscripcion.js")(sequelize, Sequelize);
+//Modelo de NivelesFidelidad
+db.nivelesFidelidad = require("./modelNivelesFidelidad.js")(sequelize, Sequelize);
+//Modelo de TipoSuscripcion
+db.tipoSuscripciones = require("./modelTipoSuscripcion.js")(sequelize, Sequelize);
+
+
+//Modelo Suscripciones
+db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
+
+
+
+//ok-----------------------------------Asociaciones de imagenes-----------------------------------//
+//Asociacion entre imagen administrador y administrador
+db.administradores.hasOne(db.imagenAdministrador, {
+  foreignKey: "idAdministrador",
+  as: "imagen_administrador",
+});
+db.imagenAdministrador.belongsTo(db.administradores, {
+  foreignKey: "idAdministrador",
+  as: "administrador_imagen",
+});
+
+// Asociacion entre usuariosPrestamistas e imagenesPrestamistas
+db.usuariosPrestamistas.hasOne(db.imagenPrestamista, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "imagen_prestamista",
+});
+db.imagenPrestamista.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamista_imagen",
+});
+
+// Asociacion entre usuariosAfiliados e imagenesAfiliados
+db.usuariosAfiliados.hasOne(db.imagenAfiliado, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "imagen_afiliado",
+});
+db.imagenAfiliado.belongsTo(db.usuariosAfiliados, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "afiliado_imagen",
+});
+
+// --------------------------------Asociacion de Usuarios y Modelos --------------------------------//
+
+//Asociacion entre usuariosPresatmistas y prestamos N:M
+db.usuariosPrestamistas.belongsToMany(db.prestamos, {
+  through: "PrestamosUsuariosPrestamistas",
+  as: "prestamos",
+  foreignKey: "idUsuarioPrestamista",
+});
+db.prestamos.belongsToMany(db.usuariosPrestamistas, {
+  through: "PrestamosUsuariosPrestamistas",
+  as: "usuariosPrestamistas",
+  foreignKey: "idPrestamo",
+});
+
+//Asociacion entre usuariosAfiliados y prestamos N:M
+db.usuariosAfiliados.belongsToMany(db.prestamos, {
+  through: "PrestamosUsuariosAfiliados",
+  as: "prestamos",
+  foreignKey: "idUsuarioAfiliado",
+});
+db.prestamos.belongsToMany(db.usuariosAfiliados, {
+  through: "PrestamosUsuariosAfiliados",
+  as: "usuariosAfiliados",
+  foreignKey: "idPrestamo",
+});
+
+//Asociacion entre usuariosPrestamistas y datosUsuarioSuscripciones 1:1
+db.usuariosPrestamistas.hasOne(db.datosUsuarioSuscripciones, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "datos_usuarios_suscripcion_prestamista",
+});
+db.datosUsuarioSuscripciones.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamista_datos_usuarios_suscripcion",
+});
+
+//Asociacion entre usuarioPresatmistas y suscripciones 1:1
 db.usuariosPrestamistas.hasOne(db.suscripciones, {
   foreignKey: "idUsuarioPrestamista",
-  as: "suscripcion",
+  as: "suscripciones_prestamista",
 });
 db.suscripciones.belongsTo(db.usuariosPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
-  as: "usuariosPrestamistas",
+  as: "prestamista_suscripciones",
 });
 
-// Asociación entre usuarios prestamistas y préstamos
-db.usuariosPrestamistas.hasMany(db.prestamos, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "prestamosPrestamista",
+//asociacion entre suscripciones y nivelesFidelidad 1 suscripcion solo puede tener un nivel de fidelidad pero uno o muchos niveles de fidelidad pueden pertenecer a varias una suscripciones
+db.suscripciones.belongsTo(db.nivelesFidelidad, {
+  foreignKey: "idNivelFidelidad",
+  as: "suscripcion_nivel_fidelidad",
 });
-db.prestamos.belongsTo(db.usuariosPrestamistas, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "usuarioPrestamista",
-});
-
-// Asociación entre usuarios afiliados y préstamos
-db.usuariosAfiliados.hasMany(db.prestamos, {
-  foreignKey: "idUsuarioAfiliado",
-  as: "prestamosAfiliado",
-});
-db.prestamos.belongsTo(db.usuariosAfiliados, {
-  foreignKey: "idUsuarioAfiliado",
-  as: "usuarioAfiliado",
+db.nivelesFidelidad.hasMany(db.suscripciones, {
+  foreignKey: "idNivelFidelidad",
+  as: "nivel_fidelidad_suscripcion",
 });
 
-// Asociación entre usuarios Prestamistas y Calidad Prestamista, 1 usuario prestamista solo puede tener 1 calidad prestamista (1 a 1) y 1 calidad prestamista puede pertenecer a 1 usuario prestamista (1 a 1)
-db.usuariosPrestamistas.hasOne(db.calidadPrestamista, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "calidadPrestamista",
+//asociacion entre suscripciones y tipoSuscripciones 1 suscripcion solo puede tener un tipo de suscripcion pero uno o muchos tipos de suscripcion pueden tener una suscripcion
+db.suscripciones.belongsTo(db.tipoSuscripciones, {
+  foreignKey: "idTipoSuscripcion",
+  as: "suscripcion_tipo_suscripcion",
 });
-db.calidadPrestamista.belongsTo(db.usuariosPrestamistas, {
-  foreignKey: "idUsuarioPrestamista",
-  as: "usuariosPrestamistas",
+db.tipoSuscripciones.hasMany(db.suscripciones, {
+  foreignKey: "idTipoSuscripcion",
+  as: "tipo_suscripcion_suscripcion",
 });
-
 
 module.exports = db;

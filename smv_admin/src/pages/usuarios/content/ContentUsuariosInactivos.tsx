@@ -10,22 +10,27 @@ import {
   Table,
   useCollator,
   SortDescriptor,
+  Button,
 } from "@nextui-org/react";
 import deleteUsuario from "../../../utils/deleteUser";
 import EditUsuario from "../../usuarios/modals/ModalEditUsuario";
 import InfoUsuario from "../../usuarios/modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
-import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuariosInactivos } from "../../../hooks/userPrestamistas/usegetInactivos";
-import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
+import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrestamista";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
 import SuscripcionesUsuario from "./../modals/ModalSuscripciones";
+import ModalConfirmDelete from "./../modals/ModalConfirmDelete";
 import { BsCartPlus } from "react-icons/bs";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosInactivos: React.FC = () => {
+  //Obtiene el navigate para redireccionar
+  const navigate = useNavigate();
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los usuariosPrestamistas
@@ -47,6 +52,8 @@ const ContentUsuariosInactivos: React.FC = () => {
   const [modalInfo, setModalInfoVisible] = useState(false);
   //Función para mostrar el modal de suscripciones
   const [modalSuscripciones, setModalSuscripciones] = useState(false);
+  //Función para mostrar el modal de confirmación de eliminación
+  const [modalConfirmacion, setModalConfirmacion] = useState(false);
   //Estado para definir el usuario seleccionado
   const [selectedUser, setSelectedUser] = useState<UserTypePrestamista | null>(
     null
@@ -68,6 +75,15 @@ const ContentUsuariosInactivos: React.FC = () => {
       setUsuarios(filteredUsuarios);
     }
   }, [searchTerm, usuariosPrestamistas]);
+
+  //UseEffect para mostrar el mensaje de éxito al agregar un usuario
+  useEffect(() => {
+    const toastMessage = localStorage.getItem("toastMessageAddusuario");
+    if (toastMessage) {
+      toast.success(toastMessage);
+      localStorage.removeItem("toastMessageAddusuario");
+    }
+  }, []);
 
   //Función para realizar la búsqueda de usuariosPrestamistas
   function realizarBusqueda(
@@ -95,6 +111,7 @@ const ContentUsuariosInactivos: React.FC = () => {
     setModalInfoVisible(false);
     setModalEditVisible(true);
     setModalSuscripciones(false);
+    setModalConfirmacion(false);
   };
   //Al abrir el modal de información de usuario se cierra el modal de editar usuario
   const openModalInfo = (usuario: UserTypePrestamista) => {
@@ -102,6 +119,7 @@ const ContentUsuariosInactivos: React.FC = () => {
     setModalEditVisible(false);
     setModalInfoVisible(true);
     setModalSuscripciones(false);
+    setModalConfirmacion(false);
   };
   //Al abrir el modal de información de usuario se cierra el modal de editar usuario
   const openModalSuscripciones = (usuario: UserTypePrestamista) => {
@@ -109,7 +127,18 @@ const ContentUsuariosInactivos: React.FC = () => {
     setModalEditVisible(false);
     setModalInfoVisible(false);
     setModalSuscripciones(true);
+    setModalConfirmacion(false);
   };
+
+  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
+  const openModalConfirmacion = (usuario: UserTypePrestamista) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(false);
+    setModalSuscripciones(false);
+    setModalConfirmacion(true);
+  };
+
   //Cierra el modal de editar usuario
   const closeModal = () => {
     setSelectedUser(null);
@@ -122,7 +151,7 @@ const ContentUsuariosInactivos: React.FC = () => {
   };
 
   //Función para eliminar un usuario
-  const deleteUser = async (usuario: UserTypePrestamista) => {
+  const handleDeleteUser = async (usuario: UserTypePrestamista) => {
     try {
       const resp = await deleteUsuario(usuario.idUsuarioPrestamista);
       if (resp) {
@@ -131,6 +160,22 @@ const ContentUsuariosInactivos: React.FC = () => {
     } catch (error) {
       console.error("Error deleting user:", error);
     }
+  };
+
+  const handleSelectionItem = (key: string, usuarios: any) => {
+    // Obtener el usuario de la clave seleccionada
+    const selectedUser = usuarios.find(
+      (user: any) => user.idUsuarioPrestamista === Number(key)
+    );
+
+    //si el usuario existe entonces abre el modal de información de usuario
+    if (selectedUser) {
+      openModalInfo(selectedUser);
+    }
+  };
+
+  const handleNav = () => {
+    navigate("/admin-add-usuario");
   };
 
   //Si no hay usuariosPrestamistas entonces muestra un loading
@@ -153,45 +198,99 @@ const ContentUsuariosInactivos: React.FC = () => {
     );
   }
 
-  //Si no hay usuariosPrestamistas activos, inactivos o eliminados entonces muestra un mensaje
+  //Si no hay usuarios entonces muestra un mensaje
   if (Usuarios.length === 0 && !searchTerm) {
     return (
-      <Grid.Container
-        justify="center"
-        alignContent="center"
-        gap={2}
-        style={{ height: "100vh" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          position: "fixed",
+          top: -100,
+          left: 200,
+          right: 0,
+          bottom: 0,
+          overflow: "hidden",
+        }}
       >
-        <Text>
-          No hay usuariosPrestamistas activos, inactivos o eliminados.
-        </Text>
-      </Grid.Container>
+        <Card
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "fit-content",
+            height: "fit-content",
+          }}
+        >
+          <Card.Header>
+            <Text css={{ fontWeight: "normal" }} h3>
+              No Hay Usuarios Para Suscribir
+            </Text>
+          </Card.Header>
+          <Card.Body>
+            <Text h5 css={{ fontWeight: "normal" }}>
+              ¿Desea agregar un usuario?
+            </Text>
+          </Card.Body>
+          <Card.Footer style={{ justifyContent: "center" }}>
+            <Button onPress={handleNav}>Agregar usuario</Button>
+          </Card.Footer>
+        </Card>
+      </div>
     );
   }
   //Si no hay usuariosPrestamistas activos, inactivos o eliminados con la búsqueda entonces muestra un mensaje
   if (Usuarios.length === 0 && searchTerm) {
     return (
-      <Grid.Container
-        justify="center"
-        alignContent="center"
-        gap={2}
-        style={{ height: "100vh" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          position: "fixed",
+          top: -100,
+          left: 200,
+          right: 0,
+          bottom: 0,
+          overflow: "hidden",
+        }}
       >
-        <Text>No hay usuariosPrestamistas con esa búsqueda.</Text>
-      </Grid.Container>
+        <Card
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "fit-content",
+            height: "fit-content",
+          }}
+        >
+          <Card.Body>
+            <Text h3 css={{ fontWeight: "normal" }}>
+              No Hay Usuarios Con El Nombre
+            </Text>
+            <Text h5 css={{ fontWeight: "normal" }}>
+              {searchTerm}
+            </Text>
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
   //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
   const columns = [
-    { name: "NOMBRES", uid: "nombres" },
-    { name: "APELLIDOS", uid: "apellidos" },
-    { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
-    { name: "TELÉFONO", uid: "telefono" },
-
-    { name: "ACCIONES", uid: "acciones" },
+    { name: "Nombres", uid: "nombres" },
+    { name: "Apellidos", uid: "apellidos" },
+    { name: "Codigo de Refencia", uid: "codigoReferencia" },
+    { name: "Telefono", uid: "numeroTelefono" },
+    { name: "Acciones", uid: "acciones" },
   ];
-
-  console.log(Usuarios);
 
   //Función para renderizar las celdas de la tabla
   const renderCell = (usuario: UserTypePrestamista, columnKey: React.Key) => {
@@ -203,7 +302,7 @@ const ContentUsuariosInactivos: React.FC = () => {
         return <Text>{usuario.apellidos}</Text>;
       case "codigoReferencia":
         return <Text>{usuario.codigoReferencia}</Text>;
-      case "telefono":
+      case "numeroTelefono":
         return <Text>{usuario.numeroTelefono}</Text>;
 
       case "acciones":
@@ -217,13 +316,6 @@ const ContentUsuariosInactivos: React.FC = () => {
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Informacion del Usuario">
-                <IconButton onClick={() => openModalInfo(usuario)}>
-                  <EyeIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: "flex", marginLeft: "20%" }}>
               <Tooltip content="Editar Usuario">
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
@@ -232,7 +324,7 @@ const ContentUsuariosInactivos: React.FC = () => {
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
               <Tooltip content="Eliminar usuario">
-                <IconButton onClick={() => deleteUser(usuario)}>
+                <IconButton onClick={() => openModalConfirmacion(usuario)}>
                   <DeleteIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
@@ -251,7 +343,6 @@ const ContentUsuariosInactivos: React.FC = () => {
       sortedData.sort((a: UserTypePrestamista, b: UserTypePrestamista) => {
         const aValue = a[descriptor.column as keyof UserTypePrestamista];
         const bValue = b[descriptor.column as keyof UserTypePrestamista];
-
         if (descriptor.direction === "ascending") {
           return collator.compare(String(aValue), String(bValue));
         }
@@ -276,7 +367,10 @@ const ContentUsuariosInactivos: React.FC = () => {
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
         aria-label={"Usuarios Activos"}
-        selectionMode="none"
+        selectionMode="single"
+        onRowAction={(key: any) => {
+          handleSelectionItem(key, Usuarios);
+        }}
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
       >
         <Table.Header columns={columns}>
@@ -324,6 +418,14 @@ const ContentUsuariosInactivos: React.FC = () => {
           user={selectedUser}
           onClose={closeModal}
           handleUpdate={handleUpdateUsuarios}
+        />
+      )}
+
+      {modalConfirmacion && selectedUser && (
+        <ModalConfirmDelete
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleDeleteUser}
         />
       )}
     </Card>

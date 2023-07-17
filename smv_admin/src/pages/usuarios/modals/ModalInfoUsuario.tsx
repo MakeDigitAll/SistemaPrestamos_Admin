@@ -1,7 +1,7 @@
 // ModalInfoUsuaio.tsx
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Avatar, Card, Text } from "@nextui-org/react";
-import { UserPrestamista } from "../../../types/types";
+import { UserPrestamista } from "../../../types/UserPrestamista";
 
 interface InformacionUsuarioProps {
   user: UserPrestamista;

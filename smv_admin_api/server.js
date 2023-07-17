@@ -13,18 +13,20 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json({ limit: "4mb" }));
+app.use(express.urlencoded({ limit: "4mb", extended: true }));
 app.options("*", cors(corsOptions));
 
 //por si la base de datos cambia
-db.sequelize.sync({ force: true}).then(() => {});
+db.sequelize.sync({ alter: true }).then(() => {});
 //force: true
 
-db.administradores.create({
- correoElectronico: "christian@makedigitall.com",
- adminPassword: "123",
- nombres: "Christian",
- apellidos: "Santillan",
-});
+// db.administradores.create({
+//   correoElectronico: "pablo@makedigitall.com",
+//   adminPassword: "123",
+//   nombres: "Pablo",
+//   apellidos: "Alvarez",
+// });
 
 // Rutas
 app.use("/", routes);

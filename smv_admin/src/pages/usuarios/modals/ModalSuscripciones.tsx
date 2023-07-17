@@ -4,7 +4,7 @@ import { Modal, Button, Text, Input, Avatar, Card } from "@nextui-org/react";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { toast } from "react-toastify";
-import { UserPrestamista } from "../../../types/types";
+import { UserPrestamista } from "../../../types/UserPrestamista";
 
 interface InformacionUsuarioProps {
   user: UserPrestamista;

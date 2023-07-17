@@ -3,7 +3,7 @@ import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "../../hooks/userPrestamistas/usegetAllUsuarios";
-import { UserPrestamista as UserTypePrestamista } from "../../types/types";
+import { UserPrestamista as UserTypePrestamista } from "../../types/UserPrestamista";
 
 const ContentDashboard: React.FC = () => {
   const navigate = useNavigate();

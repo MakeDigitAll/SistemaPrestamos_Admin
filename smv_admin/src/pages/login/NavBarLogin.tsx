@@ -1,8 +1,8 @@
 import React from "react";
 import { Navbar, Text, Button } from "@nextui-org/react";
-import ThemeToggleButton from "../../components/buttons/ThemeToggleButton";
+import ThemeToggleButton from "../../utils/buttons/ThemeToggleButton";
 import useDarkLight from "../../hooks/useDarkLight";
-import LanguageDropdown from "../../components/buttons/LanguageDropdown";
+import LanguageDropdown from "../../utils/buttons/LanguageDropdown";
 
 const NavBarLogin: React.FC = () => {
   const { theme, toggleTheme } = useDarkLight();

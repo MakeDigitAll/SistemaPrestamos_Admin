@@ -1,19 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
-  const CalidadPrestamista = sequelize.define(
-    "calidadPrestamista",
+  const TipoSuscripcion = sequelize.define(
+    "tipoSuscripciones",
     {
-      idCalidadPrestamista: {
+      idTipoSuscripcion: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
       },
-      idUsuarioPrestamista: {
-        type: Sequelize.INTEGER,
+      nombreSuscripcion: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: {
-          model: "usuariosPrestamistas",
-          key: "idUsuarioPrestamista",
-        },
+        validate: {
+          len: [1, 50], // Mínimo 1 caracter, máximo 50 caracteres
+      },
       },
       montoDesde: {
         type: Sequelize.DECIMAL,
@@ -23,17 +22,23 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      numeroUsuarios: {
+      numeroUsuariosMax: {
         type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-      nombreNivel: {
-        type: Sequelize.STRING,
         allowNull: false,
       },
       costoMembresia: {
         type: Sequelize.DECIMAL,
-        allowNull: true,
+        allowNull: false,
+      },
+      isDeleted: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      isUpdated: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
     },
     {
@@ -41,5 +46,5 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt: false,
     }
   );
-  return CalidadPrestamista;
+  return TipoSuscripcion;
 };

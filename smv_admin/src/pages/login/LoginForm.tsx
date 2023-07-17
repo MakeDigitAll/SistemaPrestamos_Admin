@@ -36,6 +36,7 @@ const LoginForm = () => {
     reset: resetPassword,
     bindings: passwordBindings,
   } = useInput("");
+  var expirationDate = new Date();
 
   useEffect(() => {
     const accessToken = cookies.get("accessToken");
@@ -84,7 +85,8 @@ const LoginForm = () => {
 
         // Guardar los tokens en cookies o almacenarlos en el almacenamiento local según tus necesidades
         Cookies.set("accessToken", accessToken, { expires: 1 / 24 }); // 1 hora de expiración
-        Cookies.set("refreshToken", refreshToken, { expires: 7 / 24 }); // 7 días de expiración
+        expirationDate.setDate(expirationDate.getDate() + 2);
+        Cookies.set("refreshToken", refreshToken, { expires: expirationDate }); // 2 días de expiración
 
         // Redireccionar a la página de dashboard
         window.location.href = "/admin-dashboard";

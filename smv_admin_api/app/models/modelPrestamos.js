@@ -23,7 +23,11 @@ module.exports = (sequelize, Sequelize) => {
           key: "idUsuarioAfiliado",
         },
       },
-      monto: {
+      montoPrestado: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      montoPorPagar: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
@@ -50,7 +54,7 @@ module.exports = (sequelize, Sequelize) => {
           len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
         },
       },
-      estado: {
+      estadoPrestamo: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {

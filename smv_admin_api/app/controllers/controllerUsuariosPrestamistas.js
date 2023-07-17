@@ -2,7 +2,7 @@ const db = require("../models");
 const usuariosPrestamistas = db.usuariosPrestamistas;
 const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
-const calidadPrestamista = db.calidadPrestamista;
+const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
 
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
@@ -16,11 +16,7 @@ exports.findAllUsuariosPrestamista = (req, res) => {
       include: [
         {
           model: suscripciones,
-          as: "suscripcion",
-        },
-        {
-          model: calidadPrestamista,
-          as: "calidadPrestamista",
+          as: "suscripciones_prestamista",
         },
       ],
     })
@@ -41,16 +37,6 @@ exports.findAllUsuariosPrestamista = (req, res) => {
               fechaInicio: user.suscripcion.fechaInicio,
               fechaFin: user.suscripcion.fechaFin,
               estadoSuscripcion: user.suscripcion.estadoSuscripcion,
-            }
-          : null,
-        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
-          ? {
-              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
-              montoDesde: user.calidadPrestamista.montoDesde,
-              montoHasta: user.calidadPrestamista.montoHasta,
-              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
-              nombreNivel : user.calidadPrestamista.nombreNivel,
-              costoMembresia : user.calidadPrestamista.costoMembresia,
             }
           : null,
       }));
@@ -78,11 +64,7 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
       include: [
         {
           model: suscripciones,
-          as: "suscripcion",
-        },
-        {
-          model: calidadPrestamista,
-          as: "calidadPrestamista",
+          as: "suscripciones_prestamista",
         },
       ],
     })
@@ -105,30 +87,20 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
               estadoSuscripcion: user.suscripcion.estadoSuscripcion,
             }
           : null,
-        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
-          ? {
-              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
-              montoDesde: user.calidadPrestamista.montoDesde,
-              montoHasta: user.calidadPrestamista.montoHasta,
-              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
-              nombreNivel : user.calidadPrestamista.nombreNivel,
-              costoMembresia : user.calidadPrestamista.costoMembresia,
-            }
-          : null,
-        }));
-        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-        res.send({ tokenUsuarios });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message ||
-            "Ocurrió un error al obtener los usuariosPrestamistas.",
-        });
-        console.log(err);
+      }));
+      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+      res.send({ tokenUsuarios });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
       });
-  };
-  
+      console.log(err);
+    });
+};
+
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
   usuariosPrestamistas
@@ -140,11 +112,7 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
       include: [
         {
           model: suscripciones,
-          as: "suscripcion",
-        },
-        {
-          model: calidadPrestamista,
-          as: "calidadPrestamista",
+          as: "suscripciones_prestamista",
         },
       ],
     })
@@ -167,31 +135,21 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
               estadoSuscripcion: user.suscripcion.estadoSuscripcion,
             }
           : null,
-        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
-          ? {
-              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
-              montoDesde: user.calidadPrestamista.montoDesde,
-              montoHasta: user.calidadPrestamista.montoHasta,
-              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
-              nombreNivel : user.calidadPrestamista.nombreNivel,
-              costoMembresia : user.calidadPrestamista.costoMembresia,
-            }
-          : null,
-        }));
-        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-        res.send({ tokenUsuarios });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message ||
-            "Ocurrió un error al obtener los usuariosPrestamistas.",
-        });
-        console.log(err);
+      }));
+      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+      res.send({ tokenUsuarios });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
       });
-  };
+      console.log(err);
+    });
+};
 
-  //findAllUsuariosPrestamistaActivos
+//findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
   usuariosPrestamistas
     .findAll({
@@ -202,11 +160,7 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
       include: [
         {
           model: suscripciones,
-          as: "suscripcion",
-        },
-        {
-          model: calidadPrestamista,
-          as: "calidadPrestamista",
+          as: "suscripciones_prestamista",
         },
       ],
     })
@@ -229,29 +183,30 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
               estadoSuscripcion: user.suscripcion.estadoSuscripcion,
             }
           : null,
-        calidadPrestamista : user.calidadPrestamista?.idCalidadPrestamista
+        calidadPrestamista: user.calidadPrestamista?.idCalidadPrestamista
           ? {
-              idCalidadPrestamista: user.calidadPrestamista.idCalidadPrestamista,
+              idCalidadPrestamista:
+                user.calidadPrestamista.idCalidadPrestamista,
               montoDesde: user.calidadPrestamista.montoDesde,
               montoHasta: user.calidadPrestamista.montoHasta,
-              numeroUsuarios : user.calidadPrestamista.numeroUsuarios,
-              nombreNivel : user.calidadPrestamista.nombreNivel,
-              costoMembresia : user.calidadPrestamista.costoMembresia,
+              numeroUsuarios: user.calidadPrestamista.numeroUsuarios,
+              nombreNivel: user.calidadPrestamista.nombreNivel,
+              costoMembresia: user.calidadPrestamista.costoMembresia,
             }
           : null,
-        }));
-        const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-        res.send({ tokenUsuarios });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message ||
-            "Ocurrió un error al obtener los usuariosPrestamistas.",
-        });
-        console.log(err);
+      }));
+      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+      res.send({ tokenUsuarios });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
       });
-  };
+      console.log(err);
+    });
+};
 
 exports.createUsuarioPrestamista = (req, res) => {
   const decryptedNombre = aesDecrypt(req.body.nombre);
@@ -262,9 +217,9 @@ exports.createUsuarioPrestamista = (req, res) => {
   const decryptedMontoMaximo = aesDecrypt(req.body.montoMaximo);
   const decryptedNumeroClientes = aesDecrypt(req.body.numeroClientes);
   const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
-  const decryptedNombreNivel = aesDecrypt(req.body.nombreNivel);
 
   let referralCode = generateReferralCode();
+  const errors = [];
 
   // Función para comprobar si el código de referencia existe en la base de datos
   const checkReferralCode = () => {
@@ -273,92 +228,108 @@ exports.createUsuarioPrestamista = (req, res) => {
     });
   };
 
-  // Validar que el correo electrónico no esté registrado en la base de datos
+  // Verificar si el correo electrónico ya está registrado en la base de datos
   usuariosPrestamistas
     .findOne({ where: { correoElectronico: decryptedCorreo } })
     .then((prestamista) => {
       if (prestamista) {
-        // Si el correo está registrado en usuariosPrestamistas, enviar mensaje de error
-        res.status(400).send({
-          message: "El correo electrónico ya está registrado como prestamista.",
-        });
+        errors.push({ type: "correo", message: "El correo electrónico ya está registrado como prestamista." });
+      }
+
+      // Verificar si el correo está registrado como afiliado
+      return usuariosAfiliados.findOne({ where: { correoElectronico: decryptedCorreo } });
+    })
+    .then((afiliado) => {
+      if (afiliado) {
+        errors.push({ type: "correo", message: "El correo electrónico ya está registrado como afiliado." });
+      }
+
+      // Verificar si el número de teléfono ya está registrado como prestamista
+      return usuariosPrestamistas.findOne({ where: { numeroTelefono: decryptedNumeroTelefono } });
+    })
+    .then((prestamista) => {
+      if (prestamista) {
+        errors.push({ type: "phone", message: "El número de teléfono ya está registrado como prestamista." });
+      }
+
+      // Verificar si el número de teléfono ya está registrado como afiliado
+      return usuariosAfiliados.findOne({ where: { numeroTelefono: decryptedNumeroTelefono } });
+    })
+    .then((afiliado) => {
+      if (afiliado) {
+        errors.push({ type: "phone", message: "El número de teléfono ya está registrado como afiliado." });
+      }
+
+      // Si hay errores acumulados, enviar mensaje de error con los errores
+      if (errors.length > 0) {
+        const errorMessages = errors.map((error) => ({ type: error.type, message: error.message }));
+        res.status(400).send({ errors: errorMessages });
       } else {
-        usuariosAfiliados
-          .findOne({ where: { correoElectronico: decryptedCorreo } })
-          .then((afiliado) => {
-            if (afiliado) {
-              // Si el correo está registrado en usuariosAfiliados, enviar mensaje de error
-              res.status(400).send({
-                message:
-                  "El correo electrónico ya está registrado como afiliado.",
-              });
-            } else {
-              // El correo no está registrado en ninguna de las tablas, proceder con la creación del usuario
-              // Verificar si el código de referencia ya existe en la base de datos
-              checkReferralCode().then((existingUser) => {
-                // Generar un nuevo código de referencia si el actual ya existe
-                while (existingUser) {
-                  referralCode = generateReferralCode();
-                  existingUser = checkReferralCode();
-                }
-                // Crear el usuario con el código de referencia único
-                usuariosPrestamistas
-                  .create({
-                    nombres: decryptedNombre,
-                    apellidos: decryptedApellido,
-                    correoElectronico: decryptedCorreo,
-                    usuarioPassword: decryptedPasswd,
-                    codigoReferencia: referralCode,
-                    numeroTelefono: decryptedNumeroTelefono.toString(),
-                  })
-                  .then((prestamista) => {
-                    // Insertar datos en la tabla calidadPrestamista
-                    calidadPrestamista
-                      .create({
-                        idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
-                        montoDesde: decryptedMontoMinimo,
-                        montoHasta: decryptedMontoMaximo,
-                        numeroUsuarios: decryptedNumeroClientes,
-                        nombreNivel: decryptedNombreNivel,
-                      })
-                      .then(() => {
-                        res.send({ message: "Usuario creado exitosamente." });
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                        res.status(500).send({
-                          message:
-                            err.message ||
-                            "Ocurrió un error al crear los datos de calidad en la base de datos.",
-                        });
-                      });
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                    res.status(500).send({
-                      message:
-                        err.message ||
-                        "Ocurrió un error al crear el usuario en la base de datos.",
-                    });
+        // El correo y el número de teléfono no están registrados, proceder con la creación del usuario
+        // Verificar si el código de referencia ya existe en la base de datos
+        checkReferralCode().then((existingUser) => {
+          // Generar un nuevo código de referencia si el actual ya existe
+          while (existingUser) {
+            referralCode = generateReferralCode();
+            existingUser = checkReferralCode();
+          }
+          // Crear el usuario con el código de referencia único
+          usuariosPrestamistas
+            .create({
+              nombres: decryptedNombre,
+              apellidos: decryptedApellido,
+              correoElectronico: decryptedCorreo,
+              usuarioPassword: decryptedPasswd,
+              codigoReferencia: referralCode,
+              numeroTelefono: decryptedNumeroTelefono,
+            })
+            .then((prestamista) => {
+              // Insertar datos en la tabla calidadPrestamista
+              datosUsuarioSuscripciones
+                .create({
+                  idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
+                  montoAPrestarDesde: decryptedMontoMinimo,
+                  montoAPrestarHasta: decryptedMontoMaximo,
+                  numeroUsuarios: decryptedNumeroClientes,
+                  antiguedadMeses: 2,
+                  pagosAlCorriente: true,
+                })
+                .then(() => {
+                  res.send({ message: "Usuario creado exitosamente." });
+                })
+                .catch((err) => {
+                  console.log(err);
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Ocurrió un error al crear los datos de calidad en la base de datos.",
                   });
+                });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).send({
+                message:
+                  err.message ||
+                  "Ocurrió un error al crear el usuario en la base de datos.",
               });
-            }
-          })
-          .catch((err) => {
-            res.status(500).send({
-              message: "Ocurrió un error al consultar la base de datos.",
-              console: err,
             });
-          });
+        });
       }
     })
     .catch((err) => {
-      res
-        .status(500)
-        .send({ message: "Ocurrió un error al consultar la base de datos." });
-      console.log(err);
+      res.status(500).send({
+        message: "Ocurrió un error al consultar la base de datos.",
+        error: err,
+      });
     });
 };
+
+
+
+
+
+
 
 //cambiar el estado isDeleted de un usuario a true
 exports.deleteUsuarioPrestamista = (req, res) => {
@@ -395,12 +366,14 @@ exports.updateUsuarioPrestamista = (req, res) => {
   const idUsuarioPrestamista = req.params.id;
   const decryptedNombre = aesDecrypt(req.body.nombres);
   const decryptedApellido = aesDecrypt(req.body.apellidos);
+  const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
 
   usuariosPrestamistas
     .update(
       {
         nombres: decryptedNombre,
         apellidos: decryptedApellido,
+        numeroTelefono: decryptedNumeroTelefono,
         isModified: true,
       },
       {

@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 //token key 32
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("../utils/cryptoUtils");
+const imagenAdministrador = db.imagenAdministrador;
 
 // Crear y guardar un nuevo administrador
 exports.createAdmin = (req, res) => {
@@ -103,9 +104,7 @@ exports.loginAdmin = (req, res) => {
             nombres: data.nombres,
             apellidos: data.apellidos,
             correoElectronico: data.correoElectronico,
-            imagenPerfil: data.imagenPerfil,
           };
-
           const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
           const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "7d" });
 
@@ -134,9 +133,9 @@ exports.loginAdmin = (req, res) => {
           err.message ||
           "Ocurrió un error al comprobar si el administrador existe en la base de datos.",
       });
+      console.log(err);
     });
 };
-
 
 //refrescar el token de acceso
 exports.refreshTokenAdmin = (req, res) => {
@@ -177,4 +176,102 @@ exports.refreshTokenAdmin = (req, res) => {
       accessToken: newAccessToken,
     });
   });
+};
+
+//actualizar la  imagen de perfil del administrador
+exports.setImageAdmin = (req, res) => {
+  const id = req.params.id;
+  const image = req.file.buffer; // Accedemos al buffer de la imagen
+
+  //buscar la imagen del administrador en la tabla imagenAdministrador por el id del administrador y si existe la imagen la actualiza, si no existe la imagen la crea
+  imagenAdministrador
+    .findOne({
+      where: {
+        idAdministrador: id,
+      },
+    })
+    .then((data) => {
+      if (data) {
+        //actualizar la imagen del administrador
+        imagenAdministrador
+          .update(
+            {
+              imagen: image,
+            },
+            {
+              where: { idAdministrador: id },
+            }
+          )
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "Imagen actualizada correctamente.",
+              });
+            } else {
+              res.send({
+                message: `No se puede actualizar la imagen del administrador con id=${id}. Tal vez la imagen no fue encontrada o req.body está vacío!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error al actualizar la imagen del administrador" + err,
+            });
+          });
+      } else {
+        //crear la imagen del administrador
+        const imagen = {
+          idAdministrador: id,
+          imagen: image,
+        };
+
+        imagenAdministrador
+          .create(imagen)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Ocurrió un error al crear la imagen del administrador.",
+            });
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al buscar la imagen del administrador.",
+      });
+    });
+};
+
+//obtener la imagen de perfil del administrador de la base de datos (BLOB)
+exports.getImageAdmin = (req, res) => {
+  const id = req.params.id;
+
+  imagenAdministrador
+    .findOne({
+      where: {
+        idAdministrador: id,
+      },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data.imagen);
+      } else {
+        res.status(500).send({
+          message: "No se encontró la imagen del administrador",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al buscar la imagen del administrador.",
+      });
+    });
 };

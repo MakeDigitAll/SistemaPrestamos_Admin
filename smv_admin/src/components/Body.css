@@ -104,9 +104,15 @@
 
 /* Agregar Usuario */
 .nextui-c-cwdhZi {
+  position:fixed;
   font-size: 0.9rem;
+  margin : -20px;
+  margin-left: 8px;
 }
 
+.dark-mode .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #fff;
+}
 
 /* Login */
 .nextui-c-eXOOPO {

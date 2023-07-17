@@ -10,18 +10,23 @@ import {
 } from "@nextui-org/react";
 import { aesEncrypt } from "../../../utils/encryption";
 import service from "../../../services/service";
-import { toast } from "react-toastify";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { useNavigate } from "react-router-dom";
+import { Tabs, Tab } from "@mui/material";
+import defaultImage from "../../../assets/images/defaultProfile.png";
 
 const ContentAddUsuario: React.FC = () => {
+  const [tabValue, setTabValue] = useState(0);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
-  let montoMinValue;
-  let montoMaxValue;
+  const [subscriptionTabEnabled, setSubscriptionTabEnabled] = useState(false);
+  const navigate = useNavigate();
+  let montoMinValue = 100;
+  let montoMaxValue = 100;
   const [sliderValue, setSliderValue] = useState<number | number[]>([
     1000, 10000,
   ]);
@@ -73,53 +78,6 @@ const ContentAddUsuario: React.FC = () => {
   } = useInput("");
 
   const handleRegister = async () => {
-    let hasError = false;
-
-    if (nombreValue === "") {
-      setNombreError("Ingrese su nombre.");
-      hasError = true;
-    } else {
-      setNombreError("");
-    }
-
-    if (apellidosValue === "") {
-      setApellidosError("Ingrese sus apellidos.");
-      hasError = true;
-    } else {
-      setApellidosError("");
-    }
-
-    if (emailValue === "") {
-      setEmailError("Ingrese su correo electrónico.");
-      hasError = true;
-    } else if (!validateEmail(emailValue)) {
-      setEmailError("Ingrese un correo electrónico válido.");
-      hasError = true;
-    } else {
-      setEmailError("");
-    }
-
-    if (passwordValue === "") {
-      setPasswordError("Ingrese su contraseña.");
-      hasError = true;
-    } else {
-      setPasswordError("");
-    }
-
-    if (numeroTelefonoValue === "") {
-      setNumeroTelefonoError("Ingrese su número de teléfono.");
-      hasError = true;
-    } else if (numeroTelefonoValue.length !== 10) {
-      setNumeroTelefonoError("El número de teléfono debe tener 10 dígitos.");
-      hasError = true;
-    } else {
-      setNumeroTelefonoError("");
-    }
-
-    if (hasError) {
-      return;
-    }
-
     try {
       // Registro de datos en la base de datos
       const encryptedNombre = aesEncrypt(nombreValue);
@@ -155,7 +113,8 @@ const ContentAddUsuario: React.FC = () => {
       const response = await service.createUsuarioPrestamista(data);
 
       if (response.status === 200) {
-        toast.success("Usuario registrado con éxito.");
+        const successMessage = "Usuario registrado con éxito.";
+        localStorage.setItem("toastMessageAddusuario", successMessage);
         resetNombre();
         resetApellidos();
         resetEmail();
@@ -163,10 +122,27 @@ const ContentAddUsuario: React.FC = () => {
         resetNumeroTelefono();
         setSliderValue([1000, 10000]);
         setUserSliderValue(100);
+        navigate("/admin-suscribir-usuario");
       }
     } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        setEmailError("El correo electrónico ya está registrado.");
+      if (
+        error.response &&
+        error.response.status === 400 &&
+        error.response.data.errors
+      ) {
+        //para la lista de errores que halla si type=correo o type= phone
+        const errors = error.response.data.errors;
+        for (const error of errors) {
+          if (error.type === "correo") {
+            setEmailError(error.message);
+            setTabValue(0); // Switch to the "Datos Personales" tab
+            setSubscriptionTabEnabled(false); // Deshabilitar la pestaña de suscripciones
+          } else if (error.type === "phone") {
+            setNumeroTelefonoError(error.message);
+            setTabValue(0); // Switch to the "Datos Personales" tab
+            setSubscriptionTabEnabled(false); // Deshabilitar la pestaña de suscripciones
+          }
+        }
       }
     }
   };
@@ -210,20 +186,355 @@ const ContentAddUsuario: React.FC = () => {
     }
   };
 
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
+
+  const handleNext = () => {
+    if (tabValue === 0) {
+      // Comprobar errores en los datos personales
+      let hasPersonalInfoError = false;
+
+      const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Expresión regular para letras y acentos
+
+      if (nombreValue === "") {
+        setNombreError("Ingrese su nombre.");
+        hasPersonalInfoError = true;
+      } else if (!regex.test(nombreValue)) {
+        setNombreError("Ingrese un nombre válido.");
+        hasPersonalInfoError = true;
+      } else {
+        setNombreError("");
+      }
+
+      if (apellidosValue === "") {
+        setApellidosError("Ingrese sus apellidos.");
+        hasPersonalInfoError = true;
+      } else if (!regex.test(apellidosValue)) {
+        setApellidosError("Ingrese apellidos válidos.");
+        hasPersonalInfoError = true;
+      } else {
+        setApellidosError("");
+      }
+
+      if (emailValue === "") {
+        setEmailError("Ingrese su correo electrónico.");
+        hasPersonalInfoError = true;
+      } else if (!validateEmail(emailValue)) {
+        setEmailError("Ingrese un correo electrónico válido.");
+        hasPersonalInfoError = true;
+      } else {
+        setEmailError("");
+      }
+
+      if (passwordValue === "") {
+        setPasswordError("Ingrese su contraseña.");
+        hasPersonalInfoError = true;
+      } else if (passwordValue.length < 6) {
+        setPasswordError("Deben tene al menos 6 caracteres.");
+        hasPersonalInfoError = true;
+      } else {
+        setPasswordError("");
+      }
+
+      if (numeroTelefonoValue === "") {
+        setNumeroTelefonoError("Ingrese su número de teléfono.");
+        hasPersonalInfoError = true;
+      } else if (numeroTelefonoValue.length !== 10) {
+        setNumeroTelefonoError("El número de teléfono debe tener 10 dígitos.");
+        hasPersonalInfoError = true;
+      } else {
+        setNumeroTelefonoError("");
+      }
+
+      // Si hay errores en los datos personales, no avanzar a la siguiente pestaña
+      if (hasPersonalInfoError) {
+        setSubscriptionTabEnabled(false); // Deshabilitar la pestaña de suscripciones
+        return;
+      } else {
+        setSubscriptionTabEnabled(true); // Habilitar la pestaña de suscripciones
+        setTabValue(1); // Avanzar a la siguiente pestaña
+      }
+    } else {
+      handleRegister();
+    }
+  };
+
+  const renderPersonalInfoTab = () => {
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            marginBottom: "-5%",
+            marginTop: "1.5%",
+          }}
+        >
+          <Avatar
+            src={defaultImage}
+            css={{
+              width: "18%",
+              height: "18%",
+              margin: "auto",
+              marginLeft: "2%",
+              marginRight: "6%",
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <div style={{ marginRight: "3%" }}>
+                {renderInputField(
+                  "Nombre",
+                  nombreValue,
+                  nombreError,
+                  nombreBindings,
+                  "text",
+                  "new-nombre",
+                  false // Deshabilitar el campo si hay errores en los datos personales
+                )}
+              </div>
+              <div style={{}}>
+                {renderInputField(
+                  "Apellidos",
+                  apellidosValue,
+                  apellidosError,
+                  apellidosBindings,
+                  "text",
+                  "new-apellidos",
+                  false // Deshabilitar el campo si hay errores en los datos personales
+                )}
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            >
+              <div style={{ marginRight: "3%" }}>
+                {renderInputField(
+                  "Correo Electrónico",
+                  emailValue,
+                  emailError,
+                  emailBindings,
+                  "email",
+                  "new-correo",
+                  false // Deshabilitar el campo si hay errores en los datos personales
+                )}
+              </div>
+
+              <div style={{}}>
+                {renderInputField(
+                  "Contraseña",
+                  passwordValue,
+                  passwordError,
+                  passwordBindings,
+                  "password",
+                  "new-password",
+                  false // Deshabilitar el campo si hay errores en los datos personales
+                )}
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div style={{}}>
+                <Input
+                  {...numeroTelefonoBindings}
+                  rounded
+                  bordered
+                  width="100%"
+                  type="number"
+                  label="Numero de Teléfono a 10 dígitos"
+                  status={numeroTelefonoError ? "error" : "default"}
+                  color={numeroTelefonoError ? "error" : "default"}
+                  helperColor={numeroTelefonoError ? "error" : "default"}
+                  helperText={numeroTelefonoError ? numeroTelefonoError : ""}
+                  name="numero-telefono"
+                  aria-label="numero-telefono"
+                  autoComplete="new-telefono"
+                  min="0" // Evita números negativos
+                  onInput={(event) => {
+                    const target = event.target as HTMLInputElement;
+                    target.value = Math.max(0, parseInt(target.value))
+                      .toString()
+                      .slice(0, 10); // Limita a 10 dígitos
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderSubscriptionTab = () => {
+    return (
+      <div>
+        <div
+          style={{
+            display: "flex",
+            marginBottom: "-5%",
+          }}
+        >
+          <Avatar
+            src={defaultImage}
+            css={{
+              width: "18%",
+              height: "18%",
+              margin: "auto",
+              marginLeft: "2%",
+              marginRight: "6%",
+            }}
+          />
+          <div style={{ flex: 1 }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <div
+                style={{
+                  flex: 1,
+                  marginRight: "1%",
+                  marginLeft: "1%",
+                }}
+              ></div>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+              }}
+            ></div>
+
+            <div style={{ flex: 1 }}>
+              <h5>¿Cuánto dinero se va a prestar?</h5>
+              <div>
+                <Slider
+                  style={{ maxWidth: "90%", marginLeft: "2%" }}
+                  ariaLabelledByForHandle={"slider-handle-1"}
+                  range
+                  railStyle={{ backgroundColor: "#000000" }}
+                  min={1}
+                  value={sliderValue}
+                  max={100000}
+                  step={1000}
+                  onChange={handleSliderChange}
+                  disabled={!subscriptionTabEnabled} // Deshabilitar el slider si la pestaña de suscripciones no está habilitada
+                />
+              </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: "1%",
+              }}
+            >
+              <div style={{ flex: 1, marginRight: "1%" }}>
+                {renderInputField(
+                  "Monto Mínimo $Mxn",
+                  montoMinValue.toLocaleString(),
+                  "",
+                  { value: montoMinValue, onChange: handleMontoMinChange },
+                  "number",
+                  "new-monto-min",
+                  !subscriptionTabEnabled // Deshabilitar el campo si la pestaña de suscripciones no está habilitada
+                )}
+              </div>
+              <div style={{ flex: 1, marginRight: "1%" }}>
+                {renderInputField(
+                  "Monto Máximo $Mxn",
+                  montoMaxValue.toLocaleString(),
+                  "",
+                  { value: montoMaxValue, onChange: handleMontoMaxChange },
+                  "number",
+                  "new-monto-max",
+                  !subscriptionTabEnabled // Deshabilitar el campo si la pestaña de suscripciones no está habilitada
+                )}
+              </div>
+            </div>
+            <div style={{ flex: 1, marginTop: "-3%" }}>
+              <h5>¿A Cuántos Usuarios Planeas Prestar?</h5>
+              <div>
+                <Slider
+                  style={{ maxWidth: "90%", marginLeft: "2%" }}
+                  ariaLabelledByForHandle={"slider-handle-1"}
+                  railStyle={{ backgroundColor: "#000000" }}
+                  min={1}
+                  max={2000}
+                  step={10}
+                  value={userSliderValue}
+                  onChange={handleUserSliderChange}
+                  disabled={!subscriptionTabEnabled} // Deshabilitar el slider si la pestaña de suscripciones no está habilitada
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginBottom: "1%",
+                  }}
+                >
+                  <div style={{ flex: 1, marginRight: "1%" }}>
+                    {renderInputField(
+                      "Usuarios",
+                      userSliderValue.toString(),
+                      "", // Puedes agregar un mensaje de error si es necesario
+                      {
+                        value: userSliderValue,
+                        onChange: handleUserChange,
+                      }, // Actualiza el valor y el evento onChange
+                      "number",
+                      "new-usuarios",
+                      !subscriptionTabEnabled // Deshabilitar el campo si la pestaña de suscripciones no está habilitada
+                    )}
+                  </div>
+
+                  <div style={{ flex: 1, marginRight: "1%" }}>
+                    <Dropdown isDisabled={true}>
+                      <Dropdown.Button
+                        style={{
+                          width: "200px",
+                          marginTop: "14%",
+                          marginLeft: "33%",
+                        }}
+                      >
+                        Suscripcion
+                      </Dropdown.Button>
+                      <Dropdown.Menu aria-label="Tipos de Suscrpcion">
+                        <Dropdown.Item key="tier1">Estandar</Dropdown.Item>
+                        <Dropdown.Item key="tier2">Avanzado</Dropdown.Item>
+                        <Dropdown.Item key="tier3">Premium</Dropdown.Item>
+                        <Dropdown.Item key="tierCustom" withDivider>
+                          Personalizar
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </div>
+
+                  <div style={{ flex: 1, marginRight: "1%" }}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   const renderInputField = (
     label: string,
     value: string,
     error: string,
     bindings: any,
     type: string,
-    autoComplete: string
+    autoComplete: string,
+    disabled: boolean
   ) => (
-    <Grid
-      css={{
-        justifyContent: "left",
-        alignSelf: "left",
-      }}
-    >
+    <Grid>
       <Input
         {...bindings}
         rounded
@@ -238,234 +549,25 @@ const ContentAddUsuario: React.FC = () => {
         aria-label={label.toLowerCase()}
         css={{ marginBottom: "10%" }}
         autoComplete={autoComplete}
+        disabled={disabled} // Deshabilitar el campo si es necesario
       />
     </Grid>
   );
 
   return (
     <div>
-      <Card
-        css={{
-          maxWidth: "900px",
-          width: "100%",
-          margin: "auto",
-          overflow: "hidden",
-        }}
-      >
-        <Card.Header>
-          <Avatar
-            src="https://i.pravatar.cc/300"
-            css={{
-              width: "15%",
-              height: "15%",
-              margin: "auto",
-            }}
-          />
-        </Card.Header>
-        <Card.Body>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              marginBottom: "-10%",
-              overflow: "hidden",
-            }}
-          >
-            <div style={{ flex: 1 }}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ flex: 1, marginRight: "1%", marginLeft: "1%" }}>
-                  {renderInputField(
-                    "Nombre",
-                    nombreValue,
-                    nombreError,
-                    nombreBindings,
-                    "text",
-                    "new-nombre"
-                  )}
-                </div>
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Apellidos",
-                    apellidosValue,
-                    apellidosError,
-                    apellidosBindings,
-                    "text",
-                    "new-apellidos"
-                  )}
-                </div>
-
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  <Input
-                    {...numeroTelefonoBindings}
-                    rounded
-                    bordered
-                    width="100%"
-                    type="number"
-                    label="Numero de Teléfono a 10 dígitos"
-                    status={numeroTelefonoError ? "error" : "default"}
-                    color={numeroTelefonoError ? "error" : "default"}
-                    helperColor={numeroTelefonoError ? "error" : "default"}
-                    helperText={numeroTelefonoError ? numeroTelefonoError : ""}
-                    name="numero-telefono"
-                    aria-label="numero-telefono"
-                    css={{ marginBottom: "10%" }}
-                    autoComplete="new-telefono"
-                    min="0" // Evita números negativos
-                    onInput={(event) => {
-                      const target = event.target as HTMLInputElement;
-                      target.value = Math.max(0, parseInt(target.value))
-                        .toString()
-                        .slice(0, 10); // Limita a 10 dígitos
-                    }}
-                  />
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                  marginLeft: "1%",
-                }}
-              >
-                <div style={{ flex: 1 }}>
-                  {renderInputField(
-                    "Correo Electrónico",
-                    emailValue,
-                    emailError,
-                    emailBindings,
-                    "email",
-                    "new-correo"
-                  )}
-                </div>
-
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Contraseña",
-                    passwordValue,
-                    passwordError,
-                    passwordBindings,
-                    "password",
-                    "new-password"
-                  )}
-                </div>
-
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  <Dropdown isDisabled={true}>
-                    <Dropdown.Button
-                      style={{
-                        width: "200px",
-                        marginTop: "10%",
-                        marginLeft: "13%",
-                      }}
-                    >
-                      Suscripcion
-                    </Dropdown.Button>
-                    <Dropdown.Menu aria-label="Tipos de Suscrpcion">
-                      <Dropdown.Item key="tier1">Estandar</Dropdown.Item>
-                      <Dropdown.Item key="tier2">Avanzado</Dropdown.Item>
-                      <Dropdown.Item key="tier3">Premium</Dropdown.Item>
-                      <Dropdown.Item key="tierCustom" withDivider>
-                        Personalizar
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                }}
-              ></div>
-
-              <div style={{ flex: 1 }}>
-                <h5>¿Cuánto dinero se va a prestar?</h5>
-                <div>
-                  <Slider
-                    ariaLabelledByForHandle={"slider-handle-1"}
-                    range
-                    railStyle={{ backgroundColor: "#000000" }}
-                    min={1}
-                    value={sliderValue}
-                    max={100000}
-                    step={1000}
-                    onChange={handleSliderChange}
-                  />
-                </div>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginBottom: "1%",
-                }}
-              >
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Monto Mínimo $Mxn",
-                    montoMinValue.toLocaleString(),
-                    "",
-                    { value: montoMinValue, onChange: handleMontoMinChange },
-                    "number",
-                    "new-monto-min"
-                  )}
-                </div>
-                <div style={{ flex: 1, marginRight: "1%" }}>
-                  {renderInputField(
-                    "Monto Máximo $Mxn",
-                    montoMaxValue.toLocaleString(),
-                    "",
-                    { value: montoMaxValue, onChange: handleMontoMaxChange },
-                    "number",
-                    "new-monto-max"
-                  )}
-                </div>
-              </div>
-              <div style={{ flex: 1, marginTop: "-3%" }}>
-                <h5>¿A Cuántos Usuarios Planeas Prestar?</h5>
-                <div>
-                  <Slider
-                    ariaLabelledByForHandle={"slider-handle-1"}
-                    railStyle={{ backgroundColor: "#000000" }}
-                    min={1}
-                    max={2000}
-                    step={10}
-                    value={userSliderValue}
-                    onChange={handleUserSliderChange}
-                  />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      marginBottom: "1%",
-                    }}
-                  >
-                    <div style={{ flex: 1, marginRight: "1%" }}>
-                      {renderInputField(
-                        "Usuarios",
-                        userSliderValue.toString(),
-                        "", // Puedes agregar un mensaje de error si es necesario
-                        { value: userSliderValue, onChange: handleUserChange }, // Actualiza el valor y el evento onChange
-                        "number",
-                        "new-usuarios"
-                      )}
-                    </div>
-
-                    <div style={{ flex: 1, marginRight: "1%" }}></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Button style={{ marginTop: "10%" }} onClick={handleRegister}>
-            Registrar
-          </Button>
-        </Card.Body>
+      <Card style={{ width: "fit-content", margin: "auto", marginTop: "3%" }}>
+        <Tabs value={tabValue} onChange={handleTabChange}>
+          <Tab label="Datos Personales" />
+          <Tab label="Suscripcion" disabled={!subscriptionTabEnabled} />{" "}
+        </Tabs>
+        {tabValue === 0 ? renderPersonalInfoTab() : renderSubscriptionTab()}
+        <Button
+          style={{ marginTop: "10%", alignSelf: "center", marginBottom: "2%" }}
+          onPress={handleNext}
+        >
+          {tabValue === 0 ? "Siguiente" : "Registrar"}
+        </Button>
       </Card>
     </div>
   );

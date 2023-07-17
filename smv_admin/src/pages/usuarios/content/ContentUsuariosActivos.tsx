@@ -10,18 +10,21 @@ import {
   Table,
   useCollator,
   SortDescriptor,
+  Button,
 } from "@nextui-org/react";
 import EditUsuario from "../modals/ModalEditUsuario";
 import InfoUsuario from "../modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
-import { EyeIcon } from "../../../resources/icons/EyeIcon";
 import { IconButton } from "../../../resources/icons/IconButton";
 import { useGetUsuariosActivos } from "../../../hooks/userPrestamistas/usegetActivos";
-import { UserPrestamista as UserTypePrestamista } from "../../../types/types";
+import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrestamista";
 import { SearchContext } from "../../../context/SearchContext";
+import { useNavigate } from "react-router-dom";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
+  //Obtiene el navigate de react-router-dom
+  const navigate = useNavigate();
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los usuariosPrestamistas
@@ -119,6 +122,10 @@ const ContentUsuariosActivos: React.FC = () => {
     return `${dia}/${mes}/${year}`;
   };
 
+  const handleNav = () => {
+    navigate("/admin-suscribir-usuario");
+  };
+
   const formatDateFin = (date: Date | null | undefined) => {
     if (!date) {
       return ""; // o cualquier otro manejo apropiado para valores nulos o indefinidos
@@ -126,14 +133,14 @@ const ContentUsuariosActivos: React.FC = () => {
     const fecha = new Date(date);
     const today = new Date();
     const differenceInDays = Math.floor(
-      (today.getTime() - fecha.getTime()) / (1000 * 3600 * 24)
+      (fecha.getTime() - today.getTime()) / (1000 * 3600 * 24)
     );
 
     const dia = fecha.getDate();
     const mes = fecha.getMonth() + 1;
     const year = fecha.getFullYear();
 
-    let textColor = "black"; // color predeterminado
+    let textColor = "green"; // color predeterminado
 
     if (differenceInDays < 0) {
       textColor = "black"; // fecha pasada, color negro
@@ -169,32 +176,89 @@ const ContentUsuariosActivos: React.FC = () => {
     );
   }
 
-  //Si no hay usuariosPrestamistas activos, inactivos o eliminados entonces muestra un mensaje
+  //Si no hay usuarios
   if (Usuarios.length === 0 && !searchTerm) {
     return (
-      <Grid.Container
-        justify="center"
-        alignContent="center"
-        gap={2}
-        style={{ height: "100vh" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          position: "fixed",
+          top: -100,
+          left: 200,
+          right: 0,
+          bottom: 0,
+          overflow: "hidden",
+        }}
       >
-        <Text>
-          No hay usuariosPrestamistas activos, inactivos o eliminados.
-        </Text>
-      </Grid.Container>
+        <Card
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "fit-content",
+            height: "fit-content",
+          }}
+        >
+          <Card.Header>
+            <Text css={{ fontWeight: "normal" }} h3>
+              No Hay Usuarios Activos
+            </Text>
+          </Card.Header>
+          <Card.Body>
+            <Text h5 css={{ fontWeight: "normal" }}>
+              ¿Desea activar a un usuario?
+            </Text>
+          </Card.Body>
+          <Card.Footer style={{ justifyContent: "center" }}>
+            <Button onPress={handleNav}>Activar Suscripcion</Button>
+          </Card.Footer>
+        </Card>
+      </div>
     );
   }
   //Si no hay usuariosPrestamistas activos, inactivos o eliminados con la búsqueda entonces muestra un mensaje
   if (Usuarios.length === 0 && searchTerm) {
     return (
-      <Grid.Container
-        justify="center"
-        alignContent="center"
-        gap={2}
-        style={{ height: "100vh" }}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          position: "fixed",
+          top: -100,
+          left: 200,
+          right: 0,
+          bottom: 0,
+          overflow: "hidden",
+        }}
       >
-        <Text>No hay usuariosPrestamistas con esa búsqueda.</Text>
-      </Grid.Container>
+        <Card
+          css={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            textAlign: "center",
+            width: "fit-content",
+            height: "fit-content",
+          }}
+        >
+          <Card.Body>
+            <Text h3 css={{ fontWeight: "normal" }}>
+              No Hay Usuarios Con El Nombre
+            </Text>
+            <Text h5 css={{ fontWeight: "normal" }}>
+              {searchTerm}
+            </Text>
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
   //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
@@ -233,14 +297,7 @@ const ContentUsuariosActivos: React.FC = () => {
       case "acciones":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Informacion del Usuario">
-                <IconButton onClick={() => openModalInfo(usuario)}>
-                  <EyeIcon size={20} fill="#979797" />
-                </IconButton>
-              </Tooltip>
-            </Col>
-            <Col css={{ d: "flex", marginLeft: "20%" }}>
+            <Col css={{ d: "flex", marginLeft: "45%" }}>
               <Tooltip content="Editar Usuario">
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
@@ -273,6 +330,18 @@ const ContentUsuariosActivos: React.FC = () => {
     }
   };
 
+  const handleSelectionItem = (key: string, usuarios: any) => {
+    // Obtener el usuario de la clave seleccionada
+    const selectedUser = usuarios.find(
+      (user: any) => user.idUsuarioPrestamista === Number(key)
+    );
+
+    //si el usuario existe entonces abre el modal de información de usuario
+    if (selectedUser) {
+      openModalInfo(selectedUser);
+    }
+  };
+
   //Función para renderizar las tabla de usuariosPrestamistas dependiendo si esta activo, inactivo o eliminado
   return (
     <Card
@@ -286,7 +355,10 @@ const ContentUsuariosActivos: React.FC = () => {
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
         aria-label={"Usuarios Activos"}
-        selectionMode="none"
+        selectionMode="single"
+        onRowAction={(key: any) => {
+          handleSelectionItem(key, Usuarios);
+        }}
         css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
       >
         <Table.Header columns={columns}>

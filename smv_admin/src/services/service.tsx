@@ -52,6 +52,62 @@ class AdminDataService {
   updateUsuarioPrestamista(id: number, data: any) {
     return http.put(`/admin-update-usuario-prestamista/${id}`, data);
   }
+
+  //  controllerUsuarios.setImageUsuarioPrestamista(req, res, id, image);
+  setImageAdmin(id: number, image: any) {
+    return http.post(`/admin-update-image/${id}`, image, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
+  //recibir imagen  de tipo blob
+  getImageAdmin(id: number) {
+    return http.get(`/admin-get-image/${id}`, {
+      responseType: "blob",
+    });
+  }
+
+  //obtener la tabla de niveles de fidelidad
+  getNivelesFidelidad() {
+    return http.get("/admin-get-niveles-fidelidad");
+  }
+
+  //Actualizar los datos de nivel de fidelidad
+  updateNivelFidelidad(id: number, data: any) {
+    return http.put(`/admin-update-nivel-fidelidad/${id}`, data);
+  }
+
+  //eliminar un nivel de fidelidad
+  deleteNivelFidelidad(id: number) {
+    return http.delete(`/admin-delete-nivel-fidelidad/${id}`);
+  }
+
+  //crear un nivel de fidelidad
+  agregarNivelFidelidad(data: any) {
+    return http.post("/admin-add-nivel-fidelidad", data);
+  }
+
+  //obtener los tipos de suscripción
+  getTiposSuscripcion() {
+    return http.get("/admin-get-tipos-suscripcion");
+  }
+
+  //actualizar los datos de un tipo de suscripción
+  updateTipoSuscripcion(id: number, data: any) {
+    return http.put(`/admin-update-tipo-suscripcion/${id}`, data);
+  }
+
+  //eliminar un tipo de suscripción
+  deleteTipoSuscripcion(id: number) {
+    return http.delete(`/admin-delete-tipo-suscripcion/${id}`);
+  }
+
+  //crear un tipo de suscripción
+  agregarTipoSuscripcion(data: any) {
+    return http.post("/admin-add-tipo-suscripcion", data);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

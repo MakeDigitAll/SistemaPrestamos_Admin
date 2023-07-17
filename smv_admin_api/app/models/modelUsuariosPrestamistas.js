@@ -40,10 +40,6 @@ module.exports = (sequelize, Sequelize) => {
         len: [10, 10], // Mínimo 1 caracter, máximo 20 caracteres
       },
     },
-    imagenPerfil: {
-      type: Sequelize.BLOB, // Almacena los datos binarios de la imagen
-      allowNull: true,
-    },
     isActive: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,

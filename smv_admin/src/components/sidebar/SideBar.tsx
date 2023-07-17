@@ -62,6 +62,9 @@ function SideBar() {
   const [isUsuariosSubMenuOpen, setIsUsuariosSubMenuOpen] = useState(
     localStorage.getItem("isUsuariosSubMenuOpen") === "true"
   );
+  const [isAdministracionSubMenuOpen, setIsAdministracionSubMenuOpen] =
+    useState(localStorage.getItem("isAdministracionSubMenuOpen") === "true");
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
   );
@@ -71,7 +74,6 @@ function SideBar() {
 
   const handleDashboardClick = () => {
     if (isMenuItemActive("/admin-dashboard")) {
-      window.location.reload();
     } else {
       navigate("/admin-dashboard");
     }
@@ -79,6 +81,10 @@ function SideBar() {
 
   const handleUsuariosClick = () => {
     setIsUsuariosSubMenuOpen(!isUsuariosSubMenuOpen);
+  };
+
+  const handleAdministracionClick = () => {
+    setIsAdministracionSubMenuOpen(!isAdministracionSubMenuOpen);
   };
 
   const handleMenuItemClick = (path: string) => {
@@ -116,6 +122,22 @@ function SideBar() {
       String(isSidebarPersistCollapsed)
     );
   }, [isUsuariosSubMenuOpen, isSidebarCollapsed, isSidebarPersistCollapsed]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "isAdministracionSubMenuOpen",
+      String(isAdministracionSubMenuOpen)
+    );
+    localStorage.setItem("isSidebarCollapsed", String(isSidebarCollapsed));
+    localStorage.setItem(
+      "isSidebarPersistCollapsed",
+      String(isSidebarPersistCollapsed)
+    );
+  }, [
+    isAdministracionSubMenuOpen,
+    isSidebarCollapsed,
+    isSidebarPersistCollapsed,
+  ]);
 
   const logo = isDark ? logodark : logolight;
 
@@ -213,16 +235,6 @@ function SideBar() {
           >
             <MenuItem
               style={{ marginTop: "10px" }}
-              icon={<FaUserCheck />}
-              onClick={() => handleMenuItemClick("/admin-usuarios-activos")}
-              className={
-                isMenuItemActive("/admin-usuarios-activos") ? "selected" : ""
-              }
-            >
-              {t("sidebar.usuariosActivos")}
-            </MenuItem>
-            <MenuItem
-              style={{ marginTop: "10px" }}
               icon={<FaMoneyBillAlt />}
               onClick={() => handleMenuItemClick("/admin-suscribir-usuario")}
               className={
@@ -230,6 +242,17 @@ function SideBar() {
               }
             >
               {t("sidebar.suscribir")}
+            </MenuItem>
+
+            <MenuItem
+              style={{ marginTop: "10px" }}
+              icon={<FaUserCheck />}
+              onClick={() => handleMenuItemClick("/admin-usuarios-activos")}
+              className={
+                isMenuItemActive("/admin-usuarios-activos") ? "selected" : ""
+              }
+            >
+              {t("sidebar.usuariosActivos")}
             </MenuItem>
 
             <MenuItem
@@ -252,17 +275,32 @@ function SideBar() {
               {t("sidebar.addUsuario")}
             </MenuItem>
           </SubMenu>
-
           <Divider style={{ height: "0.5px" }} />
-          <MenuItem
-            icon={<FaMoneyBillAlt />}
-            onClick={() => handleMenuItemClick("/admin-suscripciones")}
-            className={
-              isMenuItemActive("/admin-suscripciones") ? "selected" : ""
-            }
+          <SubMenu
+            label={t("sidebar.administracion")}
+            className="custom-submenu"
+            open={isAdministracionSubMenuOpen}
+            onOpenChange={handleAdministracionClick}
+            icon={<FaUserFriends />}
           >
-            {t("sidebar.suscripciones")}
-          </MenuItem>
+            <MenuItem
+              icon={<FaMoneyBillAlt />}
+              onClick={() => handleMenuItemClick("/admin-fidelidad")}
+              className={isMenuItemActive("/admin-fidelidad") ? "selected" : ""}
+            >
+              {t("sidebar.fidelidad")}
+            </MenuItem>
+
+            <MenuItem
+              icon={<FaMoneyBillAlt />}
+              onClick={() => handleMenuItemClick("/admin-tipo-suscripcion")}
+              className={
+                isMenuItemActive("/admin-tipo-suscripcion") ? "selected" : ""
+              }
+            >
+              {t("sidebar.suscripciones")}
+            </MenuItem>
+          </SubMenu>
         </Menu>
       </Sidebar>
     </>
