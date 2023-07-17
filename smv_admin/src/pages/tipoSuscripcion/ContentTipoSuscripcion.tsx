@@ -378,7 +378,7 @@ const ContentFidelidad: React.FC = () => {
             onPress={handleAddSuscripciones}
             css={{ marginLeft: "auto" }} // Alinear a la derecha
           >
-            Agregar Nivel
+            Agregar Tipo de Suscripcion
           </Button>
         </Col>
       </Row>
