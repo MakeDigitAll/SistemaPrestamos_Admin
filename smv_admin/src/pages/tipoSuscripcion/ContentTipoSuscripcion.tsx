@@ -16,7 +16,6 @@ import deleteTipoSuscripcion from "../../utils/deleteTipoSuscripcion";
 import EditTipoSuscripcion from "./modals/ModalEditTipoSuscripcion";
 import InfoTipoSuscripcion from "./modals/ModalInfoTipoSuscripcion";
 import ModalAgregarUsuario from "./modals/ModalAddTipoSuscripcion";
-
 import { EditIcon } from "../../resources/icons/EditIcon";
 import { IconButton } from "../../resources/icons/IconButton";
 import { useGetTipoSuscripcion } from "../../hooks/useGetTipoSuscripcion";
@@ -57,21 +56,20 @@ const ContentFidelidad: React.FC = () => {
     useState<TipoSuscripcion | null>(null);
   //Filtra los tipoSuscripciones
   useEffect(() => {
-    //Si hay un término de búsqueda y hay tipoSuscripciones en el estado Suscripciones entonces filtra los tipoSuscripciones
-    if (searchTerm && tipoSuscripciones) {
-      const filteredSuscripciones = tipoSuscripciones.filter(
-        (tipoSuscripciones: TipoSuscripcion) =>
-          realizarBusqueda(tipoSuscripciones, searchTerm)
-      );
-      setSuscripciones(filteredSuscripciones);
-      //Si no hay un término de búsqueda y hay tipoSuscripciones en el estado Suscripciones entonces  mostrar todos los tipoSuscripciones
-    } else if (!searchTerm && tipoSuscripciones) {
-      const filteredSuscripciones = tipoSuscripciones.filter(
-        (tipoSuscripciones: TipoSuscripcion) =>
-          realizarBusqueda(tipoSuscripciones, searchTerm)
-      );
-      setSuscripciones(filteredSuscripciones);
+    if (!tipoSuscripciones) return;
+
+    //Si no hay un término de búsqueda, muestra todos los tipoSuscripciones
+    if (!searchTerm) {
+      setSuscripciones(tipoSuscripciones);
+      return;
     }
+    //Si hay un término de búsqueda, filtra los tipoSuscripciones
+    const filteredUsuarios = tipoSuscripciones.filter(
+      (TipoSuscripcion: TipoSuscripcion) =>
+        realizarBusqueda(TipoSuscripcion, searchTerm)
+    );
+    //Muestra los tipoSuscripciones filtrados
+    setSuscripciones(filteredUsuarios);
   }, [searchTerm, tipoSuscripciones]);
 
   //Función para realizar la búsqueda de tipoSuscripciones

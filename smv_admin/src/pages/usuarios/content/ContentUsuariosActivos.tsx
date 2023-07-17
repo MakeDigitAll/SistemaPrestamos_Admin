@@ -51,19 +51,19 @@ const ContentUsuariosActivos: React.FC = () => {
 
   //Filtra los usuariosPrestamistas
   useEffect(() => {
-    //Si hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces filtra los usuariosPrestamistas
-    if (searchTerm && usuariosPrestamistas) {
-      const filteredUsuarios = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) => realizarBusqueda(usuario, searchTerm)
-      );
-      setUsuarios(filteredUsuarios);
-      //Si no hay un término de búsqueda y hay usuariosPrestamistas en el estado Usuarios entonces  mostrar todos los usuariosPrestamistas
-    } else if (!searchTerm && usuariosPrestamistas) {
-      const filteredUsuarios = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) => realizarBusqueda(usuario, searchTerm)
-      );
-      setUsuarios(filteredUsuarios);
+    if (!usuariosPrestamistas) return;
+
+    //Si no hay un término de búsqueda, muestra todos los usuariosPrestamistas
+    if (!searchTerm) {
+      setUsuarios(usuariosPrestamistas);
+      return;
     }
+    //Si hay un término de búsqueda, filtra los usuariosPrestamistas
+    const filteredUsuarios = usuariosPrestamistas.filter(
+      (usuario: UserTypePrestamista) => realizarBusqueda(usuario, searchTerm)
+    );
+    //Muestra los usuariosPrestamistas filtrados
+    setUsuarios(filteredUsuarios);
   }, [searchTerm, usuariosPrestamistas]);
 
   //Función para realizar la búsqueda de usuariosPrestamistas

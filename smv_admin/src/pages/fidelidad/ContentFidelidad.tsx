@@ -56,19 +56,20 @@ const ContentFidelidad: React.FC = () => {
     useState<NivelesFidelidadType | null>(null);
   //Filtra los nivelesFidelidad
   useEffect(() => {
-    //Si hay un término de búsqueda y hay nivelesFidelidad en el estado Niveles entonces filtra los nivelesFidelidad
-    if (searchTerm && nivelesFidelidad) {
-      const filteredNiveles = nivelesFidelidad.filter(
-        (niveles: NivelesFidelidadType) => realizarBusqueda(niveles, searchTerm)
-      );
-      setNiveles(filteredNiveles);
-      //Si no hay un término de búsqueda y hay nivelesFidelidad en el estado Niveles entonces  mostrar todos los nivelesFidelidad
-    } else if (!searchTerm && nivelesFidelidad) {
-      const filteredNiveles = nivelesFidelidad.filter(
-        (niveles: NivelesFidelidadType) => realizarBusqueda(niveles, searchTerm)
-      );
-      setNiveles(filteredNiveles);
+    if (!nivelesFidelidad) return;
+
+    //Si no hay un término de búsqueda, muestra todos los nivelesFidelidad
+    if (!searchTerm) {
+      setNiveles(nivelesFidelidad);
+      return;
     }
+    //Si hay un término de búsqueda, filtra los nivelesFidelidad
+    const filteredUsuarios = nivelesFidelidad.filter(
+      (NivelesFidelidad: NivelesFidelidadType) =>
+        realizarBusqueda(NivelesFidelidad, searchTerm)
+    );
+    //Muestra los nivelesFidelidad filtrados
+    setNiveles(filteredUsuarios);
   }, [searchTerm, nivelesFidelidad]);
 
   //UseEffect para mostrar el mensaje de éxito al agregar un usuario
