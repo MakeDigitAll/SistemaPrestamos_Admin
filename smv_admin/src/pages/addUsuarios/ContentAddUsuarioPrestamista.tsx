@@ -338,13 +338,6 @@ const ContentAddUsuario: React.FC = () => {
       );
       setSelectedSubscription(subscriptionName);
     } else if (tabValue === 1) {
-      const subscriptionName = getSelectedSubscription(
-        userSliderValue as number,
-        montoMinValue,
-        montoMaxValue
-      );
-      setSelectedSubscription(subscriptionName);
-    } else {
       handleRegister();
     }
   };
