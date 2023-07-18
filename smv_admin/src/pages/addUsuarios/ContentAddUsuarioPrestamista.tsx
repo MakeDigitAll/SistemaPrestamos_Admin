@@ -27,6 +27,8 @@ const ContentAddUsuario: React.FC = () => {
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
   const [imagenUsuario, setImagenUsuario] = useState<string>("");
+  //FileReader
+  const [imageFile, setImageFile] = useState<File>();
   const [subscriptionTabEnabled, setSubscriptionTabEnabled] = useState(true);
   const getTipoSubcripciones = useGetTipoSuscripciones();
   const arrayTipoSuscripciones =
@@ -177,16 +179,11 @@ const ContentAddUsuario: React.FC = () => {
       if (response.status === 200) {
         // Obtener el id del usuario recién creado para configurar la imagen
         const idUsuario = response.data.idUsuarioPrestamista;
-        // Si tiene imagen, se envía la imagen
-        if (imagenUsuario) {
-          // Convertir el buffer en un objeto Blob
-          const blob = new Blob([imagenUsuario], { type: "image/jpeg" });
 
-          // Crear un objeto FormData y adjuntar el Blob
+        if (imageFile) {
           const formData = new FormData();
-          formData.append("image", blob, "imagen.jpg");
-
-          const response = await service.uploadUsuarioPrestamistaImage(
+          formData.append("image", imageFile);
+          const response = await service.setImageUsuarioPrestamista(
             idUsuario,
             formData
           );
@@ -310,6 +307,7 @@ const ContentAddUsuario: React.FC = () => {
             fileType === "image/jpg"
           ) {
             const reader = new FileReader();
+            setImageFile(file);
             reader.onload = () => {
               if (reader.readyState === 2) {
                 setImagenUsuario(reader.result as string);

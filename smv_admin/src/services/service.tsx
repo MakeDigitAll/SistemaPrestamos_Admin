@@ -63,7 +63,7 @@ class AdminDataService {
   }
 
   //imagen prestamista
-  uploadUsuarioPrestamistaImage(id: number, image: any) {
+  setImageUsuarioPrestamista(id: number, image: any) {
     return http.post(`/admin-upload-usuario-prestamista-image/${id}`, image, {
       headers: {
         "Content-Type": "multipart/form-data",
