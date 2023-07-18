@@ -175,13 +175,17 @@ const ContentAddUsuario: React.FC = () => {
       const response = await service.createUsuarioPrestamista(data);
 
       if (response.status === 200) {
-        //obtener el id del usuario recien creado para setear la imagen
+        // Obtener el id del usuario recién creado para configurar la imagen
         const idUsuario = response.data.idUsuarioPrestamista;
-        //si tiene imagen se envia la imagen
+        // Si tiene imagen, se envía la imagen
         if (imagenUsuario) {
-          //Setear la imagen en el form data para enviar al backend
+          // Convertir el buffer en un objeto Blob
+          const blob = new Blob([imagenUsuario], { type: "image/jpeg" });
+
+          // Crear un objeto FormData y adjuntar el Blob
           const formData = new FormData();
-          formData.append("imageUsuario", imagenUsuario);
+          formData.append("image", blob, "imagen.jpg");
+
           const response = await service.uploadUsuarioPrestamistaImage(
             idUsuario,
             formData
@@ -325,7 +329,6 @@ const ContentAddUsuario: React.FC = () => {
   };
 
   const handleNext = () => {
-    console.log("Tab value: " + tabValue);
     if (tabValue === 0) {
       // Comprobar errores en los datos personales
       let hasPersonalInfoError = false;

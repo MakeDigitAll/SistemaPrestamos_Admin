@@ -62,9 +62,25 @@ class AdminDataService {
     });
   }
 
+  //imagen prestamista
+  uploadUsuarioPrestamistaImage(id: number, image: any) {
+    return http.post(`/admin-upload-usuario-prestamista-image/${id}`, image, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
+
   //recibir imagen  de tipo blob
   getImageAdmin(id: number) {
     return http.get(`/admin-get-image/${id}`, {
+      responseType: "blob",
+    });
+  }
+
+  //recibir imagen  de tipo blob
+  getImagenPrestamista(id: number) {
+    return http.get(`/admin-get-image-usuario-prestamista/${id}`, {
       responseType: "blob",
     });
   }
@@ -112,14 +128,6 @@ class AdminDataService {
   //obtener los tipos de suscripciónes
   getTipoSuscripciones() {
     return http.get("/admin-get-all-tipos-suscripciones-activas");
-  }
-  //imagen prestamista
-  uploadUsuarioPrestamistaImage(id: number, image: any) {
-    return http.post(`/admin-upload-usuario-prestamista-image/${id}`, image, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
   }
 }
 

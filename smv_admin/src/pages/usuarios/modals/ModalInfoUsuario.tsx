@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Avatar, Card, Text } from "@nextui-org/react";
 import { UserPrestamista } from "../../../types/UserPrestamista";
+import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 
 interface InformacionUsuarioProps {
   user: UserPrestamista;
@@ -18,7 +19,10 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
   const [correoElectronico] = useState(user.correoElectronico);
   const [codigoReferencia] = useState(user.codigoReferencia);
   const [telefono] = useState(user.numeroTelefono);
+  const [idUsuarioPrestamista] = useState(user.idUsuarioPrestamista);
   //const [imagenPerfil] = useState(user.imagenPerfil);
+
+  const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
 
   const closeHandler = () => {
     setVisible(false);
@@ -43,7 +47,7 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
           css={{ display: "flex", alignItems: "center", flexDirection: "row" }}
         >
           <Avatar
-            src="https://i.pravatar.cc/300"
+            src={imagenPerfil}
             css={{
               marginRight: "10%",
               width: "30%",

@@ -9,7 +9,7 @@ const imagenAdministrador = db.imagenAdministrador;
 
 // Crear y guardar un nuevo administrador
 exports.createAdmin = (req, res) => {
-  if (!req.query.nombres) {
+  if (!req.query.nombres) { 
     res.status(400).send({
       message: "El Nombre no puede estar vacío!",
     });

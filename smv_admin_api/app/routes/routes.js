@@ -71,34 +71,30 @@ router.put("/admin-update-usuario-prestamista/:id", verifyToken, (req, res) => {
   controllerUsuariosPrestamistas.updateUsuarioPrestamista(req, res);
 });
 
-// setear la imagen
-const validImageTypes = ["image/jpeg", "image/png", "image/gif"]; // Tipos de imágenes válidos
 
-router.post(
-  "/admin-update-image/:id",
-  verifyToken,
-  upload.single("image"),
-  (req, res) => {
+router.post("/admin-update-image/:id",verifyToken,upload.single("image"),(req, res) => {
     const image = req.file; // Datos de la imagen
-    const id = req.params.id;
-
-    // Comprobar si se proporcionó una imagen
-    if (!image) {
-      return res.status(400).send({ message: "Debes subir una imagen" });
-    }
-
-    // Comprobar el tipo de la imagen
-    if (!validImageTypes.includes(image.mimetype)) {
-      return res.status(400).send({ message: "Tipo de imagen no válido" });
-    }
-
+    const id = req.params.id
     controllerAdmin.setImageAdmin(req, res, id, image);
   }
 );
 
+//setear imagen del usuario prestamista
+router.post("/admin-upload-usuario-prestamista-image/:id", verifyToken, upload.single("image"), (req, res) => {
+    const image = req.body.image; // Datos de la imagen
+    const id = req.params.id;
+    controllerUsuariosPrestamistas.setImagePrestamista(req, res, id, image);
+
+  });
+
 //obtener la imagen de perfil del administrador
 router.get("/admin-get-image/:id", verifyToken, (req, res) => {
   controllerAdmin.getImageAdmin(req, res);
+}); 
+
+//obtener la imagen de perfil del usuario prestamista
+router.get("/admin-get-image-usuario-prestamista/:id", verifyToken, (req, res) => {
+  controllerUsuariosPrestamistas.getImagenPrestamista(req, res);
 });
 
 
@@ -148,10 +144,7 @@ router.get("/admin-get-all-tipos-suscripciones-activas", verifyToken, (req, res)
   controllerTipoSuscripcion.getAllTiposSuscripcionesActivas(req, res);
 });
 
-//setear imagen del usuario prestamista
-router.post("/admin-upload-usuario-prestamista-image/:id", verifyToken, upload.single("image"), (req, res) => {
-controllerUsuariosPrestamistas.setImagePrestamista(req, res);
-});
+
 
 
 module.exports = router;

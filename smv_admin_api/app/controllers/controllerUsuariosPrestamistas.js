@@ -409,7 +409,7 @@ exports.updateUsuarioPrestamista = (req, res) => {
 //actualizar la  imagen de perfil del administrador
 exports.setImagePrestamista = (req, res) => {
   const id = req.params.id;
-  const image = req.body.imageUsuario;
+  const image = req.file.buffer; // Accedemos al buffer de la imagen
 
   //buscar la imagen del administrador en la tabla imagenPrestamista por el id del administrador y si existe la imagen la actualiza, si no existe la imagen la crea
   imagenPrestamista
@@ -447,7 +447,7 @@ exports.setImagePrestamista = (req, res) => {
             });
           });
       } else {
-        //crear la imagen del administrador
+        //crear la imagen del usuario
         const imagen = {
           idUsuarioPrestamista: id,
           imagen: image,
@@ -462,7 +462,7 @@ exports.setImagePrestamista = (req, res) => {
             res.status(500).send({
               message:
                 err.message ||
-                "Ocurrió un error al crear la imagen del administrador.",
+                "Ocurrió un error al crear la imagen del usuario.",
             });
           });
       }
@@ -471,7 +471,36 @@ exports.setImagePrestamista = (req, res) => {
       res.status(500).send({
         message:
           err.message ||
-          "Ocurrió un error al buscar la imagen del administrador.",
+          "Ocurrió un error al buscar la imagen del usuario.",
+      });
+    });
+};
+
+//obtener la imagen de perfil del usuario de la base de datos (BLOB)
+exports.getImagenPrestamista = (req, res) => {
+  const id = req.params.id;
+
+  imagenPrestamista
+    .findOne({
+      where: {
+        idUsuarioPrestamista: id,
+      },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data.imagen);
+        console.log(data);
+      } else {
+        res.status(500).send({
+          message: "No se encontró la imagen del usuario prestamista.",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al buscar la imagen del usuario prestamista.",
       });
     });
 };
