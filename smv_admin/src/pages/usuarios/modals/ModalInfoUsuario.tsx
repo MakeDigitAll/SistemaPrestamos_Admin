@@ -39,7 +39,7 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
       aria-labelledby="modal-title"
       open={visible}
       onClose={closeHandler}
-      width="30%"
+      width="35%"
     >
       <Modal.Body>
         <Card
@@ -50,8 +50,8 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
             src={imagenPerfil}
             css={{
               marginRight: "10%",
-              width: "30%",
-              height: "30%",
+              width: "150px",
+              height: "150px",
             }}
           />
           <div>

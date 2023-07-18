@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { UserPrestamista } from "../../../types/UserPrestamista";
+import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 
 interface InformacionUsuarioProps {
   user: UserPrestamista;
@@ -24,6 +25,8 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
+  const [idUsuarioPrestamista] = useState(user.idUsuarioPrestamista);
+  const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
 
   const closeHandler = () => {
     setVisible(false);
@@ -147,7 +150,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
         onClose={closeHandler}
         preventClose
         blur
-        width="30%"
+        width="35%"
       >
         <Card
           variant="flat"
@@ -155,12 +158,12 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
         >
           <Modal.Header>
             <Avatar
-              src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
+              src={imagenPerfil}
               zoomed
               css={{
                 margin: "auto",
-                height: "100px",
-                width: "100px",
+                height: "150px",
+                width: "150px",
               }}
             />
           </Modal.Header>
