@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controllerAdmin = require("../controllers/controllerAdmin.js");
-const controllerUsuarios = require("../controllers/controllerUsuariosPrestamistas.js");
+const controllerUsuariosPrestamistas = require("../controllers/controllerUsuariosPrestamistas.js");
 const controllerNivelFidelidad = require("../controllers/controllerNivelFidelidad.js");
 const controllerTipoSuscripcion = require("../controllers/controllerTipoSuscripcion.js");
 const { verifyToken } = require("../middlewares/authJwt");
@@ -26,7 +26,7 @@ router.put("/admin/:id", verifyToken, (req, res) => {
 
 // obtener todos los usuarios prestamistas de la base de datos
 router.get("/admin-allusuarios-prestamistas", verifyToken, (req, res) => {
-  controllerUsuarios.findAllUsuariosPrestamista(req, res);
+  controllerUsuariosPrestamistas.findAllUsuariosPrestamista(req, res);
 });
 
 //obtener todos los usuarios prestamistas activos de la base de datos
@@ -34,7 +34,7 @@ router.get(
   "/admin-allusuarios-prestamistas-activos",
   verifyToken,
   (req, res) => {
-    controllerUsuarios.findAllUsuariosPrestamistaActivos(req, res);
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaActivos(req, res);
   }
 );
 
@@ -43,7 +43,7 @@ router.get(
   "/admin-allusuarios-prestamistas-inactivos",
   verifyToken,
   (req, res) => {
-    controllerUsuarios.findAllUsuariosPrestamistaInactivos(req, res);
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaInactivos(req, res);
   }
 );
 
@@ -52,23 +52,23 @@ router.get(
   "/admin-allusuarios-prestamistas-eliminados",
   verifyToken,
   (req, res) => {
-    controllerUsuarios.findAllUsuariosPrestamistaEliminados(req, res);
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaEliminados(req, res);
   }
 );
 
 // crear un nuevo usuario de tipo prestamista
 router.post("/admin-new-usuario-prestamista", verifyToken, (req, res) => {
-  controllerUsuarios.createUsuarioPrestamista(req, res);
+  controllerUsuariosPrestamistas.createUsuarioPrestamista(req, res);
 });
 
 // Eliminar un usuario de tipo prestamista
 router.delete("/admin-del-usuario-prestamista/:id", verifyToken, (req, res) => {
-  controllerUsuarios.deleteUsuarioPrestamista(req, res);
+  controllerUsuariosPrestamistas.deleteUsuarioPrestamista(req, res);
 });
 
 // Actualizar un usuario de tipo prestamista
 router.put("/admin-update-usuario-prestamista/:id", verifyToken, (req, res) => {
-  controllerUsuarios.updateUsuarioPrestamista(req, res);
+  controllerUsuariosPrestamistas.updateUsuarioPrestamista(req, res);
 });
 
 // setear la imagen
@@ -146,6 +146,11 @@ router.post("/admin-add-tipo-suscripcion", verifyToken, (req, res) => {
 //obtener todos los tipos de suscripciones
 router.get("/admin-get-all-tipos-suscripciones-activas", verifyToken, (req, res) => {
   controllerTipoSuscripcion.getAllTiposSuscripcionesActivas(req, res);
+});
+
+//setear imagen del usuario prestamista
+router.post("/admin-upload-usuario-prestamista-image/:id", verifyToken, upload.single("image"), (req, res) => {
+controllerUsuariosPrestamistas.setImagePrestamista(req, res);
 });
 
 

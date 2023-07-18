@@ -172,20 +172,33 @@ const ContentAddUsuario: React.FC = () => {
         numeroClientes: encryptedNumeroClientes,
         nombreNivel: encryptedNombreNivel,
       };
-
       const response = await service.createUsuarioPrestamista(data);
 
       if (response.status === 200) {
-        const successMessage = "Usuario registrado con éxito.";
-        localStorage.setItem("toastMessageAddusuario", successMessage);
-        resetNombre();
-        resetApellidos();
-        resetEmail();
-        resetPassword();
-        resetNumeroTelefono();
-        setSliderValue([1000, 10000]);
-        setUserSliderValue(100);
-        navigate("/admin-suscribir-usuario");
+        //obtener el id del usuario recien creado para setear la imagen
+        const idUsuario = response.data.idUsuarioPrestamista;
+        //si tiene imagen se envia la imagen
+        if (imagenUsuario) {
+          //Setear la imagen en el form data para enviar al backend
+          const formData = new FormData();
+          formData.append("imageUsuario", imagenUsuario);
+          const response = await service.uploadUsuarioPrestamistaImage(
+            idUsuario,
+            formData
+          );
+          if (response.status === 200) {
+            const successMessage = "Usuario registrado con éxito.";
+            localStorage.setItem("toastMessageAddusuario", successMessage);
+            resetNombre();
+            resetApellidos();
+            resetEmail();
+            resetPassword();
+            resetNumeroTelefono();
+            setSliderValue([1000, 10000]);
+            setUserSliderValue(100);
+            navigate("/admin-suscribir-usuario");
+          }
+        }
       }
     } catch (error: any) {
       if (
@@ -401,11 +414,13 @@ const ContentAddUsuario: React.FC = () => {
         >
           <Avatar
             src={imagenUsuario}
+            zoomed
             css={{
               width: "180px",
               height: "180px",
               margin: "auto",
               marginLeft: "30px",
+              cursor: "pointer",
             }}
             onClick={handleImagenClick}
           />
@@ -518,6 +533,7 @@ const ContentAddUsuario: React.FC = () => {
               height: "180px",
               margin: "auto",
               marginLeft: "30px",
+              cursor: "pointer",
             }}
             onClick={handleImagenClick}
           />

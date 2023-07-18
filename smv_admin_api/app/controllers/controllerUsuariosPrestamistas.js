@@ -3,6 +3,7 @@ const usuariosPrestamistas = db.usuariosPrestamistas;
 const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
+const imagenPrestamista = db.imagenPrestamista;
 
 const jwt = require("jsonwebtoken");
 const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
@@ -295,7 +296,9 @@ exports.createUsuarioPrestamista = (req, res) => {
                   pagosAlCorriente: true,
                 })
                 .then(() => {
-                  res.send({ message: "Usuario creado exitosamente." });
+                  //enviar le id del usuario creado
+                  res.send({ idUsuarioPrestamista: prestamista.idUsuarioPrestamista });
+
                 })
                 .catch((err) => {
                   console.log(err);
@@ -396,6 +399,79 @@ exports.updateUsuarioPrestamista = (req, res) => {
         message:
           "Ocurrió un error al actualizar el usuario con id=" +
           idUsuarioPrestamista,
+      });
+    });
+};
+
+
+//set imagen 
+
+//actualizar la  imagen de perfil del administrador
+exports.setImagePrestamista = (req, res) => {
+  const id = req.params.id;
+  const image = req.body.imageUsuario;
+
+  //buscar la imagen del administrador en la tabla imagenPrestamista por el id del administrador y si existe la imagen la actualiza, si no existe la imagen la crea
+  imagenPrestamista
+    .findOne({
+      where: {
+        idUsuarioPrestamista: id,
+      },
+    })
+    .then((data) => {
+      if (data) {
+        //actualizar la imagen del administrador
+        imagenPrestamista
+          .update(
+            {
+              imagen: image,
+            },
+            {
+              where: { idUsuarioPrestamista: id },
+            }
+          )
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "Imagen actualizada correctamente.",
+              });
+            } else {
+              res.send({
+                message: `No se puede actualizar la imagen. Tal vez la imagen no fue encontrada o req.body está vacío!`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error al actualizar la imagen" + err,
+            });
+          });
+      } else {
+        //crear la imagen del administrador
+        const imagen = {
+          idUsuarioPrestamista: id,
+          imagen: image,
+        };
+
+        imagenPrestamista
+          .create(imagen)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Ocurrió un error al crear la imagen del administrador.",
+            });
+          });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al buscar la imagen del administrador.",
       });
     });
 };

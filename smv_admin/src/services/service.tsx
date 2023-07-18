@@ -113,6 +113,14 @@ class AdminDataService {
   getTipoSuscripciones() {
     return http.get("/admin-get-all-tipos-suscripciones-activas");
   }
+  //imagen prestamista
+  uploadUsuarioPrestamistaImage(id: number, image: any) {
+    return http.post(`/admin-upload-usuario-prestamista-image/${id}`, image, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();
