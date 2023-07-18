@@ -17,6 +17,7 @@ import { Tabs, Tab } from "@mui/material";
 import defaultImage from "../../assets/images/defaultProfile.png";
 import { useGetTipoSuscripciones } from "../../hooks/useGetTipoSuscripciones";
 import { TipoSuscripcion } from "../../types/TipoSuscripcion";
+import { toast } from "react-toastify";
 
 const ContentAddUsuario: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
@@ -25,6 +26,7 @@ const ContentAddUsuario: React.FC = () => {
   const [nombreError, setNombreError] = useState("");
   const [apellidosError, setApellidosError] = useState("");
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
+  const [imagenUsuario, setImagenUsuario] = useState<string>("");
   const [subscriptionTabEnabled, setSubscriptionTabEnabled] = useState(true);
   const getTipoSubcripciones = useGetTipoSuscripciones();
   const arrayTipoSuscripciones =
@@ -64,6 +66,14 @@ const ContentAddUsuario: React.FC = () => {
   const [userSliderValue, setUserSliderValue] = useState<number | number[]>(
     100
   );
+  //useEffect para si hay o no imagen de usuario
+  useEffect(() => {
+    if (imagenUsuario) {
+      setImagenUsuario(imagenUsuario);
+    } else {
+      setImagenUsuario(defaultImage);
+    }
+  }, [imagenUsuario]);
 
   //useEffect para setear los tipos de suscripciones
   useEffect(() => {
@@ -264,6 +274,43 @@ const ContentAddUsuario: React.FC = () => {
     setTabValue(newValue);
   };
 
+  const handleImagenClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files![0];
+
+      if (file) {
+        // Validar el tamaño del archivo (4 MB máximo)
+        if (file.size <= 4 * 1024 * 1024) {
+          // Validar el tipo de archivo gif, png, jpg, jpeg
+          const fileType = file.type;
+          if (
+            fileType === "image/png" ||
+            fileType === "image/jpeg" ||
+            fileType === "image/jpg"
+          ) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              if (reader.readyState === 2) {
+                setImagenUsuario(reader.result as string);
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+        } else {
+          //toast error
+          const errorMessage = "El tamaño máximo de la imagen es de max 4 MB.";
+          toast.error(errorMessage);
+        }
+      }
+    };
+
+    input.click();
+  };
+
   const handleNext = () => {
     console.log("Tab value: " + tabValue);
     if (tabValue === 0) {
@@ -353,16 +400,16 @@ const ContentAddUsuario: React.FC = () => {
           }}
         >
           <Avatar
-            src={defaultImage}
+            src={imagenUsuario}
             css={{
-              width: "18%",
-              height: "18%",
+              width: "180px",
+              height: "180px",
               margin: "auto",
-              marginLeft: "2%",
-              marginRight: "6%",
+              marginLeft: "30px",
             }}
+            onClick={handleImagenClick}
           />
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, marginRight: "60px", marginLeft: "30px" }}>
             <div
               style={{
                 display: "flex",
@@ -465,16 +512,16 @@ const ContentAddUsuario: React.FC = () => {
           }}
         >
           <Avatar
-            src={defaultImage}
+            src={imagenUsuario}
             css={{
-              width: "18%",
-              height: "18%",
+              width: "180px",
+              height: "180px",
               margin: "auto",
-              marginLeft: "2%",
-              marginRight: "6%",
+              marginLeft: "30px",
             }}
+            onClick={handleImagenClick}
           />
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: 1, marginRight: "60px", marginLeft: "30px" }}>
             <div style={{ display: "flex", flexDirection: "row" }}>
               <div
                 style={{
@@ -643,7 +690,11 @@ const ContentAddUsuario: React.FC = () => {
   return (
     <div>
       <Card style={{ width: "fit-content", margin: "auto", marginTop: "3%" }}>
-        <Tabs value={tabValue} onChange={handleTabChange}>
+        <Tabs
+          value={tabValue}
+          onChange={handleTabChange}
+          style={{ marginLeft: "10px" }}
+        >
           <Tab label="Datos Personales" />
           <Tab label="Suscripcion" disabled={!subscriptionTabEnabled} />{" "}
         </Tabs>
