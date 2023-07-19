@@ -49,7 +49,7 @@ const ContentAddUsuario: React.FC = () => {
         // Verificar si los datos del usuario están dentro del rango de la suscripción actual
         if (
           usuariosAPrestar <= tipoSuscripcion.numeroUsuariosMax &&
-          montoMinimo >= tipoSuscripcion.montoDesde &&
+          //montoMinimo >= tipoSuscripcion.montoDesde &&
           montoMaximo <= tipoSuscripcion.montoHasta
         ) {
           return tipoSuscripcion.nombreSuscripcion;
@@ -658,9 +658,9 @@ const ContentAddUsuario: React.FC = () => {
                           setSelectedSubscription(value)
                         }
                         style={{
-                          width: "200px",
-                          marginTop: "14%",
-                          marginLeft: "33%",
+                          width: "260px",
+                          marginTop: "11.5%",
+                          marginLeft: "3%",
                         }}
                       >
                         {selectedSubscription || "Suscripción"}
