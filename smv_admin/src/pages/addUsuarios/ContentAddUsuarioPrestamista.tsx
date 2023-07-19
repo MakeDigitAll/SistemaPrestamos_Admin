@@ -199,6 +199,17 @@ const ContentAddUsuario: React.FC = () => {
             setUserSliderValue(100);
             navigate("/admin-suscribir-usuario");
           }
+        } else {
+          const successMessage = "Usuario registrado con éxito.";
+          localStorage.setItem("toastMessageAddusuario", successMessage);
+          resetNombre();
+          resetApellidos();
+          resetEmail();
+          resetPassword();
+          resetNumeroTelefono();
+          setSliderValue([1000, 10000]);
+          setUserSliderValue(100);
+          navigate("/admin-suscribir-usuario");
         }
       }
     } catch (error: any) {

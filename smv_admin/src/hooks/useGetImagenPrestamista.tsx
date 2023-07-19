@@ -15,9 +15,7 @@ const useGetPrestamista = (idUsuarioPrestamista: number | undefined) => {
         );
         const image = response.data; // Obtener el Blob de imagen de la respuesta
         // Crear un objeto URL para la imagen de cualquier tipo
-        console.log(image);
         const imageUrl = URL.createObjectURL(image);
-        console.log(imageUrl);
         setImagenPerfil(imageUrl); // Actualizar el estado con la URL de la imagen
       } else {
         setImagenPerfil(defaultImage); // Establecer la imagen por defecto si idUsuarioPrestamista es undefined

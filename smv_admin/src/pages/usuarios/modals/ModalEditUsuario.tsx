@@ -6,6 +6,7 @@ import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { UserPrestamista } from "../../../types/UserPrestamista";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
+import defaultImage from "../../../assets/images/defaultProfile.png";
 
 interface InformacionUsuarioProps {
   user: UserPrestamista;
@@ -27,6 +28,8 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const [numeroTelefonoError, setNumeroTelefonoError] = useState("");
   const [idUsuarioPrestamista] = useState(user.idUsuarioPrestamista);
   const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
+  const [imageFile, setImageFile] = useState<File>();
+  const [imagenUsuario, setImagenUsuario] = useState<string>("");
 
   const closeHandler = () => {
     setVisible(false);
@@ -36,6 +39,15 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   useEffect(() => {
     setVisible(true);
   }, []);
+
+  // Set default or user image when the component mounts or imagePerfil changes
+  useEffect(() => {
+    if (imagenPerfil) {
+      setImagenUsuario(imagenPerfil as string);
+    } else {
+      setImagenUsuario(defaultImage);
+    }
+  }, [imagenPerfil]);
 
   const validarNumeroTelefono = (telefono: string) => {
     const regex = /^\d+$/;
@@ -126,19 +138,72 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
 
     try {
       const response = await service.updateUsuarioPrestamista(
-        user.idUsuarioPrestamista,
+        idUsuarioPrestamista,
         data
       );
       if (response.status === 200) {
-        toast.success("Usuario Editado Correctamente");
-        handleUpdate(user);
-        closeHandler();
+        // If the profile image is edited, update the image
+        if (imageFile) {
+          const formData = new FormData();
+          formData.append("image", imageFile);
+          const response = await service.setImageUsuarioPrestamista(
+            idUsuarioPrestamista,
+            formData
+          );
+          if (response.status === 200) {
+            toast.success("Usuario Editado Correctamente");
+            handleUpdate(user);
+            closeHandler();
+          }
+        } else {
+          toast.success("Usuario Editado Correctamente");
+          handleUpdate(user);
+          closeHandler();
+        }
       }
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         console.log(error.response.data);
       }
     }
+  };
+
+  const handleImagenClick = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files![0];
+
+      if (file) {
+        // Validate file size (maximum 4 MB)
+        if (file.size <= 4 * 1024 * 1024) {
+          // Validate file type: gif, png, jpg, jpeg
+          const fileType = file.type;
+          if (
+            fileType === "image/png" ||
+            fileType === "image/jpeg" ||
+            fileType === "image/jpg"
+          ) {
+            const reader = new FileReader();
+            setImageFile(file);
+            reader.onload = () => {
+              if (reader.readyState === 2) {
+                setImagenUsuario(reader.result as string);
+              }
+            };
+            reader.readAsDataURL(file);
+          }
+        } else {
+          // Toast error
+          const errorMessage = "El tamaño máximo de la imagen es de max 4 MB.";
+          toast.error(errorMessage);
+        }
+      }
+    };
+
+    input.click();
   };
 
   return (
@@ -158,13 +223,15 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
         >
           <Modal.Header>
             <Avatar
-              src={imagenPerfil}
+              src={imagenUsuario}
               zoomed
               css={{
                 margin: "auto",
                 height: "150px",
                 width: "150px",
+                cursor: "pointer",
               }}
+              onClick={handleImagenClick}
             />
           </Modal.Header>
           <Modal.Body>

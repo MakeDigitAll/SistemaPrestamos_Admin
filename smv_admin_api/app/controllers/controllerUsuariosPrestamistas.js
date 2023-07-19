@@ -489,7 +489,6 @@ exports.getImagenPrestamista = (req, res) => {
     .then((data) => {
       if (data) {
         res.send(data.imagen);
-        console.log(data);
       } else {
         res.status(500).send({
           message: "No se encontró la imagen del usuario prestamista.",
