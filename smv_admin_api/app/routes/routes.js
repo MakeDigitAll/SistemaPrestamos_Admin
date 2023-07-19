@@ -23,7 +23,6 @@ router.put("/admin/:id", verifyToken, (req, res) => {
   controllerAdmin.updateAdmin(req, res);
 });
 
-
 // obtener todos los usuarios prestamistas de la base de datos
 router.get("/admin-allusuarios-prestamistas", verifyToken, (req, res) => {
   controllerUsuariosPrestamistas.findAllUsuariosPrestamista(req, res);
@@ -43,7 +42,10 @@ router.get(
   "/admin-allusuarios-prestamistas-inactivos",
   verifyToken,
   (req, res) => {
-    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaInactivos(req, res);
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaInactivos(
+      req,
+      res
+    );
   }
 );
 
@@ -52,7 +54,10 @@ router.get(
   "/admin-allusuarios-prestamistas-eliminados",
   verifyToken,
   (req, res) => {
-    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaEliminados(req, res);
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaEliminados(
+      req,
+      res
+    );
   }
 );
 
@@ -71,32 +76,42 @@ router.put("/admin-update-usuario-prestamista/:id", verifyToken, (req, res) => {
   controllerUsuariosPrestamistas.updateUsuarioPrestamista(req, res);
 });
 
-
-router.post("/admin-update-image/:id",verifyToken,upload.single("image"),(req, res) => {
+router.post(
+  "/admin-update-image/:id",
+  verifyToken,
+  upload.single("image"),
+  (req, res) => {
     const image = req.file; // Datos de la imagen
-    const id = req.params.id
+    const id = req.params.id;
     controllerAdmin.setImageAdmin(req, res, id, image);
   }
 );
 
 //setear imagen del usuario prestamista
-router.post("/admin-upload-usuario-prestamista-image/:id", verifyToken, upload.single("image"), (req, res) => {
+router.post(
+  "/admin-upload-usuario-prestamista-image/:id",
+  verifyToken,
+  upload.single("image"),
+  (req, res) => {
     const image = req.body.image; // Datos de la imagen
     const id = req.params.id;
     controllerUsuariosPrestamistas.setImagePrestamista(req, res, id, image);
-
-  });
+  }
+);
 
 //obtener la imagen de perfil del administrador
 router.get("/admin-get-image/:id", verifyToken, (req, res) => {
   controllerAdmin.getImageAdmin(req, res);
-}); 
-
-//obtener la imagen de perfil del usuario prestamista
-router.get("/admin-get-image-usuario-prestamista/:id", verifyToken, (req, res) => {
-  controllerUsuariosPrestamistas.getImagenPrestamista(req, res);
 });
 
+//obtener la imagen de perfil del usuario prestamista
+router.get(
+  "/admin-get-image-usuario-prestamista/:id",
+  verifyToken,
+  (req, res) => {
+    controllerUsuariosPrestamistas.getImagenPrestamista(req, res);
+  }
+);
 
 // obtener la tabla de niveles de fidelidad
 router.get("/admin-get-niveles-fidelidad", verifyToken, (req, res) => {
@@ -134,11 +149,24 @@ router.post("/admin-add-tipo-suscripcion", verifyToken, (req, res) => {
 });
 
 //obtener todos los tipos de suscripciones
-router.get("/admin-get-all-tipos-suscripciones-activas", verifyToken, (req, res) => {
-  controllerTipoSuscripcion.getAllTiposSuscripcionesActivas(req, res);
-});
+router.get(
+  "/admin-get-all-tipos-suscripciones-activas",
+  verifyToken,
+  (req, res) => {
+    controllerTipoSuscripcion.getAllTiposSuscripcionesActivas(req, res);
+  }
+);
 
-
-
+//activar suscripción del usuario prestamista       `/admin-activate-suscripcion-usuario/${idUsuario}/${idSuscripcion}`
+router.put(
+  "/admin-activate-suscripcion-usuario/:idUsuario/:idSuscripcion",
+  verifyToken,
+  (req, res) => {
+    controllerUsuariosPrestamistas.activarSuscripcionUsuarioPrestamista(
+      req,
+      res
+    );
+  }
+);
 
 module.exports = router;

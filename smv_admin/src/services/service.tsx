@@ -124,6 +124,12 @@ class AdminDataService {
   getTipoSuscripciones() {
     return http.get("/admin-get-all-tipos-suscripciones-activas");
   }
+  //activar una suscripción
+  activateSuscripcionUsuario(idUsuario: number, idSuscripcion: number) {
+    return http.put(
+      `/admin-activate-suscripcion-usuario/${idUsuario}/${idSuscripcion}`
+    );
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

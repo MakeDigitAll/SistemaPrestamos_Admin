@@ -611,3 +611,60 @@ exports.getImagenPrestamista = (req, res) => {
       });
     });
 };
+
+//activar la suscripcion de un usuario prestamista y al usuario prestamista isActivo = true
+exports.activarSuscripcionUsuarioPrestamista = (req, res) => {
+  const idUsuarioPrestamista = req.params.idUsuario;
+  const idSuscripcion = req.params.idSuscripcion;
+  suscripciones
+    .update(
+      {
+        isActive: true,
+      },
+      {
+        where: { idSuscripcion: idSuscripcion },
+      }
+    )
+    .then((data) => {
+      if (data == 1) {
+        usuariosPrestamistas
+          .update(
+            {
+              isActive: true,
+            },
+            {
+              where: { idUsuarioPrestamista: idUsuarioPrestamista },
+            }
+          )
+          .then((data) => {
+            if (data == 1) {
+              res.send({
+                message: "Suscripcion activada exitosamente.",
+              });
+            } else {
+              res.send({
+                message: `No se pudo activar la suscripcion con id=${req.body.idSuscripcion}.`,
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                "Ocurrió un error al activar la suscripcion con id=" +
+                req.body.idSuscripcion,
+            });
+          });
+      } else {
+        res.send({
+          message: `No se pudo activar la suscripcion con id=${req.body.idSuscripcion}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          "Ocurrió un error al activar la suscripcion con id=" +
+          req.body.idSuscripcion,
+      });
+    });
+};

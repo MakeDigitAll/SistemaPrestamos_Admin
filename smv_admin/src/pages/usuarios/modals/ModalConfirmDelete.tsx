@@ -37,10 +37,10 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
         </Text>
       </Modal.Body>
       <Modal.Footer style={{ alignSelf: "center" }}>
-        <Button auto color="success" onClick={confirmHandler}>
+        <Button auto color="success" onPress={confirmHandler}>
           Confirmar
         </Button>
-        <Button auto color="error" onClick={onClose}>
+        <Button auto color="error" onPress={onClose}>
           Cancelar
         </Button>
       </Modal.Footer>

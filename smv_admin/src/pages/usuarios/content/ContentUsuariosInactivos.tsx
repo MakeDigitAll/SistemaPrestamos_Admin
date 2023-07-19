@@ -14,6 +14,7 @@ import {
   User,
 } from "@nextui-org/react";
 import deleteUsuario from "../../../utils/deleteUser";
+import activateSuscripcionUsuario from "../../../utils/activateUser";
 import EditUsuario from "../../usuarios/modals/ModalEditUsuario";
 import InfoUsuario from "../../usuarios/modals/ModalInfoUsuario";
 import { EditIcon } from "../../../resources/icons/EditIcon";
@@ -22,7 +23,7 @@ import { useGetUsuariosInactivos } from "../../../hooks/userPrestamistas/usegetI
 import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrestamista";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
-import SuscripcionesUsuario from "./../modals/ModalSuscripciones";
+import ModalConfirmSuscripcion from "./../modals/ModalSuscripciones";
 import ModalConfirmDelete from "./../modals/ModalConfirmDelete";
 import { MdOutlineMoreTime } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -178,6 +179,22 @@ const ContentUsuariosInactivos: React.FC = () => {
       }
     } catch (error) {
       console.error("Error deleting user:", error);
+    }
+  };
+
+  //Función para eliminar un usuario
+  const handleActivateUser = async (usuario: UserTypePrestamista) => {
+    try {
+      const resp = await activateSuscripcionUsuario(
+        usuario.idUsuarioPrestamista,
+        //obtener la ultima suscripcion del usuario en la lista de suscripciones
+        usuario.suscripciones[usuario.suscripciones.length - 1].idSuscripcion
+      );
+      if (resp) {
+        getUsuarios?.refetch();
+      }
+    } catch (error) {
+      console.error("Error activating user:", error);
     }
   };
 
@@ -430,10 +447,10 @@ const ContentUsuariosInactivos: React.FC = () => {
         />
       </Table>
       {modalSuscripciones && selectedUser && (
-        <SuscripcionesUsuario
+        <ModalConfirmSuscripcion
           user={selectedUser}
           onClose={closeModal}
-          handleUpdate={handleUpdateUsuarios}
+          handleUpdate={handleActivateUser}
         />
       )}
       {modalInfo && selectedUser && (

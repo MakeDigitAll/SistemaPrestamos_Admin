@@ -1,119 +1,51 @@
-// ModalSuscripciones.tsx
-import React, { useEffect, useState } from "react";
-import { Modal, Button, Text, Input, Avatar, Card } from "@nextui-org/react";
-import service from "../../../services/service";
-import { aesEncrypt } from "../../../utils/encryption";
-import { toast } from "react-toastify";
+import React from "react";
+import { Modal, Button, Text } from "@nextui-org/react";
 import { UserPrestamista } from "../../../types/UserPrestamista";
 
-interface InformacionUsuarioProps {
+interface ConfirmacionUsuarioProps {
   user: UserPrestamista;
   onClose: () => void;
-  handleUpdate: (usuario: UserPrestamista) => void;
+  handleUpdate: (usuario: UserPrestamista) => Promise<void>;
 }
 
-const ModalSuscripciones: React.FC<InformacionUsuarioProps> = ({
+const ModalConfirmSuscripcion: React.FC<ConfirmacionUsuarioProps> = ({
   user,
   onClose,
   handleUpdate,
 }) => {
-  const [visible, setVisible] = useState(false);
-  const [nombre, setNombre] = useState(user.nombres);
-  const [apellidos, setApellidos] = useState(user.apellidos);
-
-  const closeHandler = () => {
-    setVisible(false);
+  const confirmHandler = async () => {
+    await handleUpdate(user);
     onClose();
   };
 
-  useEffect(() => {
-    setVisible(true);
-  }, []);
-
-  const ActivarSuscripcionHandle = async () => {
-    const encryptedNombre = aesEncrypt(nombre);
-    const encryptedApellidos = aesEncrypt(apellidos);
-
-    const data = {
-      nombres: encryptedNombre,
-      apellidos: encryptedApellidos,
-    };
-
-    try {
-      const response = await service.updateUsuarioPrestamista(
-        user.idUsuarioPrestamista,
-        data
-      );
-      if (response.status === 200) {
-        toast.success("Usuario Editado Correctamente");
-        handleUpdate(user);
-        closeHandler();
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        console.log(error.response.data);
-      }
-    }
-  };
-
   return (
-    <div>
-      <Modal
-        closeButton
-        aria-labelledby="modal-title"
-        open={visible}
-        onClose={closeHandler}
-        preventClose
-        blur
-        width="30%"
-      >
-        <Card
-          variant="flat"
-          css={{ display: "flex", alignItems: "center", flexDirection: "row" }}
-        >
-          <Modal.Header>
-            <Avatar
-              src="https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG-File.png"
-              zoomed
-              css={{
-                margin: "auto",
-                height: "100px",
-                width: "100px",
-              }}
-            />
-          </Modal.Header>
-          <Modal.Body>
-            <Text h5 css={{ textAlign: "center" }}>
-              Nombre del Usuario
-            </Text>
-            <Input
-              disabled
-              value={nombre}
-              onChange={(event) => setNombre(event.target.value)}
-              aria-labelledby="Nombre"
-            />
-            <Text h5 css={{ textAlign: "center" }}>
-              Apellidos del Usuario
-            </Text>
-            <Input
-              disabled
-              value={apellidos}
-              onChange={(event) => setApellidos(event.target.value)}
-              aria-labelledby="Apellidos"
-            />
-          </Modal.Body>
-        </Card>
-        <Modal.Footer style={{ alignSelf: "center" }}>
-          <Button auto onPress={ActivarSuscripcionHandle}>
-            Activar
-          </Button>
-          <Button auto color="error" onPress={closeHandler}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    <Modal
+      closeButton
+      aria-labelledby="modal-title"
+      open
+      onClose={onClose}
+      width="30%"
+    >
+      <Modal.Header>
+        <Text h4 css={{ fontWeight: "normal", textAlign: "center" }}>
+          ¿Estás seguro que deseas activar al usuario?
+        </Text>
+      </Modal.Header>
+      <Modal.Body>
+        <Text h3 css={{ lineHeight: "$xl", textAlign: "center" }}>
+          {user.nombres} {user.apellidos}
+        </Text>
+      </Modal.Body>
+      <Modal.Footer style={{ alignSelf: "center" }}>
+        <Button auto color="success" onPress={confirmHandler}>
+          Confirmar
+        </Button>
+        <Button auto color="error" onPress={onClose}>
+          Cancelar
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
-export default ModalSuscripciones;
+export default ModalConfirmSuscripcion;
