@@ -11,6 +11,7 @@ import {
   useCollator,
   SortDescriptor,
   Button,
+  User,
 } from "@nextui-org/react";
 import deleteUsuario from "../../../utils/deleteUser";
 import EditUsuario from "../../usuarios/modals/ModalEditUsuario";
@@ -26,6 +27,8 @@ import ModalConfirmDelete from "./../modals/ModalConfirmDelete";
 import { BsCartPlus } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import defaultImage from "../../../assets/images/defaultProfile.png";
+import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosInactivos: React.FC = () => {
@@ -84,6 +87,22 @@ const ContentUsuariosInactivos: React.FC = () => {
       localStorage.removeItem("toastMessageAddusuario");
     }
   }, []);
+
+  const UserImage = ({
+    idUsuarioPrestamista,
+    nombreUsuario,
+  }: {
+    idUsuarioPrestamista: number;
+    nombreUsuario?: string;
+  }) => {
+    const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
+
+    if (imagenPerfil) {
+      return <User name={nombreUsuario} src={imagenPerfil}></User>;
+    } else {
+      return <User name={nombreUsuario} src={defaultImage}></User>;
+    }
+  };
 
   //Función para realizar la búsqueda de usuariosPrestamistas
   function realizarBusqueda(
@@ -295,9 +314,16 @@ const ContentUsuariosInactivos: React.FC = () => {
   //Función para renderizar las celdas de la tabla
   const renderCell = (usuario: UserTypePrestamista, columnKey: React.Key) => {
     const cellValue = usuario[columnKey as keyof UserTypePrestamista];
+
     switch (columnKey) {
       case "nombres":
-        return <Text>{usuario.nombres}</Text>;
+        return (
+          <UserImage
+            idUsuarioPrestamista={usuario.idUsuarioPrestamista}
+            nombreUsuario={usuario.nombres}
+          />
+        );
+
       case "apellidos":
         return <Text>{usuario.apellidos}</Text>;
       case "codigoReferencia":
@@ -308,7 +334,7 @@ const ContentUsuariosInactivos: React.FC = () => {
       case "acciones":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex", marginLeft: "20%" }}>
+            <Col css={{ d: "flex", marginLeft: "10%" }}>
               <Tooltip content="Agregar Suscripcion">
                 <IconButton onClick={() => openModalSuscripciones(usuario)}>
                   <BsCartPlus size={20} fill="#979797" />
@@ -366,12 +392,12 @@ const ContentUsuariosInactivos: React.FC = () => {
         lined
         onSortChange={sortColumn}
         sortDescriptor={sortDescriptor}
-        aria-label={"Usuarios Activos"}
+        aria-label={"Usuarios Inactivos"}
         selectionMode="single"
         onRowAction={(key: any) => {
           handleSelectionItem(key, Usuarios);
         }}
-        css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
+        css={{ minWidth: "100%", height: "calc($space$12 * 10)" }}
       >
         <Table.Header columns={columns}>
           {(column: any) => (

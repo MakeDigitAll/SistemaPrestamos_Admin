@@ -11,6 +11,7 @@ import {
   useCollator,
   SortDescriptor,
   Button,
+  User,
 } from "@nextui-org/react";
 import EditUsuario from "../modals/ModalEditUsuario";
 import InfoUsuario from "../modals/ModalInfoUsuario";
@@ -20,6 +21,8 @@ import { useGetUsuariosActivos } from "../../../hooks/userPrestamistas/usegetAct
 import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrestamista";
 import { SearchContext } from "../../../context/SearchContext";
 import { useNavigate } from "react-router-dom";
+import defaultImage from "../../../assets/images/defaultProfile.png";
+import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
@@ -65,6 +68,22 @@ const ContentUsuariosActivos: React.FC = () => {
     //Muestra los usuariosPrestamistas filtrados
     setUsuarios(filteredUsuarios);
   }, [searchTerm, usuariosPrestamistas]);
+
+  const UserImage = ({
+    idUsuarioPrestamista,
+    nombreUsuario,
+  }: {
+    idUsuarioPrestamista: number;
+    nombreUsuario?: string;
+  }) => {
+    const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
+
+    if (imagenPerfil) {
+      return <User name={nombreUsuario} src={imagenPerfil}></User>;
+    } else {
+      return <User name={nombreUsuario} src={defaultImage}></User>;
+    }
+  };
 
   //Función para realizar la búsqueda de usuariosPrestamistas
   function realizarBusqueda(
@@ -279,7 +298,12 @@ const ContentUsuariosActivos: React.FC = () => {
     const cellValue = usuario[columnKey as keyof UserTypePrestamista];
     switch (columnKey) {
       case "nombres":
-        return <Text>{usuario.nombres}</Text>;
+        return (
+          <UserImage
+            idUsuarioPrestamista={usuario.idUsuarioPrestamista}
+            nombreUsuario={usuario.nombres}
+          />
+        );
       case "apellidos":
         return <Text>{usuario.apellidos}</Text>;
       case "codigoReferencia":
@@ -359,7 +383,7 @@ const ContentUsuariosActivos: React.FC = () => {
         onRowAction={(key: any) => {
           handleSelectionItem(key, Usuarios);
         }}
-        css={{ minWidth: "100%", height: "calc($space$14 * 10)" }}
+        css={{ minWidth: "100%", height: "calc($space$12 * 10)" }}
       >
         <Table.Header columns={columns}>
           {(column: any) => (
