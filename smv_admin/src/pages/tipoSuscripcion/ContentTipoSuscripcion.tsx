@@ -18,12 +18,11 @@ import InfoTipoSuscripcion from "./modals/ModalInfoTipoSuscripcion";
 import ModalAgregarUsuario from "./modals/ModalAddTipoSuscripcion";
 import { EditIcon } from "../../resources/icons/EditIcon";
 import { IconButton } from "../../resources/icons/IconButton";
-import { useGetTipoSuscripcion } from "../../hooks/useGetTipoSuscripcion";
+import { useGetTipoSuscripciones } from "../../hooks/useGetTipoSuscripciones";
 import { TipoSuscripcion } from "../../types/TipoSuscripcion";
 import { DeleteIcon } from "../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../context/SearchContext";
 import ModalConfirmDelete from "./modals/ModalConfirmDelete";
-import { toast } from "react-toastify";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentFidelidad: React.FC = () => {
@@ -31,15 +30,15 @@ const ContentFidelidad: React.FC = () => {
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los tipoSuscripciones
   const collator = useCollator({ numeric: true });
-  //Obtiene los tipoSuscripciones del hook usegetTipoSuscripcion
-  const getTipoSuscripcion = useGetTipoSuscripcion();
+  //Obtiene los tipoSuscripciones del hook usegetTipoSuscripciones
+  const getTipoSuscripciones = useGetTipoSuscripciones();
   //Estado para definir el orden de los tipoSuscripciones
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: undefined,
     direction: undefined,
   });
   //Obtiene los tipoSuscripciones del token decodificado
-  const tipoSuscripciones = getTipoSuscripcion?.decodedToken?.tipoSuscripcion;
+  const tipoSuscripciones = getTipoSuscripciones?.decodedToken?.tipoSuscripcion;
   console.log(tipoSuscripciones);
   //Estado para definir los tipoSuscripciones a mostrar
   const [Suscripciones, setSuscripciones] = useState<TipoSuscripcion[]>([]);
@@ -130,7 +129,7 @@ const ContentFidelidad: React.FC = () => {
 
   //Función para actualizar los tipoSuscripciones al eliminar un tipoSuscripciones o al editar un tipoSuscripciones
   const handleUpdateSuscripciones = () => {
-    getTipoSuscripcion?.refetch();
+    getTipoSuscripciones?.refetch();
   };
 
   //Función para eliminar un tipoSuscripciones
@@ -140,7 +139,7 @@ const ContentFidelidad: React.FC = () => {
         tipoSuscripciones.idTipoSuscripcion
       );
       if (resp) {
-        getTipoSuscripcion?.refetch();
+        getTipoSuscripciones?.refetch();
       }
     } catch (error) {
       console.error("Error deleting fidelity level", error);

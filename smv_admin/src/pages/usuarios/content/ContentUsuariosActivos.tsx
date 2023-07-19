@@ -23,6 +23,7 @@ import { SearchContext } from "../../../context/SearchContext";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../../assets/images/defaultProfile.png";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
+import { useGetTipoSuscripciones } from "../../../hooks/useGetTipoSuscripciones";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
@@ -51,6 +52,9 @@ const ContentUsuariosActivos: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<UserTypePrestamista | null>(
     null
   );
+  // Obtener los tipos de suscripciones
+  const getTipoSuscripciones = useGetTipoSuscripciones();
+  const tipoSuscripciones = getTipoSuscripciones?.decodedToken?.tipoSuscripcion;
 
   //Filtra los usuariosPrestamistas
   useEffect(() => {
@@ -83,6 +87,14 @@ const ContentUsuariosActivos: React.FC = () => {
     } else {
       return <User name={nombreUsuario} src={defaultImage}></User>;
     }
+  };
+
+  //Función para obtener el nombre de la suscripción del usuario a través del idTipoSuscripcion
+  const getNombreSuscripcion = (idTipoSuscripcion: number) => {
+    const suscripcion = tipoSuscripciones?.find(
+      (suscripcion: any) => suscripcion.idTipoSuscripcion === idTipoSuscripcion
+    );
+    return suscripcion?.nombreSuscripcion;
   };
 
   //Función para realizar la búsqueda de usuariosPrestamistas
@@ -284,6 +296,7 @@ const ContentUsuariosActivos: React.FC = () => {
     { name: "NOMBRES", uid: "nombres" },
     { name: "APELLIDOS", uid: "apellidos" },
     { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
+    { name: "NOMBRE DE LA SUSCRIPCION", uid: "tipoSuscripcion" },
     { name: "FECHA DE INICIO", uid: "fechaInicio" },
     { name: "FECHA DE PAGO", uid: "fechaFin" },
     { name: "ACCIONES", uid: "acciones" },
@@ -304,6 +317,18 @@ const ContentUsuariosActivos: React.FC = () => {
         return <Text>{usuario.apellidos}</Text>;
       case "codigoReferencia":
         return <Text>{usuario.codigoReferencia}</Text>;
+      case "tipoSuscripcion":
+        const idTipoSuscripcion =
+          usuario.suscripciones && usuario.suscripciones.length > 0
+            ? usuario.suscripciones[usuario.suscripciones.length - 1]
+                .idTipoSuscripcion
+            : null;
+
+        const nombreSuscripcion = idTipoSuscripcion
+          ? getNombreSuscripcion(idTipoSuscripcion)
+          : null;
+
+        return <Text>{nombreSuscripcion}</Text>;
       case "fechaInicio":
         return (
           <Text>

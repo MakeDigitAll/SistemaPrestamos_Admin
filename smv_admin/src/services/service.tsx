@@ -105,11 +105,6 @@ class AdminDataService {
     return http.post("/admin-add-nivel-fidelidad", data);
   }
 
-  //obtener los tipos de suscripción
-  getTiposSuscripcion() {
-    return http.get("/admin-get-tipos-suscripcion");
-  }
-
   //actualizar los datos de un tipo de suscripción
   updateTipoSuscripcion(id: number, data: any) {
     return http.put(`/admin-update-tipo-suscripcion/${id}`, data);

@@ -5,40 +5,6 @@ const jwt = require("jsonwebtoken");
 const tipoSuscripcion = db.tipoSuscripciones;
 
 
-// obtener todos los tipoSuscripciones de tipo de suscripcion de la base de datos que no son isDeleted = true
-exports.getTiposSuscripcion = (req, res) => {
-    tipoSuscripcion
-      .findAll({
-        where: {
-          isDeleted: false,
-        },
-        })
-      .then((data) => {
-        const tipoSuscripcion = data.map((tipoSuscripcion) => ({
-          idTipoSuscripcion: tipoSuscripcion.idTipoSuscripcion,
-          nombreSuscripcion: tipoSuscripcion.nombreSuscripcion,
-          montoDesde: tipoSuscripcion.montoDesde,
-          montoHasta: tipoSuscripcion.montoHasta,
-          numeroUsuariosMax: tipoSuscripcion.numeroUsuariosMax,
-          costoMembresia: tipoSuscripcion.costoMembresia,
-          isUpdated: tipoSuscripcion.isUpdated,
-        }));
-        const tokenTiposSuscripcion = jwt.sign(
-          { tipoSuscripcion },
-          TOKEN_KEY
-        );
-        res.send({ tokenTiposSuscripcion });
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message:
-            err.message || "Ocurrió un error al obtener los tipoSuscripcion.",
-        });
-        console.log(err);
-      });
-  };
-
-
 // Crear y guardar un nuevo administrador
 exports.updateTipoSuscripcionByID = (req, res) => {
     const id = req.params.id;

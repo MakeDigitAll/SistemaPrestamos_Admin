@@ -118,12 +118,6 @@ router.post("/admin-add-nivel-fidelidad", verifyToken, (req, res) => {
   controllerNivelFidelidad.createNivelFidelidad(req, res);
 });
 
-
-// obtener la tabla de tipos de suscripción
-router.get("/admin-get-tipos-suscripcion", verifyToken, (req, res) => {
-  controllerTipoSuscripcion.getTiposSuscripcion(req, res);
-});
-
 //actualizar el tipo de suscripción
 router.put("/admin-update-tipo-suscripcion/:id", verifyToken, (req, res) => {
   controllerTipoSuscripcion.updateTipoSuscripcionByID(req, res);
