@@ -38,6 +38,7 @@ const ContentAddUsuario: React.FC = () => {
   );
   const navigate = useNavigate();
   const [selectedSubscription, setSelectedSubscription] = useState<string>("");
+  const [selectedIDSuscripcion, setSelectedIDSuscripcion] = useState<number>(0);
 
   let montoMinValue = 100;
   let montoMaxValue = 100;
@@ -52,6 +53,7 @@ const ContentAddUsuario: React.FC = () => {
           //montoMinimo >= tipoSuscripcion.montoDesde &&
           montoMaximo <= tipoSuscripcion.montoHasta
         ) {
+          setSelectedIDSuscripcion(tipoSuscripcion.idTipoSuscripcion);
           return tipoSuscripcion.nombreSuscripcion;
         }
       }
@@ -161,7 +163,10 @@ const ContentAddUsuario: React.FC = () => {
       );
       const encryptedNumeroTelefono = aesEncrypt(numeroTelefonoValue);
       const encryptedNumeroClientes = aesEncrypt(userSliderValue.toString());
-      const encryptedNombreNivel = aesEncrypt("tier1");
+      const encryptedNombreNivel = aesEncrypt(selectedSubscription);
+      const encryptedIDSuscripcion = aesEncrypt(
+        selectedIDSuscripcion.toString()
+      );
 
       const data = {
         nombre: encryptedNombre,
@@ -172,7 +177,8 @@ const ContentAddUsuario: React.FC = () => {
         montoMaximo: encryptedMontoMaximo,
         numeroTelefono: encryptedNumeroTelefono,
         numeroClientes: encryptedNumeroClientes,
-        nombreNivel: encryptedNombreNivel,
+        nombreSuscripcion: encryptedNombreNivel,
+        idSuscripcion: encryptedIDSuscripcion,
       };
       const response = await service.createUsuarioPrestamista(data);
 

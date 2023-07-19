@@ -218,6 +218,8 @@ exports.createUsuarioPrestamista = (req, res) => {
   const decryptedMontoMaximo = aesDecrypt(req.body.montoMaximo);
   const decryptedNumeroClientes = aesDecrypt(req.body.numeroClientes);
   const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
+  const decryptedNombreSuscripcion = aesDecrypt(req.body.nombreSuscripcion);
+  const decryptedIDSuscripcion = aesDecrypt(req.body.idSuscripcion);
 
   let referralCode = generateReferralCode();
   const errors = [];
@@ -292,13 +294,35 @@ exports.createUsuarioPrestamista = (req, res) => {
                   montoAPrestarDesde: decryptedMontoMinimo,
                   montoAPrestarHasta: decryptedMontoMaximo,
                   numeroUsuarios: decryptedNumeroClientes,
-                  antiguedadMeses: 2,
+                  antiguedadMeses: 0,
                   pagosAlCorriente: true,
                 })
+                // Insertar datos en la tabla suscripciones
                 .then(() => {
-                  //enviar le id del usuario creado
-                  res.send({ idUsuarioPrestamista: prestamista.idUsuarioPrestamista });
-
+                  suscripciones
+                    .create({
+                      idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
+                      idNivelFidelidad: 1,
+                      idTipoSuscripcion: decryptedIDSuscripcion,
+                      fechaInicio: new Date(),
+                      //fecha actual mas 1 mes
+                      fechaFin: new Date(
+                        new Date().setMonth(new Date().getMonth() + 1)
+                      ),
+                      //estadoSuscripcion: "Activa",
+                    })
+                    .then(() => {
+                      //enviar le id del usuario creado
+                      res.send({ idUsuarioPrestamista: prestamista.idUsuarioPrestamista });
+                    })
+                    .catch((err) => {
+                      console.log(err);
+                      res.status(500).send({
+                        message:
+                          err.message ||
+                          "Ocurrió un error al crear los datos de calidad en la base de datos.",
+                      });
+                    });
                 })
                 .catch((err) => {
                   console.log(err);
