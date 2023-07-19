@@ -20,7 +20,9 @@ import {
   BsFillArrowLeftCircleFill,
   BsFillArrowRightCircleFill,
 } from "react-icons/bs";
-
+import { MdMoreTime } from "react-icons/md";
+import { GoProjectRoadmap } from "react-icons/go";
+import { MdAutoGraph } from "react-icons/md";
 interface MenuItemStyleProps {
   level: number;
   active: boolean;
@@ -235,7 +237,7 @@ function SideBar() {
           >
             <MenuItem
               style={{ marginTop: "10px" }}
-              icon={<FaMoneyBillAlt />}
+              icon={<MdMoreTime />}
               onClick={() => handleMenuItemClick("/admin-suscribir-usuario")}
               className={
                 isMenuItemActive("/admin-suscribir-usuario") ? "selected" : ""
@@ -281,10 +283,10 @@ function SideBar() {
             className="custom-submenu"
             open={isAdministracionSubMenuOpen}
             onOpenChange={handleAdministracionClick}
-            icon={<FaUserFriends />}
+            icon={<GoProjectRoadmap />}
           >
             <MenuItem
-              icon={<FaMoneyBillAlt />}
+              icon={<MdAutoGraph />}
               onClick={() => handleMenuItemClick("/admin-fidelidad")}
               className={isMenuItemActive("/admin-fidelidad") ? "selected" : ""}
             >

@@ -24,7 +24,7 @@ import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
 import SuscripcionesUsuario from "./../modals/ModalSuscripciones";
 import ModalConfirmDelete from "./../modals/ModalConfirmDelete";
-import { BsCartPlus } from "react-icons/bs";
+import { MdOutlineMoreTime } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../../assets/images/defaultProfile.png";
@@ -335,9 +335,9 @@ const ContentUsuariosInactivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "10%" }}>
-              <Tooltip content="Agregar Suscripcion">
+              <Tooltip content="Activar Suscripcion">
                 <IconButton onClick={() => openModalSuscripciones(usuario)}>
-                  <BsCartPlus size={20} fill="#979797" />
+                  <MdOutlineMoreTime size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>

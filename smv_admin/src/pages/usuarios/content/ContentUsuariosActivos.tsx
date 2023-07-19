@@ -170,7 +170,6 @@ const ContentUsuariosActivos: React.FC = () => {
     } else if (differenceInDays <= 30) {
       textColor = "green"; // entre 15 y mas días, color verde
     }
-    console.log(differenceInDays);
 
     return <span style={{ color: textColor }}>{`${dia}/${mes}/${year}`}</span>;
   };
@@ -285,13 +284,10 @@ const ContentUsuariosActivos: React.FC = () => {
     { name: "NOMBRES", uid: "nombres" },
     { name: "APELLIDOS", uid: "apellidos" },
     { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
-    { name: "TIPO DE SUSCRIPCIÓN", uid: "tipoSuscripcion" },
     { name: "FECHA DE INICIO", uid: "fechaInicio" },
     { name: "FECHA DE PAGO", uid: "fechaFin" },
     { name: "ACCIONES", uid: "acciones" },
   ];
-
-  console.log(Usuarios);
 
   //Función para renderizar las celdas de la tabla
   const renderCell = (usuario: UserTypePrestamista, columnKey: React.Key) => {
@@ -308,14 +304,26 @@ const ContentUsuariosActivos: React.FC = () => {
         return <Text>{usuario.apellidos}</Text>;
       case "codigoReferencia":
         return <Text>{usuario.codigoReferencia}</Text>;
-      case "tipoSuscripcion":
-        return <Text>{usuario.suscripcion?.tipoSuscripcion}</Text>;
       case "fechaInicio":
-        return <Text>{formatDate(usuario.suscripcion?.fechaInicio)}</Text>;
+        return (
+          <Text>
+            {formatDate(
+              usuario.suscripciones && usuario.suscripciones.length > 0
+                ? usuario.suscripciones[usuario.suscripciones.length - 1]
+                    .fechaFin
+                : null
+            )}
+          </Text>
+        );
       case "fechaFin":
         return (
           <Text>
-            <strong>{formatDateFin(usuario.suscripcion?.fechaFin)}</strong>
+            {formatDateFin(
+              usuario.suscripciones && usuario.suscripciones.length > 0
+                ? usuario.suscripciones[usuario.suscripciones.length - 1]
+                    .fechaFin
+                : null
+            )}
           </Text>
         );
       case "acciones":

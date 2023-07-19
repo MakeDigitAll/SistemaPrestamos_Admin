@@ -28,6 +28,59 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //   apellidos: "Alvarez",
 // });
 
+// db.nivelesFidelidad.create({
+//   nombreNivelFidelidad: "Bronce",
+//   descuento: 0,
+//   numeroMesesMinimo: 0,
+//   numeroMesesMaximo: 3,
+// });
+
+// db.nivelesFidelidad.create({
+//   nombreNivelFidelidad: "Plata",
+//   descuento: 3,
+//   numeroMesesMinimo: 4,
+//   numeroMesesMaximo: 8,
+// });
+
+// db.nivelesFidelidad.create({
+//   nombreNivelFidelidad: "Oro",
+//   descuento: 6,
+//   numeroMesesMinimo: 9,
+//   numeroMesesMaximo: 12,
+// });
+
+// db.tipoSuscripciones.create({
+//   nombreSuscripcion: "Básica",
+//   montoDesde: 0,
+//   montoHasta: 10000,
+//   numeroUsuariosMax: 100,
+//   costoMembresia: 500,
+// });
+
+// db.tipoSuscripciones.create({
+//   nombreSuscripcion: "Estandar",
+//   montoDesde: 10001,
+//   montoHasta: 30000,
+//   numeroUsuariosMax: 500,
+//   costoMembresia: 1000,
+// });
+
+// db.tipoSuscripciones.create({
+//   nombreSuscripcion: "Avanzada",
+//   montoDesde: 30001,
+//   montoHasta: 60000,
+//   numeroUsuariosMax: 1000,
+//   costoMembresia: 1500,
+// });
+
+// db.tipoSuscripciones.create({
+//   nombreSuscripcion: "Premium",
+//   montoDesde: 60001,
+//   montoHasta: 100000,
+//   numeroUsuariosMax: 2000,
+//   costoMembresia: 200,
+// });
+
 // Rutas
 app.use("/", routes);
 

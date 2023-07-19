@@ -55,13 +55,9 @@ exports.findAllUsuariosPrestamista = (req, res) => {
 };
 
 //findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamistaActivos = (req, res) => {
+exports.findAllUsuariosPrestamista = (req, res) => {
   usuariosPrestamistas
     .findAll({
-      where: {
-        isActive: true,
-        isDeleted: false,
-      },
       include: [
         {
           model: suscripciones,
@@ -70,29 +66,98 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
       ],
     })
     .then((data) => {
-      const usuariosPrestamistas = data.map((user) => ({
-        idUsuarioPrestamista: user.idUsuarioPrestamista,
-        correoElectronico: user.correoElectronico,
-        nombres: user.nombres,
-        apellidos: user.apellidos,
-        codigoReferencia: user.codigoReferencia,
-        isActive: user.isActive,
-        isDeleted: user.isDeleted,
-        numeroTelefono: user.numeroTelefono,
-        suscripcion: user.suscripcion?.idSuscripcion
-          ? {
-              idSuscripcion: user.suscripcion.idSuscripcion,
-              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
-              fechaInicio: user.suscripcion.fechaInicio,
-              fechaFin: user.suscripcion.fechaFin,
-              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
-            }
-          : null,
-      }));
-      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-      res.send({ tokenUsuarios });
+      const suscripcionesPromises = data.map((user) =>
+        suscripciones.findAll({
+          where: {
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+          },
+        })
+      );
+      Promise.all(suscripcionesPromises)
+        .then((suscripcionesData) => {
+          // Asociar las suscripciones a los usuariosPrestamistas
+          const usuariosPrestamistas = data.map((user, index) => ({
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+            correoElectronico: user.correoElectronico,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+            codigoReferencia: user.codigoReferencia,
+            isActive: user.isActive,
+            isDeleted: user.isDeleted,
+            numeroTelefono: user.numeroTelefono,
+            suscripciones: suscripcionesData[index],
+          }));
+
+          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+          res.send({ tokenUsuarios });
+        })
+        .catch((err) => {
+          // Manejar el error
+          res.status(500).send({
+            message:
+              err.message ||
+              "Ocurrió un error al obtener las suscripciones de los usuariosPrestamistas.",
+          });
+          console.log(err);
+        });
     })
     .catch((err) => {
+      // Manejar el error
+      res.status(500).send({
+        message:
+          err.message ||
+          "Ocurrió un error al obtener los usuariosPrestamistas.",
+      });
+      console.log(err);
+    });
+};
+//findAllUsuariosPrestamistaActivos
+exports.findAllUsuariosPrestamistaActivos = (req, res) => {
+  usuariosPrestamistas
+    .findAll({
+      where: {
+        isActive: true,
+        isDeleted: false,
+      },
+    })
+    .then((data) => {
+      const suscripcionesPromises = data.map((user) =>
+        suscripciones.findAll({
+          where: {
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+          },
+        })
+      );
+      Promise.all(suscripcionesPromises)
+        .then((suscripcionesData) => {
+          // Asociar las suscripciones a los usuariosPrestamistas
+          const usuariosPrestamistas = data.map((user, index) => ({
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+            correoElectronico: user.correoElectronico,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+            codigoReferencia: user.codigoReferencia,
+            isActive: user.isActive,
+            isDeleted: user.isDeleted,
+            numeroTelefono: user.numeroTelefono,
+            suscripciones: suscripcionesData[index],
+          }));
+
+          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+          res.send({ tokenUsuarios });
+        })
+        .catch((err) => {
+          // Manejar el error
+          res.status(500).send({
+            message:
+              err.message ||
+              "Ocurrió un error al obtener las suscripciones de los usuariosPrestamistas.",
+          });
+          console.log(err);
+        });
+    })
+    .catch((err) => {
+      // Manejar el error
       res.status(500).send({
         message:
           err.message ||
@@ -102,7 +167,7 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
     });
 };
 
-//findAllUsuariosPrestamistaActivos
+//findAllUsuariosPrestamista con sus suscripciones
 exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
   usuariosPrestamistas
     .findAll({
@@ -110,37 +175,45 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
         isActive: false,
         isDeleted: false,
       },
-      include: [
-        {
-          model: suscripciones,
-          as: "suscripciones_prestamista",
-        },
-      ],
     })
     .then((data) => {
-      const usuariosPrestamistas = data.map((user) => ({
-        idUsuarioPrestamista: user.idUsuarioPrestamista,
-        correoElectronico: user.correoElectronico,
-        nombres: user.nombres,
-        apellidos: user.apellidos,
-        codigoReferencia: user.codigoReferencia,
-        isActive: user.isActive,
-        isDeleted: user.isDeleted,
-        numeroTelefono: user.numeroTelefono,
-        suscripcion: user.suscripcion?.idSuscripcion
-          ? {
-              idSuscripcion: user.suscripcion.idSuscripcion,
-              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
-              fechaInicio: user.suscripcion.fechaInicio,
-              fechaFin: user.suscripcion.fechaFin,
-              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
-            }
-          : null,
-      }));
-      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-      res.send({ tokenUsuarios });
+      const suscripcionesPromises = data.map((user) =>
+        suscripciones.findAll({
+          where: {
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+          },
+        })
+      );
+      Promise.all(suscripcionesPromises)
+        .then((suscripcionesData) => {
+          // Asociar las suscripciones a los usuariosPrestamistas
+          const usuariosPrestamistas = data.map((user, index) => ({
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+            correoElectronico: user.correoElectronico,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+            codigoReferencia: user.codigoReferencia,
+            isActive: user.isActive,
+            isDeleted: user.isDeleted,
+            numeroTelefono: user.numeroTelefono,
+            suscripciones: suscripcionesData[index],
+          }));
+
+          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+          res.send({ tokenUsuarios });
+        })
+        .catch((err) => {
+          // Manejar el error
+          res.status(500).send({
+            message:
+              err.message ||
+              "Ocurrió un error al obtener las suscripciones de los usuariosPrestamistas.",
+          });
+          console.log(err);
+        });
     })
     .catch((err) => {
+      // Manejar el error
       res.status(500).send({
         message:
           err.message ||
@@ -158,48 +231,45 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
         isActive: false,
         isDeleted: true,
       },
-      include: [
-        {
-          model: suscripciones,
-          as: "suscripciones_prestamista",
-        },
-      ],
     })
     .then((data) => {
-      const usuariosPrestamistas = data.map((user) => ({
-        idUsuarioPrestamista: user.idUsuarioPrestamista,
-        correoElectronico: user.correoElectronico,
-        nombres: user.nombres,
-        apellidos: user.apellidos,
-        codigoReferencia: user.codigoReferencia,
-        isActive: user.isActive,
-        isDeleted: user.isDeleted,
-        numeroTelefono: user.numeroTelefono,
-        suscripcion: user.suscripcion?.idSuscripcion
-          ? {
-              idSuscripcion: user.suscripcion.idSuscripcion,
-              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
-              fechaInicio: user.suscripcion.fechaInicio,
-              fechaFin: user.suscripcion.fechaFin,
-              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
-            }
-          : null,
-        calidadPrestamista: user.calidadPrestamista?.idCalidadPrestamista
-          ? {
-              idCalidadPrestamista:
-                user.calidadPrestamista.idCalidadPrestamista,
-              montoDesde: user.calidadPrestamista.montoDesde,
-              montoHasta: user.calidadPrestamista.montoHasta,
-              numeroUsuarios: user.calidadPrestamista.numeroUsuarios,
-              nombreNivel: user.calidadPrestamista.nombreNivel,
-              costoMembresia: user.calidadPrestamista.costoMembresia,
-            }
-          : null,
-      }));
-      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-      res.send({ tokenUsuarios });
+      const suscripcionesPromises = data.map((user) =>
+        suscripciones.findAll({
+          where: {
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+          },
+        })
+      );
+      Promise.all(suscripcionesPromises)
+        .then((suscripcionesData) => {
+          // Asociar las suscripciones a los usuariosPrestamistas
+          const usuariosPrestamistas = data.map((user, index) => ({
+            idUsuarioPrestamista: user.idUsuarioPrestamista,
+            correoElectronico: user.correoElectronico,
+            nombres: user.nombres,
+            apellidos: user.apellidos,
+            codigoReferencia: user.codigoReferencia,
+            isActive: user.isActive,
+            isDeleted: user.isDeleted,
+            numeroTelefono: user.numeroTelefono,
+            suscripciones: suscripcionesData[index],
+          }));
+
+          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
+          res.send({ tokenUsuarios });
+        })
+        .catch((err) => {
+          // Manejar el error
+          res.status(500).send({
+            message:
+              err.message ||
+              "Ocurrió un error al obtener las suscripciones de los usuariosPrestamistas.",
+          });
+          console.log(err);
+        });
     })
     .catch((err) => {
+      // Manejar el error
       res.status(500).send({
         message:
           err.message ||
@@ -218,7 +288,6 @@ exports.createUsuarioPrestamista = (req, res) => {
   const decryptedMontoMaximo = aesDecrypt(req.body.montoMaximo);
   const decryptedNumeroClientes = aesDecrypt(req.body.numeroClientes);
   const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
-  const decryptedNombreSuscripcion = aesDecrypt(req.body.nombreSuscripcion);
   const decryptedIDSuscripcion = aesDecrypt(req.body.idSuscripcion);
 
   let referralCode = generateReferralCode();
@@ -236,36 +305,57 @@ exports.createUsuarioPrestamista = (req, res) => {
     .findOne({ where: { correoElectronico: decryptedCorreo } })
     .then((prestamista) => {
       if (prestamista) {
-        errors.push({ type: "correo", message: "El correo electrónico ya está registrado como prestamista." });
+        errors.push({
+          type: "correo",
+          message: "El correo electrónico ya está registrado como prestamista.",
+        });
       }
 
       // Verificar si el correo está registrado como afiliado
-      return usuariosAfiliados.findOne({ where: { correoElectronico: decryptedCorreo } });
+      return usuariosAfiliados.findOne({
+        where: { correoElectronico: decryptedCorreo },
+      });
     })
     .then((afiliado) => {
       if (afiliado) {
-        errors.push({ type: "correo", message: "El correo electrónico ya está registrado como afiliado." });
+        errors.push({
+          type: "correo",
+          message: "El correo electrónico ya está registrado como afiliado.",
+        });
       }
 
       // Verificar si el número de teléfono ya está registrado como prestamista
-      return usuariosPrestamistas.findOne({ where: { numeroTelefono: decryptedNumeroTelefono } });
+      return usuariosPrestamistas.findOne({
+        where: { numeroTelefono: decryptedNumeroTelefono },
+      });
     })
     .then((prestamista) => {
       if (prestamista) {
-        errors.push({ type: "phone", message: "El número de teléfono ya está registrado como prestamista." });
+        errors.push({
+          type: "phone",
+          message: "El número de teléfono ya está registrado como prestamista.",
+        });
       }
 
       // Verificar si el número de teléfono ya está registrado como afiliado
-      return usuariosAfiliados.findOne({ where: { numeroTelefono: decryptedNumeroTelefono } });
+      return usuariosAfiliados.findOne({
+        where: { numeroTelefono: decryptedNumeroTelefono },
+      });
     })
     .then((afiliado) => {
       if (afiliado) {
-        errors.push({ type: "phone", message: "El número de teléfono ya está registrado como afiliado." });
+        errors.push({
+          type: "phone",
+          message: "El número de teléfono ya está registrado como afiliado.",
+        });
       }
 
       // Si hay errores acumulados, enviar mensaje de error con los errores
       if (errors.length > 0) {
-        const errorMessages = errors.map((error) => ({ type: error.type, message: error.message }));
+        const errorMessages = errors.map((error) => ({
+          type: error.type,
+          message: error.message,
+        }));
         res.status(400).send({ errors: errorMessages });
       } else {
         // El correo y el número de teléfono no están registrados, proceder con la creación del usuario
@@ -313,7 +403,9 @@ exports.createUsuarioPrestamista = (req, res) => {
                     })
                     .then(() => {
                       //enviar le id del usuario creado
-                      res.send({ idUsuarioPrestamista: prestamista.idUsuarioPrestamista });
+                      res.send({
+                        idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
+                      });
                     })
                     .catch((err) => {
                       console.log(err);
@@ -351,12 +443,6 @@ exports.createUsuarioPrestamista = (req, res) => {
       });
     });
 };
-
-
-
-
-
-
 
 //cambiar el estado isDeleted de un usuario a true
 exports.deleteUsuarioPrestamista = (req, res) => {
@@ -427,8 +513,7 @@ exports.updateUsuarioPrestamista = (req, res) => {
     });
 };
 
-
-//set imagen 
+//set imagen
 
 //actualizar la  imagen de perfil del administrador
 exports.setImagePrestamista = (req, res) => {
@@ -494,8 +579,7 @@ exports.setImagePrestamista = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message ||
-          "Ocurrió un error al buscar la imagen del usuario.",
+          err.message || "Ocurrió un error al buscar la imagen del usuario.",
       });
     });
 };

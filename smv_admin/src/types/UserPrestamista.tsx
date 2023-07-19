@@ -8,13 +8,17 @@ export interface UserPrestamista {
   imagenPerfil: string | null;
   isActive: boolean;
   isDeleted: boolean;
-  suscripcion: {
-    idSuscripcion: number | null;
-    tipoSuscripcion: string | null;
-    fechaInicio: Date | null;
-    fechaFin: Date | null;
-    estadoSuscripcion: string | null;
-  } | null;
+  suscripciones: {
+    idSuscripcion: number;
+    fechaInicio: Date;
+    fechaFin: Date;
+    estadoSuscripcion: string;
+    idNivelFidelidad: number;
+    idTipoSuscripcion: number;
+    idUsuarioPrestamista: number;
+    isActive: boolean;
+  }[];
+
   calidadPrestamista: {
     idCalidadPrestamista: number | null;
     montoDesde: number | null;

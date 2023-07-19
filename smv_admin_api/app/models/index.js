@@ -107,8 +107,8 @@ db.datosUsuarioSuscripciones.belongsTo(db.usuariosPrestamistas, {
   as: "prestamista_datos_usuarios_suscripcion",
 });
 
-//Asociacion entre usuarioPresatmistas y suscripciones 1:1
-db.usuariosPrestamistas.hasOne(db.suscripciones, {
+//Asociacion entre usuarioPresatmistas y suscripciones 1 usuario puede tener muchas suscripciones pero una suscripcion solo puede tener un usuario
+db.usuariosPrestamistas.hasMany(db.suscripciones, {
   foreignKey: "idUsuarioPrestamista",
   as: "suscripciones_prestamista",
 });
