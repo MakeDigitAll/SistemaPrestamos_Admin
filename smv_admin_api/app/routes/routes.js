@@ -181,4 +181,16 @@ router.put(
   }
 );
 
+//habilitar usuario prestamista eliminado
+router.put(
+  "/admin-enable-usuario-prestamista-eliminado/:id",
+  verifyToken,
+  (req, res) => {
+    controllerUsuariosPrestamistas.habilitarUsuarioPrestamistaEliminado(
+      req,
+      res
+    );
+  }
+);
+
 module.exports = router;

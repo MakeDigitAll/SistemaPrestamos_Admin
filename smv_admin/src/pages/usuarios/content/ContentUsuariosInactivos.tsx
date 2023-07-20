@@ -89,6 +89,15 @@ const ContentUsuariosInactivos: React.FC = () => {
     }
   }, []);
 
+  //UseEffect para mostrar el mensaje de éxito
+  useEffect(() => {
+    const toastMessage = localStorage.getItem("toastMessageHabilitado");
+    if (toastMessage) {
+      toast.success(toastMessage);
+      localStorage.removeItem("toastMessageHabilitado");
+    }
+  }, []);
+
   const UserImage = ({
     idUsuarioPrestamista,
     nombreUsuario,

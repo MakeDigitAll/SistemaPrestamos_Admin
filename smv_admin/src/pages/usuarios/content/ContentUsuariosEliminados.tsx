@@ -21,6 +21,10 @@ import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrest
 import { SearchContext } from "../../../context/SearchContext";
 import defaultImage from "../../../assets/images/defaultProfile.png";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
+import ModalHabilitarUsuario from "../modals/ModalHabilitarUsuario";
+import enableUser from "../../../utils/enableUser";
+import { FaUserPlus } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
@@ -30,6 +34,8 @@ const ContentUsuariosActivos: React.FC = () => {
   const collator = useCollator({ numeric: true });
   //Obtiene los usuariosPrestamistas del hook useGetUsuarios
   const getUsuarios = useGetUsuariosEliminados();
+  //Función para navegar entre las rutas
+  const navigate = useNavigate();
   //Estado para definir el orden de los usuariosPrestamistas
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     column: undefined,
@@ -47,7 +53,8 @@ const ContentUsuariosActivos: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<UserTypePrestamista | null>(
     null
   );
-
+  //Estado para mostrar el modal de Habilitar usuario
+  const [modalHabilitar, setModalHabilitarUsuario] = useState(false);
   //Filtra los usuariosPrestamistas
   useEffect(() => {
     if (!usuariosPrestamistas) return;
@@ -112,11 +119,21 @@ const ContentUsuariosActivos: React.FC = () => {
     setSelectedUser(usuario);
     setModalEditVisible(false);
     setModalInfoVisible(true);
+    setModalHabilitarUsuario(false);
   };
   //Cierra el modal de editar usuario
   const closeModal = () => {
     setSelectedUser(null);
     setModalEditVisible(false);
+    setModalHabilitarUsuario(false);
+  };
+
+  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
+  const openModalHabilitarUser = (usuario: UserTypePrestamista) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(false);
+    setModalHabilitarUsuario(true);
   };
 
   //Función para actualizar los usuariosPrestamistas al eliminar un usuario o al editar un usuario
@@ -252,7 +269,15 @@ const ContentUsuariosActivos: React.FC = () => {
       case "acciones":
         return (
           <Row justify="center" align="center">
-            <Col css={{ d: "flex", marginLeft: "45%" }}>
+            <Col css={{ d: "flex", marginLeft: "25%" }}>
+              <Tooltip content="Habilitar Usuario">
+                <IconButton onClick={() => openModalHabilitarUser(usuario)}>
+                  <FaUserPlus size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+
+            <Col css={{ d: "flex" }}>
               <Tooltip content="Editar Usuario">
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
@@ -294,6 +319,21 @@ const ContentUsuariosActivos: React.FC = () => {
     //si el usuario existe entonces abre el modal de información de usuario
     if (selectedUser) {
       openModalInfo(selectedUser);
+    }
+  };
+
+  //Función habilitar usuario
+  const handleDeleteSuscripcion = async (usuario: UserTypePrestamista) => {
+    try {
+      const resp = await enableUser(usuario.idUsuarioPrestamista);
+      if (resp) {
+        getUsuarios?.refetch();
+        const successMessage = "Usuario Habilitado";
+        localStorage.setItem("toastMessageHabilitado", successMessage);
+        navigate("/admin-suscribir-usuario");
+      }
+    } catch (error) {
+      console.error("Error enabling user:", error);
     }
   };
 
@@ -346,6 +386,14 @@ const ContentUsuariosActivos: React.FC = () => {
           onPageChange={(page) => console.log({ page })}
         />
       </Table>
+      {modalHabilitar && selectedUser && (
+        <ModalHabilitarUsuario
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleDeleteSuscripcion}
+        />
+      )}
+
       {modalInfo && selectedUser && (
         <InfoUsuario user={selectedUser} onClose={closeModal} />
       )}

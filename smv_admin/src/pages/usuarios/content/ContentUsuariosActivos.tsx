@@ -112,14 +112,6 @@ const ContentUsuariosActivos: React.FC = () => {
     return suscripcion?.nombreSuscripcion;
   };
 
-  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
-  const openModalSuscripciones = (usuario: UserTypePrestamista) => {
-    setSelectedUser(usuario);
-    setModalEditVisible(false);
-    setModalInfoVisible(false);
-    setModalSuscripciones(true);
-  };
-
   //Función para realizar la búsqueda de usuariosPrestamistas
   function realizarBusqueda(
     usuario: UserTypePrestamista,
@@ -145,17 +137,27 @@ const ContentUsuariosActivos: React.FC = () => {
     setSelectedUser(usuario);
     setModalInfoVisible(false);
     setModalEditVisible(true);
+    setModalSuscripciones(false);
   };
   //Al abrir el modal de información de usuario se cierra el modal de editar usuario
   const openModalInfo = (usuario: UserTypePrestamista) => {
     setSelectedUser(usuario);
     setModalEditVisible(false);
     setModalInfoVisible(true);
+    setModalSuscripciones(false);
   };
   //Cierra el modal de editar usuario
   const closeModal = () => {
     setSelectedUser(null);
     setModalEditVisible(false);
+  };
+
+  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
+  const openModalUnsuscribeUser = (usuario: UserTypePrestamista) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(false);
+    setModalSuscripciones(true);
   };
 
   //Función para actualizar los usuariosPrestamistas al eliminar un usuario o al editar un usuario
@@ -395,7 +397,7 @@ const ContentUsuariosActivos: React.FC = () => {
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "10%" }}>
               <Tooltip content="Eliminar Suscripcion">
-                <IconButton onClick={() => openModalSuscripciones(usuario)}>
+                <IconButton onClick={() => openModalUnsuscribeUser(usuario)}>
                   <FaUserTimes size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>

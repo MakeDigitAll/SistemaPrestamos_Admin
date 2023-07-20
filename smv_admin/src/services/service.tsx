@@ -137,6 +137,11 @@ class AdminDataService {
       `/admin-deactivate-suscripcion-usuario/${idUsuario}/${idSuscripcion}`
     );
   }
+
+  //habilitar un usuario
+  enableUser(idUsuario: number) {
+    return http.put(`/admin-enable-usuario-prestamista-eliminado/${idUsuario}`);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

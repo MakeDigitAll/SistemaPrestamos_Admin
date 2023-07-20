@@ -725,3 +725,33 @@ exports.desactivarSuscripcionUsuarioPrestamista = (req, res) => {
       });
     });
 };
+
+//Habilitar el usuario prestamista eliminado
+exports.habilitarUsuarioPrestamistaEliminado = (req, res) => {
+  const idUsuarioPrestamista = req.params.id;
+  usuariosPrestamistas
+    .update(
+      { isDeleted: false },
+      {
+        where: { idUsuarioPrestamista: idUsuarioPrestamista },
+      }
+    )
+    .then((data) => {
+      if (data == 1) {
+        res.send({
+          message: "Usuario habilitado exitosamente.",
+        });
+      } else {
+        res.send({
+          message: `No se pudo habilitar el usuario con id=${idUsuarioPrestamista}.`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          "Ocurrió un error al habilitar el usuario con id=" +
+          idUsuarioPrestamista,
+      });
+    });
+};
