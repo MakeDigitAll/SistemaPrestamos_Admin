@@ -130,6 +130,13 @@ class AdminDataService {
       `/admin-activate-suscripcion-usuario/${idUsuario}/${idSuscripcion}`
     );
   }
+
+  //desactivar una suscripción
+  deactivateSuscripcionUsuario(idUsuario: number, idSuscripcion: number) {
+    return http.put(
+      `/admin-deactivate-suscripcion-usuario/${idUsuario}/${idSuscripcion}`
+    );
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

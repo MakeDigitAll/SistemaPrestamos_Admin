@@ -169,4 +169,16 @@ router.put(
   }
 );
 
+//desactivar suscripción del usuario prestamista
+router.put(
+  "/admin-deactivate-suscripcion-usuario/:idUsuario/:idSuscripcion",
+  verifyToken,
+  (req, res) => {
+    controllerUsuariosPrestamistas.desactivarSuscripcionUsuarioPrestamista(
+      req,
+      res
+    );
+  }
+);
+
 module.exports = router;

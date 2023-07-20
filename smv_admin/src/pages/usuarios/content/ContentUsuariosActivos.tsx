@@ -24,6 +24,10 @@ import { useNavigate } from "react-router-dom";
 import defaultImage from "../../../assets/images/defaultProfile.png";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 import { useGetTipoSuscripciones } from "../../../hooks/useGetTipoSuscripciones";
+import { FaUserTimes } from "react-icons/fa";
+import ModalDeleteSuscripcion from "../modals/ModalDeleteSuscripcion";
+import deactivateSuscripcionUsuario from "../../../utils/deactivateUser";
+import { toast } from "react-toastify";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
@@ -55,6 +59,8 @@ const ContentUsuariosActivos: React.FC = () => {
   // Obtener los tipos de suscripciones
   const getTipoSuscripciones = useGetTipoSuscripciones();
   const tipoSuscripciones = getTipoSuscripciones?.decodedToken?.tipoSuscripcion;
+  //Función para mostrar el modal de suscripciones
+  const [modalSuscripciones, setModalSuscripciones] = useState(false);
 
   //Filtra los usuariosPrestamistas
   useEffect(() => {
@@ -72,6 +78,15 @@ const ContentUsuariosActivos: React.FC = () => {
     //Muestra los usuariosPrestamistas filtrados
     setUsuarios(filteredUsuarios);
   }, [searchTerm, usuariosPrestamistas]);
+
+  //UseEffect para mostrar el mensaje de éxito
+  useEffect(() => {
+    const toastMessage = localStorage.getItem("toastMessageActivateUsuario");
+    if (toastMessage) {
+      toast.success(toastMessage);
+      localStorage.removeItem("toastMessageActivateUsuario");
+    }
+  }, []);
 
   const UserImage = ({
     idUsuarioPrestamista,
@@ -95,6 +110,14 @@ const ContentUsuariosActivos: React.FC = () => {
       (suscripcion: any) => suscripcion.idTipoSuscripcion === idTipoSuscripcion
     );
     return suscripcion?.nombreSuscripcion;
+  };
+
+  //Al abrir el modal de información de usuario se cierra el modal de editar usuario
+  const openModalSuscripciones = (usuario: UserTypePrestamista) => {
+    setSelectedUser(usuario);
+    setModalEditVisible(false);
+    setModalInfoVisible(false);
+    setModalSuscripciones(true);
   };
 
   //Función para realizar la búsqueda de usuariosPrestamistas
@@ -184,6 +207,22 @@ const ContentUsuariosActivos: React.FC = () => {
     }
 
     return <span style={{ color: textColor }}>{`${dia}/${mes}/${year}`}</span>;
+  };
+
+  //Función para eliminar un usuario
+  const handleDeleteSuscripcion = async (usuario: UserTypePrestamista) => {
+    try {
+      const resp = await deactivateSuscripcionUsuario(
+        usuario.idUsuarioPrestamista,
+        //obtener la ultima suscripcion del usuario en la lista de suscripciones
+        usuario.suscripciones[usuario.suscripciones.length - 1].idSuscripcion
+      );
+      if (resp) {
+        getUsuarios?.refetch();
+      }
+    } catch (error) {
+      console.error("Error deactivating user:", error);
+    }
   };
 
   //Si no hay usuariosPrestamistas entonces muestra un loading
@@ -335,7 +374,7 @@ const ContentUsuariosActivos: React.FC = () => {
             {formatDate(
               usuario.suscripciones && usuario.suscripciones.length > 0
                 ? usuario.suscripciones[usuario.suscripciones.length - 1]
-                    .fechaFin
+                    .fechaInicio
                 : null
             )}
           </Text>
@@ -354,6 +393,14 @@ const ContentUsuariosActivos: React.FC = () => {
       case "acciones":
         return (
           <Row justify="center" align="center">
+            <Col css={{ d: "flex", marginLeft: "10%" }}>
+              <Tooltip content="Eliminar Suscripcion">
+                <IconButton onClick={() => openModalSuscripciones(usuario)}>
+                  <FaUserTimes size={20} fill="#979797" />
+                </IconButton>
+              </Tooltip>
+            </Col>
+
             <Col css={{ d: "flex", marginLeft: "45%" }}>
               <Tooltip content="Editar Usuario">
                 <IconButton onClick={() => openModalEdit(usuario)}>
@@ -448,6 +495,13 @@ const ContentUsuariosActivos: React.FC = () => {
           onPageChange={(page) => console.log({ page })}
         />
       </Table>
+      {modalSuscripciones && selectedUser && (
+        <ModalDeleteSuscripcion
+          user={selectedUser}
+          onClose={closeModal}
+          handleUpdate={handleDeleteSuscripcion}
+        />
+      )}
       {modalInfo && selectedUser && (
         <InfoUsuario user={selectedUser} onClose={closeModal} />
       )}

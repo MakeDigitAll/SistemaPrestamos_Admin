@@ -23,7 +23,7 @@ import { useGetUsuariosInactivos } from "../../../hooks/userPrestamistas/usegetI
 import { UserPrestamista as UserTypePrestamista } from "../../../types/UserPrestamista";
 import { DeleteIcon } from "../../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../../context/SearchContext";
-import ModalConfirmSuscripcion from "./../modals/ModalSuscripciones";
+import ModalConfirmSuscripcion from "../modals/ModalConfirmSuscripcion";
 import ModalConfirmDelete from "./../modals/ModalConfirmDelete";
 import { MdOutlineMoreTime } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -182,7 +182,7 @@ const ContentUsuariosInactivos: React.FC = () => {
     }
   };
 
-  //Función para eliminar un usuario
+  //Función para activar la suscripción de un usuario
   const handleActivateUser = async (usuario: UserTypePrestamista) => {
     try {
       const resp = await activateSuscripcionUsuario(
@@ -191,7 +191,10 @@ const ContentUsuariosInactivos: React.FC = () => {
         usuario.suscripciones[usuario.suscripciones.length - 1].idSuscripcion
       );
       if (resp) {
-        getUsuarios?.refetch();
+        //getUsuarios?.refetch();
+        const successMessage = "Usuario Activado";
+        localStorage.setItem("toastMessageActivateUsuario", successMessage);
+        navigate("/admin-usuarios-activos");
       }
     } catch (error) {
       console.error("Error activating user:", error);
