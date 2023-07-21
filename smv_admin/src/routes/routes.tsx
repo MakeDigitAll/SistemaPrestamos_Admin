@@ -38,6 +38,11 @@ function AppRouter() {
     setIsLoggedIn(authenticated);
   }, []);
 
+  //si no hay access token, eliminar refresh token
+  if (!cookies.get("accessToken")) {
+    cookies.remove("refreshToken");
+  }
+
   const handleLogoutCallback = useCallback(handleLogout, []);
 
   return (

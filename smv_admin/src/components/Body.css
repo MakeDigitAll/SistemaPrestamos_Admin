@@ -21,7 +21,6 @@
 }
 .content-scrollable {
   /* Ajusta el contenido para que se ajuste al encabezado y al pie de página */
-  padding-top: 2.5%; /* Altura del header */
   padding-bottom: 5%; /* Altura del footer */
   padding-left: 2.5%;
   padding-right: 2.5%;
