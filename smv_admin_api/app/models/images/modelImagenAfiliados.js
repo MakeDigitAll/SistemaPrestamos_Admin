@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      idUsuarioPrestamista: {
+      idUsuarioAfiliado: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {

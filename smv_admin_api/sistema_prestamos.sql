@@ -5,7 +5,7 @@
 -- Dumped from database version 15.3
 -- Dumped by pg_dump version 15.3
 
--- Started on 2023-07-20 19:39:39
+-- Started on 2023-07-20 20:07:06
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -23,7 +23,7 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 239 (class 1259 OID 40298)
+-- TOC entry 239 (class 1259 OID 41073)
 -- Name: PrestamosUsuariosAfiliados; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -38,7 +38,7 @@ CREATE TABLE public."PrestamosUsuariosAfiliados" (
 ALTER TABLE public."PrestamosUsuariosAfiliados" OWNER TO postgres;
 
 --
--- TOC entry 238 (class 1259 OID 40283)
+-- TOC entry 238 (class 1259 OID 41058)
 -- Name: PrestamosUsuariosPrestamistas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -53,7 +53,7 @@ CREATE TABLE public."PrestamosUsuariosPrestamistas" (
 ALTER TABLE public."PrestamosUsuariosPrestamistas" OWNER TO postgres;
 
 --
--- TOC entry 217 (class 1259 OID 40122)
+-- TOC entry 217 (class 1259 OID 40902)
 -- Name: administradores; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -73,7 +73,7 @@ CREATE TABLE public.administradores (
 ALTER TABLE public.administradores OWNER TO postgres;
 
 --
--- TOC entry 216 (class 1259 OID 40121)
+-- TOC entry 216 (class 1259 OID 40901)
 -- Name: administradores_idAdministrador_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -89,7 +89,7 @@ CREATE SEQUENCE public."administradores_idAdministrador_seq"
 ALTER TABLE public."administradores_idAdministrador_seq" OWNER TO postgres;
 
 --
--- TOC entry 3480 (class 0 OID 0)
+-- TOC entry 3479 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: administradores_idAdministrador_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -132,7 +132,7 @@ CREATE SEQUENCE public."calidadPrestamista_idCalidadPrestamista_seq"
 ALTER TABLE public."calidadPrestamista_idCalidadPrestamista_seq" OWNER TO postgres;
 
 --
--- TOC entry 3481 (class 0 OID 0)
+-- TOC entry 3480 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: calidadPrestamista_idCalidadPrestamista_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -141,7 +141,7 @@ ALTER SEQUENCE public."calidadPrestamista_idCalidadPrestamista_seq" OWNED BY pub
 
 
 --
--- TOC entry 231 (class 1259 OID 40227)
+-- TOC entry 231 (class 1259 OID 41002)
 -- Name: datosUsuarioSuscripciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -159,7 +159,7 @@ CREATE TABLE public."datosUsuarioSuscripciones" (
 ALTER TABLE public."datosUsuarioSuscripciones" OWNER TO postgres;
 
 --
--- TOC entry 230 (class 1259 OID 40226)
+-- TOC entry 230 (class 1259 OID 41001)
 -- Name: datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -175,7 +175,7 @@ CREATE SEQUENCE public."datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq"
 ALTER TABLE public."datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq" OWNER TO postgres;
 
 --
--- TOC entry 3482 (class 0 OID 0)
+-- TOC entry 3481 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -184,7 +184,7 @@ ALTER SEQUENCE public."datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq" 
 
 
 --
--- TOC entry 223 (class 1259 OID 40161)
+-- TOC entry 223 (class 1259 OID 40941)
 -- Name: imagenAdministradores; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -198,7 +198,7 @@ CREATE TABLE public."imagenAdministradores" (
 ALTER TABLE public."imagenAdministradores" OWNER TO postgres;
 
 --
--- TOC entry 222 (class 1259 OID 40160)
+-- TOC entry 222 (class 1259 OID 40940)
 -- Name: imagenAdministradores_idImagen_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -214,7 +214,7 @@ CREATE SEQUENCE public."imagenAdministradores_idImagen_seq"
 ALTER TABLE public."imagenAdministradores_idImagen_seq" OWNER TO postgres;
 
 --
--- TOC entry 3483 (class 0 OID 0)
+-- TOC entry 3482 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: imagenAdministradores_idImagen_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -223,22 +223,21 @@ ALTER SEQUENCE public."imagenAdministradores_idImagen_seq" OWNED BY public."imag
 
 
 --
--- TOC entry 227 (class 1259 OID 40189)
+-- TOC entry 227 (class 1259 OID 40969)
 -- Name: imagenAfiliados; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public."imagenAfiliados" (
     "idImagen" integer NOT NULL,
-    "idUsuarioPrestamista" integer NOT NULL,
-    imagen bytea,
-    "idUsuarioAfiliado" integer
+    "idUsuarioAfiliado" integer NOT NULL,
+    imagen bytea
 );
 
 
 ALTER TABLE public."imagenAfiliados" OWNER TO postgres;
 
 --
--- TOC entry 226 (class 1259 OID 40188)
+-- TOC entry 226 (class 1259 OID 40968)
 -- Name: imagenAfiliados_idImagen_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -254,7 +253,7 @@ CREATE SEQUENCE public."imagenAfiliados_idImagen_seq"
 ALTER TABLE public."imagenAfiliados_idImagen_seq" OWNER TO postgres;
 
 --
--- TOC entry 3484 (class 0 OID 0)
+-- TOC entry 3483 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: imagenAfiliados_idImagen_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -263,7 +262,7 @@ ALTER SEQUENCE public."imagenAfiliados_idImagen_seq" OWNED BY public."imagenAfil
 
 
 --
--- TOC entry 225 (class 1259 OID 40175)
+-- TOC entry 225 (class 1259 OID 40955)
 -- Name: imagenPrestamistas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -277,7 +276,7 @@ CREATE TABLE public."imagenPrestamistas" (
 ALTER TABLE public."imagenPrestamistas" OWNER TO postgres;
 
 --
--- TOC entry 224 (class 1259 OID 40174)
+-- TOC entry 224 (class 1259 OID 40954)
 -- Name: imagenPrestamistas_idImagen_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -293,7 +292,7 @@ CREATE SEQUENCE public."imagenPrestamistas_idImagen_seq"
 ALTER TABLE public."imagenPrestamistas_idImagen_seq" OWNER TO postgres;
 
 --
--- TOC entry 3485 (class 0 OID 0)
+-- TOC entry 3484 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: imagenPrestamistas_idImagen_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -302,7 +301,7 @@ ALTER SEQUENCE public."imagenPrestamistas_idImagen_seq" OWNED BY public."imagenP
 
 
 --
--- TOC entry 233 (class 1259 OID 40241)
+-- TOC entry 233 (class 1259 OID 41016)
 -- Name: nivelesFidelidad; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -320,7 +319,7 @@ CREATE TABLE public."nivelesFidelidad" (
 ALTER TABLE public."nivelesFidelidad" OWNER TO postgres;
 
 --
--- TOC entry 232 (class 1259 OID 40240)
+-- TOC entry 232 (class 1259 OID 41015)
 -- Name: nivelesFidelidad_idNivelFidelidad_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -336,7 +335,7 @@ CREATE SEQUENCE public."nivelesFidelidad_idNivelFidelidad_seq"
 ALTER TABLE public."nivelesFidelidad_idNivelFidelidad_seq" OWNER TO postgres;
 
 --
--- TOC entry 3486 (class 0 OID 0)
+-- TOC entry 3485 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: nivelesFidelidad_idNivelFidelidad_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -345,7 +344,7 @@ ALTER SEQUENCE public."nivelesFidelidad_idNivelFidelidad_seq" OWNED BY public."n
 
 
 --
--- TOC entry 229 (class 1259 OID 40208)
+-- TOC entry 229 (class 1259 OID 40983)
 -- Name: prestamos; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -367,7 +366,7 @@ CREATE TABLE public.prestamos (
 ALTER TABLE public.prestamos OWNER TO postgres;
 
 --
--- TOC entry 228 (class 1259 OID 40207)
+-- TOC entry 228 (class 1259 OID 40982)
 -- Name: prestamos_idPrestamo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -383,7 +382,7 @@ CREATE SEQUENCE public."prestamos_idPrestamo_seq"
 ALTER TABLE public."prestamos_idPrestamo_seq" OWNER TO postgres;
 
 --
--- TOC entry 3487 (class 0 OID 0)
+-- TOC entry 3486 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: prestamos_idPrestamo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -392,7 +391,7 @@ ALTER SEQUENCE public."prestamos_idPrestamo_seq" OWNED BY public.prestamos."idPr
 
 
 --
--- TOC entry 237 (class 1259 OID 40261)
+-- TOC entry 237 (class 1259 OID 41036)
 -- Name: suscripciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -410,7 +409,7 @@ CREATE TABLE public.suscripciones (
 ALTER TABLE public.suscripciones OWNER TO postgres;
 
 --
--- TOC entry 236 (class 1259 OID 40260)
+-- TOC entry 236 (class 1259 OID 41035)
 -- Name: suscripciones_idSuscripcion_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -426,7 +425,7 @@ CREATE SEQUENCE public."suscripciones_idSuscripcion_seq"
 ALTER TABLE public."suscripciones_idSuscripcion_seq" OWNER TO postgres;
 
 --
--- TOC entry 3488 (class 0 OID 0)
+-- TOC entry 3487 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: suscripciones_idSuscripcion_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -435,7 +434,7 @@ ALTER SEQUENCE public."suscripciones_idSuscripcion_seq" OWNED BY public.suscripc
 
 
 --
--- TOC entry 235 (class 1259 OID 40250)
+-- TOC entry 235 (class 1259 OID 41025)
 -- Name: tipoSuscripciones; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -454,7 +453,7 @@ CREATE TABLE public."tipoSuscripciones" (
 ALTER TABLE public."tipoSuscripciones" OWNER TO postgres;
 
 --
--- TOC entry 234 (class 1259 OID 40249)
+-- TOC entry 234 (class 1259 OID 41024)
 -- Name: tipoSuscripciones_idTipoSuscripcion_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -470,7 +469,7 @@ CREATE SEQUENCE public."tipoSuscripciones_idTipoSuscripcion_seq"
 ALTER TABLE public."tipoSuscripciones_idTipoSuscripcion_seq" OWNER TO postgres;
 
 --
--- TOC entry 3489 (class 0 OID 0)
+-- TOC entry 3488 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: tipoSuscripciones_idTipoSuscripcion_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -479,7 +478,7 @@ ALTER SEQUENCE public."tipoSuscripciones_idTipoSuscripcion_seq" OWNED BY public.
 
 
 --
--- TOC entry 221 (class 1259 OID 40147)
+-- TOC entry 221 (class 1259 OID 40927)
 -- Name: usuariosAfiliados; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -504,7 +503,7 @@ CREATE TABLE public."usuariosAfiliados" (
 ALTER TABLE public."usuariosAfiliados" OWNER TO postgres;
 
 --
--- TOC entry 220 (class 1259 OID 40146)
+-- TOC entry 220 (class 1259 OID 40926)
 -- Name: usuariosAfiliados_idUsuarioAfiliado_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -520,7 +519,7 @@ CREATE SEQUENCE public."usuariosAfiliados_idUsuarioAfiliado_seq"
 ALTER TABLE public."usuariosAfiliados_idUsuarioAfiliado_seq" OWNER TO postgres;
 
 --
--- TOC entry 3490 (class 0 OID 0)
+-- TOC entry 3489 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: usuariosAfiliados_idUsuarioAfiliado_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -529,7 +528,7 @@ ALTER SEQUENCE public."usuariosAfiliados_idUsuarioAfiliado_seq" OWNED BY public.
 
 
 --
--- TOC entry 219 (class 1259 OID 40133)
+-- TOC entry 219 (class 1259 OID 40913)
 -- Name: usuariosPrestamistas; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -554,7 +553,7 @@ CREATE TABLE public."usuariosPrestamistas" (
 ALTER TABLE public."usuariosPrestamistas" OWNER TO postgres;
 
 --
--- TOC entry 218 (class 1259 OID 40132)
+-- TOC entry 218 (class 1259 OID 40912)
 -- Name: usuariosPrestamistas_idUsuarioPrestamista_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
@@ -570,7 +569,7 @@ CREATE SEQUENCE public."usuariosPrestamistas_idUsuarioPrestamista_seq"
 ALTER TABLE public."usuariosPrestamistas_idUsuarioPrestamista_seq" OWNER TO postgres;
 
 --
--- TOC entry 3491 (class 0 OID 0)
+-- TOC entry 3490 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: usuariosPrestamistas_idUsuarioPrestamista_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
@@ -579,7 +578,7 @@ ALTER SEQUENCE public."usuariosPrestamistas_idUsuarioPrestamista_seq" OWNED BY p
 
 
 --
--- TOC entry 3237 (class 2604 OID 40125)
+-- TOC entry 3237 (class 2604 OID 40905)
 -- Name: administradores idAdministrador; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -595,7 +594,7 @@ ALTER TABLE ONLY public."calidadPrestamista" ALTER COLUMN "idCalidadPrestamista"
 
 
 --
--- TOC entry 3256 (class 2604 OID 40230)
+-- TOC entry 3256 (class 2604 OID 41005)
 -- Name: datosUsuarioSuscripciones idDatosUsuarioSuscripcion; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -603,7 +602,7 @@ ALTER TABLE ONLY public."datosUsuarioSuscripciones" ALTER COLUMN "idDatosUsuario
 
 
 --
--- TOC entry 3252 (class 2604 OID 40164)
+-- TOC entry 3252 (class 2604 OID 40944)
 -- Name: imagenAdministradores idImagen; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -611,7 +610,7 @@ ALTER TABLE ONLY public."imagenAdministradores" ALTER COLUMN "idImagen" SET DEFA
 
 
 --
--- TOC entry 3254 (class 2604 OID 40192)
+-- TOC entry 3254 (class 2604 OID 40972)
 -- Name: imagenAfiliados idImagen; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -619,7 +618,7 @@ ALTER TABLE ONLY public."imagenAfiliados" ALTER COLUMN "idImagen" SET DEFAULT ne
 
 
 --
--- TOC entry 3253 (class 2604 OID 40178)
+-- TOC entry 3253 (class 2604 OID 40958)
 -- Name: imagenPrestamistas idImagen; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -627,7 +626,7 @@ ALTER TABLE ONLY public."imagenPrestamistas" ALTER COLUMN "idImagen" SET DEFAULT
 
 
 --
--- TOC entry 3257 (class 2604 OID 40244)
+-- TOC entry 3257 (class 2604 OID 41019)
 -- Name: nivelesFidelidad idNivelFidelidad; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -635,7 +634,7 @@ ALTER TABLE ONLY public."nivelesFidelidad" ALTER COLUMN "idNivelFidelidad" SET D
 
 
 --
--- TOC entry 3255 (class 2604 OID 40211)
+-- TOC entry 3255 (class 2604 OID 40986)
 -- Name: prestamos idPrestamo; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -643,7 +642,7 @@ ALTER TABLE ONLY public.prestamos ALTER COLUMN "idPrestamo" SET DEFAULT nextval(
 
 
 --
--- TOC entry 3263 (class 2604 OID 40264)
+-- TOC entry 3263 (class 2604 OID 41039)
 -- Name: suscripciones idSuscripcion; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -651,7 +650,7 @@ ALTER TABLE ONLY public.suscripciones ALTER COLUMN "idSuscripcion" SET DEFAULT n
 
 
 --
--- TOC entry 3260 (class 2604 OID 40253)
+-- TOC entry 3260 (class 2604 OID 41028)
 -- Name: tipoSuscripciones idTipoSuscripcion; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -659,7 +658,7 @@ ALTER TABLE ONLY public."tipoSuscripciones" ALTER COLUMN "idTipoSuscripcion" SET
 
 
 --
--- TOC entry 3246 (class 2604 OID 40150)
+-- TOC entry 3246 (class 2604 OID 40930)
 -- Name: usuariosAfiliados idUsuarioAfiliado; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -667,7 +666,7 @@ ALTER TABLE ONLY public."usuariosAfiliados" ALTER COLUMN "idUsuarioAfiliado" SET
 
 
 --
--- TOC entry 3240 (class 2604 OID 40136)
+-- TOC entry 3240 (class 2604 OID 40916)
 -- Name: usuariosPrestamistas idUsuarioPrestamista; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -675,7 +674,7 @@ ALTER TABLE ONLY public."usuariosPrestamistas" ALTER COLUMN "idUsuarioPrestamist
 
 
 --
--- TOC entry 3474 (class 0 OID 40298)
+-- TOC entry 3473 (class 0 OID 41073)
 -- Dependencies: 239
 -- Data for Name: PrestamosUsuariosAfiliados; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -685,7 +684,7 @@ COPY public."PrestamosUsuariosAfiliados" ("createdAt", "updatedAt", "idUsuarioAf
 
 
 --
--- TOC entry 3473 (class 0 OID 40283)
+-- TOC entry 3472 (class 0 OID 41058)
 -- Dependencies: 238
 -- Data for Name: PrestamosUsuariosPrestamistas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -695,7 +694,7 @@ COPY public."PrestamosUsuariosPrestamistas" ("createdAt", "updatedAt", "idUsuari
 
 
 --
--- TOC entry 3452 (class 0 OID 40122)
+-- TOC entry 3451 (class 0 OID 40902)
 -- Dependencies: 217
 -- Data for Name: administradores; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -705,7 +704,7 @@ COPY public.administradores ("idAdministrador", "correoElectronico", "adminPassw
 
 
 --
--- TOC entry 3450 (class 0 OID 37452)
+-- TOC entry 3449 (class 0 OID 37452)
 -- Dependencies: 215
 -- Data for Name: calidadPrestamista; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -719,7 +718,7 @@ COPY public."calidadPrestamista" ("idCalidadPrestamista", "idUsuarioPrestamista"
 
 
 --
--- TOC entry 3466 (class 0 OID 40227)
+-- TOC entry 3465 (class 0 OID 41002)
 -- Dependencies: 231
 -- Data for Name: datosUsuarioSuscripciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -729,7 +728,7 @@ COPY public."datosUsuarioSuscripciones" ("idDatosUsuarioSuscripcion", "idUsuario
 
 
 --
--- TOC entry 3458 (class 0 OID 40161)
+-- TOC entry 3457 (class 0 OID 40941)
 -- Dependencies: 223
 -- Data for Name: imagenAdministradores; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -739,17 +738,17 @@ COPY public."imagenAdministradores" ("idImagen", "idAdministrador", imagen) FROM
 
 
 --
--- TOC entry 3462 (class 0 OID 40189)
+-- TOC entry 3461 (class 0 OID 40969)
 -- Dependencies: 227
 -- Data for Name: imagenAfiliados; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."imagenAfiliados" ("idImagen", "idUsuarioPrestamista", imagen, "idUsuarioAfiliado") FROM stdin;
+COPY public."imagenAfiliados" ("idImagen", "idUsuarioAfiliado", imagen) FROM stdin;
 \.
 
 
 --
--- TOC entry 3460 (class 0 OID 40175)
+-- TOC entry 3459 (class 0 OID 40955)
 -- Dependencies: 225
 -- Data for Name: imagenPrestamistas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -759,17 +758,20 @@ COPY public."imagenPrestamistas" ("idImagen", "idUsuarioPrestamista", imagen) FR
 
 
 --
--- TOC entry 3468 (class 0 OID 40241)
+-- TOC entry 3467 (class 0 OID 41016)
 -- Dependencies: 233
 -- Data for Name: nivelesFidelidad; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."nivelesFidelidad" ("idNivelFidelidad", "nombreNivelFidelidad", descuento, "numeroMesesMinimo", "numeroMesesMaximo", "isDeleted", "isUpdated") FROM stdin;
+1	Bronce	0	0	3	f	f
+2	Plata	3	4	8	f	f
+3	Oro	6	9	12	f	f
 \.
 
 
 --
--- TOC entry 3464 (class 0 OID 40208)
+-- TOC entry 3463 (class 0 OID 40983)
 -- Dependencies: 229
 -- Data for Name: prestamos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -779,7 +781,7 @@ COPY public.prestamos ("idPrestamo", "idUsuarioPrestamista", "idUsuarioAfiliado"
 
 
 --
--- TOC entry 3472 (class 0 OID 40261)
+-- TOC entry 3471 (class 0 OID 41036)
 -- Dependencies: 237
 -- Data for Name: suscripciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -789,17 +791,21 @@ COPY public.suscripciones ("idSuscripcion", "idUsuarioPrestamista", "idNivelFide
 
 
 --
--- TOC entry 3470 (class 0 OID 40250)
+-- TOC entry 3469 (class 0 OID 41025)
 -- Dependencies: 235
 -- Data for Name: tipoSuscripciones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public."tipoSuscripciones" ("idTipoSuscripcion", "nombreSuscripcion", "montoDesde", "montoHasta", "numeroUsuariosMax", "costoMembresia", "isDeleted", "isUpdated") FROM stdin;
+1	Básica	0	10000	100	500	f	f
+2	Estandar	10001	30000	500	1000	f	f
+3	Avanzada	30001	60000	1000	1500	f	f
+4	Premium	60001	100000	2000	200	f	f
 \.
 
 
 --
--- TOC entry 3456 (class 0 OID 40147)
+-- TOC entry 3455 (class 0 OID 40927)
 -- Dependencies: 221
 -- Data for Name: usuariosAfiliados; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -809,7 +815,7 @@ COPY public."usuariosAfiliados" ("idUsuarioAfiliado", "correoElectronico", "usua
 
 
 --
--- TOC entry 3454 (class 0 OID 40133)
+-- TOC entry 3453 (class 0 OID 40913)
 -- Dependencies: 219
 -- Data for Name: usuariosPrestamistas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
@@ -819,7 +825,7 @@ COPY public."usuariosPrestamistas" ("idUsuarioPrestamista", "correoElectronico",
 
 
 --
--- TOC entry 3492 (class 0 OID 0)
+-- TOC entry 3491 (class 0 OID 0)
 -- Dependencies: 216
 -- Name: administradores_idAdministrador_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -828,7 +834,7 @@ SELECT pg_catalog.setval('public."administradores_idAdministrador_seq"', 1, fals
 
 
 --
--- TOC entry 3493 (class 0 OID 0)
+-- TOC entry 3492 (class 0 OID 0)
 -- Dependencies: 214
 -- Name: calidadPrestamista_idCalidadPrestamista_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -837,7 +843,7 @@ SELECT pg_catalog.setval('public."calidadPrestamista_idCalidadPrestamista_seq"',
 
 
 --
--- TOC entry 3494 (class 0 OID 0)
+-- TOC entry 3493 (class 0 OID 0)
 -- Dependencies: 230
 -- Name: datosUsuarioSuscripciones_idDatosUsuarioSuscripcion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -846,7 +852,7 @@ SELECT pg_catalog.setval('public."datosUsuarioSuscripciones_idDatosUsuarioSuscri
 
 
 --
--- TOC entry 3495 (class 0 OID 0)
+-- TOC entry 3494 (class 0 OID 0)
 -- Dependencies: 222
 -- Name: imagenAdministradores_idImagen_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -855,7 +861,7 @@ SELECT pg_catalog.setval('public."imagenAdministradores_idImagen_seq"', 1, false
 
 
 --
--- TOC entry 3496 (class 0 OID 0)
+-- TOC entry 3495 (class 0 OID 0)
 -- Dependencies: 226
 -- Name: imagenAfiliados_idImagen_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -864,7 +870,7 @@ SELECT pg_catalog.setval('public."imagenAfiliados_idImagen_seq"', 1, false);
 
 
 --
--- TOC entry 3497 (class 0 OID 0)
+-- TOC entry 3496 (class 0 OID 0)
 -- Dependencies: 224
 -- Name: imagenPrestamistas_idImagen_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -873,16 +879,16 @@ SELECT pg_catalog.setval('public."imagenPrestamistas_idImagen_seq"', 1, false);
 
 
 --
--- TOC entry 3498 (class 0 OID 0)
+-- TOC entry 3497 (class 0 OID 0)
 -- Dependencies: 232
 -- Name: nivelesFidelidad_idNivelFidelidad_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."nivelesFidelidad_idNivelFidelidad_seq"', 1, false);
+SELECT pg_catalog.setval('public."nivelesFidelidad_idNivelFidelidad_seq"', 3, true);
 
 
 --
--- TOC entry 3499 (class 0 OID 0)
+-- TOC entry 3498 (class 0 OID 0)
 -- Dependencies: 228
 -- Name: prestamos_idPrestamo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -891,7 +897,7 @@ SELECT pg_catalog.setval('public."prestamos_idPrestamo_seq"', 1, false);
 
 
 --
--- TOC entry 3500 (class 0 OID 0)
+-- TOC entry 3499 (class 0 OID 0)
 -- Dependencies: 236
 -- Name: suscripciones_idSuscripcion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -900,16 +906,16 @@ SELECT pg_catalog.setval('public."suscripciones_idSuscripcion_seq"', 1, false);
 
 
 --
--- TOC entry 3501 (class 0 OID 0)
+-- TOC entry 3500 (class 0 OID 0)
 -- Dependencies: 234
 -- Name: tipoSuscripciones_idTipoSuscripcion_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."tipoSuscripciones_idTipoSuscripcion_seq"', 1, false);
+SELECT pg_catalog.setval('public."tipoSuscripciones_idTipoSuscripcion_seq"', 4, true);
 
 
 --
--- TOC entry 3502 (class 0 OID 0)
+-- TOC entry 3501 (class 0 OID 0)
 -- Dependencies: 220
 -- Name: usuariosAfiliados_idUsuarioAfiliado_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -918,7 +924,7 @@ SELECT pg_catalog.setval('public."usuariosAfiliados_idUsuarioAfiliado_seq"', 1, 
 
 
 --
--- TOC entry 3503 (class 0 OID 0)
+-- TOC entry 3502 (class 0 OID 0)
 -- Dependencies: 218
 -- Name: usuariosPrestamistas_idUsuarioPrestamista_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
@@ -927,7 +933,7 @@ SELECT pg_catalog.setval('public."usuariosPrestamistas_idUsuarioPrestamista_seq"
 
 
 --
--- TOC entry 3292 (class 2606 OID 40302)
+-- TOC entry 3292 (class 2606 OID 41077)
 -- Name: PrestamosUsuariosAfiliados PrestamosUsuariosAfiliados_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -936,7 +942,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosAfiliados"
 
 
 --
--- TOC entry 3290 (class 2606 OID 40287)
+-- TOC entry 3290 (class 2606 OID 41062)
 -- Name: PrestamosUsuariosPrestamistas PrestamosUsuariosPrestamistas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -945,7 +951,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosPrestamistas"
 
 
 --
--- TOC entry 3268 (class 2606 OID 40131)
+-- TOC entry 3268 (class 2606 OID 40911)
 -- Name: administradores administradores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -963,7 +969,7 @@ ALTER TABLE ONLY public."calidadPrestamista"
 
 
 --
--- TOC entry 3282 (class 2606 OID 40234)
+-- TOC entry 3282 (class 2606 OID 41009)
 -- Name: datosUsuarioSuscripciones datosUsuarioSuscripciones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -972,7 +978,7 @@ ALTER TABLE ONLY public."datosUsuarioSuscripciones"
 
 
 --
--- TOC entry 3274 (class 2606 OID 40168)
+-- TOC entry 3274 (class 2606 OID 40948)
 -- Name: imagenAdministradores imagenAdministradores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -981,7 +987,7 @@ ALTER TABLE ONLY public."imagenAdministradores"
 
 
 --
--- TOC entry 3278 (class 2606 OID 40196)
+-- TOC entry 3278 (class 2606 OID 40976)
 -- Name: imagenAfiliados imagenAfiliados_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -990,7 +996,7 @@ ALTER TABLE ONLY public."imagenAfiliados"
 
 
 --
--- TOC entry 3276 (class 2606 OID 40182)
+-- TOC entry 3276 (class 2606 OID 40962)
 -- Name: imagenPrestamistas imagenPrestamistas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -999,7 +1005,7 @@ ALTER TABLE ONLY public."imagenPrestamistas"
 
 
 --
--- TOC entry 3284 (class 2606 OID 40248)
+-- TOC entry 3284 (class 2606 OID 41023)
 -- Name: nivelesFidelidad nivelesFidelidad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1008,7 +1014,7 @@ ALTER TABLE ONLY public."nivelesFidelidad"
 
 
 --
--- TOC entry 3280 (class 2606 OID 40215)
+-- TOC entry 3280 (class 2606 OID 40990)
 -- Name: prestamos prestamos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1017,7 +1023,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 3288 (class 2606 OID 40267)
+-- TOC entry 3288 (class 2606 OID 41042)
 -- Name: suscripciones suscripciones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1026,7 +1032,7 @@ ALTER TABLE ONLY public.suscripciones
 
 
 --
--- TOC entry 3286 (class 2606 OID 40259)
+-- TOC entry 3286 (class 2606 OID 41034)
 -- Name: tipoSuscripciones tipoSuscripciones_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1035,7 +1041,7 @@ ALTER TABLE ONLY public."tipoSuscripciones"
 
 
 --
--- TOC entry 3272 (class 2606 OID 40159)
+-- TOC entry 3272 (class 2606 OID 40939)
 -- Name: usuariosAfiliados usuariosAfiliados_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1044,7 +1050,7 @@ ALTER TABLE ONLY public."usuariosAfiliados"
 
 
 --
--- TOC entry 3270 (class 2606 OID 40145)
+-- TOC entry 3270 (class 2606 OID 40925)
 -- Name: usuariosPrestamistas usuariosPrestamistas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1053,7 +1059,7 @@ ALTER TABLE ONLY public."usuariosPrestamistas"
 
 
 --
--- TOC entry 3305 (class 2606 OID 40308)
+-- TOC entry 3304 (class 2606 OID 41083)
 -- Name: PrestamosUsuariosAfiliados PrestamosUsuariosAfiliados_idPrestamo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1062,7 +1068,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosAfiliados"
 
 
 --
--- TOC entry 3306 (class 2606 OID 40303)
+-- TOC entry 3305 (class 2606 OID 41078)
 -- Name: PrestamosUsuariosAfiliados PrestamosUsuariosAfiliados_idUsuarioAfiliado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1071,7 +1077,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosAfiliados"
 
 
 --
--- TOC entry 3303 (class 2606 OID 40293)
+-- TOC entry 3302 (class 2606 OID 41068)
 -- Name: PrestamosUsuariosPrestamistas PrestamosUsuariosPrestamistas_idPrestamo_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1080,7 +1086,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosPrestamistas"
 
 
 --
--- TOC entry 3304 (class 2606 OID 40288)
+-- TOC entry 3303 (class 2606 OID 41063)
 -- Name: PrestamosUsuariosPrestamistas PrestamosUsuariosPrestamistas_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1089,7 +1095,7 @@ ALTER TABLE ONLY public."PrestamosUsuariosPrestamistas"
 
 
 --
--- TOC entry 3299 (class 2606 OID 40235)
+-- TOC entry 3298 (class 2606 OID 41295)
 -- Name: datosUsuarioSuscripciones datosUsuarioSuscripciones_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1098,7 +1104,7 @@ ALTER TABLE ONLY public."datosUsuarioSuscripciones"
 
 
 --
--- TOC entry 3293 (class 2606 OID 40169)
+-- TOC entry 3293 (class 2606 OID 41270)
 -- Name: imagenAdministradores imagenAdministradores_idAdministrador_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1107,25 +1113,16 @@ ALTER TABLE ONLY public."imagenAdministradores"
 
 
 --
--- TOC entry 3295 (class 2606 OID 40202)
+-- TOC entry 3295 (class 2606 OID 41280)
 -- Name: imagenAfiliados imagenAfiliados_idUsuarioAfiliado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public."imagenAfiliados"
-    ADD CONSTRAINT "imagenAfiliados_idUsuarioAfiliado_fkey" FOREIGN KEY ("idUsuarioAfiliado") REFERENCES public."usuariosAfiliados"("idUsuarioAfiliado") ON UPDATE CASCADE ON DELETE SET NULL;
+    ADD CONSTRAINT "imagenAfiliados_idUsuarioAfiliado_fkey" FOREIGN KEY ("idUsuarioAfiliado") REFERENCES public."usuariosAfiliados"("idUsuarioAfiliado") ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- TOC entry 3296 (class 2606 OID 40197)
--- Name: imagenAfiliados imagenAfiliados_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public."imagenAfiliados"
-    ADD CONSTRAINT "imagenAfiliados_idUsuarioPrestamista_fkey" FOREIGN KEY ("idUsuarioPrestamista") REFERENCES public."usuariosAfiliados"("idUsuarioAfiliado");
-
-
---
--- TOC entry 3294 (class 2606 OID 40183)
+-- TOC entry 3294 (class 2606 OID 41275)
 -- Name: imagenPrestamistas imagenPrestamistas_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1134,7 +1131,7 @@ ALTER TABLE ONLY public."imagenPrestamistas"
 
 
 --
--- TOC entry 3297 (class 2606 OID 40221)
+-- TOC entry 3296 (class 2606 OID 41290)
 -- Name: prestamos prestamos_idUsuarioAfiliado_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1143,7 +1140,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 3298 (class 2606 OID 40216)
+-- TOC entry 3297 (class 2606 OID 41285)
 -- Name: prestamos prestamos_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1152,7 +1149,7 @@ ALTER TABLE ONLY public.prestamos
 
 
 --
--- TOC entry 3300 (class 2606 OID 40273)
+-- TOC entry 3299 (class 2606 OID 41313)
 -- Name: suscripciones suscripciones_idNivelFidelidad_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1161,7 +1158,7 @@ ALTER TABLE ONLY public.suscripciones
 
 
 --
--- TOC entry 3301 (class 2606 OID 40278)
+-- TOC entry 3300 (class 2606 OID 41318)
 -- Name: suscripciones suscripciones_idTipoSuscripcion_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1170,7 +1167,7 @@ ALTER TABLE ONLY public.suscripciones
 
 
 --
--- TOC entry 3302 (class 2606 OID 40268)
+-- TOC entry 3301 (class 2606 OID 41308)
 -- Name: suscripciones suscripciones_idUsuarioPrestamista_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1178,7 +1175,7 @@ ALTER TABLE ONLY public.suscripciones
     ADD CONSTRAINT "suscripciones_idUsuarioPrestamista_fkey" FOREIGN KEY ("idUsuarioPrestamista") REFERENCES public."usuariosPrestamistas"("idUsuarioPrestamista") ON UPDATE CASCADE ON DELETE CASCADE;
 
 
--- Completed on 2023-07-20 19:39:39
+-- Completed on 2023-07-20 20:07:07
 
 --
 -- PostgreSQL database dump complete
