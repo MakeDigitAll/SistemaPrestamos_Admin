@@ -355,7 +355,7 @@ const ContentFidelidad: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: "3%" }}>
       <Row
         css={{
           marginBottom: "$space$5",
