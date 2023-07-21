@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Text } from "@nextui-org/react";
 import { NivelesFidelidad } from "../../../types/NivelesFidelidad";
-
+import { useTranslation } from "react-i18next";
 interface ConfirmacionUsuarioProps {
   nivel: NivelesFidelidad;
   onClose: () => void;
@@ -13,6 +13,7 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
   onClose,
   handleDeleteFidelidad,
 }) => {
+  const { t } = useTranslation();
   const confirmHandler = async () => {
     await handleDeleteFidelidad(nivel);
     onClose();
@@ -28,7 +29,7 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
     >
       <Modal.Header>
         <Text h4 css={{ fontWeight: "normal", textAlign: "center" }}>
-          ¿Estás seguro que deseas eliminar este nivel?
+          {t("modalConfirmDeleteFidelidad.confirmDelete")}
         </Text>
       </Modal.Header>
       <Modal.Body>
@@ -38,10 +39,10 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
       </Modal.Body>
       <Modal.Footer style={{ alignSelf: "center" }}>
         <Button auto color="success" onClick={confirmHandler}>
-          Confirmar
+          {t("modalConfirmDeleteFidelidad.confirm")}
         </Button>
         <Button auto color="error" onClick={onClose}>
-          Cancelar
+          {t("modalConfirmDeleteFidelidad.cancel")}
         </Button>
       </Modal.Footer>
     </Modal>

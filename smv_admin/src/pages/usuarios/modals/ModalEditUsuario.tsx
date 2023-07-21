@@ -7,7 +7,7 @@ import { aesEncrypt } from "../../../utils/encryption";
 import { UserPrestamista } from "../../../types/UserPrestamista";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 import defaultImage from "../../../assets/images/defaultProfile.png";
-
+import { useTranslation } from "react-i18next";
 interface InformacionUsuarioProps {
   user: UserPrestamista;
   onClose: () => void;
@@ -30,7 +30,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const imagenPerfil = useGetPrestamista(idUsuarioPrestamista);
   const [imageFile, setImageFile] = useState<File>();
   const [imagenUsuario, setImagenUsuario] = useState<string>("");
-
+  const { t } = useTranslation();
   const closeHandler = () => {
     setVisible(false);
     onClose();
@@ -52,13 +52,13 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const validarNumeroTelefono = (telefono: string) => {
     const regex = /^\d+$/;
     if (!regex.test(telefono)) {
-      return "El número de teléfono debe contener solo dígitos";
+      return t("modalEditUser.onlyDigits");
     }
     if (telefono.length !== 10) {
-      return "El número de teléfono debe tener 10 dígitos";
+      return t("modalEditUser.tenDigits");
     }
     if (parseInt(telefono) < 0) {
-      return "El número de teléfono no puede ser negativo";
+      return t("modalEditUser.negativeNumber");
     }
     return "";
   };
@@ -66,7 +66,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const validarNombre = (nombre: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(nombre)) {
-      return "El nombre solo debe contener letras";
+      return t("modalEditUser.onlyLettersName");
     }
     return "";
   };
@@ -74,7 +74,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const validarApellidos = (apellidos: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(apellidos)) {
-      return "Los apellidos solo debe contener letras";
+      return t("modalEditUser.onlyLettersLastName");
     }
     return "";
   };
@@ -82,7 +82,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
   const actualizarHandler = async () => {
     let valid = true;
     if (!nombre) {
-      setNombreError("El nombre es obligatorio");
+      setNombreError(t("modalEditUser.errorNombre"));
       valid = false;
     } else {
       const nombreError = validarNombre(nombre);
@@ -95,7 +95,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
     }
 
     if (!apellidos) {
-      setApellidosError("Los apellidos son obligatorios");
+      setApellidosError(t("modalEditUser.errorApellido"));
       valid = false;
     } else {
       const apellidosError = validarApellidos(apellidos);
@@ -108,7 +108,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
     }
 
     if (!numeroTelefono) {
-      setNumeroTelefonoError("El número de teléfono es obligatorio");
+      setNumeroTelefonoError(t("modalEditUser.errorTelefono"));
       valid = false;
     } else {
       const numeroTelefonoError = validarNumeroTelefono(
@@ -151,12 +151,12 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
             formData
           );
           if (response.status === 200) {
-            toast.success("Usuario Editado Correctamente");
+            toast.success(t("modalEditUser.userEdited"));
             handleUpdate(user);
             closeHandler();
           }
         } else {
-          toast.success("Usuario Editado Correctamente");
+          toast.success(t("modalEditUser.userEdited"));
           handleUpdate(user);
           closeHandler();
         }
@@ -197,7 +197,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
           }
         } else {
           // Toast error
-          const errorMessage = "El tamaño máximo de la imagen es de max 4 MB.";
+          const errorMessage = t("modalEditUser.errorTamanoArchivo");
           toast.error(errorMessage);
         }
       }
@@ -236,7 +236,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
           </Modal.Header>
           <Modal.Body>
             <Text h5 css={{ textAlign: "center" }}>
-              Nombre del Usuario
+              {t("modalEditUser.nameUser")}
             </Text>
             <Input
               value={nombre}
@@ -245,7 +245,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
             />
             {nombreError && <Text color="error">{nombreError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Apellidos del Usuario
+              {t("modalEditUser.lastNameUser")}
             </Text>
             <Input
               value={apellidos}
@@ -254,7 +254,7 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
             />
             {apellidosError && <Text color="error">{apellidosError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero de Telefono
+              {t("modalEditUser.phoneUser")}
             </Text>
             <Input
               maxLength={10}
@@ -276,10 +276,10 @@ const ModalEditUsuario: React.FC<InformacionUsuarioProps> = ({
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
           <Button auto onPress={actualizarHandler}>
-            Actualizar
+            {t("modalEditUser.update")}
           </Button>
           <Button auto color="error" onPress={closeHandler}>
-            Cerrar
+            {t("modalEditUser.cancel")}
           </Button>
         </Modal.Footer>
       </Modal>

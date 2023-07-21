@@ -23,9 +23,12 @@ import { TipoSuscripcion } from "../../types/TipoSuscripcion";
 import { DeleteIcon } from "../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../context/SearchContext";
 import ModalConfirmDelete from "./modals/ModalConfirmDelete";
+import { useTranslation } from "react-i18next";
 
 //Componente funcional que recibe isActive y isDeleted como props
-const ContentFidelidad: React.FC = () => {
+const ContentTipoSuscripcion: React.FC = () => {
+  //Traducción de idiomas
+  const { t } = useTranslation();
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los tipoSuscripciones
@@ -210,16 +213,19 @@ const ContentFidelidad: React.FC = () => {
         >
           <Card.Header>
             <Text css={{ fontWeight: "normal" }} h3>
-              No Hay Suscripciones
+              {t("contentSuscripcion.noSuscripciones")}
             </Text>
           </Card.Header>
           <Card.Body>
             <Text h5 css={{ fontWeight: "normal" }}>
-              ¿Desea Registrar Una Nuevo?
+              {t("contentSuscripcion.addNewSuscripcion")}
             </Text>
           </Card.Body>
           <Card.Footer style={{ justifyContent: "center" }}>
-            <Button onPress={handleAddSuscripciones}>Registrar</Button>
+            <Button onPress={handleAddSuscripciones}>
+              {" "}
+              {t("contentSuscripcion.addSuscripcion")}
+            </Button>
           </Card.Footer>
         </Card>
         {modalAdd && (
@@ -261,7 +267,7 @@ const ContentFidelidad: React.FC = () => {
         >
           <Card.Body>
             <Text h3 css={{ fontWeight: "normal" }}>
-              No Hay Suscripciones Con El Nombre
+              {t("contentSuscripcion.noSuscripcionWithSearch")}
             </Text>
             <Text h5 css={{ fontWeight: "normal" }}>
               {searchTerm}
@@ -273,12 +279,12 @@ const ContentFidelidad: React.FC = () => {
   }
   //Si hay tipoSuscripciones entonces muestra la tabla de tipoSuscripciones
   const columns = [
-    { name: "Nombre de la Suscripcion", uid: "nombreSuscripcion" },
-    { name: "Maximo de Clientes", uid: "numeroUsuariosMax" },
-    { name: "Monto Minimo", uid: "montoDesde" },
-    { name: "Maximo Maximo", uid: "montoHasta" },
-    { name: "Costo de Suscripcion", uid: "costoMembresia" },
-    { name: "Acciones", uid: "acciones" },
+    { name: t("contentSuscripcion.name"), uid: "nombreSuscripcion" },
+    { name: t("contentSuscripcion.maxUsers"), uid: "numeroUsuariosMax" },
+    { name: t("contentSuscripcion.montoMinimo"), uid: "montoDesde" },
+    { name: t("contentSuscripcion.montoMaximo"), uid: "montoHasta" },
+    { name: t("contentSuscripcion.costo"), uid: "costoMembresia" },
+    { name: t("contentSuscripcion.Actions"), uid: "acciones" },
   ];
 
   //Función para renderizar las celdas de la tabla
@@ -293,28 +299,39 @@ const ContentFidelidad: React.FC = () => {
       case "numeroUsuariosMax":
         return (
           <Text style={{ marginLeft: "3%" }}>
-            <Text>{tipoSuscripciones.numeroUsuariosMax} Usuarios</Text>
+            <Text>
+              {tipoSuscripciones.numeroUsuariosMax}{" "}
+              {t("contentSuscripcion.users")}
+            </Text>
           </Text>
         );
       case "montoDesde":
         return (
           <Row style={{ marginLeft: "0%" }}>
             <Text>{tipoSuscripciones.montoDesde}</Text>
-            <Text style={{ marginLeft: "4px" }}>Pesos</Text>
+            <Text style={{ marginLeft: "4px" }}>
+              {t("contentSuscripcion.pesos")}
+            </Text>
           </Row>
         );
       case "montoHasta":
         return (
           <Row style={{ marginLeft: "0%" }}>
             <Text>{tipoSuscripciones.montoHasta}</Text>
-            <Text style={{ marginLeft: "4px" }}>Pesos</Text>
+            <Text style={{ marginLeft: "4px" }}>
+              {" "}
+              {t("contentSuscripcion.pesos")}
+            </Text>
           </Row>
         );
       case "costoMembresia":
         return (
           <Row style={{ marginLeft: "8%" }}>
             <Text>{tipoSuscripciones.costoMembresia}</Text>
-            <Text style={{ marginLeft: "4px" }}>Pesos</Text>
+            <Text style={{ marginLeft: "4px" }}>
+              {" "}
+              {t("contentSuscripcion.pesos")}
+            </Text>
           </Row>
         );
 
@@ -322,14 +339,14 @@ const ContentFidelidad: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Editar Nivel">
+              <Tooltip content={t("contentSuscripcion.editSuscripcion")}>
                 <IconButton onClick={() => openModalEdit(tipoSuscripciones)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Eliminar Tipo de Suscripcion">
+              <Tooltip content={t("contentSuscripcion.deleteSuscripcion")}>
                 <IconButton
                   onClick={() => openModalConfirmacion(tipoSuscripciones)}
                 >
@@ -375,7 +392,7 @@ const ContentFidelidad: React.FC = () => {
             onPress={handleAddSuscripciones}
             css={{ marginLeft: "auto" }} // Alinear a la derecha
           >
-            Agregar Tipo de Suscripcion
+            {t("contentSuscripcion.addSuscripcionType")}
           </Button>
         </Col>
       </Row>
@@ -459,4 +476,4 @@ const ContentFidelidad: React.FC = () => {
   );
 };
 
-export default ContentFidelidad;
+export default ContentTipoSuscripcion;

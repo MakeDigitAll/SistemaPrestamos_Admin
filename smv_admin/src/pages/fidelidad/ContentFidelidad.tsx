@@ -25,9 +25,12 @@ import { DeleteIcon } from "../../resources/icons/DeleteIcon";
 import { SearchContext } from "../../context/SearchContext";
 import ModalConfirmDelete from "./modals/ModalConfirmDelete";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentFidelidad: React.FC = () => {
+  //Traducciones
+  const { t } = useTranslation();
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los nivelesFidelidad
@@ -215,16 +218,18 @@ const ContentFidelidad: React.FC = () => {
         >
           <Card.Header>
             <Text css={{ fontWeight: "normal" }} h3>
-              No Hay Niveles De Fidelidad
+              {t("contentFidelidad.noFidelidades")}
             </Text>
           </Card.Header>
           <Card.Body>
             <Text h5 css={{ fontWeight: "normal" }}>
-              ¿Desea Registrar Uno Nuevo?
+              {t("contentFidelidad.addNewFidelidad")}.
             </Text>
           </Card.Body>
           <Card.Footer style={{ justifyContent: "center" }}>
-            <Button onPress={handleAddNiveles}>Registrar</Button>
+            <Button onPress={handleAddNiveles}>
+              {t("contentFidelidad.addSuscripcion")}
+            </Button>
           </Card.Footer>
         </Card>
         {modalAdd && (
@@ -266,7 +271,7 @@ const ContentFidelidad: React.FC = () => {
         >
           <Card.Body>
             <Text h3 css={{ fontWeight: "normal" }}>
-              No Hay Niveles Con El Nombre
+              {t("contentFidelidad.noFidelidadWithSearch")}
             </Text>
             <Text h5 css={{ fontWeight: "normal" }}>
               {searchTerm}
@@ -278,11 +283,11 @@ const ContentFidelidad: React.FC = () => {
   }
   //Si hay nivelesFidelidad entonces muestra la tabla de nivelesFidelidad
   const columns = [
-    { name: "Nombre del Nivel", uid: "nombreNivelFidelidad" },
-    { name: "Descuento", uid: "descuento" },
-    { name: "Minimo de Meses", uid: "numeroMesesMinimo" },
-    { name: "Maximo de Meses", uid: "numeroMesesMaximo" },
-    { name: "Acciones", uid: "acciones" },
+    { name: t("contentFidelidad.name"), uid: "nombreNivelFidelidad" },
+    { name: t("contentFidelidad.discount"), uid: "descuento" },
+    { name: t("contentFidelidad.minimoMeses"), uid: "numeroMesesMinimo" },
+    { name: t("contentFidelidad.maximoMeses"), uid: "numeroMesesMaximo" },
+    { name: t("contentFidelidad.Actions"), uid: "acciones" },
   ];
 
   //Función para renderizar las celdas de la tabla
@@ -301,14 +306,18 @@ const ContentFidelidad: React.FC = () => {
         return (
           <Row style={{ marginLeft: "8%" }}>
             <Text>{niveles.numeroMesesMinimo}</Text>
-            <Text style={{ marginLeft: "4px" }}>Meses</Text>
+            <Text style={{ marginLeft: "4px" }}>
+              {t("contentFidelidad.months")}
+            </Text>
           </Row>
         );
       case "numeroMesesMaximo":
         return (
           <Row style={{ marginLeft: "8%" }}>
             <Text>{niveles.numeroMesesMaximo}</Text>
-            <Text style={{ marginLeft: "4px" }}>Meses</Text>
+            <Text style={{ marginLeft: "4px" }}>
+              {t("contentFidelidad.months")}
+            </Text>
           </Row>
         );
 
@@ -316,14 +325,14 @@ const ContentFidelidad: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Editar Nivel">
+              <Tooltip content={t("contentFidelidad.editFidelidad")}>
                 <IconButton onClick={() => openModalEdit(niveles)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Eliminar niveles">
+              <Tooltip content={t("contentFidelidad.deleteFidelidad")}>
                 <IconButton onClick={() => openModalConfirmacion(niveles)}>
                   <DeleteIcon size={20} fill="#979797" />
                 </IconButton>
@@ -367,7 +376,7 @@ const ContentFidelidad: React.FC = () => {
             onPress={handleAddNiveles}
             css={{ marginLeft: "auto" }} // Alinear a la derecha
           >
-            Agregar Nivel
+            {t("contentFidelidad.addFidelidad")}
           </Button>
         </Col>
       </Row>

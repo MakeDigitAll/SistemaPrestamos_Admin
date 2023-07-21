@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
+import { useTranslation } from "react-i18next";
 
 interface InformacionSuscripcionProps {
   tipoSuscripcion: TipoSuscripcion;
@@ -17,6 +18,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
   onClose,
   handleUpdate,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [nombre, setNombre] = useState(tipoSuscripcion.nombreSuscripcion);
   const [numeroUsuariosMax, setnumeroUsuariosMax] = useState(
@@ -46,7 +48,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
   const validarNombre = (nombre: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(nombre)) {
-      return "El nombre solo debe contener letras";
+      return t("modalEditTipoSuscripcion.onlyLettersName");
     }
     return "";
   };
@@ -55,7 +57,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
     let valid = true;
 
     if (!nombre) {
-      setNombreError("El nombre es obligatorio");
+      setNombreError(t("modalEditTipoSuscripcion.requiredName"));
       valid = false;
     } else {
       const nombreError = validarNombre(nombre);
@@ -72,42 +74,42 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
       numeroUsuariosMax < 0 ||
       numeroUsuariosMax > 1000000
     ) {
-      setnumeroUsuariosMaxError("El numero de usuarios maximos es obligatorio");
+      setnumeroUsuariosMaxError(t("modalEditTipoSuscripcion.requiredMaxUsers"));
       valid = false;
     } else {
       setnumeroUsuariosMaxError("");
     }
 
     if (montoDesde === null || montoDesde < 0) {
-      setMontoDesdeError("El monto de dinero minimo es obligatorio");
+      setMontoDesdeError(t("modalEditTipoSuscripcion.requiredMinAmount"));
       valid = false;
     } else {
       setMontoDesdeError("");
     }
 
     if (montoHasta === null || montoHasta < 1) {
-      setMontoHastaError("El monto de dinero maximo es obligatorio");
+      setMontoHastaError(t("modalEditTipoSuscripcion.requiredMaxAmount"));
       valid = false;
     } else {
       setMontoHastaError("");
     }
 
     if (montoDesde >= montoHasta) {
-      setMontoHastaError("El número de monto maximo debe ser mayor al minimo");
+      setMontoHastaError(t("modalEditTipoSuscripcion.maxAmountThat"));
       valid = false;
     } else {
       setMontoHastaError("");
     }
 
     if (costoMembresia === null) {
-      setCostoMembresiaError("El costo de la suscripcion es obligatorio");
+      setCostoMembresiaError(t("modalEditTipoSuscripcion.requiredCost"));
       valid = false;
     } else {
       setCostoMembresiaError("");
     }
 
     if (costoMembresia <= 0) {
-      setCostoMembresiaError("El costo de la suscripcion debe ser mayor a 0");
+      setCostoMembresiaError(t("modalEditTipoSuscripcion.costZero"));
       valid = false;
     } else {
       setCostoMembresiaError("");
@@ -136,7 +138,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
         data
       );
       if (response.status === 200) {
-        toast.success("Suscripcion Editada Correctamente");
+        toast.success(t("modalEditTipoSuscripcion.suscripcionEdited"));
         handleUpdate(tipoSuscripcion);
         closeHandler();
       }
@@ -164,7 +166,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
         >
           <Modal.Body>
             <Text h5 css={{ textAlign: "center" }}>
-              Nombre de la Suscripcion
+              {t("modalEditTipoSuscripcion.suscripcionName")}
             </Text>
             <Input
               value={nombre}
@@ -173,7 +175,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
             />
             {nombreError && <Text color="error">{nombreError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero Maximo de Usuarios
+              {t("modalEditTipoSuscripcion.maxUsers")}
             </Text>
             <Input
               value={numeroUsuariosMax}
@@ -198,7 +200,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
               <Text color="error">{numeroUsuariosMaxError}</Text>
             )}
             <Text h5 css={{ textAlign: "center" }}>
-              Monto a presentar desde
+              {t("modalEditTipoSuscripcion.minAmount")}
             </Text>
             <Input
               type="number"
@@ -216,7 +218,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
             />
             {montoDesdeError && <Text color="error">{montoDesdeError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Monto a presentar hasta
+              {t("modalEditTipoSuscripcion.maxAmount")}
             </Text>
             <Input
               type="number"
@@ -235,7 +237,7 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
             {montoHastaError && <Text color="error">{montoHastaError}</Text>}
 
             <Text h5 css={{ textAlign: "center" }}>
-              Costo de la Suscripcion
+              {t("modalEditTipoSuscripcion.cost")}
             </Text>
             <Input
               value={costoMembresia}
@@ -263,10 +265,10 @@ const ModalEditFidelidad: React.FC<InformacionSuscripcionProps> = ({
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
           <Button auto onPress={actualizarHandler}>
-            Actualizar
+            {t("modalEditTipoSuscripcion.update")}
           </Button>
           <Button auto color="error" onPress={closeHandler}>
-            Cerrar
+            {t("modalEditTipoSuscripcion.cancel")}
           </Button>
         </Modal.Footer>
       </Modal>

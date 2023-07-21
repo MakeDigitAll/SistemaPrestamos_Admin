@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { NivelesFidelidad } from "../../../types/NivelesFidelidad";
-
+import { useTranslation } from "react-i18next";
 interface InformacionNivelProps {
   nivel: NivelesFidelidad;
   onClose: () => void;
@@ -17,6 +17,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
   onClose,
   handleUpdate,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [nombre, setNombre] = useState(nivel.nombreNivelFidelidad);
   const [descuento, setDescuento] = useState(nivel.descuento);
@@ -44,7 +45,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
   const validarNombre = (nombre: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(nombre)) {
-      return "El nombre solo debe contener letras";
+      return t("modalEditTipoFidelidad.onlyLettersName");
     }
     return "";
   };
@@ -53,7 +54,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
     let valid = true;
 
     if (!nombre) {
-      setNombreError("El nombre es obligatorio");
+      setNombreError(t("modalEditTipoFidelidad.requiredName"));
       valid = false;
     } else {
       const nombreError = validarNombre(nombre);
@@ -66,30 +67,28 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
     }
 
     if (descuento === null || descuento < 0 || descuento > 100) {
-      setDescuentoError("El descuento es obligatorio");
+      setDescuentoError(t("modalEditTipoFidelidad.requiredDiscount"));
       valid = false;
     } else {
       setDescuentoError("");
     }
 
     if (numeroMesesMinimo === null || numeroMesesMinimo < 0) {
-      setNumeroMesesMinimoError("El número de meses mínimo es obligatorio");
+      setNumeroMesesMinimoError(t("modalEditTipoFidelidad.requiredMinMonths"));
       valid = false;
     } else {
       setNumeroMesesMinimoError("");
     }
 
     if (numeroMesesMaximo === null || numeroMesesMaximo < 1) {
-      setNumeroMesesMaximoError("El número de meses máximo es obligatorio");
+      setNumeroMesesMaximoError(t("modalEditTipoFidelidad.requiredMaxMonths"));
       valid = false;
     } else {
       setNumeroMesesMaximoError("");
     }
 
     if (numeroMesesMinimo >= numeroMesesMaximo) {
-      setNumeroMesesMaximoError(
-        "El número de meses máximo debe ser mayor al mínimo"
-      );
+      setNumeroMesesMaximoError(t("modalEditTipoFidelidad.maxMonthsThat"));
       valid = false;
     } else {
       setNumeroMesesMaximoError("");
@@ -116,7 +115,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
         data
       );
       if (response.status === 200) {
-        toast.success("Nivel Editado Correctamente");
+        toast.success(t("modalEditTipoFidelidad.fidelidadEdited"));
         handleUpdate(nivel);
         closeHandler();
       }
@@ -144,7 +143,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
         >
           <Modal.Body>
             <Text h5 css={{ textAlign: "center" }}>
-              Nombre del Nivel
+              {t("modalEditTipoFidelidad.fidelidadName")}
             </Text>
             <Input
               value={nombre}
@@ -153,7 +152,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
             />
             {nombreError && <Text color="error">{nombreError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Descuento
+              {t("modalEditTipoFidelidad.discount")}
             </Text>
             <Input
               value={descuento}
@@ -174,7 +173,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
 
             {descuentoError && <Text color="error">{descuentoError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero de meses minimo
+              {t("modalEditTipoFidelidad.minMonths")}
             </Text>
             <Input
               type="number"
@@ -196,7 +195,7 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
               <Text color="error">{numeroMesesMinimoError}</Text>
             )}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero de meses maximo
+              {t("modalEditTipoFidelidad.maxMonths")}
             </Text>
             <Input
               type="number"
@@ -221,10 +220,10 @@ const ModalEditFidelidad: React.FC<InformacionNivelProps> = ({
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
           <Button auto onPress={actualizarHandler}>
-            Actualizar
+            {t("modalEditTipoFidelidad.update")}
           </Button>
           <Button auto color="error" onPress={closeHandler}>
-            Cerrar
+            {t("modalEditTipoFidelidad.cancel")}
           </Button>
         </Modal.Footer>
       </Modal>

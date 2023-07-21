@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Text } from "@nextui-org/react";
 import { UserPrestamista } from "../../../types/UserPrestamista";
-
+import { useTranslation } from "react-i18next";
 interface ConfirmacionUsuarioProps {
   user: UserPrestamista;
   onClose: () => void;
@@ -17,6 +17,7 @@ const ModalHabilitarUsuario: React.FC<ConfirmacionUsuarioProps> = ({
     await handleUpdate(user);
     onClose();
   };
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -28,7 +29,7 @@ const ModalHabilitarUsuario: React.FC<ConfirmacionUsuarioProps> = ({
     >
       <Modal.Header>
         <Text h4 css={{ fontWeight: "normal", textAlign: "center" }}>
-          ¿Estás seguro que deseas habilitar al usuario?
+          {t("modalEnableUser.confirmEnable")}
         </Text>
       </Modal.Header>
       <Modal.Body>
@@ -38,10 +39,10 @@ const ModalHabilitarUsuario: React.FC<ConfirmacionUsuarioProps> = ({
       </Modal.Body>
       <Modal.Footer style={{ alignSelf: "center" }}>
         <Button auto color="success" onPress={confirmHandler}>
-          Confirmar
+          {t("modalEnableUser.confirm")}
         </Button>
         <Button auto color="error" onPress={onClose}>
-          Cancelar
+          {t("modalEnableUser.cancel")}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -28,9 +28,12 @@ import { FaUserTimes } from "react-icons/fa";
 import ModalDeleteSuscripcion from "../modals/ModalDeleteSuscripcion";
 import deactivateSuscripcionUsuario from "../../../utils/deactivateUser";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
+  //traducción
+  const { t } = useTranslation();
   //Obtiene el navigate de react-router-dom
   const navigate = useNavigate();
   //Obtiene el searchTerm del contexto
@@ -277,16 +280,18 @@ const ContentUsuariosActivos: React.FC = () => {
         >
           <Card.Header>
             <Text css={{ fontWeight: "normal" }} h3>
-              No Hay Usuarios Activos
+              {t("usuariosActivos.noUsersActive")}
             </Text>
           </Card.Header>
           <Card.Body>
             <Text h5 css={{ fontWeight: "normal" }}>
-              ¿Desea activar a un usuario?
+              {t("usuariosActivos.activateNewUser")}
             </Text>
           </Card.Body>
           <Card.Footer style={{ justifyContent: "center" }}>
-            <Button onPress={handleNav}>Activar Suscripcion</Button>
+            <Button onPress={handleNav}>
+              {t("usuariosActivos.activateSubscription")}
+            </Button>
           </Card.Footer>
         </Card>
       </div>
@@ -322,7 +327,7 @@ const ContentUsuariosActivos: React.FC = () => {
         >
           <Card.Body>
             <Text h3 css={{ fontWeight: "normal" }}>
-              No Hay Usuarios Con El Nombre
+              {t("usuariosActivos.noUserWithSearch")}
             </Text>
             <Text h5 css={{ fontWeight: "normal" }}>
               {searchTerm}
@@ -334,13 +339,13 @@ const ContentUsuariosActivos: React.FC = () => {
   }
   //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
   const columns = [
-    { name: "NOMBRES", uid: "nombres" },
-    { name: "APELLIDOS", uid: "apellidos" },
-    { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
-    { name: "NOMBRE DE LA SUSCRIPCION", uid: "tipoSuscripcion" },
-    { name: "FECHA DE INICIO", uid: "fechaInicio" },
-    { name: "FECHA DE PAGO", uid: "fechaFin" },
-    { name: "ACCIONES", uid: "acciones" },
+    { name: t("usuariosActivos.name"), uid: "nombres" },
+    { name: t("usuariosActivos.lastName"), uid: "apellidos" },
+    { name: t("usuariosActivos.referalCode"), uid: "codigoReferencia" },
+    { name: t("usuariosActivos.suscriptionName"), uid: "tipoSuscripcion" },
+    { name: t("usuariosActivos.startDate"), uid: "fechaInicio" },
+    { name: t("usuariosActivos.endDate"), uid: "fechaFin" },
+    { name: t("usuariosActivos.Actions"), uid: "acciones" },
   ];
 
   //Función para renderizar las celdas de la tabla
@@ -396,7 +401,7 @@ const ContentUsuariosActivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "10%" }}>
-              <Tooltip content="Eliminar Suscripcion">
+              <Tooltip content={t("usuariosActivos.unsubscribe")}>
                 <IconButton onClick={() => openModalUnsuscribeUser(usuario)}>
                   <FaUserTimes size={20} fill="#979797" />
                 </IconButton>
@@ -404,7 +409,7 @@ const ContentUsuariosActivos: React.FC = () => {
             </Col>
 
             <Col css={{ d: "flex", marginLeft: "45%" }}>
-              <Tooltip content="Editar Usuario">
+              <Tooltip content={t("usuariosActivos.editUser")}>
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>

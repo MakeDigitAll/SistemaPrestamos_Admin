@@ -4,8 +4,10 @@ import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "../../hooks/userPrestamistas/usegetAllUsuarios";
 import { UserPrestamista as UserTypePrestamista } from "../../types/UserPrestamista";
+import { useTranslation } from "react-i18next";
 
 const ContentDashboard: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const getUsuarios = useGetUsuariosPrestamistas();
   const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
@@ -44,7 +46,7 @@ const ContentDashboard: React.FC = () => {
 
   if (usuariosActivos.length > 0) {
     data.push({
-      name: "Activos",
+      name: t("dashboard.activos"),
       value: usuariosActivos.length,
       fill: "#749DC3",
     });
@@ -52,7 +54,7 @@ const ContentDashboard: React.FC = () => {
 
   if (usuariosInactivos.length > 0) {
     data.push({
-      name: "Por Suscribir",
+      name: t("dashboard.porSuscribir"),
       value: usuariosInactivos.length,
       fill: "#A9A9A9",
     });
@@ -60,7 +62,7 @@ const ContentDashboard: React.FC = () => {
 
   if (usuariosEliminados.length > 0) {
     data.push({
-      name: "Eliminados",
+      name: t("dashboard.eliminados"),
       value: usuariosEliminados.length,
       fill: "#E57373",
     });
@@ -69,13 +71,13 @@ const ContentDashboard: React.FC = () => {
   const handlePieClick = (entry: any) => {
     // Realiza la redirección a la ubicación deseada según el nombre de la sección
     switch (entry.name) {
-      case "Activos":
+      case t("dashboard.activos"):
         navigate("/admin-usuarios-activos");
         break;
-      case "Por Suscribir":
+      case t("dashboard.porSuscribir"):
         navigate("/admin-suscribir-usuario");
         break;
-      case "Eliminados":
+      case t("dashboard.eliminados"):
         navigate("/admin-usuarios-eliminados");
         break;
       default:
@@ -96,7 +98,7 @@ const ContentDashboard: React.FC = () => {
             justifyContent: "center",
           }}
         >
-          <h3>Usuarios Prestamistas</h3>
+          <h3>{t("dashboard.usuariosPrestamistas")}</h3>
         </Card.Header>
         <Card.Body style={{ marginTop: "-20%" }}>
           {data.length > 0 ? (
@@ -122,7 +124,7 @@ const ContentDashboard: React.FC = () => {
             </PieChart>
           ) : (
             <h4 style={{ textAlign: "center", marginTop: "20%" }}>
-              No hay datos disponibles para graficar
+              {t("dashboard.noDatos")}
             </h4>
           )}
         </Card.Body>

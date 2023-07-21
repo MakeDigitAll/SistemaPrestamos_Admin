@@ -25,9 +25,12 @@ import ModalHabilitarUsuario from "../modals/ModalHabilitarUsuario";
 import enableUser from "../../../utils/enableUser";
 import { FaUserPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosActivos: React.FC = () => {
+  //traducción
+  const { t } = useTranslation();
   //Obtiene el searchTerm del contexto
   const { searchTerm } = useContext(SearchContext);
   //Obtiene el collator para ordenar los usuariosPrestamistas
@@ -191,7 +194,7 @@ const ContentUsuariosActivos: React.FC = () => {
         >
           <Card.Header>
             <Text css={{ fontWeight: "normal" }} h3>
-              No Hay Usuarios Eliminados
+              {t("usuariosEliminados.noUsersDeleted")}
             </Text>
           </Card.Header>
         </Card>
@@ -228,7 +231,7 @@ const ContentUsuariosActivos: React.FC = () => {
         >
           <Card.Body>
             <Text h3 css={{ fontWeight: "normal" }}>
-              No Hay Usuarios Con El Nombre
+              {t("usuariosEliminados.noUserWithSearch")}
             </Text>
             <Text h5 css={{ fontWeight: "normal" }}>
               {searchTerm}
@@ -240,12 +243,11 @@ const ContentUsuariosActivos: React.FC = () => {
   }
   //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
   const columns = [
-    { name: "NOMBRES", uid: "nombres" },
-    { name: "APELLIDOS", uid: "apellidos" },
-    { name: "CÓDIGO DE REFERENCIA", uid: "codigoReferencia" },
-    { name: "TELÉFONO", uid: "numeroTelefono" },
-
-    { name: "ACCIONES", uid: "acciones" },
+    { name: t("usuariosEliminados.name"), uid: "nombres" },
+    { name: t("usuariosEliminados.lastName"), uid: "apellidos" },
+    { name: t("usuariosEliminados.referalCode"), uid: "codigoReferencia" },
+    { name: t("usuariosEliminados.phone"), uid: "numeroTelefono" },
+    { name: t("usuariosEliminados.Actions"), uid: "acciones" },
   ];
 
   //Función para renderizar las celdas de la tabla
@@ -270,7 +272,7 @@ const ContentUsuariosActivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "25%" }}>
-              <Tooltip content="Habilitar Usuario">
+              <Tooltip content={t("usuariosEliminados.enableUser")}>
                 <IconButton onClick={() => openModalHabilitarUser(usuario)}>
                   <FaUserPlus size={20} fill="#979797" />
                 </IconButton>
@@ -278,7 +280,7 @@ const ContentUsuariosActivos: React.FC = () => {
             </Col>
 
             <Col css={{ d: "flex" }}>
-              <Tooltip content="Editar Usuario">
+              <Tooltip content={t("usuariosEliminados.editUser")}>
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
@@ -328,7 +330,7 @@ const ContentUsuariosActivos: React.FC = () => {
       const resp = await enableUser(usuario.idUsuarioPrestamista);
       if (resp) {
         getUsuarios?.refetch();
-        const successMessage = "Usuario Habilitado";
+        const successMessage = t("usuariosEliminados.userEnabled");
         localStorage.setItem("toastMessageHabilitado", successMessage);
         navigate("/admin-suscribir-usuario");
       }

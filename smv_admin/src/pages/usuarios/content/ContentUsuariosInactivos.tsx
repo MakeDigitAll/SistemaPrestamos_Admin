@@ -30,9 +30,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import defaultImage from "../../../assets/images/defaultProfile.png";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
-
+import { useTranslation } from "react-i18next";
 //Componente funcional que recibe isActive y isDeleted como props
 const ContentUsuariosInactivos: React.FC = () => {
+  //traducción
+  const { t } = useTranslation();
   //Obtiene el navigate para redireccionar
   const navigate = useNavigate();
   //Obtiene el searchTerm del contexto
@@ -201,7 +203,7 @@ const ContentUsuariosInactivos: React.FC = () => {
       );
       if (resp) {
         //getUsuarios?.refetch();
-        const successMessage = "Usuario Activado";
+        const successMessage = t("usuariosInactivos.usuarioActivado");
         localStorage.setItem("toastMessageActivateUsuario", successMessage);
         navigate("/admin-usuarios-activos");
       }
@@ -276,16 +278,18 @@ const ContentUsuariosInactivos: React.FC = () => {
         >
           <Card.Header>
             <Text css={{ fontWeight: "normal" }} h3>
-              No Hay Usuarios Para Suscribir
+              {t("usuariosInactivos.noUsersToSubscribe")}
             </Text>
           </Card.Header>
           <Card.Body>
             <Text h5 css={{ fontWeight: "normal" }}>
-              ¿Desea agregar un usuario?
+              {t("usuariosInactivos.addNewUser")}
             </Text>
           </Card.Body>
           <Card.Footer style={{ justifyContent: "center" }}>
-            <Button onPress={handleNav}>Agregar usuario</Button>
+            <Button onPress={handleNav}>
+              {t("usuariosInactivos.addUser")}
+            </Button>
           </Card.Footer>
         </Card>
       </div>
@@ -321,7 +325,7 @@ const ContentUsuariosInactivos: React.FC = () => {
         >
           <Card.Body>
             <Text h3 css={{ fontWeight: "normal" }}>
-              No Hay Usuarios Con El Nombre
+              {t("usuariosInactivos.noUserWithSearch")}
             </Text>
             <Text h5 css={{ fontWeight: "normal" }}>
               {searchTerm}
@@ -333,11 +337,11 @@ const ContentUsuariosInactivos: React.FC = () => {
   }
   //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
   const columns = [
-    { name: "Nombres", uid: "nombres" },
-    { name: "Apellidos", uid: "apellidos" },
-    { name: "Codigo de Refencia", uid: "codigoReferencia" },
-    { name: "Telefono", uid: "numeroTelefono" },
-    { name: "Acciones", uid: "acciones" },
+    { name: t("usuariosInactivos.name"), uid: "nombres" },
+    { name: t("usuariosInactivos.lastName"), uid: "apellidos" },
+    { name: t("usuariosInactivos.referalCode"), uid: "codigoReferencia" },
+    { name: t("usuariosInactivos.Phone"), uid: "numeroTelefono" },
+    { name: t("usuariosInactivos.Actions"), uid: "acciones" },
   ];
 
   //Función para renderizar las celdas de la tabla
@@ -364,21 +368,21 @@ const ContentUsuariosInactivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "10%" }}>
-              <Tooltip content="Activar Suscripcion">
+              <Tooltip content={t("usuariosInactivos.activateSubscription")}>
                 <IconButton onClick={() => openModalSuscripciones(usuario)}>
                   <MdOutlineMoreTime size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Editar Usuario">
+              <Tooltip content={t("usuariosInactivos.editUser")}>
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content="Eliminar usuario">
+              <Tooltip content={t("usuariosInactivos.deleteUser")}>
                 <IconButton onClick={() => openModalConfirmacion(usuario)}>
                   <DeleteIcon size={20} fill="#979797" />
                 </IconButton>

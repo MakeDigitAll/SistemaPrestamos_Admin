@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { NivelesFidelidad } from "../../../types/NivelesFidelidad";
+import { useTranslation } from "react-i18next";
 
 interface AgregarUsuarioProps {
   onClose: () => void;
@@ -15,6 +16,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
   onClose,
   handleUpdate,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(true);
   const { value: nombreValue, bindings: nombreBindings } = useInput("");
   const { value: descuentoValue, bindings: descuentoBindings } = useInput("");
@@ -38,7 +40,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
   const validarNombre = (nombre: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(nombre)) {
-      return "El nombre solo debe contener letras";
+      return t("modalAddTipoFidelidad.onlyLettersName");
     }
     return "";
   };
@@ -47,7 +49,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
     let valid = true;
 
     if (!nombreValue) {
-      setNombreError("El nombre es obligatorio");
+      setNombreError(t("modalAddTipoFidelidad.requiredName"));
       valid = false;
     } else {
       const nombreError = validarNombre(nombreValue);
@@ -60,41 +62,37 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
     }
 
     if (descuentoValue === "") {
-      setDescuentoError("El descuento es obligatorio");
+      setDescuentoError(t("modalAddTipoFidelidad.requiredDiscount"));
       valid = false;
     } else if (Number(descuentoValue) < 0 || Number(descuentoValue) > 100) {
-      setDescuentoError("El descuento debe estar entre 0 y 100");
+      setDescuentoError(t("modalAddTipoFidelidad.discountBetween"));
       valid = false;
     } else {
       setDescuentoError("");
     }
 
     if (numeroMesesMinimoValue === "") {
-      setNumeroMesesMinimoError("El número de meses mínimo es obligatorio");
+      setNumeroMesesMinimoError(t("modalAddTipoFidelidad.requiredMinMonths"));
       valid = false;
     } else if (Number(numeroMesesMinimoValue) < 0) {
-      setNumeroMesesMinimoError(
-        "El número de meses mínimo debe ser mayor o igual a 0"
-      );
+      setNumeroMesesMinimoError(t("modalAddTipoFidelidad.minMonthsZero"));
       valid = false;
     } else {
       setNumeroMesesMinimoError("");
     }
 
     if (numeroMesesMaximoValue === "") {
-      setNumeroMesesMaximoError("El número de meses máximo es obligatorio");
+      setNumeroMesesMaximoError(t("modalAddTipoFidelidad.requiredMaxMonths"));
       valid = false;
     } else if (Number(numeroMesesMaximoValue) <= 1) {
-      setNumeroMesesMaximoError("El número de meses máximo debe ser mayor a 1");
+      setNumeroMesesMaximoError(t("modalAddTipoFidelidad.maxMonthsOne"));
       valid = false;
     } else {
       setNumeroMesesMaximoError("");
     }
 
     if (Number(numeroMesesMinimoValue) >= Number(numeroMesesMaximoValue)) {
-      setNumeroMesesMaximoError(
-        "El número de meses máximo debe ser mayor al mínimo"
-      );
+      setNumeroMesesMaximoError(t("modalAddTipoFidelidad.maxMonthsThat"));
       valid = false;
     } else {
       setNumeroMesesMaximoError("");
@@ -124,7 +122,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
       const response = await service.agregarNivelFidelidad(data);
       console.log(response);
       if (response.status === 200) {
-        const successMessage = "Nivel registrado con éxito.";
+        const successMessage = t("modalAddTipoFidelidad.addedFidelidad");
         toast.success(successMessage);
         handleUpdate(response.data);
         closeHandler();
@@ -153,12 +151,12 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
         >
           <Modal.Body>
             <Text h5 css={{ textAlign: "center" }}>
-              Nombre del Nivel de Fidelidad
+              {t("modalAddTipoFidelidad.fidelidadName")}
             </Text>
             <Input {...nombreBindings} aria-labelledby="Nombre" />
             {nombreError && <Text color="error">{nombreError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Descuento en %
+              {t("modalAddTipoFidelidad.discount")}
             </Text>
             <Input
               {...descuentoBindings}
@@ -176,7 +174,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
             />
             {descuentoError && <Text color="error">{descuentoError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero de meses mínimo
+              {t("modalAddTipoFidelidad.minMonths")}
             </Text>
             <Input
               {...numeroMesesMinimoBindings}
@@ -194,7 +192,7 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
               <Text color="error">{numeroMesesMinimoError}</Text>
             )}
             <Text h5 css={{ textAlign: "center" }}>
-              Numero de meses máximo
+              {t("modalAddTipoFidelidad.maxMonths")}
             </Text>
             <Input
               {...numeroMesesMaximoBindings}
@@ -215,10 +213,10 @@ const InfoNivelFidelidad: React.FC<AgregarUsuarioProps> = ({
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
           <Button auto onPress={agregarUsuarioHandler}>
-            Agregar
+            {t("modalAddTipoFidelidad.addFidelidad")}
           </Button>
           <Button auto color="error" onPress={closeHandler}>
-            Cerrar
+            {t("modalAddTipoFidelidad.cancel")}
           </Button>
         </Modal.Footer>
       </Modal>

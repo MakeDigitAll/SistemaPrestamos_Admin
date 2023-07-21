@@ -5,16 +5,18 @@ import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
 import { aesEncrypt } from "../../../utils/encryption";
 import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
+import { useTranslation } from "react-i18next";
 
 interface AgregarUsuarioProps {
   onClose: () => void;
   handleUpdate: (tipoSuscripciones: TipoSuscripcion) => void;
 }
 
-const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
+const ModalAddTipoSuscripcion: React.FC<AgregarUsuarioProps> = ({
   onClose,
   handleUpdate,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(true);
   const { value: nombreValue, bindings: nombreBindings } = useInput("");
   const { value: numeroUsuariosMaxValue, bindings: numeroUsuariosMaxBindings } =
@@ -38,7 +40,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
   const validarNombre = (nombre: string) => {
     const regex = /^[A-Za-z\s]+$/;
     if (!regex.test(nombre)) {
-      return "El nombre solo debe contener letras";
+      return t("modalAddTipoSuscripcion.onlyLettersName");
     }
     return "";
   };
@@ -47,7 +49,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
     let valid = true;
 
     if (!nombreValue) {
-      setNombreError("El nombre es obligatorio");
+      setNombreError(t("modalAddTipoSuscripcion.requiredName"));
       valid = false;
     } else {
       const nombreError = validarNombre(nombreValue);
@@ -60,54 +62,50 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
     }
 
     if (numeroUsuariosMaxValue === "") {
-      setnumeroUsuariosMaxError("El número de usuarios máximos es obligatorio");
+      setnumeroUsuariosMaxError(t("modalAddTipoSuscripcion.requiredMaxUsers"));
       valid = false;
     } else if (
       Number(numeroUsuariosMaxValue) < 0 ||
       Number(numeroUsuariosMaxValue) > 1000000
     ) {
-      setnumeroUsuariosMaxError(
-        "El número de usuarios máximos debe estar entre 0 y 1000000"
-      );
+      setnumeroUsuariosMaxError(t("modalAddTipoSuscripcion.userBetween"));
       valid = false;
     } else {
       setnumeroUsuariosMaxError("");
     }
 
     if (montoDesdeValue === "") {
-      setMontoDesdeError("El monto de dinero mínimo es obligatorio");
+      setMontoDesdeError(t("modalAddTipoSuscripcion.requiredMinAmount"));
       valid = false;
     } else if (Number(montoDesdeValue) < 0) {
-      setMontoDesdeError(
-        "El monto de dinero mínimo debe ser mayor o igual a 0"
-      );
+      setMontoDesdeError(t("modalAddTipoSuscripcion.amountZero"));
       valid = false;
     } else {
       setMontoDesdeError("");
     }
 
     if (montoHastaValue === "") {
-      setMontoHastaError("El monto de dinero máximo es obligatorio");
+      setMontoHastaError(t("modalAddTipoSuscripcion.requiredMaxAmount"));
       valid = false;
     } else if (Number(montoHastaValue) < 1) {
-      setMontoHastaError("El monto de dinero máximo debe ser mayor a 1");
+      setMontoHastaError(t("modalAddTipoSuscripcion.maxAmountOne"));
       valid = false;
     } else {
       setMontoHastaError("");
     }
 
     if (Number(montoDesdeValue) >= Number(montoHastaValue)) {
-      setMontoHastaError("El número de monto máximo debe ser mayor al mínimo");
+      setMontoHastaError(t("modalAddTipoSuscripcion.maxAmountThat"));
       valid = false;
     } else {
       setMontoHastaError("");
     }
 
     if (costoMembresiaValue === "") {
-      setCostoMembresiaError("El costo de la Suscripcion es obligatorio");
+      setCostoMembresiaError(t("modalAddTipoSuscripcion.requiredCost"));
       valid = false;
     } else if (Number(costoMembresiaValue) <= 0) {
-      setCostoMembresiaError("El costo de la suscripcion debe ser mayor a 0");
+      setCostoMembresiaError(t("modalAddTipoSuscripcion.costZero"));
       valid = false;
     } else {
       setCostoMembresiaError("");
@@ -134,7 +132,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
     try {
       const response = await service.agregarTipoSuscripcion(data);
       if (response.status === 200) {
-        toast.success("Suscripción agregada correctamente");
+        toast.success(t("modalAddTipoSuscripcion.addedSuscripcion"));
         handleUpdate(response.data);
         closeHandler();
       }
@@ -162,12 +160,12 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
         >
           <Modal.Body>
             <Text h5 css={{ textAlign: "center" }}>
-              Nombre de la Suscripción
+              {t("modalAddTipoSuscripcion.suscripcionName")}
             </Text>
             <Input {...nombreBindings} aria-labelledby="Nombre" />
             {nombreError && <Text color="error">{nombreError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Número Máximo de Usuarios
+              {t("modalAddTipoSuscripcion.maxUsers")}
             </Text>
             <Input
               {...numeroUsuariosMaxBindings}
@@ -188,7 +186,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
               <Text color="error">{numeroUsuariosMaxError}</Text>
             )}
             <Text h5 css={{ textAlign: "center" }}>
-              Monto a Presentar Desde
+              {t("modalAddTipoSuscripcion.minAmount")}
             </Text>
             <Input
               type="number"
@@ -204,7 +202,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
             />
             {montoDesdeError && <Text color="error">{montoDesdeError}</Text>}
             <Text h5 css={{ textAlign: "center" }}>
-              Monto a Presentar Hasta
+              {t("modalAddTipoSuscripcion.maxAmount")}
             </Text>
             <Input
               type="number"
@@ -221,7 +219,7 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
             {montoHastaError && <Text color="error">{montoHastaError}</Text>}
 
             <Text h5 css={{ textAlign: "center" }}>
-              Costo de la Suscripción
+              {t("modalAddTipoSuscripcion.cost")}
             </Text>
             <Input
               {...costoMembresiaBindings}
@@ -245,10 +243,10 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
         </Card>
         <Modal.Footer style={{ alignSelf: "center" }}>
           <Button auto onPress={agregarUsuarioHandler}>
-            Agregar
+            {t("modalAddTipoSuscripcion.addSuscripcion")}
           </Button>
           <Button auto color="error" onPress={closeHandler}>
-            Cerrar
+            {t("modalAddTipoSuscripcion.cancel")}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -257,4 +255,4 @@ const ModalEditFidelidad: React.FC<AgregarUsuarioProps> = ({
   );
 };
 
-export default ModalEditFidelidad;
+export default ModalAddTipoSuscripcion;

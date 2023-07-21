@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Button, Text } from "@nextui-org/react";
 import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
-
+import { useTranslation } from "react-i18next";
 interface ConfirmacionUsuarioProps {
   tipoSuscripcion: TipoSuscripcion;
   onClose: () => void;
@@ -17,7 +17,7 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
     await handleDeleteFidelidad(tipoSuscripcion);
     onClose();
   };
-
+  const { t } = useTranslation();
   return (
     <Modal
       closeButton
@@ -28,7 +28,7 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
     >
       <Modal.Header>
         <Text h4 css={{ fontWeight: "normal", textAlign: "center" }}>
-          ¿Estás seguro que deseas eliminar este Tipo de Suscripcion?
+          {t("modalConfirmDeleteSuscripcion.confirmDelete")}
         </Text>
       </Modal.Header>
       <Modal.Body>
@@ -38,10 +38,10 @@ const ModalConfirmDelete: React.FC<ConfirmacionUsuarioProps> = ({
       </Modal.Body>
       <Modal.Footer style={{ alignSelf: "center" }}>
         <Button auto color="success" onClick={confirmHandler}>
-          Confirmar
+          {t("modalConfirmDeleteSuscripcion.confirm")}
         </Button>
         <Button auto color="error" onClick={onClose}>
-          Cancelar
+          {t("modalConfirmDeleteSuscripcion.cancel")}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, Button, Avatar, Card, Text } from "@nextui-org/react";
 import { UserPrestamista } from "../../../types/UserPrestamista";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
-
+import { useTranslation } from "react-i18next";
 interface InformacionUsuarioProps {
   user: UserPrestamista;
   onClose: () => void;
@@ -13,6 +13,7 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
   user,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [nombre] = useState(user.nombres);
   const [apellidos] = useState(user.apellidos);
@@ -62,11 +63,11 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
               {correoElectronico}
             </Text>
             <Text h5 css={{ lineHeight: "$xs" }}>
-              <span>Código de Referencia: </span>
+              <span>{t("modalInfoUser.referalCode")}: </span>
               <span style={{ fontWeight: "bold" }}>{codigoReferencia}</span>
             </Text>
             <Text h5 css={{ lineHeight: "$xs" }}>
-              <span>Numero de Telefono: </span>
+              <span>{t("modalInfoUser.phone")} </span>
               <span style={{ fontWeight: "bold" }}>{telefono}</span>
             </Text>
           </div>
@@ -74,7 +75,7 @@ const ModalInfoUsuaio: React.FC<InformacionUsuarioProps> = ({
       </Modal.Body>
       <Modal.Footer css={{ alignSelf: "center" }}>
         <Button auto color="error" onPress={closeHandler}>
-          Cerrar
+          {t("modalInfoUser.close")}
         </Button>
       </Modal.Footer>
     </Modal>

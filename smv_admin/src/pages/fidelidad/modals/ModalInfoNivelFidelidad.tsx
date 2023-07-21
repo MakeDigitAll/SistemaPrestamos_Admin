@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Card } from "@nextui-org/react";
 import { NivelesFidelidad } from "../../../types/NivelesFidelidad";
-
+import { useTranslation } from "react-i18next";
 interface InformacionUsuarioProps {
   nivel: NivelesFidelidad;
   onClose: () => void;
@@ -12,6 +12,7 @@ const ModalInfoFidelidad: React.FC<InformacionUsuarioProps> = ({
   nivel,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [nombre] = useState(nivel.nombreNivelFidelidad);
   const [descuento] = useState(nivel.descuento);
@@ -46,19 +47,21 @@ const ModalInfoFidelidad: React.FC<InformacionUsuarioProps> = ({
               }}
             >
               <h3 style={{ marginRight: "10px" }}>
-                <span style={{ fontWeight: "lighter" }}>Descuento: </span>
+                <span style={{ fontWeight: "lighter" }}>
+                  {t("modalInfoFidelidad.discount")}{" "}
+                </span>
                 <span style={{ fontWeight: "bold" }}>{descuento}</span>%
               </h3>
               <h3 style={{ marginLeft: "10px" }}>
                 <span style={{ fontWeight: "lighter" }}>
-                  Número de Meses Mínimo:{" "}
+                  {t("modalInfoFidelidad.minMonths")}
                 </span>
                 <span style={{ fontWeight: "bold" }}>{numeroMesesMinimo}</span>
               </h3>
             </div>
             <h3>
               <span style={{ fontWeight: "lighter" }}>
-                Número de Meses Máximo:{" "}
+                {t("modalInfoFidelidad.maxMonths")}
               </span>
               <span style={{ fontWeight: "bold" }}>{numeroMesesMaximo}</span>
             </h3>
@@ -68,7 +71,7 @@ const ModalInfoFidelidad: React.FC<InformacionUsuarioProps> = ({
 
       <Modal.Footer css={{ alignSelf: "center" }}>
         <Button auto color="error" onPress={closeHandler}>
-          Cerrar
+          {t("modalInfoFidelidad.close")}
         </Button>
       </Modal.Footer>
     </Modal>

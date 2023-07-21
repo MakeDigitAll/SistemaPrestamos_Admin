@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Card } from "@nextui-org/react";
 import { TipoSuscripcion } from "../../../types/TipoSuscripcion";
-
+import { useTranslation } from "react-i18next";
 interface InformacionUsuarioProps {
   tipoSuscripcion: TipoSuscripcion;
   onClose: () => void;
@@ -12,6 +12,7 @@ const ModalInfoTipoSuscripcion: React.FC<InformacionUsuarioProps> = ({
   tipoSuscripcion,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [nombre] = useState(tipoSuscripcion.nombreSuscripcion);
   const [numUsuariosMax] = useState(tipoSuscripcion.numeroUsuariosMax);
@@ -48,30 +49,36 @@ const ModalInfoTipoSuscripcion: React.FC<InformacionUsuarioProps> = ({
             >
               <h4 style={{ marginRight: "10px" }}>
                 <span style={{ fontWeight: "lighter" }}>
-                  Numero de Usuarios Máximo:{" "}
+                  {t("modalInfoSuscripcion.maxUsers")}
                 </span>
                 <span style={{ fontWeight: "bold" }}>
-                  {numUsuariosMax} Usuarios
+                  {numUsuariosMax} {t("modalInfoSuscripcion.users")}
                 </span>
               </h4>
               <h4 style={{ marginLeft: "10px" }}>
                 <span style={{ fontWeight: "lighter" }}>
-                  Dinero Mínimo a Prestar:{" "}
+                  {t("modalInfoSuscripcion.minAmount")}
                 </span>
-                <span style={{ fontWeight: "bold" }}>{montoDesde} Pesos</span>
+                <span style={{ fontWeight: "bold" }}>
+                  {montoDesde} {t("modalInfoSuscripcion.pesos")}
+                </span>
               </h4>
             </div>
             <h4>
               <span style={{ fontWeight: "lighter" }}>
-                Dinero Máximo a Prestar:{" "}
+                {t("modalInfoSuscripcion.maxAmount")}
               </span>
-              <span style={{ fontWeight: "bold" }}>{montoHasta} Pesos</span>
+              <span style={{ fontWeight: "bold" }}>
+                {montoHasta} {t("modalInfoSuscripcion.pesos")}
+              </span>
             </h4>
             <h4>
               <span style={{ fontWeight: "lighter" }}>
-                Costo de la Suscripcion:{" "}
+                {t("modalInfoSuscripcion.cost")}
               </span>
-              <span style={{ fontWeight: "bold" }}>{costoMembresia} Pesos</span>
+              <span style={{ fontWeight: "bold" }}>
+                {costoMembresia} {t("modalInfoSuscripcion.pesos")}
+              </span>
             </h4>
           </div>
         </Card>
@@ -79,7 +86,7 @@ const ModalInfoTipoSuscripcion: React.FC<InformacionUsuarioProps> = ({
 
       <Modal.Footer css={{ alignSelf: "center" }}>
         <Button auto color="error" onPress={closeHandler}>
-          Cerrar
+          {t("modalInfoSuscripcion.close")}
         </Button>
       </Modal.Footer>
     </Modal>
