@@ -8,7 +8,7 @@ import {
   useInput,
   Dropdown,
 } from "@nextui-org/react";
-import { aesEncrypt } from "../../utils/crypto/encryption";
+import { aesEncrypt } from "../../utils/encryption";
 import service from "../../services/service";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";

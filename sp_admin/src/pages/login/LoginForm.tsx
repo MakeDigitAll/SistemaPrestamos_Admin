@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import service from "../../services/service";
 import Cookies from "js-cookie";
-import { aesEncrypt } from "../../utils/crypto/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
+import { aesEncrypt } from "../../utils/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
 import { Layout } from "../../components/navbar/Layout";
 import NavBarLogin from "./NavBarLogin";
 import logodark from "../../assets/images/logodark.png";
@@ -25,6 +25,8 @@ const LoginForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   const {
     value: emailValue,
     reset: resetEmail,
@@ -118,6 +120,7 @@ const LoginForm = () => {
       }
     }
   };
+
   const useDarkLight = () => {
     const { isDark } = useTheme();
     const { setTheme } = useNextTheme();
@@ -129,24 +132,21 @@ const LoginForm = () => {
         setLocalTheme(savedTheme);
         setTheme(savedTheme);
       }
-    }, [setTheme, theme]);
+    }, [setTheme, theme, isDark]);
 
     const toggleTheme = () => {
-      setLocalTheme((prevTheme) => {
-        const newTheme = prevTheme === "dark" ? "light" : "dark";
-        localStorage.setItem("theme", newTheme);
-        setTheme(newTheme);
-        return newTheme;
-      });
+      const newTheme = theme === "dark" ? "light" : "dark";
+      setLocalTheme(newTheme);
+      setTheme(newTheme);
+      localStorage.setItem("theme", newTheme);
     };
 
     return { theme, toggleTheme };
   };
+
   const { theme } = useDarkLight();
   const isDark = theme === "dark";
   const logo = isDark ? logodark : logolight;
-  const { t } = useTranslation();
-
   return (
     <Layout>
       <NavBarLogin />

@@ -3,7 +3,7 @@ import { Modal, Button, Text, Input, Card } from "@nextui-org/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
-import { aesEncrypt } from "../../../utils/crypto/encryption";
+import { aesEncrypt } from "../../../utils/encryption";
 import { NivelesFidelidad } from "../../../types/NivelesFidelidad";
 import { useTranslation } from "react-i18next";
 interface InformacionNivelProps {

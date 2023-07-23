@@ -1,7 +1,7 @@
 import CryptoJS from "crypto-js";
-import secret_key from "./cryptoKey";
 const ivKey = CryptoJS.lib.WordArray.random(16).toString();
 
+const secret_key = "f163afb7979195597e8c70ce6f22baab";
 export function aesEncrypt(content: string) {
   const parsedkey = CryptoJS.enc.Utf8.parse(secret_key);
   const iv = CryptoJS.enc.Utf8.parse(ivKey);
