@@ -3,7 +3,7 @@ export const Footer = () => {
     <div className="footer-container">
       <div className="footer-content">
         <div>
-          <p>Sistema de Ventas</p>
+          <p>Sistema de Prestamos</p>
           <div>
             <span>
               <h1>

@@ -1,6 +1,6 @@
 {
-  "name": "smvadminapi",
-  "version": "1.0.0",
+  "name": "sp_admin_api",
+  "version": "0.1.0",
   "description": "Api para administradores",
   "main": "index.js",
   "scripts": {

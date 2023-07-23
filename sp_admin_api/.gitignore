@@ -4,7 +4,6 @@
 /node_modules
 /.pnp
 .pnp.js
-../smv_admin_api/node_modules
 # testing
 /coverage
 
