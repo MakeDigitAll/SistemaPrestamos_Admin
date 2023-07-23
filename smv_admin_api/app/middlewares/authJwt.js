@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
+const TOKEN_KEY = require("../keys/tokenKey");
 
 // Verify token middleware
 const verifyToken = (req, res, next) => {

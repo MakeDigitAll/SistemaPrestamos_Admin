@@ -23,10 +23,17 @@ router.put("/admin/:id", verifyToken, (req, res) => {
   controllerAdmin.updateAdmin(req, res);
 });
 
-// obtener todos los usuarios prestamistas de la base de datos
-router.get("/admin-allusuarios-prestamistas", verifyToken, (req, res) => {
-  controllerUsuariosPrestamistas.findAllUsuariosPrestamista(req, res);
-});
+// obtener todos los usuarios prestamistas de la base de datos que tengan la suscripción completada
+router.get(
+  "/admin-allusuarios-prestamistas-completed-suscription",
+  verifyToken,
+  (req, res) => {
+    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaCompletedSuscription(
+      req,
+      res
+    );
+  }
+);
 
 //obtener todos los usuarios prestamistas activos de la base de datos
 router.get(

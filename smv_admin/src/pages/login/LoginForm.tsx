@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import service from "../../services/service";
 import Cookies from "js-cookie";
-import { aesEncrypt } from "../../utils/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
+import { aesEncrypt } from "../../utils/crypto/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
 import { Layout } from "../../components/navbar/Layout";
 import NavBarLogin from "./NavBarLogin";
 import logodark from "../../assets/images/logodark.png";

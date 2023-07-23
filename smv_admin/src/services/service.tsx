@@ -20,7 +20,7 @@ class AdminDataService {
   }
   //obtener todos los usuarios prestamistas
   getAllUsuariosPrestamistas() {
-    return http.get("/admin-allusuarios-prestamistas");
+    return http.get("/admin-allusuarios-prestamistas-completed-suscription");
   }
 
   //obtener todos los usuarios prestamistas activos

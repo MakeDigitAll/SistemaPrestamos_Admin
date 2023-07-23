@@ -3,7 +3,7 @@ import { Modal, Button, Text, Input, Avatar, Card } from "@nextui-org/react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import service from "../../../services/service";
-import { aesEncrypt } from "../../../utils/encryption";
+import { aesEncrypt } from "../../../utils/crypto/encryption";
 import { UserPrestamista } from "../../../types/UserPrestamista";
 import useGetPrestamista from "../../../hooks/useGetImagenPrestamista";
 import defaultImage from "../../../assets/images/defaultProfile.png";

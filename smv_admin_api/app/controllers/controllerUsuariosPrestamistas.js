@@ -6,14 +6,18 @@ const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
 const imagenPrestamista = db.imagenPrestamista;
 
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
+const TOKEN_KEY = require("../keys/tokenKey");
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 
 //findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamista = (req, res) => {
+exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
   usuariosPrestamistas
     .findAll({
+      where: {
+        isCompletedSuscription: true,
+      },
+
       include: [
         {
           model: suscripciones,
