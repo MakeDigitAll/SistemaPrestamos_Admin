@@ -348,7 +348,6 @@ const ContentFidelidad: React.FC = () => {
   const sortColumn = (descriptor: SortDescriptor) => {
     if (descriptor.column && descriptor.direction !== undefined) {
       let sortedData = [...Niveles];
-      console.log(descriptor);
       sortedData.sort((a: NivelesFidelidadType, b: NivelesFidelidadType) => {
         const aValue = a[descriptor.column as keyof NivelesFidelidadType];
         const bValue = b[descriptor.column as keyof NivelesFidelidadType];
@@ -420,13 +419,7 @@ const ContentFidelidad: React.FC = () => {
               </Table.Row>
             )}
           </Table.Body>
-          <Table.Pagination
-            shadow
-            noMargin
-            align="center"
-            rowsPerPage={13}
-            onPageChange={(page) => console.log({ page })}
-          />
+          <Table.Pagination shadow noMargin align="center" rowsPerPage={13} />
         </Table>
         {modalAdd && (
           <ModalAgregarUsuario

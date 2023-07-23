@@ -35,7 +35,6 @@ exports.updateAdmin = (req, res) => {
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
 exports.loginAdmin = (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  console.log(TOKEN_KEY);
   // Desencriptar el correo y la contraseña
   const decryptedEmail = aesDecrypt(req.query.correoElectronico).toLowerCase();
   const decryptedPassword = aesDecrypt(req.query.adminPassword);

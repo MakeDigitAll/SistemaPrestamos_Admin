@@ -105,7 +105,6 @@ const LoginForm = () => {
       }
     } catch (error: any) {
       if (error.response && error.response.status === 500) {
-        console.log(error.response.data.message);
         if (error.response.data.message === "Correo no registrado") {
           setEmailError("Usuario no encontrado.");
           resetEmail();

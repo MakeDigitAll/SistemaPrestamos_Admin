@@ -380,13 +380,7 @@ const ContentUsuariosActivos: React.FC = () => {
             </Table.Row>
           )}
         </Table.Body>
-        <Table.Pagination
-          shadow
-          noMargin
-          align="center"
-          rowsPerPage={13}
-          onPageChange={(page) => console.log({ page })}
-        />
+        <Table.Pagination shadow noMargin align="center" rowsPerPage={13} />
       </Table>
       {modalHabilitar && selectedUser && (
         <ModalHabilitarUsuario

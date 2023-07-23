@@ -42,7 +42,6 @@ const ContentTipoSuscripcion: React.FC = () => {
   });
   //Obtiene los tipoSuscripciones del token decodificado
   const tipoSuscripciones = getTipoSuscripciones?.decodedToken?.tipoSuscripcion;
-  console.log(tipoSuscripciones);
   //Estado para definir los tipoSuscripciones a mostrar
   const [Suscripciones, setSuscripciones] = useState<TipoSuscripcion[]>([]);
   //Función para mostrar el modal de editar tipoSuscripciones
@@ -364,7 +363,6 @@ const ContentTipoSuscripcion: React.FC = () => {
   const sortColumn = (descriptor: SortDescriptor) => {
     if (descriptor.column && descriptor.direction !== undefined) {
       let sortedData = [...Suscripciones];
-      console.log(descriptor);
       sortedData.sort((a: TipoSuscripcion, b: TipoSuscripcion) => {
         const aValue = a[descriptor.column as keyof TipoSuscripcion];
         const bValue = b[descriptor.column as keyof TipoSuscripcion];
@@ -436,13 +434,7 @@ const ContentTipoSuscripcion: React.FC = () => {
               </Table.Row>
             )}
           </Table.Body>
-          <Table.Pagination
-            shadow
-            noMargin
-            align="center"
-            rowsPerPage={13}
-            onPageChange={(page) => console.log({ page })}
-          />
+          <Table.Pagination shadow noMargin align="center" rowsPerPage={13} />
         </Table>
         {modalAdd && (
           <ModalAgregarUsuario
