@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
-import Cookies from "js-cookie";
 
 const useDarkLight = () => {
   const { isDark } = useTheme();
@@ -9,7 +8,7 @@ const useDarkLight = () => {
   const [theme, setLocalTheme] = useState(isDark ? "dark" : "light");
 
   useEffect(() => {
-    const savedTheme = Cookies.get("theme");
+    const savedTheme = localStorage.getItem("theme");
     if (savedTheme && savedTheme !== theme) {
       setLocalTheme(savedTheme);
       setTheme(savedTheme);
@@ -19,9 +18,7 @@ const useDarkLight = () => {
   const toggleTheme = () => {
     setLocalTheme((prevTheme) => {
       const newTheme = prevTheme === "dark" ? "light" : "dark";
-      const expirationDate = new Date();
-      expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Caducará en 10 años
-      Cookies.set("theme", newTheme, { expires: expirationDate });
+      localStorage.setItem("theme", newTheme);
       setTheme(newTheme);
       return newTheme;
     });

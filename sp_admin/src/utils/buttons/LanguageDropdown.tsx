@@ -2,7 +2,6 @@ import React from "react";
 import { Dropdown } from "@nextui-org/react";
 import { BiGlobe } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
 
 interface Language {
   [key: string]: { nativeName: string };
@@ -16,8 +15,8 @@ const lngs: Language = {
 const LanguageDropdown: React.FC = () => {
   const { i18n } = useTranslation();
   const [selected, setSelected] = React.useState(() => {
-    const cookieLanguage = Cookies.get("language");
-    return new Set([cookieLanguage || "es"]);
+    const localStorageLanguage = localStorage.getItem("i18nextLng");
+    return new Set([localStorageLanguage || "es"]);
   });
 
   const selectedValue = React.useMemo(
@@ -25,21 +24,21 @@ const LanguageDropdown: React.FC = () => {
     [selected]
   );
 
-  //si no hay cookie, se selecciona el idioma por defecto selected
+  // Si no hay valor en localStorage, se selecciona el idioma por defecto (selected)
   React.useEffect(() => {
-    if (!Cookies.get("language")) {
+    if (!localStorage.getItem("i18nextLng")) {
       i18n.changeLanguage(Array.from(selected)[0]);
     }
   }, [i18n, selected]);
 
-  //cambiar el idioma
+  // Cambiar el idioma
   const handleSelectionChange = React.useCallback(
     (keys: any) => {
       setSelected(keys);
       const selectedLanguage = Array.from(keys)[0];
       if (selectedLanguage) {
         i18n.changeLanguage(selectedLanguage as string);
-        Cookies.set("language", selectedLanguage as string, { expires: 365 });
+        localStorage.setItem("i18nextLng", selectedLanguage as string);
       }
     },
     [i18n]

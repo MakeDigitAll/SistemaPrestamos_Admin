@@ -3,7 +3,6 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme, Divider } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
-import Cookies from "js-cookie";
 import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 import { useTranslation } from "react-i18next";
@@ -35,7 +34,7 @@ const useDarkLight = () => {
   const [theme, setLocalTheme] = useState(isDark ? "dark" : "light");
 
   useEffect(() => {
-    const savedTheme = Cookies.get("theme");
+    const savedTheme = localStorage.getItem("theme");
     if (savedTheme && savedTheme !== theme) {
       setLocalTheme(savedTheme);
       setTheme(savedTheme);
@@ -45,9 +44,7 @@ const useDarkLight = () => {
   const toggleTheme = () => {
     setLocalTheme((prevTheme) => {
       const newTheme = prevTheme === "dark" ? "light" : "dark";
-      const expirationDate = new Date();
-      expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Caducará en 10 años
-      Cookies.set("theme", newTheme, { expires: expirationDate });
+      localStorage.setItem("theme", newTheme);
       return newTheme;
     });
   };

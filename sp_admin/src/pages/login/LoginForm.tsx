@@ -18,7 +18,6 @@ import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 import { useTheme as useNextTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
-import cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
@@ -38,7 +37,7 @@ const LoginForm = () => {
   } = useInput("");
 
   useEffect(() => {
-    const accessToken = cookies.get("accessToken");
+    const accessToken = Cookies.get("accessToken");
     const authenticated = !!accessToken;
     setIsLoggedIn(authenticated);
   }, []);
@@ -125,19 +124,17 @@ const LoginForm = () => {
     const [theme, setLocalTheme] = useState(isDark ? "dark" : "light");
 
     useEffect(() => {
-      const savedTheme = Cookies.get("theme");
+      const savedTheme = localStorage.getItem("theme");
       if (savedTheme && savedTheme !== theme) {
         setLocalTheme(savedTheme);
         setTheme(savedTheme);
       }
-    }, [setTheme, theme, isDark]);
+    }, [setTheme, theme]);
 
     const toggleTheme = () => {
       setLocalTheme((prevTheme) => {
         const newTheme = prevTheme === "dark" ? "light" : "dark";
-        const expirationDate = new Date();
-        expirationDate.setFullYear(expirationDate.getFullYear() + 10); // Caducará en 10 años
-        Cookies.set("theme", newTheme, { expires: expirationDate });
+        localStorage.setItem("theme", newTheme);
         setTheme(newTheme);
         return newTheme;
       });
