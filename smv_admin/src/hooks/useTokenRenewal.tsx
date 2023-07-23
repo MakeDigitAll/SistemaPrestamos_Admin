@@ -24,8 +24,13 @@ const useTokenRenewal = () => {
       const response = await service.refreshToken(refreshToken);
       const newAccessToken = response.data.accessToken;
 
+      const accessTokenDurationMinutes = 55;
+      const accessTokenDurationDays = accessTokenDurationMinutes / (60 * 24);
+
       // Actualizar el token de acceso en las cookies
-      Cookies.set("accessToken", newAccessToken);
+      Cookies.set("accessToken", newAccessToken, {
+        expires: accessTokenDurationDays,
+      });
 
       // Decodificar el nuevo token de acceso y obtener los datos del usuario
       const decodedNewAccessToken: any = jwt_decode(newAccessToken);
@@ -50,9 +55,10 @@ const useTokenRenewal = () => {
     const checkSession = async () => {
       // Obtener el token JWT desde una cookie
       const accessToken = Cookies.get("accessToken");
-      const refreshToken = Cookies.get("refreshToken");
 
-      if (!accessToken || !refreshToken) {
+      if (!accessToken) {
+        //Eliminar la cookie del refresh token
+        Cookies.remove("refreshToken");
         // No se encontró el token en la cookie, redireccionar a la página de inicio de sesión
         navigate("/admin-login");
         return;
@@ -61,8 +67,8 @@ const useTokenRenewal = () => {
       // Decodificar el token JWT para obtener los datos del usuario
       try {
         const decodedAccessToken: any = jwt_decode(accessToken);
-        // Renovar el token de acceso si está a 5 minutos de expirar
-        if (decodedAccessToken.exp - Date.now() / 1000 < 5 * 60) {
+        // Renovar el token de acceso si está a 10 minutos de expirar
+        if (decodedAccessToken.exp - Date.now() / 1000 < 10 * 60) {
           await renewToken();
         } else {
           // El token de acceso es válido, establecer los datos del usuario

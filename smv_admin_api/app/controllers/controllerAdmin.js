@@ -9,7 +9,7 @@ const imagenAdministrador = db.imagenAdministrador;
 
 // Crear y guardar un nuevo administrador
 exports.createAdmin = (req, res) => {
-  if (!req.query.nombres) { 
+  if (!req.query.nombres) {
     res.status(400).send({
       message: "El Nombre no puede estar vacío!",
     });
@@ -106,7 +106,7 @@ exports.loginAdmin = (req, res) => {
             correoElectronico: data.correoElectronico,
           };
           const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
-          const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "7d" });
+          const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "20h" });
 
           let datosToken = {
             ...datos,

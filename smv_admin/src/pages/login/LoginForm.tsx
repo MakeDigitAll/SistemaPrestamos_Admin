@@ -82,11 +82,24 @@ const LoginForm = () => {
         // Obtener el access token y el refresh token de la respuesta
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
+        // Duración en minutos
+        const accessTokenDurationMinutes = 55;
+        const refreshTokenDurationMinutes = 20 * 60; // 20 horas en minutos
 
-        // Guardar los tokens en cookies o almacenarlos en el almacenamiento local según tus necesidades
-        Cookies.set("accessToken", accessToken, { expires: 1 / 24 }); // 1 hora de expiración
-        expirationDate.setDate(expirationDate.getDate() + 2);
-        Cookies.set("refreshToken", refreshToken, { expires: expirationDate }); // 2 días de expiración
+        // Convertir la duración en días
+        const accessTokenDurationDays = accessTokenDurationMinutes / (60 * 24);
+        const refreshTokenDurationDays =
+          refreshTokenDurationMinutes / (60 * 24);
+
+        // Establecer la cookie del access token con una duración de 55 minutos
+        Cookies.set("accessToken", accessToken, {
+          expires: accessTokenDurationDays,
+        });
+
+        // Establecer la cookie del refresh token con una duración de 20 horas
+        Cookies.set("refreshToken", refreshToken, {
+          expires: refreshTokenDurationDays,
+        });
 
         // Redireccionar a la página de dashboard
         window.location.href = "/admin-dashboard";
