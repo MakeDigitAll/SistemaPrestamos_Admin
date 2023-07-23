@@ -74,6 +74,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    isCompletedSuscription: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   return UsuariosPrestamistas;

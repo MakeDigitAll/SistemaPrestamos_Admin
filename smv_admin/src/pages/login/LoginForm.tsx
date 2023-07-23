@@ -36,7 +36,6 @@ const LoginForm = () => {
     reset: resetPassword,
     bindings: passwordBindings,
   } = useInput("");
-  var expirationDate = new Date();
 
   useEffect(() => {
     const accessToken = cookies.get("accessToken");

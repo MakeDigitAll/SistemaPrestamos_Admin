@@ -44,12 +44,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
-    codigoReferencia: {
-      type: Sequelize.STRING,
-      validate: {
-        len: [1, 6], // Mínimo 1 caracter, máximo 6 caracteres
-      },
-    },
     createdAt: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW,

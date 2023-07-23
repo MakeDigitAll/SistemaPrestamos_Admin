@@ -10,50 +10,6 @@ const TOKEN_KEY = "a4najdPy7Ji3I21Fai2Hv4GfKvu0lixZ";
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 
-// obtener todos los usuariosPrestamistas de tipo prestamista (tipoUsuario = Prestamista) con sus suscripciones
-exports.findAllUsuariosPrestamista = (req, res) => {
-  usuariosPrestamistas
-    .findAll({
-      include: [
-        {
-          model: suscripciones,
-          as: "suscripciones_prestamista",
-        },
-      ],
-    })
-    .then((data) => {
-      const usuariosPrestamistas = data.map((user) => ({
-        idUsuarioPrestamista: user.idUsuarioPrestamista,
-        correoElectronico: user.correoElectronico,
-        nombres: user.nombres,
-        apellidos: user.apellidos,
-        codigoReferencia: user.codigoReferencia,
-        isActive: user.isActive,
-        isDeleted: user.isDeleted,
-        numeroTelefono: user.numeroTelefono,
-        suscripcion: user.suscripcion?.idSuscripcion
-          ? {
-              idSuscripcion: user.suscripcion.idSuscripcion,
-              tipoSuscripcion: user.suscripcion.tipoSuscripcion,
-              fechaInicio: user.suscripcion.fechaInicio,
-              fechaFin: user.suscripcion.fechaFin,
-              estadoSuscripcion: user.suscripcion.estadoSuscripcion,
-            }
-          : null,
-      }));
-      const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-      res.send({ tokenUsuarios });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al obtener los usuariosPrestamistas.",
-      });
-      console.log(err);
-    });
-};
-
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamista = (req, res) => {
   usuariosPrestamistas
@@ -111,6 +67,7 @@ exports.findAllUsuariosPrestamista = (req, res) => {
       console.log(err);
     });
 };
+
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaActivos = (req, res) => {
   usuariosPrestamistas
@@ -118,6 +75,7 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
       where: {
         isActive: true,
         isDeleted: false,
+        isCompletedSuscription: true,
       },
     })
     .then((data) => {
@@ -174,6 +132,7 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
       where: {
         isActive: false,
         isDeleted: false,
+        isCompletedSuscription: true,
       },
     })
     .then((data) => {
@@ -230,6 +189,7 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
       where: {
         isActive: false,
         isDeleted: true,
+        isCompletedSuscription: true,
       },
     })
     .then((data) => {
@@ -375,6 +335,7 @@ exports.createUsuarioPrestamista = (req, res) => {
               usuarioPassword: decryptedPasswd,
               codigoReferencia: referralCode,
               numeroTelefono: decryptedNumeroTelefono,
+              isCompletedSuscription: true,
             })
             .then((prestamista) => {
               // Insertar datos en la tabla calidadPrestamista
