@@ -9,6 +9,7 @@ const jwt = require("jsonwebtoken");
 const TOKEN_KEY = require("../keys/tokenKey");
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
+const bcrypt = require("bcrypt");
 
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
@@ -323,54 +324,72 @@ exports.createUsuarioPrestamista = (req, res) => {
         res.status(400).send({ errors: errorMessages });
       } else {
         // El correo y el número de teléfono no están registrados, proceder con la creación del usuario
-        // Verificar si el código de referencia ya existe en la base de datos
-        checkReferralCode().then((existingUser) => {
-          // Generar un nuevo código de referencia si el actual ya existe
-          while (existingUser) {
-            referralCode = generateReferralCode();
-            existingUser = checkReferralCode();
-          }
-          // Crear el usuario con el código de referencia único
-          usuariosPrestamistas
-            .create({
-              nombres: decryptedNombre,
-              apellidos: decryptedApellido,
-              correoElectronico: decryptedCorreo,
-              usuarioPassword: decryptedPasswd,
-              codigoReferencia: referralCode,
-              numeroTelefono: decryptedNumeroTelefono,
-              isCompletedSuscription: true,
-            })
-            .then((prestamista) => {
-              // Insertar datos en la tabla calidadPrestamista
-              datosUsuarioSuscripciones
+        // Hashear la contraseña antes de guardarla en la base de datos
+        bcrypt.hash(decryptedPasswd, 10, (err, hashedPassword) => {
+          if (err) {
+            console.log(err);
+            res.status(500).send({
+              message: "Ocurrió un error al hashear la contraseña.",
+            });
+          } else {
+            // Generar un nuevo código de referencia si el actual ya existe
+            checkReferralCode().then((existingUser) => {
+              while (existingUser) {
+                referralCode = generateReferralCode();
+                existingUser = checkReferralCode();
+              }
+              // Crear el usuario con la contraseña hasheada y el código de referencia único
+              usuariosPrestamistas
                 .create({
-                  idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
-                  montoAPrestarDesde: decryptedMontoMinimo,
-                  montoAPrestarHasta: decryptedMontoMaximo,
-                  numeroUsuarios: decryptedNumeroClientes,
-                  antiguedadMeses: 0,
-                  pagosAlCorriente: true,
+                  nombres: decryptedNombre,
+                  apellidos: decryptedApellido,
+                  correoElectronico: decryptedCorreo,
+                  usuarioPassword: hashedPassword,
+                  codigoReferencia: referralCode,
+                  numeroTelefono: decryptedNumeroTelefono,
+                  isCompletedSuscription: true,
                 })
-                // Insertar datos en la tabla suscripciones
-                .then(() => {
-                  suscripciones
+                .then((prestamista) => {
+                  // ... código anterior ...
+
+                  // Insertar datos en la tabla calidadPrestamista
+                  datosUsuarioSuscripciones
                     .create({
                       idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
-                      idNivelFidelidad: 1,
-                      idTipoSuscripcion: decryptedIDSuscripcion,
-                      fechaInicio: new Date(),
-                      //fecha actual mas 1 mes
-                      fechaFin: new Date(
-                        new Date().setMonth(new Date().getMonth() + 1)
-                      ),
-                      //estadoSuscripcion: "Activa",
+                      montoAPrestarDesde: decryptedMontoMinimo,
+                      montoAPrestarHasta: decryptedMontoMaximo,
+                      numeroUsuarios: decryptedNumeroClientes,
+                      antiguedadMeses: 0,
+                      pagosAlCorriente: true,
                     })
+                    // Insertar datos en la tabla suscripciones
                     .then(() => {
-                      //enviar le id del usuario creado
-                      res.send({
-                        idUsuarioPrestamista: prestamista.idUsuarioPrestamista,
-                      });
+                      suscripciones
+                        .create({
+                          idUsuarioPrestamista:
+                            prestamista.idUsuarioPrestamista,
+                          idNivelFidelidad: 1,
+                          idTipoSuscripcion: decryptedIDSuscripcion,
+                          fechaInicio: new Date(),
+                          fechaFin: new Date(
+                            new Date().setMonth(new Date().getMonth() + 1)
+                          ),
+                        })
+                        .then(() => {
+                          //enviar el id del usuario creado
+                          res.send({
+                            idUsuarioPrestamista:
+                              prestamista.idUsuarioPrestamista,
+                          });
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                          res.status(500).send({
+                            message:
+                              err.message ||
+                              "Ocurrió un error al crear los datos de calidad en la base de datos.",
+                          });
+                        });
                     })
                     .catch((err) => {
                       console.log(err);
@@ -386,18 +405,11 @@ exports.createUsuarioPrestamista = (req, res) => {
                   res.status(500).send({
                     message:
                       err.message ||
-                      "Ocurrió un error al crear los datos de calidad en la base de datos.",
+                      "Ocurrió un error al crear el usuario en la base de datos.",
                   });
                 });
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Ocurrió un error al crear el usuario en la base de datos.",
-              });
             });
+          }
         });
       }
     })
