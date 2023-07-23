@@ -1,11 +1,11 @@
 const db = require("../models");
 const { aesDecrypt } = require("../utils/cryptoUtils");
-const TOKEN_KEY = require("../keys/tokenKey");
 const jwt = require("jsonwebtoken");
 const nivelesFidelidad = db.nivelesFidelidad;
 
 // obtener todos los niveles de fidelidad de la base de datos que no son isDeleted = true
 exports.getNivelesFidelidad = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   nivelesFidelidad
     .findAll({
       where: {
@@ -105,6 +105,7 @@ exports.deleteNivelFidelidadByID = (req, res) => {
 
 //crear y guardar un nuevo nivel de fidelidad
 exports.createNivelFidelidad = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   const decryptedNombre = aesDecrypt(req.body.nombreNivelFidelidad);
   const decryptedDescuento = aesDecrypt(req.body.descuento);
   const decryptedNumeroMesesMinimo = aesDecrypt(req.body.numeroMesesMinimo);

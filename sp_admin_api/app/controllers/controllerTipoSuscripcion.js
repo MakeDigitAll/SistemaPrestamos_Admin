@@ -1,6 +1,5 @@
 const db = require("../models");
 const { aesDecrypt } = require("../utils/cryptoUtils");
-const TOKEN_KEY = require("../keys/tokenKey");
 const jwt = require("jsonwebtoken");
 const tipoSuscripcion = db.tipoSuscripciones;
 
@@ -79,6 +78,7 @@ exports.deleteTipoSuscripcionByID = (req, res) => {
 
 //crear y guardar un nuevo tipoSuscripcion de tipo de suscripcion
 exports.createTipoSuscripcion = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   // Crear un tipoSuscripcion de tipo de suscripcion
   const decryptedNombre = aesDecrypt(req.body.nombreSuscripcion);
   const decryptedMontoDesde = aesDecrypt(req.body.montoDesde);
@@ -118,6 +118,7 @@ exports.createTipoSuscripcion = (req, res) => {
 
 //obtener todas las suscripciones activas de la base de datos que no son isDeleted = true
 exports.getAllTiposSuscripcionesActivas = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   tipoSuscripcion
     .findAll({
       where: {

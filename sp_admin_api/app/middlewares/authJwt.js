@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = require("../keys/tokenKey");
 
 // Verify token middleware
 const verifyToken = (req, res, next) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   const cookieHeader = req.headers.cookie;
   const cookies = cookieHeader ? cookieHeader.split("; ") : [];
   let accessToken, refreshToken;

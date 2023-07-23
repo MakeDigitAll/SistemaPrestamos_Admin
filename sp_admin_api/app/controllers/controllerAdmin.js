@@ -2,59 +2,9 @@ const db = require("../models");
 const admin = db.administradores;
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
-//token key 32
-const TOKEN_KEY = require("../keys/tokenKey");
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const imagenAdministrador = db.imagenAdministrador;
-
-// Crear y guardar un nuevo administrador
-exports.createAdmin = (req, res) => {
-  if (!req.query.nombres) {
-    res.status(400).send({
-      message: "El Nombre no puede estar vacío!",
-    });
-    return;
-  }
-  if (!req.query.apellidos) {
-    res.status(400).send({
-      message: "Los Apellidos no puede estar vacío!",
-    });
-    return;
-  }
-  if (!req.query.correoElectronico) {
-    res.status(400).send({
-      message: "El Correo Electronico no puede estar vacío!",
-    });
-    return;
-  }
-  if (!req.query.adminPassword) {
-    res.status(400).send({
-      message: "La Contraseña no puede estar vacía!",
-    });
-    return;
-  }
-
-  // Crear un administrador en la base de datos
-  const administrador = {
-    nombres: req.query.nombres,
-    apellidos: req.query.apellidos,
-    correoElectronico: req.query.correoElectronico,
-    adminPassword: req.query.adminPassword,
-    estado: req.query.estado ? req.query.estado : false,
-  };
-
-  // Guardar administrador en la base de datos
-  admin
-    .create(administrador)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Ocurrió un error al crear el administrador.",
-      });
-    });
-};
+const bcrypt = require("bcrypt");
 
 // Actualizar los datos de un administrador por su id  http.put(`/administradores/${id}`, data);
 exports.updateAdmin = (req, res) => {
@@ -84,10 +34,13 @@ exports.updateAdmin = (req, res) => {
 
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
 exports.loginAdmin = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
+  console.log(TOKEN_KEY);
   // Desencriptar el correo y la contraseña
   const decryptedEmail = aesDecrypt(req.query.correoElectronico).toLowerCase();
   const decryptedPassword = aesDecrypt(req.query.adminPassword);
-  admin
+
+  db.administradores
     .findOne({
       where: {
         correoElectronico: {
@@ -95,10 +48,15 @@ exports.loginAdmin = (req, res) => {
         },
       },
     })
-    .then((data) => {
+    .then(async (data) => {
       if (data) {
         // El correo existe en la base de datos, verificar la contraseña
-        if (data.adminPassword === decryptedPassword) {
+        const passwordMatch = await bcrypt.compare(
+          decryptedPassword,
+          data.adminPassword
+        );
+
+        if (passwordMatch) {
           const datos = {
             id: data.idAdministrador,
             nombres: data.nombres,
@@ -139,6 +97,7 @@ exports.loginAdmin = (req, res) => {
 
 //refrescar el token de acceso
 exports.refreshTokenAdmin = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   // Obtener el token de actualización del cuerpo de la solicitud
   const refreshToken = req.query.refreshToken;
 

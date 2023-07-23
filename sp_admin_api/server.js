@@ -4,6 +4,7 @@ const cors = require("cors");
 const app = express();
 const routes = require("./app/routes/routes");
 const db = require("./app/models");
+const createAdmin = require("./app/utils/createAdmin");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -21,12 +22,8 @@ app.options("*", cors(corsOptions));
 db.sequelize.sync({ alter: true }).then(() => {});
 //force: true
 
-// db.administradores.create({
-//   correoElectronico: "pablo@makedigitall.com",
-//   adminPassword: "123",
-//   nombres: "Pablo",
-//   apellidos: "Alvarez",
-// });
+//crear administrador si no existe
+createAdmin.createAdministratorIfNotExist();
 
 // db.nivelesFidelidad.create({
 //   nombreNivelFidelidad: "Bronce",
@@ -80,6 +77,9 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //   numeroUsuariosMax: 2000,
 //   costoMembresia: 200,
 // });
+
+//Variables de entorno
+require("dotenv").config();
 
 // Rutas
 app.use("/", routes);

@@ -4,15 +4,14 @@ const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
 const imagenPrestamista = db.imagenPrestamista;
-
 const jwt = require("jsonwebtoken");
-const TOKEN_KEY = require("../keys/tokenKey");
 const { aesDecrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
 
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   usuariosPrestamistas
     .findAll({
       where: {
@@ -75,6 +74,7 @@ exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
 
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaActivos = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   usuariosPrestamistas
     .findAll({
       where: {
@@ -132,6 +132,7 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
 
 //findAllUsuariosPrestamista con sus suscripciones
 exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   usuariosPrestamistas
     .findAll({
       where: {
@@ -189,6 +190,7 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
 
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
+  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   usuariosPrestamistas
     .findAll({
       where: {
