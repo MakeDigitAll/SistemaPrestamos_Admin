@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     setIsAuthenticated(true);
-    navigate("/"); // Redirigir al usuario a la página de inicio después de iniciar sesión
+    navigate("/admin-dashboard"); // Redirigir al usuario a la página de inicio después de iniciar sesión
   };
 
   // Check if admin is authenticated using the access token stored in cookies
