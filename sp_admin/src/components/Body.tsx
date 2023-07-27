@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useGetAdmin } from "../hooks/useGetAdmin";
 import useTokenRenewal from "../hooks/useTokenRenewal";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -10,16 +9,11 @@ interface BodyProps {
 }
 
 const Body: React.FC<BodyProps> = ({ children }) => {
-  const user = useGetAdmin();
   useTokenRenewal();
 
   const [isSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
   );
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <div>

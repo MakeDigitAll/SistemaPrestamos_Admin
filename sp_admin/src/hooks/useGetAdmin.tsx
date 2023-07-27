@@ -10,10 +10,6 @@ export const useGetAdmin = () => {
   const [admin, setAdmin] = useState<AdminType>();
 
   useEffect(() => {
-    //contador de cuantas veces se ejecuta el useEffect
-    let counter = 0;
-    counter++;
-    console.log("useEffect ejecutado " + counter + " veces");
     // Obtener el token de acceso desde una cookie
     const accessToken = Cookies.get("accessToken");
 
