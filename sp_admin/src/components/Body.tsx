@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useGetAdmin } from "../hooks/useGetAdmin";
 import useTokenRenewal from "../hooks/useTokenRenewal";
 import { CustomNavBar } from "./navbar/NavBar";
 import Footer from "../components/footer/Footer";
@@ -14,16 +13,10 @@ interface BodyProps {
 }
 
 const Body: React.FC<BodyProps> = ({ children }) => {
-  const user = useGetAdmin();
   useTokenRenewal();
-
   const [isSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
   );
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <SearchContextProvider>
