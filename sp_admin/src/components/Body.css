@@ -22,20 +22,6 @@
   width: 50px;
 }
 
-.content-container {
-  display: flex;
-  flex-direction: row;
-  height: 100vh;
-  position: fixed; /* Hace que la barra lateral sea fija */
-  width: 100%;
-  background-color: transparent;
-}
-
-.content {
-  flex-grow: 1;
-  overflow-y: auto; /* Agrega scroll vertical solo al contenido */
-}
-
 .content-body {
   flex-grow: 1;
 }
@@ -53,9 +39,6 @@
 
 .sidebar.collapsed {
   width: 50px;
-}
-.content-body {
-  flex-grow: 1;
 }
 
 .footer-container {
