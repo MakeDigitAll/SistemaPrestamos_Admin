@@ -11,8 +11,10 @@ import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 import { ImageContext } from "../../context/ImageContext";
 import useGetImagenAdmin from "../../hooks/useGetImagenAdmin";
+import { AuthContext } from "../../context/AuthContext";
 
 export const CustomNavBar = () => {
+  const { logout } = useContext(AuthContext);
   const { setSearchTerm } = useContext(SearchContext);
   const { theme, toggleTheme } = useDarkLight();
   const { t } = useTranslation();
@@ -38,7 +40,7 @@ export const CustomNavBar = () => {
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
     if (actionKey === "logout") {
-      //handleLogout();
+      logout();
     }
   };
 
