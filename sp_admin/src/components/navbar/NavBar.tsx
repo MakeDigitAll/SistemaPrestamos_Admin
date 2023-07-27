@@ -63,6 +63,7 @@ export const CustomNavBar = () => {
         variant="static"
         isCompact
         isBordered={false}
+        maxWidth="fluid"
         disableShadow={true}
       >
         <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
