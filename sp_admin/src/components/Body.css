@@ -1,16 +1,20 @@
 /*Body.css*/
+.app-container {
+  display: flex;
+  overflow: hidden; /* Evita el desbordamiento de contenido en dispositivos pequeños */
+  height: calc(100vh - 32px); /* Resta la altura del header */
+}
+
 .header {
-  position: fixed; /* Hace que el encabezado sea fijo */
-  z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
-  /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
-  width: 100%;
-  margin-top: 0%;
-  transition: width 0.7s ease; /* Transición gradual de 0.3 segundos */
+  flex-shrink: 0; /* Evita que el header se contraiga */
+  width: 100%; /* Establece el ancho del header al 100% */
 }
 
 .sidebar {
+  height: 100vh; /* Altura total de la pantalla */
   position: fixed;
   top: 0;
+  left: 0;
   z-index: 1;
 }
 
@@ -34,10 +38,6 @@
 
 .content-body {
   flex-grow: 1;
-  margin-top: 5%;
-  margin-left: 3%;
-  margin-right: 3%;
-  margin-bottom: 3%;
 }
 
 .content-scrollable {

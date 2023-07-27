@@ -27,25 +27,27 @@ const Body: React.FC<BodyProps> = ({ children }) => {
 
   return (
     <SearchContextProvider>
-      <div>
-        <ToastContainer position="bottom-right" />
-        <div className="content-container">
+      <div className="app-container">
+        <SideBar />
+        <div className="content-body">
           <div className="header" />
-          <SideBar />
-          <div
-            className={`content ${
-              isSidebarCollapsed ? "content-sidebar-collapsed" : ""
-            }`}
-          >
-            <div className="header">
-              <CustomNavBar />
+          <CustomNavBar />
+          <div className="content-scrollable">
+            <ToastContainer position="bottom-right" />
+            <div className="content-container">
+              <div
+                className={`content ${
+                  isSidebarCollapsed ? "content-sidebar-collapsed" : ""
+                }`}
+              >
+                <div className="content-body">{children}</div>
+              </div>
             </div>
-            <div className="content-body">{children}</div>
           </div>
         </div>
-        <div className="footer">
-          <Footer />
-        </div>
+      </div>
+      <div className="footer">
+        <Footer />
       </div>
     </SearchContextProvider>
   );
