@@ -5,6 +5,11 @@ class AdminDataService {
     return http.put(`/admin/${id}`, data);
   }
 
+  //getAdmin by id
+  getAdminById(id: number) {
+    return http.get(`/admin/get-admin-data/${id}`);
+  }
+
   // Comprobar si el administrador existe en la base de datos y si la contraseña es correcta sin credenciales
   login(correoElectronico: string, adminPassword: string) {
     return http.get(

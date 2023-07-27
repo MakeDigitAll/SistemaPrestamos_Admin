@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import service from "../services/service";
 
 interface Admin {
   correoElectronico: string;
@@ -16,27 +17,25 @@ export const useGetAdmin = () => {
   const [admin, setUser] = useState<Admin | null>(null);
 
   useEffect(() => {
-    // Obtener el token de acceso desde una cookie
-    const accessToken = Cookies.get("accessToken");
+    (async () => {
+      // Obtener el token de acceso desde una cookie
+      const accessToken = Cookies.get("accessToken");
 
-    if (accessToken) {
-      // Decodificar el token de acceso y obtener los datos del usuario
-      const decodedAccessToken: any = jwt_decode(accessToken);
+      if (accessToken) {
+        // Decodificar el token de acceso y obtener los datos del usuario
+        const decodedAccessToken: any = jwt_decode(accessToken);
+        const id = decodedAccessToken.id;
 
-      // Establecer los datos del usuario en el estado
-      const currentUser: Admin = {
-        correoElectronico: decodedAccessToken.correoElectronico,
-        nombres: decodedAccessToken.nombres,
-        apellidos: decodedAccessToken.apellidos,
-        imagenPerfil: decodedAccessToken.imagenPerfil,
-        id: decodedAccessToken.id,
-      };
-
-      setUser(currentUser);
-    } else {
-      navigate("/");
-    }
-  }, [navigate]);
+        await service.getAdminById(id).then((res) => {
+          const admin = res.data;
+          console.log(admin);
+          setUser(admin);
+        });
+      } else {
+        navigate("/");
+      }
+    })();
+  }, []);
 
   return admin;
 };
