@@ -1,24 +1,52 @@
 /*Body.css*/
-
-.app-container {
-  display: flex;
-  overflow: hidden; /* Evita el desbordamiento de contenido en dispositivos pequeños */
-  height: calc(100vh - 32px); /* Resta la altura del header */
+/*Body.css*/
+.header {
+  position: fixed; /* Hace que el encabezado sea fijo */
+  z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
+  /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
+  width: 95%;
+  margin-top: 0%;
+  transition: width 0.7s ease; /* Transición gradual de 0.3 segundos */
 }
 
-.header {
-  flex-shrink: 0; /* Evita que el header se contraiga */
-  width: 100%; /* Establece el ancho del header al 100% */
+.ps-sidebar-root:not(.ps-collapsed) + .content .header {
+  /* Si la barra lateral no está colapsada, ajusta el ancho del encabezado */
+  width: 84%;
+  transition: width 0.7s ease;
 }
 
 .sidebar {
-  height: 100vh; /* Altura total de la pantalla */
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 1;
-
 }
+
+.sidebar.collapsed {
+  width: 50px;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  position: fixed; /* Hace que la barra lateral sea fija */
+  width: 100%;
+  background-color: transparent;
+}
+
+.content {
+  flex-grow: 1;
+  overflow-y: auto; /* Agrega scroll vertical solo al contenido */
+}
+
+.content-body {
+  flex-grow: 1;
+  margin-top: 5%;
+  margin-left: 3%;
+  margin-right: 3%;
+  margin-bottom: 3%;
+}
+
 .content-scrollable {
   /* Ajusta el contenido para que se ajuste al encabezado y al pie de página */
   padding-bottom: 5%; /* Altura del footer */
@@ -37,7 +65,6 @@
   flex-grow: 1;
 }
 
-
 .footer-container {
   position: fixed;
   width: 100%;
@@ -47,7 +74,7 @@
 }
 
 .footer-container p {
-  font-size:10px;
+  font-size: 10px;
 }
 
 .ps-sidebar-root:not(.ps-collapsed) + .content .header {
@@ -76,14 +103,12 @@
   background-color: #e1e1e1;
   border-radius: 5%;
   width: auto;
-
 }
 
 .dark-mode .custom-submenu > .ps-submenu-content {
   background-color: #363636;
   border-radius: 5%;
   width: auto;
-
 }
 
 .custom-submenu .ps-menuitem-root {
@@ -96,16 +121,16 @@
 
 .custom-submenu .ps-menuitem-root:hover,
 .custom-submenu .ps-menuitem-root:hover .ps-menu-button {
-  background-color: #335B8C;
+  background-color: #335b8c;
   color: #fff;
   border-radius: 15px;
 }
 
 /* Agregar Usuario */
 .nextui-c-cwdhZi {
-  position:fixed;
+  position: fixed;
   font-size: 0.9rem;
-  margin : -20px;
+  margin: -20px;
   margin-left: 8px;
 }
 
@@ -171,7 +196,6 @@
 
 /* NavBar */
 
-
 .nextui-c-jeuecp {
   width: 250px;
 }
@@ -181,31 +205,29 @@
 }
 
 .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
-background: rgb(225, 225, 225)
-
+  background: rgb(225, 225, 225);
 }
 .dark-mode .nextui-c-hhqfap-gqZKcP-disableBlur-false .nextui-c-egxOLa {
-background: rgb(54, 54, 54);
-
+  background: rgb(54, 54, 54);
 }
 
 .nextui-c-jTSrtu-kYKDGo-cv {
-background-color: #b1b0b0;
-color: #222222;
+  background-color: #b1b0b0;
+  color: #222222;
 }
 
 .dark-mode .nextui-c-jTSrtu-kYKDGo-cv {
-background-color: #222222;
-color: #fff;
+  background-color: #222222;
+  color: #fff;
 }
 
 /* Modal */
 .nextui-c-bvsQQD {
-  color : #000000;
+  color: #000000;
 }
 
 .dark-mode .nextui-c-bvsQQD {
-  color : #ffffff;
+  color: #ffffff;
 }
 
 .nextui-c-kNgzEX {
@@ -217,7 +239,6 @@ color: #fff;
   background: #222222;
   color: #ffffff;
 }
-
 
 .nextui-c-BDLTQ-jzLLYn-variant-flat {
   background: transparent;
@@ -233,10 +254,6 @@ color: #fff;
   background: #6d6363;
   -webkit-text-fill-color: white;
 }
-
-
-
-
 
 /* Notificaciones */
 .Toastify__toast--success {
@@ -259,15 +276,13 @@ color: #fff;
   max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
   white-space: normal;
   word-wrap: break-word;
-
 }
 
-
 .Toastify__toast--success::before {
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
+  position: relative;
+  z-index: 100000;
+  left: 12px;
+  top: 6px;
 }
 
 .Toastify__toast--success::after {
@@ -275,7 +290,7 @@ color: #fff;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
-  left:265px;
+  left: 265px;
   padding-top: 14px !important;
 }
 
@@ -288,7 +303,6 @@ color: #fff;
   max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
   white-space: normal;
   word-wrap: break-word;
-  
 }
 
 .dark-mode .Toastify__toast--error {
@@ -300,14 +314,13 @@ color: #fff;
   max-width: 90%; /* Puedes ajustar el porcentaje según tus necesidades */
   white-space: normal;
   word-wrap: break-word;
-  
 }
 
 .Toastify__toast--error::before {
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
+  position: relative;
+  z-index: 100000;
+  left: 12px;
+  top: 6px;
 }
 
 .Toastify__toast--error::after {
@@ -315,7 +328,7 @@ color: #fff;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
-  left:265px;
+  left: 265px;
   padding-top: 14px !important;
 }
 
@@ -342,10 +355,10 @@ color: #fff;
 }
 
 .Toastify__toast--warning::before {
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
+  position: relative;
+  z-index: 100000;
+  left: 12px;
+  top: 6px;
 }
 
 .Toastify__toast--warning::after {
@@ -353,7 +366,7 @@ color: #fff;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
-  left:265px;
+  left: 265px;
   padding-top: 14px !important;
 }
 
@@ -380,10 +393,10 @@ color: #fff;
 }
 
 .Toastify__toast--info::before {
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
+  position: relative;
+  z-index: 100000;
+  left: 12px;
+  top: 6px;
 }
 
 .Toastify__toast--info::after {
@@ -391,7 +404,7 @@ color: #fff;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
-  left:265px;
+  left: 265px;
   padding-top: 14px !important;
 }
 
@@ -418,10 +431,10 @@ color: #fff;
 }
 
 .Toastify__toast--default::before {
-  position:relative; 
-  z-index:100000;
-  left:12px;
-  top:6px;
+  position: relative;
+  z-index: 100000;
+  left: 12px;
+  top: 6px;
 }
 
 .Toastify__toast--default::after {
@@ -429,7 +442,7 @@ color: #fff;
   color: #333333;
   font-size: 15px;
   font-weight: 700;
-  left:265px;
+  left: 265px;
   padding-top: 14px !important;
 }
 

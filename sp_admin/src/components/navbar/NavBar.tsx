@@ -11,11 +11,8 @@ import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 import { ImageContext } from "../../context/ImageContext";
 import useGetImagenAdmin from "../../hooks/useGetImagenAdmin";
-interface NavBarProps {
-  handleLogout: () => void;
-}
 
-export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
+export const CustomNavBar = () => {
   const { setSearchTerm } = useContext(SearchContext);
   const { theme, toggleTheme } = useDarkLight();
   const { t } = useTranslation();
@@ -41,7 +38,7 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
     if (actionKey === "logout") {
-      handleLogout();
+      //handleLogout();
     }
   };
 
@@ -65,8 +62,6 @@ export const CustomNavBar: React.FC<NavBarProps> = ({ handleLogout }) => {
       <Navbar
         variant="static"
         isCompact
-        css={{}}
-        maxWidth="fluid"
         isBordered={false}
         disableShadow={true}
       >
