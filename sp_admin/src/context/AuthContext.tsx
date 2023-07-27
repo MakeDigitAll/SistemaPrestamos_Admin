@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import useTokenRenewal from "../hooks/useTokenRenewal";
 
 interface AuthContextData {
   isAuthenticated: boolean;
@@ -21,6 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  useTokenRenewal();
 
   // Function to logout the admin by clearing cookies and redirecting to login
   const logout = () => {

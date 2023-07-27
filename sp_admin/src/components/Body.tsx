@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import useTokenRenewal from "../hooks/useTokenRenewal";
 import { CustomNavBar } from "./navbar/NavBar";
 import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
@@ -13,7 +12,6 @@ interface BodyProps {
 }
 
 const Body: React.FC<BodyProps> = ({ children }) => {
-  useTokenRenewal();
   const [isSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
   );
