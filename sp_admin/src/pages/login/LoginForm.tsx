@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Button,
   Input,
@@ -10,7 +10,6 @@ import {
   useTheme,
 } from "@nextui-org/react";
 import service from "../../services/service";
-import Cookies from "js-cookie";
 import { aesEncrypt } from "../../utils/encryption"; // Importa la función aesEncrypt del archivo encryption.tsx
 import { Layout } from "../../components/navbar/Layout";
 import NavBarLogin from "./NavBarLogin";
@@ -18,13 +17,12 @@ import logodark from "../../assets/images/logodark.png";
 import logolight from "../../assets/images/logolight.png";
 import { useTheme as useNextTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginForm = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { login } = useContext(AuthContext);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   const {
@@ -38,22 +36,11 @@ const LoginForm = () => {
     bindings: passwordBindings,
   } = useInput("");
 
-  useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-    const authenticated = !!accessToken;
-    setIsLoggedIn(authenticated);
-  }, []);
-
-  //si esta logueado redirige al dashboard
-  if (isLoggedIn) {
-    navigate("/admin-dashboard");
-  }
-
   const validateEmail = (value: string) => {
     return value.match(/^[A-Z0-9._%+-]+@makedigitall\.com$/i);
   };
 
-  const handleLogin = async () => {
+  const handleValidated = async () => {
     setEmailError("");
     setPasswordError("");
 
@@ -72,6 +59,10 @@ const LoginForm = () => {
       return;
     }
 
+    handleLogin();
+  };
+
+  const handleLogin = async () => {
     try {
       // Encriptar correo electrónico y contraseña
       const encryptedEmail = aesEncrypt(emailValue);
@@ -79,29 +70,9 @@ const LoginForm = () => {
       const response = await service.login(encryptedEmail, encryptedPassword);
 
       if (response.data) {
-        // Obtener el access token y el refresh token de la respuesta
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
-        // Duración en minutos
-        const accessTokenDurationMinutes = 55;
-        const refreshTokenDurationMinutes = 20 * 60; // 20 horas en minutos
-
-        // Convertir la duración en días
-        const accessTokenDurationDays = accessTokenDurationMinutes / (60 * 24);
-        const refreshTokenDurationDays =
-          refreshTokenDurationMinutes / (60 * 24);
-
-        // Establecer la cookie del access token con una duración de 55 minutos
-        Cookies.set("accessToken", accessToken, {
-          expires: accessTokenDurationDays,
-        });
-
-        // Establecer la cookie del refresh token con una duración de 20 horas
-        Cookies.set("refreshToken", refreshToken, {
-          expires: refreshTokenDurationDays,
-        });
-
-        // Redireccionar a la página de dashboard
+        login(accessToken, refreshToken);
         window.location.href = "/admin-dashboard";
       }
     } catch (error: any) {
@@ -207,7 +178,7 @@ const LoginForm = () => {
             color="gradient"
             auto
             css={{ width: "40%", margin: "auto", marginBottom: "10%" }}
-            onPress={handleLogin}
+            onPress={handleValidated}
           >
             {t("login.login")}
           </Button>

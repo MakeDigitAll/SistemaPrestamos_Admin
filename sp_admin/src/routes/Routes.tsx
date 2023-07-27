@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect, useCallback } from "react";
+import { AuthProvider } from "../context/AuthContext";
 import Login from "../pages/login/LoginForm";
 import Dashboard from "../pages/dashboard/Dashboard";
 import Profile from "../pages/profile/Profile";
@@ -43,66 +44,68 @@ function AppRouter() {
   const handleLogoutCallback = useCallback(handleLogout, []);
 
   return (
-    <SearchContextProvider>
-      <ImageProvider>
-        <BrowserRouter>
-          <div className="app-container">
-            {isLoggedIn && <SideBar />}
-            <div className="content-body">
-              {isLoggedIn && (
-                <div className="header">
-                  <CustomNavBar handleLogout={handleLogoutCallback} />
-                </div>
-              )}
-              <div className="content-scrollable">
-                <Routes>
-                  <Route path="/admin-login" element={<Login />} />
-                  <Route path="/admin-dashboard" element={<Dashboard />} />
-                  <Route path="/admin-profile" element={<Profile />} />
-                  <Route
-                    path="/admin-usuarios-activos"
-                    element={<UsuariosActivos />}
-                  />
-                  <Route
-                    path="/admin-suscribir-usuario"
-                    element={<SuscribirUsuario />}
-                  />
-                  <Route
-                    path="/admin-suscripciones"
-                    element={<Suscripciones />}
-                  />
-                  <Route path="/admin-add-usuario" element={<AddUsuario />} />
-                  <Route
-                    path="/admin-usuarios-eliminados"
-                    element={<UsuariosEliminados />}
-                  />
-                  <Route path="/admin-fidelidad" element={<Fidelidad />} />
-                  <Route
-                    path="/admin-tipo-suscripcion"
-                    element={<TipoSuscripcion />}
-                  />
+    <BrowserRouter>
+      <AuthProvider>
+        <SearchContextProvider>
+          <ImageProvider>
+            <div className="app-container">
+              {isLoggedIn && <SideBar />}
+              <div className="content-body">
+                {isLoggedIn && (
+                  <div className="header">
+                    <CustomNavBar handleLogout={handleLogoutCallback} />
+                  </div>
+                )}
+                <div className="content-scrollable">
+                  <Routes>
+                    <Route path="/admin-login" element={<Login />} />
+                    <Route path="/admin-dashboard" element={<Dashboard />} />
+                    <Route path="/admin-profile" element={<Profile />} />
+                    <Route
+                      path="/admin-usuarios-activos"
+                      element={<UsuariosActivos />}
+                    />
+                    <Route
+                      path="/admin-suscribir-usuario"
+                      element={<SuscribirUsuario />}
+                    />
+                    <Route
+                      path="/admin-suscripciones"
+                      element={<Suscripciones />}
+                    />
+                    <Route path="/admin-add-usuario" element={<AddUsuario />} />
+                    <Route
+                      path="/admin-usuarios-eliminados"
+                      element={<UsuariosEliminados />}
+                    />
+                    <Route path="/admin-fidelidad" element={<Fidelidad />} />
+                    <Route
+                      path="/admin-tipo-suscripcion"
+                      element={<TipoSuscripcion />}
+                    />
 
-                  {isLoggedIn ? (
-                    <Route
-                      path="/"
-                      element={<Navigate to="/admin-dashboard" replace />}
-                    />
-                  ) : (
-                    <Route
-                      path="/"
-                      element={<Navigate to="/admin-login" replace />}
-                    />
-                  )}
-                </Routes>
+                    {isLoggedIn ? (
+                      <Route
+                        path="/"
+                        element={<Navigate to="/admin-dashboard" replace />}
+                      />
+                    ) : (
+                      <Route
+                        path="/"
+                        element={<Navigate to="/admin-login" replace />}
+                      />
+                    )}
+                  </Routes>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="footer">
-            <Footer />
-          </div>
-        </BrowserRouter>
-      </ImageProvider>
-    </SearchContextProvider>
+            <div className="footer">
+              <Footer />
+            </div>
+          </ImageProvider>
+        </SearchContextProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
