@@ -30,7 +30,7 @@ const Body: React.FC<BodyProps> = ({ children }) => {
       <div>
         <ToastContainer position="bottom-right" />
         <div className="content-container">
-          <div />
+          <div className="header" />
           <SideBar />
           <div
             className={`content ${

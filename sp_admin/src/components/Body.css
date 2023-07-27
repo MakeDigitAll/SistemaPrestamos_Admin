@@ -1,18 +1,11 @@
 /*Body.css*/
-/*Body.css*/
 .header {
   position: fixed; /* Hace que el encabezado sea fijo */
   z-index: 1; /* Asegura que el encabezado esté por encima del contenido */
   /*Centrar en medio de la pagina dependiendo de si la sidebar esta oculta o ni*/
-  width: 95%;
+  width: 100%;
   margin-top: 0%;
   transition: width 0.7s ease; /* Transición gradual de 0.3 segundos */
-}
-
-.ps-sidebar-root:not(.ps-collapsed) + .content .header {
-  /* Si la barra lateral no está colapsada, ajusta el ancho del encabezado */
-  width: 84%;
-  transition: width 0.7s ease;
 }
 
 .sidebar {
