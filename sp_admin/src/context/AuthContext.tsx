@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import useTokenRenewal from "../hooks/useTokenRenewal";
 
@@ -22,6 +22,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const location = useLocation();
+
   useTokenRenewal();
 
   // Function to logout the user by clearing cookies and redirecting to login
@@ -88,6 +90,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     // Después de verificar el estado de autenticación, establecer isLoading en false
     setIsLoading(false);
   }, [navigate]);
+
+  useEffect(() => {
+    const locationPath = (path: string) => {
+      return location.pathname.startsWith(path);
+    };
+
+    if (
+      isAuthenticated &&
+      (locationPath("/admin-login") || locationPath("/") || locationPath("#"))
+    ) {
+      navigate("/admin-dashboard");
+    }
+  }, [isAuthenticated, navigate, location.pathname]);
 
   useEffect(() => {
     if (!isLoading && isAuthenticated === false) {
