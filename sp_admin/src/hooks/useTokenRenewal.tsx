@@ -42,7 +42,6 @@ const useTokenRenewal = () => {
         apellidos: decodedNewAccessToken.apellidos,
         id: decodedNewAccessToken.id,
       };
-      console.log("Token Renewed");
       setUser(currentUser);
     } catch (error) {
       // Error al renovar el token, redireccionar a la página de inicio de sesión
