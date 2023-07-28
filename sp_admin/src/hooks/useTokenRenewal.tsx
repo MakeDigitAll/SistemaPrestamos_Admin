@@ -24,7 +24,7 @@ const useTokenRenewal = () => {
       const response = await service.refreshToken(refreshToken);
       const newAccessToken = response.data.accessToken;
 
-      const accessTokenDurationMinutes = 55;
+      const accessTokenDurationMinutes = 60;
       const accessTokenDurationDays = accessTokenDurationMinutes / (60 * 24);
 
       // Actualizar el token de acceso en las cookies
@@ -42,7 +42,7 @@ const useTokenRenewal = () => {
         apellidos: decodedNewAccessToken.apellidos,
         id: decodedNewAccessToken.id,
       };
-
+      console.log("Token Renewed");
       setUser(currentUser);
     } catch (error) {
       // Error al renovar el token, redireccionar a la página de inicio de sesión

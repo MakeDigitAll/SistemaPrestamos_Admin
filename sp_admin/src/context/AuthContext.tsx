@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   useTokenRenewal();
 
-  // Function to logout the admin by clearing cookies and redirecting to login
+  // Function to logout the user by clearing cookies and redirecting to login
   const logout = () => {
     Cookies.remove("accessToken");
     Cookies.remove("refreshToken");
@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   // Funcion para iniciar sesión del usuario
   const login = (accessToken: string, refreshToken: string) => {
     // Duración en minutos
-    const accessTokenDurationMinutes = 55;
+    const accessTokenDurationMinutes = 60;
     const refreshTokenDurationMinutes = 20 * 60; // 20 horas en minutos
 
     // Convertir la duración en días
@@ -53,10 +53,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     setIsAuthenticated(true);
-    navigate("/admin-dashboard"); // Redirigir al usuario a la página de inicio después de iniciar sesión
+    navigate("/"); // Redirigir al usuario a la página de inicio después de iniciar sesión
   };
 
-  // Check if admin is authenticated using the access token stored in cookies
+  // Check if user is authenticated using the access token stored in cookies
   useEffect(() => {
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
