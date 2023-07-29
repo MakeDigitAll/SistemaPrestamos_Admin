@@ -20,6 +20,7 @@ function AppRouter() {
         <SearchContextProvider>
           <ImageProvider>
             <Routes>
+              <Route path="/" element={<Login />} />
               <Route path="/admin-login" element={<Login />} />
               <Route path="/admin-dashboard" element={<Dashboard />} />
               <Route path="/admin-profile" element={<Profile />} />

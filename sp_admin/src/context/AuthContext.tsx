@@ -92,23 +92,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [navigate]);
 
   useEffect(() => {
-    const locationPath = (path: string) => {
-      return location.pathname.startsWith(path);
-    };
-
+    //si le usuario esta autenticado y esta en la ruta de login
     if (
-      isAuthenticated &&
-      (locationPath("/admin-login") || locationPath("/") || locationPath("#"))
+      (isAuthenticated && location.pathname === "/admin-login") ||
+      location.pathname === "/"
     ) {
       navigate("/admin-dashboard");
     }
-  }, [isAuthenticated, navigate, location.pathname]);
-
-  useEffect(() => {
-    if (!isLoading && isAuthenticated === false) {
-      navigate("/admin-login");
-    }
-  }, [isAuthenticated, isLoading, navigate]);
+  }, [isAuthenticated, location.pathname]);
 
   // Render loading state while checking authentication status
   if (isLoading) {

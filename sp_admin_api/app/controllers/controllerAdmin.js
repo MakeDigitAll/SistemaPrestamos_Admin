@@ -232,7 +232,6 @@ exports.getImageAdmin = (req, res) => {
 
 exports.getAdminById = (req, res) => {
   const id = req.params.id;
-  console.log(id);
 
   db.administradores
     .findOne({
