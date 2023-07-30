@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const accessToken = Cookies.get("accessToken");
   useTokenRenewal();
 
   // Function to logout the user by clearing cookies and redirecting to login
@@ -60,8 +60,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Check if user is authenticated using the access token stored in cookies
   useEffect(() => {
-    const accessToken = Cookies.get("accessToken");
-
     if (!accessToken) {
       Cookies.remove("refreshToken");
       setIsAuthenticated(false);
@@ -99,11 +97,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     //si le usuario esta autenticado y esta en la ruta de login
     if (
       (isAuthenticated && location.pathname === "/admin-login") ||
-      location.pathname === "/"
+      (location.pathname === "/" && accessToken)
     ) {
       navigate("/admin-dashboard");
     }
-  }, [isAuthenticated, location.pathname, navigate]);
+  }, [isAuthenticated, location.pathname, navigate, accessToken]);
 
   // Render loading state while checking authentication status
   if (isLoading) {
