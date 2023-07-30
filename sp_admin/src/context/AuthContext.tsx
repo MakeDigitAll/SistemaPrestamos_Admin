@@ -91,7 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
     // Después de verificar el estado de autenticación, establecer isLoading en false
     setIsLoading(false);
-  }, [navigate]);
+  }, [navigate, accessToken]);
 
   useEffect(() => {
     //si le usuario esta autenticado y esta en la ruta de login
