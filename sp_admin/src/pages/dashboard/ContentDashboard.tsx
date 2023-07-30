@@ -10,7 +10,7 @@ const ContentDashboard: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const getUsuarios = useGetUsuariosPrestamistas();
-  const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
+  const usuariosPrestamistas = getUsuarios.usuariosPrestamistas;
   const [usuariosActivos, setUsuariosActivos] = useState<UserTypePrestamista[]>(
     []
   );

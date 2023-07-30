@@ -48,7 +48,7 @@ const ContentUsuariosActivos: React.FC = () => {
     direction: undefined,
   });
   //Obtiene los usuariosPrestamistas del token decodificado
-  const usuariosPrestamistas = getUsuarios?.decodedToken?.usuariosPrestamistas;
+  const usuariosPrestamistas = getUsuarios?.usuariosActivos;
   //Estado para definir los usuariosPrestamistas a mostrar
   const [Usuarios, setUsuarios] = useState<UserTypePrestamista[]>([]);
   //Función para mostrar el modal de editar usuario

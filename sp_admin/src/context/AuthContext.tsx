@@ -60,7 +60,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Check if user is authenticated using the access token stored in cookies
   useEffect(() => {
-    console.log("Verificando el estado de autenticación...");
     const accessToken = Cookies.get("accessToken");
 
     if (!accessToken) {

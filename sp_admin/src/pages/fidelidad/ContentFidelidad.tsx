@@ -228,7 +228,7 @@ const ContentFidelidad: React.FC = () => {
           </Card.Body>
           <Card.Footer style={{ justifyContent: "center" }}>
             <Button onPress={handleAddNiveles}>
-              {t("contentFidelidad.addSuscripcion")}
+              {t("contentFidelidad.addFidelidadType")}
             </Button>
           </Card.Footer>
         </Card>

@@ -4,8 +4,7 @@ const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
 const imagenPrestamista = db.imagenPrestamista;
-const jwt = require("jsonwebtoken");
-const { aesDecrypt } = require("../utils/cryptoUtils");
+const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
 
@@ -37,19 +36,34 @@ exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
         .then((suscripcionesData) => {
           // Asociar las suscripciones a los usuariosPrestamistas
           const usuariosPrestamistas = data.map((user, index) => ({
-            idUsuarioPrestamista: user.idUsuarioPrestamista,
-            correoElectronico: user.correoElectronico,
-            nombres: user.nombres,
-            apellidos: user.apellidos,
-            codigoReferencia: user.codigoReferencia,
-            isActive: user.isActive,
-            isDeleted: user.isDeleted,
-            numeroTelefono: user.numeroTelefono,
-            suscripciones: suscripcionesData[index],
+            idUsuarioPrestamista: aesEncrypt(
+              user.idUsuarioPrestamista.toString()
+            ),
+            correoElectronico: aesEncrypt(user.correoElectronico),
+            nombres: aesEncrypt(user.nombres),
+            apellidos: aesEncrypt(user.apellidos),
+            codigoReferencia: aesEncrypt(user.codigoReferencia),
+            isActive: aesEncrypt(user.isActive.toString()),
+            isDeleted: aesEncrypt(user.isDeleted.toString()),
+            numeroTelefono: aesEncrypt(user.numeroTelefono.toString()),
+            suscripciones: suscripcionesData[index].map((suscripcion) => ({
+              idSuscripcion: aesEncrypt(suscripcion.idSuscripcion.toString()),
+              idUsuarioPrestamista: aesEncrypt(
+                suscripcion.idUsuarioPrestamista.toString()
+              ),
+              idNivelFidelidad: aesEncrypt(
+                suscripcion.idNivelFidelidad.toString()
+              ),
+              idTipoSuscripcion: aesEncrypt(
+                suscripcion.idTipoSuscripcion.toString()
+              ),
+              fechaInicio: aesEncrypt(suscripcion.fechaInicio.toString()),
+              fechaFin: aesEncrypt(suscripcion.fechaFin.toString()),
+              isActive: aesEncrypt(suscripcion.isActive.toString()),
+            })),
           }));
 
-          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-          res.send({ tokenUsuarios });
+          res.send({ usuariosPrestamistas });
         })
         .catch((err) => {
           // Manejar el error
@@ -95,19 +109,34 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
         .then((suscripcionesData) => {
           // Asociar las suscripciones a los usuariosPrestamistas
           const usuariosPrestamistas = data.map((user, index) => ({
-            idUsuarioPrestamista: user.idUsuarioPrestamista,
-            correoElectronico: user.correoElectronico,
-            nombres: user.nombres,
-            apellidos: user.apellidos,
-            codigoReferencia: user.codigoReferencia,
-            isActive: user.isActive,
-            isDeleted: user.isDeleted,
-            numeroTelefono: user.numeroTelefono,
-            suscripciones: suscripcionesData[index],
+            idUsuarioPrestamista: aesEncrypt(
+              user.idUsuarioPrestamista.toString()
+            ),
+            correoElectronico: aesEncrypt(user.correoElectronico),
+            nombres: aesEncrypt(user.nombres),
+            apellidos: aesEncrypt(user.apellidos),
+            codigoReferencia: aesEncrypt(user.codigoReferencia),
+            isActive: aesEncrypt(user.isActive.toString()),
+            isDeleted: aesEncrypt(user.isDeleted.toString()),
+            numeroTelefono: aesEncrypt(user.numeroTelefono.toString()),
+            suscripciones: suscripcionesData[index].map((suscripcion) => ({
+              idSuscripcion: aesEncrypt(suscripcion.idSuscripcion.toString()),
+              idUsuarioPrestamista: aesEncrypt(
+                suscripcion.idUsuarioPrestamista.toString()
+              ),
+              idNivelFidelidad: aesEncrypt(
+                suscripcion.idNivelFidelidad.toString()
+              ),
+              idTipoSuscripcion: aesEncrypt(
+                suscripcion.idTipoSuscripcion.toString()
+              ),
+              fechaInicio: aesEncrypt(suscripcion.fechaInicio.toString()),
+              fechaFin: aesEncrypt(suscripcion.fechaFin.toString()),
+              isActive: aesEncrypt(suscripcion.isActive.toString()),
+            })),
           }));
 
-          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-          res.send({ tokenUsuarios });
+          res.send({ usuariosPrestamistas });
         })
         .catch((err) => {
           // Manejar el error
@@ -153,19 +182,33 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
         .then((suscripcionesData) => {
           // Asociar las suscripciones a los usuariosPrestamistas
           const usuariosPrestamistas = data.map((user, index) => ({
-            idUsuarioPrestamista: user.idUsuarioPrestamista,
-            correoElectronico: user.correoElectronico,
-            nombres: user.nombres,
-            apellidos: user.apellidos,
-            codigoReferencia: user.codigoReferencia,
-            isActive: user.isActive,
-            isDeleted: user.isDeleted,
-            numeroTelefono: user.numeroTelefono,
-            suscripciones: suscripcionesData[index],
+            idUsuarioPrestamista: aesEncrypt(
+              user.idUsuarioPrestamista.toString()
+            ),
+            correoElectronico: aesEncrypt(user.correoElectronico),
+            nombres: aesEncrypt(user.nombres),
+            apellidos: aesEncrypt(user.apellidos),
+            codigoReferencia: aesEncrypt(user.codigoReferencia),
+            isActive: aesEncrypt(user.isActive.toString()),
+            isDeleted: aesEncrypt(user.isDeleted.toString()),
+            numeroTelefono: aesEncrypt(user.numeroTelefono.toString()),
+            suscripciones: suscripcionesData[index].map((suscripcion) => ({
+              idSuscripcion: aesEncrypt(suscripcion.idSuscripcion.toString()),
+              idUsuarioPrestamista: aesEncrypt(
+                suscripcion.idUsuarioPrestamista.toString()
+              ),
+              idNivelFidelidad: aesEncrypt(
+                suscripcion.idNivelFidelidad.toString()
+              ),
+              idTipoSuscripcion: aesEncrypt(
+                suscripcion.idTipoSuscripcion.toString()
+              ),
+              fechaInicio: aesEncrypt(suscripcion.fechaInicio.toString()),
+              fechaFin: aesEncrypt(suscripcion.fechaFin.toString()),
+              isActive: aesEncrypt(suscripcion.isActive.toString()),
+            })),
           }));
-
-          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-          res.send({ tokenUsuarios });
+          res.send({ usuariosPrestamistas });
         })
         .catch((err) => {
           // Manejar el error
@@ -211,19 +254,34 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
         .then((suscripcionesData) => {
           // Asociar las suscripciones a los usuariosPrestamistas
           const usuariosPrestamistas = data.map((user, index) => ({
-            idUsuarioPrestamista: user.idUsuarioPrestamista,
-            correoElectronico: user.correoElectronico,
-            nombres: user.nombres,
-            apellidos: user.apellidos,
-            codigoReferencia: user.codigoReferencia,
-            isActive: user.isActive,
-            isDeleted: user.isDeleted,
-            numeroTelefono: user.numeroTelefono,
-            suscripciones: suscripcionesData[index],
+            idUsuarioPrestamista: aesEncrypt(
+              user.idUsuarioPrestamista.toString()
+            ),
+            correoElectronico: aesEncrypt(user.correoElectronico),
+            nombres: aesEncrypt(user.nombres),
+            apellidos: aesEncrypt(user.apellidos),
+            codigoReferencia: aesEncrypt(user.codigoReferencia),
+            isActive: aesEncrypt(user.isActive.toString()),
+            isDeleted: aesEncrypt(user.isDeleted.toString()),
+            numeroTelefono: aesEncrypt(user.numeroTelefono.toString()),
+            suscripciones: suscripcionesData[index].map((suscripcion) => ({
+              idSuscripcion: aesEncrypt(suscripcion.idSuscripcion.toString()),
+              idUsuarioPrestamista: aesEncrypt(
+                suscripcion.idUsuarioPrestamista.toString()
+              ),
+              idNivelFidelidad: aesEncrypt(
+                suscripcion.idNivelFidelidad.toString()
+              ),
+              idTipoSuscripcion: aesEncrypt(
+                suscripcion.idTipoSuscripcion.toString()
+              ),
+              fechaInicio: aesEncrypt(suscripcion.fechaInicio.toString()),
+              fechaFin: aesEncrypt(suscripcion.fechaFin.toString()),
+              isActive: aesEncrypt(suscripcion.isActive.toString()),
+            })),
           }));
 
-          const tokenUsuarios = jwt.sign({ usuariosPrestamistas }, TOKEN_KEY);
-          res.send({ tokenUsuarios });
+          res.send({ usuariosPrestamistas });
         })
         .catch((err) => {
           // Manejar el error
