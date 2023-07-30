@@ -17,6 +17,18 @@ const useTokenRenewal = () => {
   const navigate = useNavigate();
 
   const renewToken = useCallback(async () => {
+    // Obtener el token JWT desde una cookie
+    const accessToken = Cookies.get("accessToken");
+
+    if (!accessToken) {
+      //Eliminar la cookie del refresh token
+      Cookies.remove("refreshToken");
+      Cookies.remove("accessToken");
+      // No se encontró el token en la cookie, redireccionar a la página de inicio de sesión
+      navigate("/admin-login");
+      return;
+    }
+
     // Obtener el token de actualización desde una cookie
     const refreshToken = Cookies.get("refreshToken");
 
@@ -65,6 +77,7 @@ const useTokenRenewal = () => {
       if (!accessToken) {
         //Eliminar la cookie del refresh token
         Cookies.remove("refreshToken");
+        Cookies.remove("accessToken");
         // No se encontró el token en la cookie, redireccionar a la página de inicio de sesión
         navigate("/admin-login");
         return;

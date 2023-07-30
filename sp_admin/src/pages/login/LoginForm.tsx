@@ -73,7 +73,6 @@ const LoginForm = () => {
         const accessToken = response.data.accessToken;
         const refreshToken = response.data.refreshToken;
         login(accessToken, refreshToken);
-        window.location.href = "/admin-dashboard";
       }
     } catch (error: any) {
       if (error.response && error.response.status === 500) {
