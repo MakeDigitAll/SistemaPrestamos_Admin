@@ -3,9 +3,10 @@ import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import service from "../services/service";
+import { aesDecrypt } from "../utils/encryption";
 
 interface User {
-  correo_electronico: string;
+  correoElectronico: string;
   nombres: string;
   apellidos: string;
   id: number;
@@ -34,13 +35,19 @@ const useTokenRenewal = () => {
 
       // Decodificar el nuevo token de acceso y obtener los datos del usuario
       const decodedNewAccessToken: any = jwt_decode(newAccessToken);
+      const id = aesDecrypt(decodedNewAccessToken.id.toString());
+      const nombres = aesDecrypt(decodedNewAccessToken.nombres);
+      const apellidos = aesDecrypt(decodedNewAccessToken.apellidos);
+      const correoElectronico = aesDecrypt(
+        decodedNewAccessToken.correoElectronico
+      );
 
       // Establecer los datos del usuario en el estado
       const currentUser: User = {
-        correo_electronico: decodedNewAccessToken.correo_electronico,
-        nombres: decodedNewAccessToken.nombres,
-        apellidos: decodedNewAccessToken.apellidos,
-        id: decodedNewAccessToken.id,
+        correoElectronico: correoElectronico,
+        nombres: nombres,
+        apellidos: apellidos,
+        id: Number(id),
       };
       setUser(currentUser);
     } catch (error) {
@@ -70,14 +77,19 @@ const useTokenRenewal = () => {
         if (decodedAccessToken.exp - Date.now() / 1000 < 10 * 60) {
           await renewToken();
         } else {
+          const id = aesDecrypt(decodedAccessToken.id);
+          const nombres = aesDecrypt(decodedAccessToken.nombres);
+          const apellidos = aesDecrypt(decodedAccessToken.apellidos);
+          const correoElectronico = aesDecrypt(
+            decodedAccessToken.correoElectronico
+          );
           // El token de acceso es válido, establecer los datos del usuario
           const currentUser: User = {
-            correo_electronico: decodedAccessToken.correo_electronico,
-            nombres: decodedAccessToken.nombres,
-            apellidos: decodedAccessToken.apellidos,
-            id: decodedAccessToken.id,
+            correoElectronico: correoElectronico,
+            nombres: nombres,
+            apellidos: apellidos,
+            id: Number(id),
           };
-
           setUser(currentUser);
         }
       } catch (error) {

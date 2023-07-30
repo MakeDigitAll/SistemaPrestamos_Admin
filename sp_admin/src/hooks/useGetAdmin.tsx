@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
-import service from "../services/service";
 import { AdminType } from "../types/AdminType";
+import { aesDecrypt } from "../utils/encryption";
 
 export const useGetAdmin = () => {
   const navigate = useNavigate();
@@ -16,19 +16,25 @@ export const useGetAdmin = () => {
     if (accessToken) {
       // Decodificar el token de acceso y obtener los datos del usuario
       const decodedAccessToken: any = jwt_decode(accessToken);
-      const id = decodedAccessToken.id;
-      getAdminByID(id);
+      const id = aesDecrypt(decodedAccessToken.id);
+      const nombre = aesDecrypt(decodedAccessToken.nombres);
+      const apellidos = aesDecrypt(decodedAccessToken.apellidos);
+      const correoElectronico = aesDecrypt(
+        decodedAccessToken.correoElectronico
+      );
+
+      const admin = {
+        nombres: nombre,
+        apellidos: apellidos,
+        correoElectronico: correoElectronico,
+        id: Number(id),
+      };
+
+      setAdmin(admin);
     } else {
       navigate("/");
     }
   }, [navigate]);
-
-  const getAdminByID = async (id: number) => {
-    await service.getAdminById(id).then((res) => {
-      const admin = res.data;
-      setAdmin(admin);
-    });
-  };
 
   return admin;
 };

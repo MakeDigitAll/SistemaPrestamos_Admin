@@ -2,7 +2,7 @@ const db = require("../models");
 const admin = db.administradores;
 const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
-const { aesDecrypt } = require("../utils/cryptoUtils");
+const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const imagenAdministrador = db.imagenAdministrador;
 const bcrypt = require("bcrypt");
 
@@ -57,7 +57,10 @@ exports.loginAdmin = (req, res) => {
 
         if (passwordMatch) {
           const datos = {
-            id: data.idAdministrador,
+            id: aesEncrypt(data.idAdministrador.toString()),
+            nombres: aesEncrypt(data.nombres),
+            apellidos: aesEncrypt(data.apellidos),
+            correoElectronico: aesEncrypt(data.correoElectronico),
           };
           const accessToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "1h" });
           const refreshToken = jwt.sign(datos, TOKEN_KEY, { expiresIn: "20h" });
@@ -119,6 +122,9 @@ exports.refreshTokenAdmin = (req, res) => {
     const newAccessToken = jwt.sign(
       {
         id: decoded.id,
+        nombres: decoded.nombres,
+        apellidos: decoded.apellidos,
+        correoElectronico: decoded.correoElectronico,
       },
       TOKEN_KEY,
       { expiresIn: "1h" }
@@ -224,42 +230,6 @@ exports.getImageAdmin = (req, res) => {
         message:
           err.message ||
           "Ocurrió un error al buscar la imagen del administrador.",
-      });
-    });
-};
-
-//obtener los datos del administrador por el id del administrador
-
-exports.getAdminById = (req, res) => {
-  const id = req.params.id;
-
-  db.administradores
-    .findOne({
-      where: {
-        idAdministrador: id,
-      },
-    })
-    .then((data) => {
-      if (data) {
-        const datos = {
-          id: data.idAdministrador,
-          nombres: data.nombres,
-          apellidos: data.apellidos,
-          correoElectronico: data.correoElectronico,
-        };
-
-        res.send(datos);
-      } else {
-        res.status(500).send({
-          message: "No se encontró el administrador",
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al buscar el administrador por el id.",
       });
     });
 };

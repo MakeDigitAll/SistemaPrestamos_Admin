@@ -13,10 +13,6 @@ router.get("/admin/login", (req, res) => {
   controllerAdmin.loginAdmin(req, res);
 });
 
-router.get("/admin/get-admin-data/:id", verifyToken, (req, res) => {
-  controllerAdmin.getAdminById(req, res);
-});
-
 // Refrescar token
 router.get("/admin/refreshToken", (req, res) => {
   controllerAdmin.refreshTokenAdmin(req, res);

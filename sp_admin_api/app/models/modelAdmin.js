@@ -19,6 +19,12 @@ module.exports = (sequelize, Sequelize) => {
         len: [1, 100], // Mínimo 1 caracter, máximo 100 caracteres
       },
     },
+    numTelefono: {
+      type: Sequelize.STRING,
+      validate: {
+        len: [1, 12], // Mínimo 1 caracter, máximo 12 caracteres
+      },
+    },
     nombres: {
       type: Sequelize.STRING,
       allowNull: false,

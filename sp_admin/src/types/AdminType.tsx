@@ -3,5 +3,4 @@ export interface AdminType {
   nombres: string;
   apellidos: string;
   id: number;
-  imagenPerfil: Blob;
 }

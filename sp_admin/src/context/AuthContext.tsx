@@ -99,7 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     ) {
       navigate("/admin-dashboard");
     }
-  }, [isAuthenticated, location.pathname]);
+  }, [isAuthenticated, location.pathname, navigate]);
 
   // Render loading state while checking authentication status
   if (isLoading) {
