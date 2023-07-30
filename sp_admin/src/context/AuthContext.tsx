@@ -60,7 +60,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Check if user is authenticated using the access token stored in cookies
   useEffect(() => {
+    console.log("Verificando el estado de autenticación...");
     const accessToken = Cookies.get("accessToken");
+
+    if (!accessToken) {
+      Cookies.remove("refreshToken");
+      setIsAuthenticated(false);
+      setIsLoading(false);
+      navigate("/admin-login");
+      return;
+    }
+
     if (accessToken) {
       const decodedNewAccessToken: any = jwt_decode(accessToken);
 
@@ -81,12 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // Redirigir al usuario a la página de inicio de sesión
         navigate("/admin-login");
       }
-    } else {
-      Cookies.remove("refreshToken");
-      setIsAuthenticated(false);
-      navigate("/admin-login");
     }
-
     // Después de verificar el estado de autenticación, establecer isLoading en false
     setIsLoading(false);
   }, [navigate]);

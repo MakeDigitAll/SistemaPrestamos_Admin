@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import { AdminType } from "../types/AdminType";
 import { aesDecrypt } from "../utils/encryption";
 
 export const useGetAdmin = () => {
-  const navigate = useNavigate();
   const [admin, setAdmin] = useState<AdminType>();
 
   useEffect(() => {
@@ -31,10 +29,8 @@ export const useGetAdmin = () => {
       };
 
       setAdmin(admin);
-    } else {
-      navigate("/");
     }
-  }, [navigate]);
+  }, []);
 
   return admin;
 };
