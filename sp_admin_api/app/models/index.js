@@ -33,6 +33,8 @@ db.datosUsuarioSuscripciones = require("./modelDatosUsuarioSuscripcion.js")(sequ
 db.nivelesFidelidad = require("./modelNivelesFidelidad.js")(sequelize, Sequelize);
 //Modelo de TipoSuscripcion
 db.tipoSuscripciones = require("./modelTipoSuscripcion.js")(sequelize, Sequelize);
+//Modelo AmistadPrestamistaClientes
+db.amistadPrestamistaClientes = require("./modelAmistadPrestamistaClientes.js")(sequelize, Sequelize);
 
 
 //Modelo Suscripciones
@@ -135,6 +137,16 @@ db.suscripciones.belongsTo(db.tipoSuscripciones, {
 db.tipoSuscripciones.hasMany(db.suscripciones, {
   foreignKey: "idTipoSuscripcion",
   as: "tipo_suscripcion_suscripcion",
+});
+
+//asociacion entre amistades y usuariosPresatmistas  1 usuario prestamista puede tener muchos usuarios afiliados pero un usuario afiliado solo puede tener un usuario prestamista
+db.usuariosPrestamistas.hasMany(db.amistadPrestamistaClientes, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "amistades_prestamista",
+});
+db.amistadPrestamistaClientes.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamista_amistades",
 });
 
 module.exports = db;
