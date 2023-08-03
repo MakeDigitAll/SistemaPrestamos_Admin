@@ -3,7 +3,7 @@ const CryptoJS = require("crypto-js");
 function aesDecrypt(word) {
   key = process.env.SECRET_KEY_DECRYPTION;
   const keys = CryptoJS.enc.Utf8.parse(key);
-  const combined = CryptoJS.enc.Base64.parse(word.replace(/-/g, "+"));
+  const combined = CryptoJS.enc.Base64.parse(word.replace(/-/g, "+").replace(/_/g, "/"));
   const iv = combined.clone();
   iv.sigBytes = 16;
   iv.clamp();
@@ -36,7 +36,7 @@ function aesEncrypt(content) {
   });
   const ivAndEncrypted = iv.concat(encrypted.ciphertext);
   const encryptedString = ivAndEncrypted.toString(CryptoJS.enc.Base64);
-  return encryptedString.replace(/\+/g, "-");
+  return encryptedString.replace(/\+/g, "-").replace(/\//g, "_");
 }
 
 module.exports = {

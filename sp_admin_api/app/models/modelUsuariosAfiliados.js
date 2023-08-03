@@ -40,6 +40,10 @@ module.exports = (sequelize, Sequelize) => {
         len: [10, 10], // Mínimo 1 caracter, máximo 20 caracteres
       },
     },
+    isOnPrestamo: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false,
+    },
     isActive: {
       type: Sequelize.BOOLEAN,
       defaultValue: false,

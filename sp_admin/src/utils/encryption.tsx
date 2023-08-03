@@ -12,12 +12,12 @@ export function aesEncrypt(word: string) {
   });
   const ivAndEncrypted = iv.concat(encrypted.ciphertext);
   const encryptedString = ivAndEncrypted.toString(CryptoJS.enc.Base64);
-  return encryptedString.replace(/\+/g, "-");
+  return encryptedString.replace(/\+/g, "-").replace(/\//g, "_");
 }
 
 export function aesDecrypt(word: string) {
   const keys = CryptoJS.enc.Utf8.parse(secret_key_decryption);
-  const combined = CryptoJS.enc.Base64.parse(word.replace(/-/g, "+"));
+  const combined = CryptoJS.enc.Base64.parse(word.replace(/-/g, "+").replace(/_/g, "/"));
   const iv = combined.clone();
   iv.sigBytes = 16;
   iv.clamp();
