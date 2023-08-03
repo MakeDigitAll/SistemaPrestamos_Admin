@@ -208,7 +208,7 @@ exports.setImageAdmin = (req, res) => {
 
 //obtener la imagen de perfil del administrador de la base de datos (BLOB)
 exports.getImageAdmin = (req, res) => {
-  const id = req.params.id;
+  const id = aesDecrypt(req.params.id);
 
   imagenAdministrador
     .findOne({

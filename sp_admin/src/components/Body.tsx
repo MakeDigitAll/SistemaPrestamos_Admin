@@ -4,6 +4,8 @@ import Footer from "../components/footer/Footer";
 import SideBar from "../components/sidebar/SideBar";
 import { ToastContainer } from "react-toastify";
 import { SearchContextProvider } from "../context/SearchContext";
+import useGetImagenAdmin from "../hooks/useGetImagenAdmin";
+
 import "react-toastify/dist/ReactToastify.css";
 import "./Body.css";
 
@@ -12,6 +14,8 @@ interface BodyProps {
 }
 
 const Body: React.FC<BodyProps> = ({ children }) => {
+  useGetImagenAdmin();
+
   const [isSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
   );

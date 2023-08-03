@@ -4,13 +4,11 @@ import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useGetAdmin } from "../../hooks/useGetAdmin";
 import ThemeToggleButton from "../../utils/buttons/ThemeToggleButton";
 import LanguageDropdown from "../../utils/buttons/LanguageDropdown";
 import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 import { ImageContext } from "../../context/ImageContext";
-import useGetImagenAdmin from "../../hooks/useGetImagenAdmin";
 import { AuthContext } from "../../context/AuthContext";
 
 export const CustomNavBar = () => {
@@ -20,10 +18,7 @@ export const CustomNavBar = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const admin = useGetAdmin();
   var { profileImage } = useContext(ImageContext);
-  const idAdmin = admin?.id;
-  const imagenPerfil = useGetImagenAdmin(idAdmin);
   const hideSearch =
     location.pathname === "/admin-suscripciones" ||
     location.pathname === "/admin-add-usuario" ||
@@ -31,11 +26,6 @@ export const CustomNavBar = () => {
     location.pathname === "/admin-dashboard" ||
     location.pathname === "/admin-profile";
   const [searchValue, setSearchValue] = useState("");
-
-  //si no hay conexion de la imagen de perfil
-  if (!profileImage) {
-    profileImage = imagenPerfil;
-  }
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
@@ -54,10 +44,6 @@ export const CustomNavBar = () => {
     setSearchTerm(""); // Restablecer el término de búsqueda al cambiar de página
     setSearchValue(""); // Borrar el contenido de la barra de búsqueda
   }, [location.pathname, setSearchTerm]);
-
-  if (!admin) {
-    return null;
-  }
 
   return (
     <Layout>

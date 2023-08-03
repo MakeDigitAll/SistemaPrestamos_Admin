@@ -72,7 +72,7 @@ class AdminDataService {
   }
 
   //recibir imagen  de tipo blob
-  getImageAdmin(id: number) {
+  getImageAdmin(id: string) {
     return http.get(`/admin-get-image/${id}`, {
       responseType: "blob",
     });
