@@ -49,7 +49,7 @@ const useGetImagenAdmin = () => {
     };
 
     getProfileImage();
-  }, []);
+  }, [setProfileImage]);
 
   return imagenPerfil;
 };
