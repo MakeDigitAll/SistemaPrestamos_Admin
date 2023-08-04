@@ -35,6 +35,10 @@ db.nivelesFidelidad = require("./modelNivelesFidelidad.js")(sequelize, Sequelize
 db.tipoSuscripciones = require("./modelTipoSuscripcion.js")(sequelize, Sequelize);
 //Modelo AmistadPrestamistaClientes
 db.amistadPrestamistaClientes = require("./modelAmistadPrestamistaClientes.js")(sequelize, Sequelize);
+//Modelo de Notificaciones Afiliados
+db.notificationsAfiliados = require("./notifications/modelNotificationsAfiliado.js")(sequelize, Sequelize);
+//Modelo de Notificaciones Prestamistas
+db.notificationsPrestamistas = require("./notifications/modelNotificationsPrestamistas.js")(sequelize, Sequelize);
 
 
 //Modelo Suscripciones
@@ -148,5 +152,28 @@ db.amistadPrestamistaClientes.belongsTo(db.usuariosPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
   as: "prestamista_amistades",
 });
+
+//asociacion entre notificaciones prestamistas y usuariosPresatmistas  1 usuario prestamista puede tener muchas notificaciones pero una notificacion solo puede tener un usuario prestamista
+db.usuariosPrestamistas.hasMany(db.notificationsPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "notificaciones_prestamista",
+});
+db.notificationsPrestamistas.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamista_notificaciones",
+});
+
+
+//asociacion entre notificaciones afiliados y usuariosAfiliados  1 usuario afiliado puede tener muchas notificaciones pero las notificaciones solo pueden tener un usuario afiliado
+db.usuariosAfiliados.hasMany(db.notificationsAfiliados, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "notifications_afiliados",
+});
+db.notificationsAfiliados.belongsTo(db.usuariosAfiliados, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "afiliado_notifications",
+});
+
+
 
 module.exports = db;
