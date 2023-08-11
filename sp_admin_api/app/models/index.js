@@ -19,32 +19,69 @@ db.sequelize = sequelize;
 
 //Modelos Usuarios
 db.administradores = require("./modelAdmin.js")(sequelize, Sequelize);
-db.usuariosPrestamistas = require("./modelUsuariosPrestamistas.js")(sequelize,Sequelize);
-db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(sequelize,Sequelize);
+db.usuariosPrestamistas = require("./modelUsuariosPrestamistas.js")(
+  sequelize,
+  Sequelize
+);
+db.usuariosAfiliados = require("./modelUsuariosAfiliados.js")(
+  sequelize,
+  Sequelize
+);
 //Modelos Imagenes
-db.imagenAdministrador = require("./images/modelImagenAdmin.js")(sequelize,Sequelize);
-db.imagenPrestamista = require("./images/modelImagenPrestamistas.js")(sequelize,Sequelize);
-db.imagenAfiliado = require("./images/modelImagenAfiliados.js")(sequelize,Sequelize);
+db.imagenAdministrador = require("./images/modelImagenAdmin.js")(
+  sequelize,
+  Sequelize
+);
+db.imagenPrestamista = require("./images/modelImagenPrestamistas.js")(
+  sequelize,
+  Sequelize
+);
+db.imagenAfiliado = require("./images/modelImagenAfiliados.js")(
+  sequelize,
+  Sequelize
+);
 //Modelo Prestamos
 db.prestamos = require("./modelPrestamos.js")(sequelize, Sequelize);
 //Modelo DatosUsuarioSuscripcion
-db.datosUsuarioSuscripciones = require("./modelDatosUsuarioSuscripcion.js")(sequelize, Sequelize);
+db.datosUsuarioSuscripciones = require("./modelDatosUsuarioSuscripcion.js")(
+  sequelize,
+  Sequelize
+);
 //Modelo de NivelesFidelidad
-db.nivelesFidelidad = require("./modelNivelesFidelidad.js")(sequelize, Sequelize);
+db.nivelesFidelidad = require("./modelNivelesFidelidad.js")(
+  sequelize,
+  Sequelize
+);
 //Modelo de TipoSuscripcion
-db.tipoSuscripciones = require("./modelTipoSuscripcion.js")(sequelize, Sequelize);
+db.tipoSuscripciones = require("./modelTipoSuscripcion.js")(
+  sequelize,
+  Sequelize
+);
 //Modelo AmistadPrestamistaClientes
-db.amistadPrestamistaClientes = require("./modelAmistadPrestamistaClientes.js")(sequelize, Sequelize);
+db.amistadPrestamistaClientes = require("./modelAmistadPrestamistaClientes.js")(
+  sequelize,
+  Sequelize
+);
 //Modelo de Notificaciones Afiliados
-db.notificationsAfiliados = require("./notifications/modelNotificationsAfiliado.js")(sequelize, Sequelize);
+db.notificationsAfiliados =
+  require("./notifications/modelNotificationsAfiliado.js")(
+    sequelize,
+    Sequelize
+  );
 //Modelo de Notificaciones Prestamistas
-db.notificationsPrestamistas = require("./notifications/modelNotificationsPrestamistas.js")(sequelize, Sequelize);
-
+db.notificationsPrestamistas =
+  require("./notifications/modelNotificationsPrestamistas.js")(
+    sequelize,
+    Sequelize
+  );
+//Modelo de Solicitud de Prestamo
+db.solicitudPrestamo = require("./modelSolicitudPrestamo.js")(
+  sequelize,
+  Sequelize
+);
 
 //Modelo Suscripciones
 db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
-
-
 
 //ok-----------------------------------Asociaciones de imagenes-----------------------------------//
 //Asociacion entre imagen administrador y administrador
@@ -153,6 +190,16 @@ db.amistadPrestamistaClientes.belongsTo(db.usuariosPrestamistas, {
   as: "prestamista_amistades",
 });
 
+//asociacion entre amistades y usuariosAfiliados  1 usuario afiliado puede tener muchos usuarios prestamistas pero un usuario prestamista solo puede tener un usuario afiliado
+db.usuariosAfiliados.hasMany(db.amistadPrestamistaClientes, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "amistades_afiliado",
+});
+db.amistadPrestamistaClientes.belongsTo(db.usuariosAfiliados, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "afiliado_amistades",
+});
+
 //asociacion entre notificaciones prestamistas y usuariosPresatmistas  1 usuario prestamista puede tener muchas notificaciones pero una notificacion solo puede tener un usuario prestamista
 db.usuariosPrestamistas.hasMany(db.notificationsPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
@@ -162,7 +209,6 @@ db.notificationsPrestamistas.belongsTo(db.usuariosPrestamistas, {
   foreignKey: "idUsuarioPrestamista",
   as: "prestamista_notificaciones",
 });
-
 
 //asociacion entre notificaciones afiliados y usuariosAfiliados  1 usuario afiliado puede tener muchas notificaciones pero las notificaciones solo pueden tener un usuario afiliado
 db.usuariosAfiliados.hasMany(db.notificationsAfiliados, {
@@ -174,6 +220,24 @@ db.notificationsAfiliados.belongsTo(db.usuariosAfiliados, {
   as: "afiliado_notifications",
 });
 
+//Asociacion entre usuariosPrestamistas y solicitudesPrestamos 1 usuario prestamista puede hacer muchas solicitudes de prestamos pero una solicitud de prestamo solo puede tener un usuario prestamista
+db.usuariosPrestamistas.hasMany(db.solicitudPrestamo, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "solicitudes_prestamista",
+});
+db.solicitudPrestamo.belongsTo(db.usuariosPrestamistas, {
+  foreignKey: "idUsuarioPrestamista",
+  as: "prestamista_solicitudes",
+});
 
+//Asociacion entre usuariosAfiliados y solicitudesPrestamos 1 usuario afiliado solo puede tener una solicitud de prestamo pero una solicitud de prestamo solo puede tener un usuario afiliado
+db.usuariosAfiliados.hasMany(db.solicitudPrestamo, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "solicitudes_afiliado",
+});
+db.solicitudPrestamo.belongsTo(db.usuariosAfiliados, {
+  foreignKey: "idUsuarioAfiliado",
+  as: "afiliado_solicitudes",
+});
 
 module.exports = db;

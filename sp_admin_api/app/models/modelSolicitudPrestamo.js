@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-  const Prestamos = sequelize.define(
-    "prestamos",
+  const SolicitudPrestamo = sequelize.define(
+    "solicitudPrestamo",
     {
       idPrestamo: {
         type: Sequelize.INTEGER,
@@ -55,44 +55,11 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      montoPorPagar: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-
-      fechaPrestamo: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      fechaProximoPago: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      fechaFinPago: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      historialPagos: {
-        type: Sequelize.STRING,
-        validate: {
-          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
-        },
-      },
-      estadoPrestamo: {
-        type: Sequelize.STRING,
-        validate: {
-          len: [1, 30], // Mínimo 1 caracter, máximo 30 caracteres
-        },
-      },
-      isActive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
     },
     {
       createdAt: false,
       updatedAt: false,
     }
   );
-  return Prestamos;
+  return SolicitudPrestamo;
 };

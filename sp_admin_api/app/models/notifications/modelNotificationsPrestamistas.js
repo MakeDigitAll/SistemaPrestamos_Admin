@@ -1,5 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
-    const NotificationsPrestamistas = sequelize.define("NotificationsPrestamistas", {
+  const NotificationsPrestamistas = sequelize.define(
+    "notificationsPrestamistas",
+    {
       idNotificacion: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -11,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
           model: "usuariosPrestamistas",
           key: "idUsuarioPrestamista",
         },
+      },
+      idUsuarioNotification: {
+        type: Sequelize.INTEGER,
       },
       titulo: {
         type: Sequelize.STRING,
@@ -25,8 +30,8 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
-    });
-  
-    return NotificationsPrestamistas;
-  };
-  
+    }
+  );
+
+  return NotificationsPrestamistas;
+};

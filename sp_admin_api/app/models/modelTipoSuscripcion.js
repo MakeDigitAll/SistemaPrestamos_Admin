@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         validate: {
           len: [1, 50], // Mínimo 1 caracter, máximo 50 caracteres
-      },
+        },
       },
       montoDesde: {
         type: Sequelize.DECIMAL,

@@ -1,5 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
-    const AmistadPrestamistaClientes = sequelize.define("AmistadPrestamistaClientes", {
+  const AmistadPrestamistaClientes = sequelize.define(
+    "amistadPrestamistaClientes",
+    {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -24,8 +26,8 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         defaultValue: "pendiente", //'pendiente', 'aceptada', 'rechazada'
       },
-    });
-  
-    return AmistadPrestamistaClientes;
-  };
-  
+    }
+  );
+
+  return AmistadPrestamistaClientes;
+};
