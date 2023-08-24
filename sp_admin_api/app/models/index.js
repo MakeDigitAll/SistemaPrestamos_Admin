@@ -80,6 +80,9 @@ db.solicitudPrestamo = require("./modelSolicitudPrestamo.js")(
   Sequelize
 );
 
+//Modelo HistorialPagos
+db.historialPagos = require("./modelHistorialPagos.js")(sequelize, Sequelize);
+
 //Modelo Suscripciones
 db.suscripciones = require("./modelSuscripciones.js")(sequelize, Sequelize);
 
@@ -238,6 +241,18 @@ db.usuariosAfiliados.hasMany(db.solicitudPrestamo, {
 db.solicitudPrestamo.belongsTo(db.usuariosAfiliados, {
   foreignKey: "idUsuarioAfiliado",
   as: "afiliado_solicitudes",
+});
+
+//Asociar historial de pagos con prestamos a traves de la tabla intermedia prestamos-historialPagos
+db.prestamos.belongsToMany(db.historialPagos, {
+  through: "prestamosHistorialPagos",
+  as: "historial_pagos",
+  foreignKey: "idPrestamo",
+});
+db.historialPagos.belongsToMany(db.prestamos, {
+  through: "prestamosHistorialPagos",
+  as: "prestamos",
+  foreignKey: "idHistorialPago",
 });
 
 module.exports = db;

@@ -23,7 +23,7 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //force: true
 
 //crear administrador si no existe
-createAdmin.createAdministratorIfNotExist();
+//createAdmin.createAdministratorIfNotExist();
 
 // db.nivelesFidelidad.create({
 //   nombreNivelFidelidad: "Bronce",

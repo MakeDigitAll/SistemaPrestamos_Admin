@@ -1,11 +1,19 @@
 module.exports = (sequelize, Sequelize) => {
-  const SolicitudPrestamo = sequelize.define(
-    "solicitudPrestamo",
+  const HistorialPagos = sequelize.define(
+    "historialPagos",
     {
-      idPrestamo: {
+      idHistorialPago: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+      idPrestamo: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "prestamos",
+          key: "idPrestamo",
+        },
       },
       idUsuarioPrestamista: {
         type: Sequelize.INTEGER,
@@ -23,28 +31,29 @@ module.exports = (sequelize, Sequelize) => {
           key: "idUsuarioAfiliado",
         },
       },
-      montoPrestado: {
+      fechaPago: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      montoPagado: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      tiempoPrestamo: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      tasaInteresMinima: {
-        type: Sequelize.DECIMAL,
-        allowNull: true,
-      },
-      tasaInteresGeneral: {
+      montoRestante: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      diasTolerancia: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      tasaInteresVencido: {
+      intereses: {
         type: Sequelize.DECIMAL,
+      },
+      tipoPago: {
+        // pago anticipado, pago a tiempo, pago atrasado
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      estadoPago: {
+        // pendiente, pagado, rechazado
+        type: Sequelize.STRING,
         allowNull: false,
       },
     },
@@ -53,5 +62,5 @@ module.exports = (sequelize, Sequelize) => {
       updatedAt: false,
     }
   );
-  return SolicitudPrestamo;
+  return HistorialPagos;
 };

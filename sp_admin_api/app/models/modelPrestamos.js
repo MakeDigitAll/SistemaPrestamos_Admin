@@ -39,27 +39,18 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      pagoMensualInteresMinimo: {
-        type: Sequelize.DECIMAL,
-        allowNull: true,
-      },
-      pagoMensualInteresGeneral: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-      pagoTotalInteresMinimo: {
-        type: Sequelize.DECIMAL,
-        allowNull: true,
-      },
-      pagoTotalInteresGeneral: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
       montoPorPagar: {
         type: Sequelize.DECIMAL,
+        allowNull: true,
+      },
+      diasTolerancia: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+      },
+      tasaInteresVencido: {
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
-
       fechaPrestamo: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -71,12 +62,6 @@ module.exports = (sequelize, Sequelize) => {
       fechaFinPago: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
-      historialPagos: {
-        type: Sequelize.STRING,
-        validate: {
-          len: [1, 255], // Mínimo 1 caracter, máximo 255 caracteres
-        },
       },
       estadoPrestamo: {
         type: Sequelize.STRING,
