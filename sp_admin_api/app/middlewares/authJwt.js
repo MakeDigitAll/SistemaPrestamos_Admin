@@ -1,37 +1,22 @@
 const jwt = require("jsonwebtoken");
 
 // Verify token middleware
-const verifyToken = (req, res, next) => {
-  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  const cookieHeader = req.headers.cookie;
-  const cookies = cookieHeader ? cookieHeader.split("; ") : [];
-  let accessToken, refreshToken;
+function verifyToken(req, res, next) {
+  const TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
+  const token = req.header("Authorization");
 
-  for (const cookie of cookies) {
-    const [name, value] = cookie.split("=");
-    if (name.trim() === "accessToken") {
-      accessToken = value;
-    } else if (name.trim() === "refreshToken") {
-      refreshToken = value;
-    }
+  if (!token) {
+    return res.status(401).json({ message: "No se proporcionó un token." });
   }
 
-  if (!accessToken) {
-    return res.status(403).send({
-      message: "No se proporcionó un token.",
-    });
-  }
-
-  jwt.verify(accessToken, TOKEN_KEY, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({
-        message: "No autorizado.",
-      });
-    }
-    req.userId = decoded.id;
+  try {
+    const decoded = jwt.verify(token, TOKEN_KEY);
+    req.user = decoded;
     next();
-  });
-};
+  } catch (error) {
+    return res.status(403).json({ message: "Token inválido." });
+  }
+}
 
 module.exports = {
   verifyToken,

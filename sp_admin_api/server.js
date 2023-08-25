@@ -5,6 +5,11 @@ const app = express();
 const routes = require("./app/routes/routes");
 const db = require("./app/models");
 const createAdmin = require("./app/utils/createAdmin");
+const createNivelesFidelidad = require("./app/utils/createNivelesFidelidad");
+const createTipoSuscripciones = require("./app/utils/createTipoSuscripciones");
+const {
+  createNivelFidelidad,
+} = require("./app/controllers/controllerNivelFidelidad");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -25,58 +30,11 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //crear administrador si no existe
 //createAdmin.createAdministratorIfNotExist();
 
-// db.nivelesFidelidad.create({
-//   nombreNivelFidelidad: "Bronce",
-//   descuento: 0,
-//   numeroMesesMinimo: 0,
-//   numeroMesesMaximo: 3,
-// });
+//crear niveles de fidelidad si no existen
+//createNivelesFidelidad.createNivelesFidelidadIfNotExist();
 
-// db.nivelesFidelidad.create({
-//   nombreNivelFidelidad: "Plata",
-//   descuento: 3,
-//   numeroMesesMinimo: 4,
-//   numeroMesesMaximo: 8,
-// });
-
-// db.nivelesFidelidad.create({
-//   nombreNivelFidelidad: "Oro",
-//   descuento: 6,
-//   numeroMesesMinimo: 9,
-//   numeroMesesMaximo: 12,
-// });
-
-// db.tipoSuscripciones.create({
-//   nombreSuscripcion: "Básica",
-//   montoDesde: 0,
-//   montoHasta: 10000,
-//   numeroUsuariosMax: 100,
-//   costoMembresia: 500,
-// });
-
-// db.tipoSuscripciones.create({
-//   nombreSuscripcion: "Estandar",
-//   montoDesde: 10001,
-//   montoHasta: 30000,
-//   numeroUsuariosMax: 500,
-//   costoMembresia: 1000,
-// });
-
-// db.tipoSuscripciones.create({
-//   nombreSuscripcion: "Avanzada",
-//   montoDesde: 30001,
-//   montoHasta: 60000,
-//   numeroUsuariosMax: 1000,
-//   costoMembresia: 1500,
-// });
-
-// db.tipoSuscripciones.create({
-//   nombreSuscripcion: "Premium",
-//   montoDesde: 60001,
-//   montoHasta: 100000,
-//   numeroUsuariosMax: 2000,
-//   costoMembresia: 200,
-// });
+//crear tipos de suscripciones si no existen
+//createTipoSuscripciones.createTipoSuscripcionesIfNotExist();
 
 //Variables de entorno
 require("dotenv").config();
