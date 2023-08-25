@@ -7,9 +7,6 @@ const db = require("./app/models");
 const createAdmin = require("./app/utils/createAdmin");
 const createNivelesFidelidad = require("./app/utils/createNivelesFidelidad");
 const createTipoSuscripciones = require("./app/utils/createTipoSuscripciones");
-const {
-  createNivelFidelidad,
-} = require("./app/controllers/controllerNivelFidelidad");
 
 const corsOptions = {
   origin: "http://localhost:3000",
@@ -28,13 +25,13 @@ db.sequelize.sync({ alter: true }).then(() => {});
 //force: true
 
 //crear administrador si no existe
-//createAdmin.createAdministratorIfNotExist();
+createAdmin.createAdministratorIfNotExist();
 
 //crear niveles de fidelidad si no existen
-//createNivelesFidelidad.createNivelesFidelidadIfNotExist();
+createNivelesFidelidad.createNivelesFidelidadIfNotExist();
 
 //crear tipos de suscripciones si no existen
-//createTipoSuscripciones.createTipoSuscripcionesIfNotExist();
+createTipoSuscripciones.createTipoSuscripcionesIfNotExist();
 
 //Variables de entorno
 require("dotenv").config();

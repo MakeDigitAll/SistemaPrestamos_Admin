@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useNavigate, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 import useTokenRenewal from "../hooks/useTokenRenewal";
+import { updateAuthorizationHeader } from "../api/axios";
 
 interface AuthContextData {
   isAuthenticated: boolean;
@@ -32,6 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     Cookies.remove("refreshToken");
     setIsAuthenticated(false);
     navigate("/admin-login");
+    updateAuthorizationHeader(undefined);
   };
 
   // Funcion para iniciar sesión del usuario
@@ -54,6 +56,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       expires: refreshTokenDurationDays,
     });
 
+    updateAuthorizationHeader(Cookies.get("accessToken"));
     setIsAuthenticated(true);
     navigate("/admin-dashboard"); // Redirigir al usuario a la página de inicio después de iniciar sesión
   };
@@ -62,6 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     if (!accessToken) {
       Cookies.remove("refreshToken");
+      updateAuthorizationHeader(undefined);
       setIsAuthenticated(false);
       setIsLoading(false);
       navigate("/admin-login");
@@ -84,6 +88,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         // Si el token ha expirado, borrar las cookies y establecer el estado de autenticación en false
         Cookies.remove("accessToken");
         Cookies.remove("refreshToken");
+        updateAuthorizationHeader(undefined);
         setIsAuthenticated(false);
         // Redirigir al usuario a la página de inicio de sesión
         navigate("/admin-login");

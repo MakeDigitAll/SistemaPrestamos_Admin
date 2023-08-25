@@ -1,15 +1,39 @@
 import axios, { AxiosInstance } from "axios";
 import Cookies from "js-cookie";
-const accessToken = Cookies.get("accessToken");
+const initialAccessToken = Cookies.get("accessToken");
+console.log(initialAccessToken);
+// Función para seleccionar la URL basada en la condición de ejecución
+function getBaseUrl() {
+  const isLocalhost = window.location.hostname === "localhost";
 
+  if (isLocalhost) {
+    //return "http://localhost:8080/";
+    return "http://ec2-18-218-33-111.us-east-2.compute.amazonaws.com:8080/";
+  } else {
+    return "http://192.168.100.9:8080";
+  }
+}
+
+// Crea la instancia de Axios para realizar las peticiones
 const instance: AxiosInstance = axios.create({
-  //baseURL: "http://localhost:8080/",
-  baseURL: "http://ec2-18-218-33-111.us-east-2.compute.amazonaws.com:8080/",
+  baseURL: getBaseUrl(),
   headers: {
-    Authorization: `${accessToken}`,
     Accept: "application/json",
     "Content-type": "application/json",
   },
 });
 
+// Función para actualizar el encabezado de autorización si el token está disponible
+function updateAuthorizationHeader(token: any) {
+  if (token) {
+    instance.defaults.headers["Authorization"] = `${token}`;
+  } else {
+    delete instance.defaults.headers["Authorization"];
+  }
+}
+
+// Actualizar el encabezado de autorización con el token inicial
+updateAuthorizationHeader(initialAccessToken);
+
 export default instance;
+export { updateAuthorizationHeader };
