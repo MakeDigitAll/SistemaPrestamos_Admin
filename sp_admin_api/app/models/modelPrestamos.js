@@ -31,9 +31,9 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      tasaInteresMinima: {
-        type: Sequelize.DECIMAL,
-        allowNull: true,
+      mesesRestantes: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       tasaInteresGeneral: {
         type: Sequelize.DECIMAL,
@@ -41,10 +41,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       montoPorPagar: {
         type: Sequelize.DECIMAL,
-        allowNull: true,
-      },
-      diasTolerancia: {
-        type: Sequelize.INTEGER,
         allowNull: true,
       },
       tasaInteresVencido: {
