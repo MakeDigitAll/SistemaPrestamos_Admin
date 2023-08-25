@@ -1,7 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import Cookies from "js-cookie";
 const initialAccessToken = Cookies.get("accessToken");
-console.log(initialAccessToken);
 // Función para seleccionar la URL basada en la condición de ejecución
 function getBaseUrl() {
   const isLocalhost = window.location.hostname === "localhost";
