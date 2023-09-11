@@ -6,8 +6,8 @@ function getBaseUrl() {
   const isLocalhost = window.location.hostname === "localhost";
 
   if (isLocalhost) {
-    //return "http://localhost:8080/";
-    return "http://ec2-18-218-33-111.us-east-2.compute.amazonaws.com:8080/";
+    return "http://localhost:8080/";
+    //return "http://ec2-18-218-33-111.us-east-2.compute.amazonaws.com:8080/";
   } else {
     return "http://192.168.100.9:8080";
   }

@@ -23,14 +23,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      antiguedadMeses: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-      pagosAlCorriente: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
     },
     {
       createdAt: false,

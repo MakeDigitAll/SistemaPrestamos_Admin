@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       idTipoSuscripcion: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: false, 
         references: {
           model: "tipoSuscripciones",
           key: "idTipoSuscripcion",
@@ -43,6 +43,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
+      },
+      tiempoMeses: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      pagosAlCorriente: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
       },
     },
     {

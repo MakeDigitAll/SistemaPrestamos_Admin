@@ -21,6 +21,10 @@ module.exports = (sequelize, Sequelize) => {
           key: "idUsuarioAfiliado",
         },
       },
+      isActive: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       estado: {
         type: Sequelize.STRING,
         allowNull: false,
