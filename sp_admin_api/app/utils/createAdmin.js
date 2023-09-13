@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const nombre = "Pablo";
 const apellido = "Alvarez";
 const correo = "pablo@makedigitall.com";
-const password = "";
+const password = "Melon211";
 
 async function createAdministratorIfNotExist() {
   try {
