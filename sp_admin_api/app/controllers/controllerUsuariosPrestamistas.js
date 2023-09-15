@@ -429,6 +429,8 @@ exports.createUsuarioPrestamista = (req, res) => {
                           idUsuarioPrestamista:
                             prestamista.idUsuarioPrestamista,
                           idNivelFidelidad: 1,
+                          tiempoMeses: 0,
+                          pagosAlCorriente: true,
                           idTipoSuscripcion: decryptedIDSuscripcion,
                           fechaInicio: new Date(),
                           fechaFin: new Date(

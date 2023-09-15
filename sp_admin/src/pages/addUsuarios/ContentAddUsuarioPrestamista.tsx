@@ -33,43 +33,58 @@ const ContentAddUsuario: React.FC = () => {
   const getTipoSubcripciones = useGetTipoSuscripciones();
   const arrayTipoSuscripciones =
     getTipoSubcripciones?.decodedToken?.tipoSuscripcion;
-  const [TipoSuscripciones, setTipoSuscripciones] = useState<TipoSuscripcion[]>(
+  const [tipoSuscripciones, setTipoSuscripciones] = useState<TipoSuscripcion[]>(
     []
   );
   const navigate = useNavigate();
-  const [selectedSubscription, setSelectedSubscription] = useState<string>("");
+  const [selectedSubscription, setSelectedSubscription] = useState<any>();
   const [selectedIDSuscripcion, setSelectedIDSuscripcion] = useState<number>(0);
+  const [montoMinimoSlider, setMontoMinimoSlider] = useState<number>(0);
+  const [montoMaximoSlider, setMontoMaximoSlider] = useState<number>(0);
+  const [numeroClientesSlider, setNumeroClientesSlider] = useState<number>(0);
 
   let montoMinValue = 100;
   let montoMaxValue = 100;
 
-  const getSelectedSubscription = useCallback(
-    (usuariosAPrestar: number, montoMinimo: number, montoMaximo: number) => {
-      // Iterar sobre cada tipo de suscripción
-      for (const tipoSuscripcion of TipoSuscripciones) {
-        // Verificar si los datos del usuario están dentro del rango de la suscripción actual
-        if (
-          usuariosAPrestar <= tipoSuscripcion.numeroUsuariosMax &&
-          //montoMinimo >= tipoSuscripcion.montoDesde &&
-          montoMaximo <= tipoSuscripcion.montoHasta
-        ) {
-          setSelectedIDSuscripcion(tipoSuscripcion.idTipoSuscripcion);
-          return tipoSuscripcion.nombreSuscripcion;
-        }
-      }
+  // Función para encontrar la suscripción correspondiente a los valores de dinero y usuarios
+  const findMatchingSuscripcion = useCallback(
+    (usuariosAPrestar: any, dinero: any) => {
+      // Tu lógica actual de la función aquí
+      const matchingDinero = tipoSuscripciones.find(
+        (suscripcion) =>
+          Number(suscripcion.montoDesde) <= Number(dinero) &&
+          Number(suscripcion.montoHasta) >= Number(dinero)
+      );
+      const matchingUsuarios = tipoSuscripciones.find(
+        (suscripcion) => suscripcion.numeroUsuariosMax >= usuariosAPrestar
+      );
 
-      // Si no se encontró ninguna suscripción que cumpla con los criterios, devolver un valor por defecto o null
-      return "Suscripción no encontrada";
+      // Compara las suscripciones basadas en dinero y usuarios
+      if (matchingDinero && matchingUsuarios) {
+        if (matchingDinero.montoDesde > matchingUsuarios.montoDesde) {
+          setSelectedIDSuscripcion(matchingDinero.idTipoSuscripcion);
+          return matchingDinero.nombreSuscripcion;
+        } else {
+          setSelectedIDSuscripcion(matchingUsuarios.idTipoSuscripcion);
+          return matchingUsuarios.nombreSuscripcion;
+        }
+      } else if (matchingDinero) {
+        setSelectedIDSuscripcion(matchingDinero.idTipoSuscripcion);
+        return matchingDinero.nombreSuscripcion;
+      } else if (matchingUsuarios) {
+        setSelectedIDSuscripcion(matchingUsuarios.idTipoSuscripcion);
+        return matchingUsuarios.nombreSuscripcion;
+      } else {
+        return null;
+      }
     },
-    [TipoSuscripciones]
+    [tipoSuscripciones]
   );
 
   const [sliderValue, setSliderValue] = useState<number | number[]>([
-    1000, 10000,
+    150000, 250000,
   ]);
-  const [userSliderValue, setUserSliderValue] = useState<number | number[]>(
-    100
-  );
+  const [userSliderValue, setUserSliderValue] = useState<number | number[]>(20);
   //useEffect para si hay o no imagen de usuario
   useEffect(() => {
     if (imagenUsuario) {
@@ -87,9 +102,8 @@ const ContentAddUsuario: React.FC = () => {
   }, [arrayTipoSuscripciones]);
 
   useEffect(() => {
-    const selectedSubscription = getSelectedSubscription(
+    const selectedSubscription = findMatchingSuscripcion(
       userSliderValue as number,
-      montoMinValue,
       montoMaxValue
     );
     setSelectedSubscription(selectedSubscription);
@@ -98,8 +112,24 @@ const ContentAddUsuario: React.FC = () => {
     userSliderValue,
     montoMinValue,
     montoMaxValue,
-    getSelectedSubscription,
+    findMatchingSuscripcion,
   ]);
+
+  //useEffect para setear los montos minimos y maximos de los sliders
+  useEffect(() => {
+    if (!tipoSuscripciones || tipoSuscripciones.length === 0) {
+      return;
+    } else {
+      const minimo = tipoSuscripciones[0].montoDesde;
+      const maximo = tipoSuscripciones[tipoSuscripciones.length - 1].montoHasta;
+      const numeroClientes =
+        tipoSuscripciones[tipoSuscripciones.length - 1].numeroUsuariosMax;
+
+      setMontoMinimoSlider(minimo);
+      setMontoMaximoSlider(maximo);
+      setNumeroClientesSlider(numeroClientes);
+    }
+  }, [tipoSuscripciones]);
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -250,38 +280,43 @@ const ContentAddUsuario: React.FC = () => {
   };
 
   const handleMontoMinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/[^0-9]/g, "");
-    const parsedValue = parseInt(value, 10);
-
-    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 100000) {
+    const value = event.target.value;
+    const parsedValue = Number(value);
+    if (
+      !isNaN(parsedValue) &&
+      parsedValue >= montoMinimoSlider &&
+      parsedValue <= montoMaximoSlider
+    ) {
       const newSliderValue = Array.isArray(sliderValue)
         ? [parsedValue, sliderValue[1]]
         : parsedValue;
       setSliderValue(newSliderValue);
     }
 
-    const selectedSubscription = getSelectedSubscription(
+    const selectedSubscription = findMatchingSuscripcion(
       userSliderValue as number,
-      parsedValue,
       montoMaxValue
     );
     setSelectedSubscription(selectedSubscription);
   };
 
   const handleMontoMaxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value.replace(/[^0-9]/g, "");
-    const parsedValue = parseInt(value, 10);
+    const value = event.target.value;
+    const parsedValue = Number(value);
 
-    if (!isNaN(parsedValue) && parsedValue >= 1 && parsedValue <= 100000) {
+    if (
+      !isNaN(parsedValue) &&
+      parsedValue >= montoMinimoSlider &&
+      parsedValue <= montoMaximoSlider
+    ) {
       const newSliderValue = Array.isArray(sliderValue)
         ? [sliderValue[0], parsedValue]
         : parsedValue;
       setSliderValue(newSliderValue);
     }
 
-    const selectedSubscription = getSelectedSubscription(
+    const selectedSubscription = findMatchingSuscripcion(
       userSliderValue as number,
-      montoMinValue,
       parsedValue
     );
     setSelectedSubscription(selectedSubscription);
@@ -289,15 +324,11 @@ const ContentAddUsuario: React.FC = () => {
 
   const handleUserChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
-    if (!isNaN(value) && value >= 1 && value <= 2000) {
+    if (!isNaN(value) && value >= 0 && value <= numeroClientesSlider) {
       setUserSliderValue(value);
     }
 
-    const selectedSubscription = getSelectedSubscription(
-      value,
-      montoMinValue,
-      montoMaxValue
-    );
+    const selectedSubscription = findMatchingSuscripcion(value, montoMaxValue);
     setSelectedSubscription(selectedSubscription);
   };
 
@@ -409,9 +440,8 @@ const ContentAddUsuario: React.FC = () => {
         setTabValue(1); // Avanzar a la siguiente pestaña
       }
 
-      const subscriptionName = getSelectedSubscription(
+      const subscriptionName = findMatchingSuscripcion(
         userSliderValue as number,
-        montoMinValue,
         montoMaxValue
       );
       setSelectedSubscription(subscriptionName);
@@ -534,7 +564,6 @@ const ContentAddUsuario: React.FC = () => {
       </div>
     );
   };
-
   const renderSubscriptionTab = () => {
     return (
       <div>
@@ -581,9 +610,9 @@ const ContentAddUsuario: React.FC = () => {
                   ariaLabelledByForHandle={"slider-handle-1"}
                   range
                   railStyle={{ backgroundColor: "#000000" }}
-                  min={1}
+                  min={0}
                   value={sliderValue}
-                  max={100000}
+                  max={montoMaximoSlider}
                   step={1000}
                   onChange={handleSliderChange}
                   disabled={!subscriptionTabEnabled} // Deshabilitar el slider si la pestaña de suscripciones no está habilitada
@@ -627,9 +656,9 @@ const ContentAddUsuario: React.FC = () => {
                   style={{ maxWidth: "90%", marginLeft: "2%" }}
                   ariaLabelledByForHandle={"slider-handle-1"}
                   railStyle={{ backgroundColor: "#000000" }}
-                  min={1}
-                  max={2000}
-                  step={10}
+                  min={10}
+                  max={100}
+                  step={1}
                   value={userSliderValue}
                   onChange={handleUserSliderChange}
                   disabled={!subscriptionTabEnabled} // Deshabilitar el slider si la pestaña de suscripciones no está habilitada
@@ -672,7 +701,7 @@ const ContentAddUsuario: React.FC = () => {
                         {selectedSubscription || "Suscripción"}
                       </Dropdown.Button>
                       <Dropdown.Menu aria-label="Tipos de Suscrpcion">
-                        {TipoSuscripciones.map((tipoSuscripcion) => (
+                        {tipoSuscripciones.map((tipoSuscripcion) => (
                           <Dropdown.Item
                             key={tipoSuscripcion.idTipoSuscripcion}
                           >
