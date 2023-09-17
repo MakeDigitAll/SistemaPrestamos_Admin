@@ -408,6 +408,7 @@ exports.createUsuarioPrestamista = (req, res) => {
                   codigoReferencia: referralCode,
                   numeroTelefono: decryptedNumeroTelefono,
                   isCompletedSuscription: true,
+                  isEmailConfirmed: true,
                 })
                 .then((prestamista) => {
                   // ... código anterior ...
