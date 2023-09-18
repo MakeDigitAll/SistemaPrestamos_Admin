@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Card, Text, Badge, Grid } from "@nextui-org/react";
+import { Button, Card } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -87,6 +87,37 @@ const ContentProfile = () => {
     return null;
   }
 
+  const formatDate = (date: string) => {
+    const now = new Date();
+    const notificationDate = new Date(date);
+    const timeDiff = Math.floor(
+      (now.getTime() - notificationDate.getTime()) / 1000
+    );
+
+    if (timeDiff < 60) {
+      return `${timeDiff} segundos atrás`;
+    } else if (timeDiff < 3600) {
+      const minutes = Math.floor(timeDiff / 60);
+      return `${
+        minutes === 1 ? `Hace ${minutes} minuto` : `Hace ${minutes} minutos`
+      }`;
+    } else if (timeDiff < 86400) {
+      const hours = Math.floor(timeDiff / 3600);
+      return `${hours === 1 ? `Hace ${hours} hora` : `Hace ${hours} horas`}`;
+    } else if (timeDiff < 604800) {
+      const days = Math.floor(timeDiff / 86400);
+      return `${days === 1 ? `Hace ${days} día` : `Hace ${days} días`}`;
+    } else {
+      const options: Intl.DateTimeFormatOptions = {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+      return notificationDate.toLocaleDateString(undefined, options);
+    }
+  };
+  console.log(notifications);
+
   const renderAllTab = () => {
     const notificationsToRender =
       subTabValue === 0 ? notificationsAllUnread : notificationsAllReaded;
@@ -99,14 +130,30 @@ const ContentProfile = () => {
           onChange={handleSubTabChange}
           style={{ marginLeft: "10px" }}
         >
-          <Tab label={t("Por Leer")} />
-          <Tab label={t("Leídos")} />
+          <Tab className={styles["label-second"]} label={t("Por Leer")} />
+          <Tab className={styles["label-second"]} label={t("Leídos")} />
         </Tabs>
+
         {notificationsToRender.map((notification: any) => (
-          <div key={notification.idNotificacion}>
-            {/* Renderizar la información de cada notificación */}
-            <p>{notification.titulo}</p>
-          </div>
+          <Card className={styles["card-noti"]}>
+            <div key={notification.idNotificacion}>
+              <Card.Header className={styles["card-noti-header"]}>
+                <p>{notification.titulo}</p>
+                <p>{formatDate(notification.createdAt)}</p>
+              </Card.Header>
+              <Card.Body className={styles["card-noti-body"]}>
+                <p>{notification.descripcion}</p>
+              </Card.Body>
+              <Card.Footer className={styles["card-noti-footer"]}>
+                <Button className={styles["button-footer"]}>
+                  <p>{t("Marcar como leído")}</p>
+                </Button>
+                <Button color={"error"} className={styles["button-footer"]}>
+                  <p>{t("Eliminar")}</p>
+                </Button>
+              </Card.Footer>
+            </div>
+          </Card>
         ))}
       </div>
     );
@@ -126,14 +173,27 @@ const ContentProfile = () => {
           onChange={handleSubTabChange}
           style={{ marginLeft: "10px" }}
         >
-          <Tab label={t("Por Leer")} />
-          <Tab label={t("Leídos")} />
+          <Tab className={styles["label-second"]} label={t("Por Leer")} />
+          <Tab className={styles["label-second"]} label={t("Leídos")} />
         </Tabs>
 
         {notificationsToRender.map((notification: any) => (
-          <Card>
+          <Card className={styles["card-noti"]}>
             <div key={notification.idNotificacion}>
-              <p>{notification.titulo}</p>
+              <Card.Header className={styles["card-noti-header"]}>
+                <p>{notification.titulo}</p>
+              </Card.Header>
+              <Card.Body className={styles["card-noti-body"]}>
+                <p>{notification.descripcion}</p>
+              </Card.Body>
+              <Card.Footer className={styles["card-noti-footer"]}>
+                <Button className={styles["button-footer"]}>
+                  <p>{t("Marcar como leído")}</p>
+                </Button>
+                <Button color={"error"} className={styles["button-footer"]}>
+                  <p>{t("Eliminar")}</p>
+                </Button>
+              </Card.Footer>
             </div>
           </Card>
         ))}
@@ -155,37 +215,55 @@ const ContentProfile = () => {
           onChange={handleSubTabChange}
           style={{ marginLeft: "10px" }}
         >
-          <Tab label={t("Por Leer")} />
-          <Tab label={t("Leídos")} />
+          <Tab className={styles["label-second"]} label={t("Por Leer")} />
+          <Tab className={styles["label-second"]} label={t("Leídos")} />
         </Tabs>
         {notificationsToRender.map((notification: any) => (
-          <div key={notification.idNotificacion}>
-            {/* Renderizar la información de cada notificación */}
-            <p>{notification.titulo}</p>
-          </div>
+          <Card className={styles["card-noti"]}>
+            <div key={notification.idNotificacion}>
+              <Card.Header className={styles["card-noti-header"]}>
+                <p>{notification.titulo}</p>
+              </Card.Header>
+              <Card.Body className={styles["card-noti-body"]}>
+                <p>{notification.descripcion}</p>
+              </Card.Body>
+              <Card.Footer className={styles["card-noti-footer"]}>
+                <Button className={styles["button-footer"]}>
+                  <p>{t("Marcar como leído")}</p>
+                </Button>
+                <Button color={"error"} className={styles["button-footer"]}>
+                  <p>{t("Eliminar")}</p>
+                </Button>
+              </Card.Footer>
+            </div>
+          </Card>
         ))}
       </div>
     );
   };
 
   return (
-    <Card className={styles["center"]} style={{ marginTop: "2%" }}>
-      <div>
-        <Tabs
-          centered
-          value={tabValue}
-          onChange={handleTabChange}
-          style={{ marginLeft: "10px" }}
-        >
-          <Tab label={t("Todas")} />
-          <Tab label={t("Prestamistas")} />
-          <Tab label={t("Afiliados")} />
-        </Tabs>
-        {tabValue === 0 ? renderAllTab() : null}
-        {tabValue === 1 ? renderPrestamistaTab() : null}
-        {tabValue === 2 ? renderAfiliadoTab() : null}
-      </div>
-    </Card>
+    <div>
+      <p className={styles["title"]}>{t("Notificaciones")}</p>
+      <Card className={styles["card-main"]}>
+        <div>
+          <Tabs
+            className={styles["tabs-main"]}
+            centered
+            value={tabValue}
+            onChange={handleTabChange}
+            style={{ marginLeft: "10px" }}
+          >
+            <Tab className={styles["label"]} label={t("Todas")} />
+            <Tab className={styles["label"]} label={t("Prestamistas")} />
+            <Tab className={styles["label"]} label={t("Afiliados")} />
+          </Tabs>
+          {tabValue === 0 ? renderAllTab() : null}
+          {tabValue === 1 ? renderPrestamistaTab() : null}
+          {tabValue === 2 ? renderAfiliadoTab() : null}
+        </div>
+      </Card>
+    </div>
   );
 };
 
