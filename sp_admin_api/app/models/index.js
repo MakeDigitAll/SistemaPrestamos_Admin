@@ -74,6 +74,12 @@ db.notificationsPrestamistas =
     sequelize,
     Sequelize
   );
+//Modelo de Notificaciones Administrador
+db.notificationsAdministradores =
+  require("./notifications/modelNotificationsAdministradores.js")(
+    sequelize,
+    Sequelize
+  );
 //Modelo de Solicitud de Prestamo
 db.solicitudPrestamo = require("./modelSolicitudPrestamo.js")(
   sequelize,

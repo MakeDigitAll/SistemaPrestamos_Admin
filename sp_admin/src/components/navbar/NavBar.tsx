@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Navbar, Text, Dropdown, Input, User, Button } from "@nextui-org/react";
+import {
+  Navbar,
+  Text,
+  Dropdown,
+  Input,
+  User,
+  Button,
+  Badge,
+} from "@nextui-org/react";
 import { Layout } from "../navbar/Layout";
 import { SearchIcon } from "../../resources/icons/SearchIcon";
 import useDarkLight from "../../hooks/useDarkLight";
@@ -10,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import { SearchContext } from "../../context/SearchContext";
 import { ImageContext } from "../../context/ImageContext";
 import { AuthContext } from "../../context/AuthContext";
+import { IoIosNotifications } from "react-icons/io";
 
 export const CustomNavBar = () => {
   const { logout } = useContext(AuthContext);
@@ -108,6 +117,19 @@ export const CustomNavBar = () => {
             }}
           >
             <Navbar.Content hideIn="xs">
+              <Navbar.Item
+                onClick={() => console.log("Notificaciones")}
+                style={{ marginRight: "0px", cursor: "pointer" }}
+              >
+                <Badge
+                  style={{ marginRight: "-3px" }}
+                  color="error"
+                  content={5}
+                  shape="circle"
+                >
+                  <IoIosNotifications fill="currentColor" size={20} />
+                </Badge>
+              </Navbar.Item>
               <Navbar.Item style={{ marginRight: "-20px" }}>
                 <ThemeToggleButton theme={theme} toggleTheme={toggleTheme} />
               </Navbar.Item>

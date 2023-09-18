@@ -200,4 +200,9 @@ router.put(
   }
 );
 
+//obtener todas las notificaciones de lo usuarios
+router.get("/admin-get-all-notificaciones", verifyToken, (req, res) => {
+  controllerAdmin.findAllNotificaciones(req, res);
+});
+
 module.exports = router;

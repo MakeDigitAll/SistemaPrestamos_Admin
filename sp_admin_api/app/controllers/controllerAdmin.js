@@ -4,6 +4,7 @@ const { Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const imagenAdministrador = db.imagenAdministrador;
+const notificationsAdministradores = db.notificationsAdministradores;
 const bcrypt = require("bcrypt");
 
 // Actualizar los datos de un administrador por su id  http.put(`/administradores/${id}`, data);
@@ -230,6 +231,44 @@ exports.getImageAdmin = (req, res) => {
         message:
           err.message ||
           "Ocurrió un error al buscar la imagen del administrador.",
+      });
+    });
+};
+
+//obtener todas las notificaciones de los usuarios
+exports.findAllNotificaciones = (req, res) => {
+  notificationsAdministradores
+    .findAll({
+      order: [["createdAt", "DESC"]],
+    })
+    .then((data) => {
+      if (data) {
+        //mapear las notificaciones para encriptar
+        const notificaciones = data.map((notificacion) => {
+          return {
+            idNotificacion: aesEncrypt(notificacion.idNotificacion.toString()),
+            idUsuarioNotification: aesEncrypt(
+              notificacion.idUsuarioNotification.toString()
+            ),
+            titulo: aesEncrypt(notificacion.titulo.toString()),
+            descripcion: aesEncrypt(notificacion.descripcion.toString()),
+            isRead: aesEncrypt(notificacion.isRead.toString()),
+            isPrestamista: aesEncrypt(notificacion.isPrestamista.toString()),
+            createdAt: aesEncrypt(notificacion.createdAt.toString()),
+            updatedAt: aesEncrypt(notificacion.updatedAt.toString()),
+          };
+        });
+        res.status(200).send(notificaciones);
+      } else {
+        res.status(500).send({
+          message: "No se encontraron notificaciones",
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message || "Ocurrió un error al buscar las notificaciones.",
       });
     });
 };

@@ -142,6 +142,11 @@ class AdminDataService {
   enableUser(idUsuario: number) {
     return http.put(`/admin-enable-usuario-prestamista-eliminado/${idUsuario}`);
   }
+
+  //obtener todas las notificaciones
+  getAllNotificaciones() {
+    return http.get("/admin-get-all-notificaciones");
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();

@@ -12,6 +12,7 @@ import { SearchContextProvider } from "../context/SearchContext";
 import SuscribirUsuario from "../pages/usuarios/SuscribirUsuario";
 import { ImageProvider } from "../context/ImageContext";
 import TipoSuscripcion from "../pages/tipoSuscripcion/TipoSuscripcion";
+import Notificaciones from "../pages/notificaciones/Notificaciones";
 
 function AppRouter() {
   return (
@@ -41,6 +42,10 @@ function AppRouter() {
               <Route
                 path="/admin-tipo-suscripcion"
                 element={<TipoSuscripcion />}
+              />
+              <Route
+                path="/admin-notificaciones"
+                element={<Notificaciones />}
               />
             </Routes>
           </ImageProvider>
