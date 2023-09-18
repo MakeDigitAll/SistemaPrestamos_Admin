@@ -11,7 +11,6 @@ const ContentProfile = () => {
   const [tabValue, setTabValue] = useState(0);
   const data = useGetAllNotificaciones();
   const [notifications, setNotifications] = useState<any>([]);
-
   const [notificationsAllUnread, setNotificationsAllUnread] = useState<any>([]);
   const [notificationsAllReaded, setNotificationsAllReaded] = useState<any>([]);
   const [notificationsAfiliadosUnread, setNotificationsAfiliadosUnread] =
@@ -116,7 +115,6 @@ const ContentProfile = () => {
       return notificationDate.toLocaleDateString(undefined, options);
     }
   };
-  console.log(notifications);
 
   const renderAllTab = () => {
     const notificationsToRender =

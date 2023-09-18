@@ -20,7 +20,12 @@ import { ImageContext } from "../../context/ImageContext";
 import { AuthContext } from "../../context/AuthContext";
 import { IoIosNotifications } from "react-icons/io";
 
-export const CustomNavBar = () => {
+//atributos de la interfaz notificaciones
+interface CustomNavBarProps {
+  notificaciones: any;
+}
+
+export const CustomNavBar = ({ notificaciones }: CustomNavBarProps) => {
   const { logout } = useContext(AuthContext);
   const { setSearchTerm } = useContext(SearchContext);
   const { theme, toggleTheme } = useDarkLight();
@@ -28,6 +33,7 @@ export const CustomNavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   var { profileImage } = useContext(ImageContext);
+  const [unreadNotifications, setUnreadNotifications] = useState<any>([]);
   const hideSearch =
     location.pathname === "/admin-suscripciones" ||
     location.pathname === "/admin-add-usuario" ||
@@ -42,6 +48,17 @@ export const CustomNavBar = () => {
       logout();
     }
   };
+
+  // filtrar notificaciones que solo sean las isReaded= false
+  useEffect(() => {
+    if (!notificaciones) {
+      return;
+    }
+    const unread = notificaciones.filter(
+      (notification: any) => JSON.parse(notification.isRead) === false
+    );
+    setUnreadNotifications(unread);
+  }, [notificaciones]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -118,13 +135,13 @@ export const CustomNavBar = () => {
           >
             <Navbar.Content hideIn="xs">
               <Navbar.Item
-                onClick={() => console.log("Notificaciones")}
+                onClick={() => navigate("/admin-notificaciones")}
                 style={{ marginRight: "0px", cursor: "pointer" }}
               >
                 <Badge
                   style={{ marginRight: "-3px" }}
                   color="error"
-                  content={5}
+                  content={unreadNotifications.length}
                   shape="circle"
                 >
                   <IoIosNotifications fill="currentColor" size={20} />

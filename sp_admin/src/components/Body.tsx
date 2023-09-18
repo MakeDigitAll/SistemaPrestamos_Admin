@@ -5,6 +5,7 @@ import SideBar from "../components/sidebar/SideBar";
 import { ToastContainer } from "react-toastify";
 import { SearchContextProvider } from "../context/SearchContext";
 import useGetImagenAdmin from "../hooks/useGetImagenAdmin";
+import { useGetAllNotificaciones } from "../hooks/getNotificaciones";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./Body.css";
@@ -15,6 +16,7 @@ interface BodyProps {
 
 const Body: React.FC<BodyProps> = ({ children }) => {
   useGetImagenAdmin();
+  const notificaciones = useGetAllNotificaciones();
 
   const [isSidebarCollapsed] = useState(
     localStorage.getItem("isSidebarCollapsed") === "true"
@@ -26,7 +28,7 @@ const Body: React.FC<BodyProps> = ({ children }) => {
         <SideBar />
         <div className="content-body">
           <div className="header" />
-          <CustomNavBar />
+          <CustomNavBar notificaciones={notificaciones} />
           <div className="content-scrollable">
             <ToastContainer position="bottom-right" />
             <div className="content-container">
