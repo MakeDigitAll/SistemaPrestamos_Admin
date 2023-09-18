@@ -272,3 +272,29 @@ exports.findAllNotificaciones = (req, res) => {
       });
     });
 };
+
+//marcar notificacion como leida
+exports.markNotificacionLeida = (req, res) => {
+  const id = aesDecrypt(req.params.id);
+  //marcar la notificacion como leida
+  notificationsAdministradores
+    .update(
+      {
+        isRead: true,
+      },
+      {
+        where: { idNotificacion: id },
+      }
+    )
+    .then((num) => {
+      if (num == 1) {
+        res.status(200).send({
+          message: "Notificacion marcada como leida correctamente.",
+        });
+      } else {
+        res.status(500).send({
+          message: `No se puede marcar la notificacion con id=${id} como leida. Tal vez la notificacion no fue encontrada o req.body está vacío!`,
+        });
+      }
+    });
+};

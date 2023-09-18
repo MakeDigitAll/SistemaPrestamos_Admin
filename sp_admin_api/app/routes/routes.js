@@ -205,4 +205,9 @@ router.get("/admin-get-all-notificaciones", verifyToken, (req, res) => {
   controllerAdmin.findAllNotificaciones(req, res);
 });
 
+//marcar notificacion como leida
+router.put("/admin-mark-notification-as-read/:id", verifyToken, (req, res) => {
+  controllerAdmin.markNotificacionLeida(req, res);
+});
+
 module.exports = router;

@@ -5,6 +5,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { useGetAllNotificaciones } from "./getData";
 import styles from "./Notificaciones.module.css";
+import { aesEncrypt } from "../../utils/encryption";
+import db from "../../services/service";
 
 const ContentProfile = () => {
   const { t } = useTranslation();
@@ -86,6 +88,18 @@ const ContentProfile = () => {
     return null;
   }
 
+  const handleMarkAsRead = (idNotificacion: number) => {
+    const encryptedId = aesEncrypt(idNotificacion.toString());
+    try {
+      const res = db.markNotificationAsRead(encryptedId) as any;
+      if (res.status === 200) {
+        console.log("Notificación marcada como leída");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const formatDate = (date: string) => {
     const now = new Date();
     const notificationDate = new Date(date);
@@ -143,7 +157,10 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
-                <Button className={styles["button-footer"]}>
+                <Button
+                  className={styles["button-footer"]}
+                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                >
                   <p>{t("Marcar como leído")}</p>
                 </Button>
                 <Button color={"error"} className={styles["button-footer"]}>
@@ -185,7 +202,10 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
-                <Button className={styles["button-footer"]}>
+                <Button
+                  className={styles["button-footer"]}
+                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                >
                   <p>{t("Marcar como leído")}</p>
                 </Button>
                 <Button color={"error"} className={styles["button-footer"]}>
@@ -226,7 +246,10 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
-                <Button className={styles["button-footer"]}>
+                <Button
+                  className={styles["button-footer"]}
+                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                >
                   <p>{t("Marcar como leído")}</p>
                 </Button>
                 <Button color={"error"} className={styles["button-footer"]}>

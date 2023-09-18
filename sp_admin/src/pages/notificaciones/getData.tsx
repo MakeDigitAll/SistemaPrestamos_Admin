@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import { aesDecrypt } from "../../utils/encryption";
 
 const useGetAllNotificaciones = () => {
-  const [historialPagos, setHistorialPagos] = useState<any>([]);
+  const [notificaciones, setNotificaciones] = useState<any>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const decryptData = (data: any) => {
@@ -30,7 +30,7 @@ const useGetAllNotificaciones = () => {
       );
 
       // Establecer los datos desencriptados y mapeados en el estado
-      setHistorialPagos(decryptedHistorialPagos);
+      setNotificaciones(decryptedHistorialPagos);
       setIsLoading(false);
     } catch (error: any) {
       if (error) {
@@ -44,11 +44,15 @@ const useGetAllNotificaciones = () => {
     fetchData();
   }, [fetchData]);
 
+  const refetchNotifications = () => {
+    fetchData();
+  };
+
   //si no hay prestamos
   if (isLoading) {
     return null;
   } else {
-    return historialPagos;
+    return notificaciones;
   }
 };
 

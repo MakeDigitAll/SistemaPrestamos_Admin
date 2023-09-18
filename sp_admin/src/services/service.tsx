@@ -147,6 +147,10 @@ class AdminDataService {
   getAllNotificaciones() {
     return http.get("/admin-get-all-notificaciones");
   }
+
+  markNotificationAsRead(idNotificacion: string) {
+    return http.put(`/admin-mark-notification-as-read/${idNotificacion}`);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();
