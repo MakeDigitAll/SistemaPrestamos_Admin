@@ -8,10 +8,10 @@ const notificationsAdministradores = db.notificationsAdministradores;
 const bcrypt = require("bcrypt");
 
 // Actualizar los datos de un administrador por su id  http.put(`/administradores/${id}`, data);
-exports.updateAdmin = (req, res) => {
+exports.updateAdmin = async (req, res) => {
   const id = req.params.id;
 
-  admin
+  await admin
     .update(req.query, {
       where: { idAdministrador: id },
     })
@@ -34,13 +34,13 @@ exports.updateAdmin = (req, res) => {
 };
 
 // Verificar si el administrador existe en la base de datos y si es asi verifica que la contraseña es correcta
-exports.loginAdmin = (req, res) => {
+exports.loginAdmin = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   // Desencriptar el correo y la contraseña
   const decryptedEmail = aesDecrypt(req.query.correoElectronico).toLowerCase();
   const decryptedPassword = aesDecrypt(req.query.adminPassword);
 
-  db.administradores
+  await db.administradores
     .findOne({
       where: {
         correoElectronico: {
@@ -96,7 +96,7 @@ exports.loginAdmin = (req, res) => {
 };
 
 //refrescar el token de acceso
-exports.refreshTokenAdmin = (req, res) => {
+exports.refreshTokenAdmin = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   // Obtener el token de actualización del cuerpo de la solicitud
   const refreshToken = req.query.refreshToken;
@@ -110,7 +110,7 @@ exports.refreshTokenAdmin = (req, res) => {
   }
 
   // Verificar el token de actualización
-  jwt.verify(refreshToken, TOKEN_KEY, (err, decoded) => {
+  await jwt.verify(refreshToken, TOKEN_KEY, (err, decoded) => {
     // Si hay un error, enviar un error
     if (err) {
       res.status(403).send({
@@ -138,12 +138,12 @@ exports.refreshTokenAdmin = (req, res) => {
 };
 
 //actualizar la  imagen de perfil del administrador
-exports.setImageAdmin = (req, res) => {
+exports.setImageAdmin = async (req, res) => {
   const id = req.params.id;
   const image = req.file.buffer; // Accedemos al buffer de la imagen
 
   //buscar la imagen del administrador en la tabla imagenAdministrador por el id del administrador y si existe la imagen la actualiza, si no existe la imagen la crea
-  imagenAdministrador
+  await imagenAdministrador
     .findOne({
       where: {
         idAdministrador: id,
@@ -208,10 +208,10 @@ exports.setImageAdmin = (req, res) => {
 };
 
 //obtener la imagen de perfil del administrador de la base de datos (BLOB)
-exports.getImageAdmin = (req, res) => {
+exports.getImageAdmin = async (req, res) => {
   const id = aesDecrypt(req.params.id);
 
-  imagenAdministrador
+  await imagenAdministrador
     .findOne({
       where: {
         idAdministrador: id,
@@ -236,8 +236,8 @@ exports.getImageAdmin = (req, res) => {
 };
 
 //obtener todas las notificaciones de los usuarios
-exports.findAllNotificaciones = (req, res) => {
-  notificationsAdministradores
+exports.findAllNotificaciones = async (req, res) => {
+  await notificationsAdministradores
     .findAll({
       order: [["createdAt", "DESC"]],
     })
@@ -274,10 +274,10 @@ exports.findAllNotificaciones = (req, res) => {
 };
 
 //marcar notificacion como leida
-exports.markNotificacionLeida = (req, res) => {
+exports.markNotificacionLeida = async (req, res) => {
   const id = aesDecrypt(req.params.id);
   //marcar la notificacion como leida
-  notificationsAdministradores
+  await notificationsAdministradores
     .update(
       {
         isRead: true,
@@ -300,10 +300,10 @@ exports.markNotificacionLeida = (req, res) => {
 };
 
 //eliminar notificacion
-exports.deleteNotificacion = (req, res) => {
+exports.deleteNotificacion = async (req, res) => {
   const id = aesDecrypt(req.params.id);
   //eliminar la notificacion
-  notificationsAdministradores
+  await notificationsAdministradores
     .destroy({
       where: { idNotificacion: id },
     })

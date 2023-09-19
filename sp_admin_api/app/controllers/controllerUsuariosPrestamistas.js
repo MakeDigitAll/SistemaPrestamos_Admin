@@ -9,9 +9,9 @@ const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
 
 //findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
+exports.findAllUsuariosPrestamistaCompletedSuscription = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .findAll({
       where: {
         isCompletedSuscription: true,
@@ -87,9 +87,9 @@ exports.findAllUsuariosPrestamistaCompletedSuscription = (req, res) => {
 };
 
 //findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamistaActivos = (req, res) => {
+exports.findAllUsuariosPrestamistaActivos = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .findAll({
       where: {
         isActive: true,
@@ -160,9 +160,9 @@ exports.findAllUsuariosPrestamistaActivos = (req, res) => {
 };
 
 //findAllUsuariosPrestamista con sus suscripciones
-exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
+exports.findAllUsuariosPrestamistaInactivos = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .findAll({
       where: {
         isActive: false,
@@ -232,9 +232,9 @@ exports.findAllUsuariosPrestamistaInactivos = (req, res) => {
 };
 
 //findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
+exports.findAllUsuariosPrestamistaEliminados = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .findAll({
       where: {
         isActive: false,
@@ -304,7 +304,7 @@ exports.findAllUsuariosPrestamistaEliminados = (req, res) => {
     });
 };
 
-exports.createUsuarioPrestamista = (req, res) => {
+exports.createUsuarioPrestamista = async (req, res) => {
   const decryptedNombre = aesDecrypt(req.body.nombre);
   const decryptedApellido = aesDecrypt(req.body.apellidos);
   const decryptedCorreo = aesDecrypt(req.body.email);
@@ -326,7 +326,7 @@ exports.createUsuarioPrestamista = (req, res) => {
   };
 
   // Verificar si el correo electrónico ya está registrado en la base de datos
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .findOne({ where: { correoElectronico: decryptedCorreo } })
     .then((prestamista) => {
       if (prestamista) {
@@ -485,9 +485,9 @@ exports.createUsuarioPrestamista = (req, res) => {
 };
 
 //cambiar el estado isDeleted de un usuario a true
-exports.deleteUsuarioPrestamista = (req, res) => {
+exports.deleteUsuarioPrestamista = async (req, res) => {
   const idUsuarioPrestamista = req.params.id;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .update(
       { isDeleted: true },
       {
@@ -515,13 +515,13 @@ exports.deleteUsuarioPrestamista = (req, res) => {
 };
 
 //updateUsuarioPrestamista los datos de nombres apellido y tipoUsuario
-exports.updateUsuarioPrestamista = (req, res) => {
+exports.updateUsuarioPrestamista = async (req, res) => {
   const idUsuarioPrestamista = req.params.id;
   const decryptedNombre = aesDecrypt(req.body.nombres);
   const decryptedApellido = aesDecrypt(req.body.apellidos);
   const decryptedNumeroTelefono = aesDecrypt(req.body.numeroTelefono);
 
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .update(
       {
         nombres: decryptedNombre,
@@ -556,12 +556,12 @@ exports.updateUsuarioPrestamista = (req, res) => {
 //set imagen
 
 //actualizar la  imagen de perfil del administrador
-exports.setImagePrestamista = (req, res) => {
+exports.setImagePrestamista = async (req, res) => {
   const id = req.params.id;
   const image = req.file.buffer; // Accedemos al buffer de la imagen
 
   //buscar la imagen del administrador en la tabla imagenPrestamista por el id del administrador y si existe la imagen la actualiza, si no existe la imagen la crea
-  imagenPrestamista
+  await imagenPrestamista
     .findOne({
       where: {
         idUsuarioPrestamista: id,
@@ -625,10 +625,10 @@ exports.setImagePrestamista = (req, res) => {
 };
 
 //obtener la imagen de perfil del usuario de la base de datos (BLOB)
-exports.getImagenPrestamista = (req, res) => {
+exports.getImagenPrestamista = async (req, res) => {
   const id = req.params.id;
 
-  imagenPrestamista
+  await imagenPrestamista
     .findOne({
       where: {
         idUsuarioPrestamista: id,
@@ -653,10 +653,10 @@ exports.getImagenPrestamista = (req, res) => {
 };
 
 //activar la suscripcion de un usuario prestamista y al usuario prestamista isActivo = true
-exports.activarSuscripcionUsuarioPrestamista = (req, res) => {
+exports.activarSuscripcionUsuarioPrestamista = async (req, res) => {
   const idUsuarioPrestamista = req.params.idUsuario;
   const idSuscripcion = req.params.idSuscripcion;
-  suscripciones
+  await suscripciones
     .update(
       {
         isActive: true,
@@ -710,10 +710,10 @@ exports.activarSuscripcionUsuarioPrestamista = (req, res) => {
 };
 
 //desactivar la suscripcion de un usuario prestamista y al usuario prestamista isActivo = false
-exports.desactivarSuscripcionUsuarioPrestamista = (req, res) => {
+exports.desactivarSuscripcionUsuarioPrestamista = async (req, res) => {
   const idUsuarioPrestamista = req.params.idUsuario;
   const idSuscripcion = req.params.idSuscripcion;
-  suscripciones
+  await suscripciones
     .update(
       {
         isActive: false,
@@ -767,9 +767,9 @@ exports.desactivarSuscripcionUsuarioPrestamista = (req, res) => {
 };
 
 //Habilitar el usuario prestamista eliminado
-exports.habilitarUsuarioPrestamistaEliminado = (req, res) => {
+exports.habilitarUsuarioPrestamistaEliminado = async (req, res) => {
   const idUsuarioPrestamista = req.params.id;
-  usuariosPrestamistas
+  await usuariosPrestamistas
     .update(
       { isDeleted: false },
       {

@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const tipoSuscripcion = db.tipoSuscripciones;
 
 // Crear y guardar un nuevo administrador
-exports.updateTipoSuscripcionByID = (req, res) => {
+exports.updateTipoSuscripcionByID = async (req, res) => {
   const id = req.params.id;
   const decryptedNombre = aesDecrypt(req.body.nombreSuscripcion);
   const decryptedMontoDesde = aesDecrypt(req.body.montoDesde);
@@ -12,7 +12,7 @@ exports.updateTipoSuscripcionByID = (req, res) => {
   const decryptedNumeroUsuariosMax = aesDecrypt(req.body.numeroUsuariosMax);
   const decryptedCostoMembresia = aesDecrypt(req.body.costoMembresia);
 
-  tipoSuscripcion
+  await tipoSuscripcion
     .update(
       {
         nombreSuscripcion: decryptedNombre,
@@ -45,10 +45,10 @@ exports.updateTipoSuscripcionByID = (req, res) => {
 };
 
 //Actualizar el tipoSuscripcion de tipo de suscripcion a isDeleted = true
-exports.deleteTipoSuscripcionByID = (req, res) => {
+exports.deleteTipoSuscripcionByID = async (req, res) => {
   const id = req.params.id;
 
-  tipoSuscripcion
+  await tipoSuscripcion
     .update(
       {
         isDeleted: true,
@@ -77,7 +77,7 @@ exports.deleteTipoSuscripcionByID = (req, res) => {
 };
 
 //crear y guardar un nuevo tipoSuscripcion de tipo de suscripcion
-exports.createTipoSuscripcion = (req, res) => {
+exports.createTipoSuscripcion = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   // Crear un tipoSuscripcion de tipo de suscripcion
   const decryptedNombre = aesDecrypt(req.body.nombreSuscripcion);
@@ -86,7 +86,7 @@ exports.createTipoSuscripcion = (req, res) => {
   const decryptedNumeroUsuariosMax = aesDecrypt(req.body.numeroUsuariosMax);
   const decryptedCostoMembresia = aesDecrypt(req.body.costoMembresia);
 
-  tipoSuscripcion
+  await tipoSuscripcion
     .create({
       nombreSuscripcion: decryptedNombre,
       montoDesde: decryptedMontoDesde,
@@ -117,9 +117,9 @@ exports.createTipoSuscripcion = (req, res) => {
 };
 
 //obtener todas las suscripciones activas de la base de datos que no son isDeleted = true
-exports.getAllTiposSuscripcionesActivas = (req, res) => {
+exports.getAllTiposSuscripcionesActivas = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  tipoSuscripcion
+  await tipoSuscripcion
     .findAll({
       where: {
         isDeleted: false,

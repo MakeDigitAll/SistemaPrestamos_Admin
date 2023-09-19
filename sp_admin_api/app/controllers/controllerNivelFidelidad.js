@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 const nivelesFidelidad = db.nivelesFidelidad;
 
 // obtener todos los niveles de fidelidad de la base de datos que no son isDeleted = true
-exports.getNivelesFidelidad = (req, res) => {
+exports.getNivelesFidelidad = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  nivelesFidelidad
+  await nivelesFidelidad
     .findAll({
       where: {
         isDeleted: false,
@@ -34,14 +34,14 @@ exports.getNivelesFidelidad = (req, res) => {
 };
 
 // Crear y guardar un nuevo administrador
-exports.updateNivelFidelidadByID = (req, res) => {
+exports.updateNivelFidelidadByID = async (req, res) => {
   const id = req.params.id;
   const decryptedNombre = aesDecrypt(req.body.nombreNivelFidelidad);
   const decryptedDescuento = aesDecrypt(req.body.descuento);
   const decryptedNumeroMesesMinimo = aesDecrypt(req.body.numeroMesesMinimo);
   const decryptedNumeroMesesMaximo = aesDecrypt(req.body.numeroMesesMaximo);
 
-  nivelesFidelidad
+  await nivelesFidelidad
     .update(
       {
         nombreNivelFidelidad: decryptedNombre,
@@ -73,10 +73,10 @@ exports.updateNivelFidelidadByID = (req, res) => {
 };
 
 //Actualizar el nivel de fidelidad a isDeleted = true
-exports.deleteNivelFidelidadByID = (req, res) => {
+exports.deleteNivelFidelidadByID = async (req, res) => {
   const id = req.params.id;
 
-  nivelesFidelidad
+  await nivelesFidelidad
     .update(
       {
         isDeleted: true,
@@ -104,14 +104,14 @@ exports.deleteNivelFidelidadByID = (req, res) => {
 };
 
 //crear y guardar un nuevo nivel de fidelidad
-exports.createNivelFidelidad = (req, res) => {
+exports.createNivelFidelidad = async (req, res) => {
   TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
   const decryptedNombre = aesDecrypt(req.body.nombreNivelFidelidad);
   const decryptedDescuento = aesDecrypt(req.body.descuento);
   const decryptedNumeroMesesMinimo = aesDecrypt(req.body.numeroMesesMinimo);
   const decryptedNumeroMesesMaximo = aesDecrypt(req.body.numeroMesesMaximo);
 
-  nivelesFidelidad
+  await nivelesFidelidad
     .create({
       nombreNivelFidelidad: decryptedNombre,
       descuento: decryptedDescuento,
