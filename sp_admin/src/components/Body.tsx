@@ -9,6 +9,7 @@ import { useGetAllNotificaciones } from "../hooks/getNotificaciones";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./Body.css";
+import styles from "./Body.module.css";
 
 interface BodyProps {
   children: React.ReactNode;
@@ -18,34 +19,24 @@ const Body: React.FC<BodyProps> = ({ children }) => {
   useGetImagenAdmin();
   const notificaciones = useGetAllNotificaciones();
 
-  const [isSidebarCollapsed] = useState(
-    localStorage.getItem("isSidebarCollapsed") === "true"
-  );
-
   return (
     <SearchContextProvider>
-      <div className="app-container">
-        <SideBar />
-        <div className="content-body">
-          <div className="header" />
+      <div className={styles["layout"]}>
+        <div className={styles["navbar"]}>
           <CustomNavBar notificaciones={notificaciones} />
-          <div className="content-scrollable">
-            <ToastContainer position="bottom-right" />
-            <div className="content-container">
-              <div
-                className={`content ${
-                  isSidebarCollapsed ? "content-sidebar-collapsed" : ""
-                }`}
-              >
-                <div className="content-body">{children}</div>
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div className={styles["sidebar"]}>
+          <SideBar />
+        </div>
+
+        <div className={styles["body"]}>{children}</div>
+
+        <div className={styles["footer"]}>
+          <Footer />
         </div>
       </div>
-      <div className="footer">
-        <Footer />
-      </div>
+      <ToastContainer position="bottom-right" />
     </SearchContextProvider>
   );
 };

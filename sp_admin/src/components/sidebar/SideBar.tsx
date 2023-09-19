@@ -3,8 +3,6 @@ import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme, Divider } from "@nextui-org/react";
 import { useTheme as useNextTheme } from "next-themes";
-import logodark from "../../assets/images/logodark.png";
-import logolight from "../../assets/images/logolight.png";
 import { useTranslation } from "react-i18next";
 // Icons
 import { FaMoneyBillAlt } from "react-icons/fa";
@@ -138,8 +136,6 @@ function SideBar() {
     isSidebarPersistCollapsed,
   ]);
 
-  const logo = isDark ? logodark : logolight;
-
   const handleSidebarToggle = () => {
     setIsSidebarCollapsed((prevIsSidebarCollapsed) => !prevIsSidebarCollapsed);
     setIsSidebarPersistCollapsed(
@@ -164,7 +160,7 @@ function SideBar() {
   });
 
   const renderSidebarToggle = () => {
-    if (window.innerWidth < 1080) {
+    if (window.innerWidth < 1280) {
       return null;
     }
 
@@ -175,10 +171,9 @@ function SideBar() {
           style={{
             border: "none",
             background: "none",
-            marginRight: "10px",
-            marginTop: "10px",
+            marginRight: "-10px",
             cursor: "pointer",
-            fontSize: "24px", // Tamaño del icono
+            fontSize: "28px", // Tamaño del icono
           }}
         >
           {isSidebarCollapsed ? (
@@ -194,27 +189,23 @@ function SideBar() {
   return (
     <>
       <Sidebar
+        transitionDuration={400}
+        width="250px"
         backgroundColor={isDark ? "dark-mode-sidebar" : "light-mode-sidebar"}
         rootStyles={{
-          borderRight: `0.5px solid ${isDark ? "#262626" : "#d9d9d9"}`,
+          borderRight: `0.1px  ${isDark ? "#D1D1D1" : "#262626"}`,
+          height: "100%",
+          //box shadow en modo dark y light
+          boxShadow: isDark
+            ? "0px 0px 20px rgba(0, 0, 0, 0.5)"
+            : "0px 0px 20px rgba(0, 0, 0, 0.3)",
+          borderRadius: "20px",
         }}
         collapsed={isSidebarCollapsed}
       >
         {renderSidebarToggle()}
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <img
-            src={logo}
-            alt="Logo"
-            style={{ width: "auto", maxWidth: "130px", minWidth: "50px" }}
-          />
-        </div>
-
-        <Menu
-          transitionDuration={400}
-          menuItemStyles={menuItemStyles}
-          style={{ marginTop: "40px" }}
-        >
-          <Divider style={{ height: "0.5px", marginTop: "10px" }} />
+        <Menu transitionDuration={400} menuItemStyles={menuItemStyles}>
+          <Divider style={{ height: "0.5px" }} />
           <MenuItem
             style={{ marginTop: "10px" }}
             icon={<MdSpaceDashboard />}

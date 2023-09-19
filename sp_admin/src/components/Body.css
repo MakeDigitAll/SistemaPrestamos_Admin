@@ -1,44 +1,7 @@
-/*Body.css*/
-.app-container {
-  display: flex;
-  overflow: hidden; /* Evita el desbordamiento de contenido en dispositivos pequeños */
-  height: calc(100vh - 32px); /* Resta la altura del header */
-}
 
-.header {
-  flex-shrink: 0; /* Evita que el header se contraiga */
-  width: 100%; /* Establece el ancho del header al 100% */
-}
-
-.sidebar {
-  height: 100vh; /* Altura total de la pantalla */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-.sidebar.collapsed {
-  width: 50px;
-}
-
-.content-body {
-  flex-grow: 1;
-}
-
-.content-scrollable {
-  /* Ajusta el contenido para que se ajuste al encabezado y al pie de página */
-  padding-bottom: 5%; /* Altura del footer */
-  padding-left: 2.5%;
-  padding-right: 2.5%;
-  /* scroll solo si el contenido excede la altura del contenedor */
-  height: 100%;
-  overflow-y: auto; /* Permite el desplazamiento vertical cuando el contenido excede la altura del contenedor */
-  overflow-x: hidden; /* Oculta el desplazamiento horizontal */
-}
-
-.sidebar.collapsed {
-  width: 50px;
+.nextui-c-eWzLKI .nextui-c-eWzLKI-iPJLV-css{
+  background-color: transparent !important;
+  color: transparent !important;
 }
 
 .footer-container {
@@ -53,11 +16,7 @@
   font-size: 10px;
 }
 
-.ps-sidebar-root:not(.ps-collapsed) + .content .header {
-  /* Si la barra lateral no está colapsada, ajusta el ancho del encabezado */
-  width: 84%;
-  transition: width 0.7s ease;
-}
+
 /* Estilos para el modo oscuro */
 /* Sideabar */
 .dark-mode {

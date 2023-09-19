@@ -8,7 +8,7 @@ import "./language/i18n";
 import lightTheme from "./themes/lightTheme";
 import darkTheme from "./themes/darkTheme";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <NextUIProvider>
       <NextThemesProvider

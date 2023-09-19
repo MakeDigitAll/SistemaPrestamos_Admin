@@ -19,6 +19,8 @@ import { SearchContext } from "../../context/SearchContext";
 import { ImageContext } from "../../context/ImageContext";
 import { AuthContext } from "../../context/AuthContext";
 import { IoIosNotifications } from "react-icons/io";
+import logodark from "../../assets/images/logodark.png";
+import logolight from "../../assets/images/logolight.png";
 
 //atributos de la interfaz notificaciones
 interface CustomNavBarProps {
@@ -41,6 +43,7 @@ export const CustomNavBar = ({ notificaciones }: CustomNavBarProps) => {
     location.pathname === "/admin-dashboard" ||
     location.pathname === "/admin-profile";
   const [searchValue, setSearchValue] = useState("");
+  const isDark = theme === "dark";
 
   const handleDropdownAction = (key: React.Key) => {
     const actionKey = String(key);
@@ -71,15 +74,39 @@ export const CustomNavBar = ({ notificaciones }: CustomNavBarProps) => {
     setSearchValue(""); // Borrar el contenido de la barra de búsqueda
   }, [location.pathname, setSearchTerm]);
 
+  const Logo = ({ isDark: isDark }: { isDark: boolean }) => {
+    const logo = isDark ? logodark : logolight;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginRight: "-12px",
+        }}
+      >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{ maxWidth: "40px", minWidth: "40px" }}
+        />
+      </div>
+    );
+  };
+
   return (
     <Layout>
       <Navbar
         variant="static"
         isCompact
-        isBordered={false}
+        isBordered={true}
         maxWidth="fluid"
         disableShadow={true}
       >
+        <Navbar.Content className="hidden xl:flex" justify="start">
+          <Logo isDark={isDark} />
+          Make DigitAll
+        </Navbar.Content>
+
         <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
 
         <Navbar.Brand css={{ mr: "$4" }}>

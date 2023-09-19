@@ -18,6 +18,7 @@ import logolight from "../../assets/images/logolight.png";
 import { useTheme as useNextTheme } from "next-themes";
 import { useTranslation } from "react-i18next";
 import { AuthContext } from "../../context/AuthContext";
+import styles from "./Login.module.css";
 
 const LoginForm = () => {
   const { login } = useContext(AuthContext);
@@ -118,72 +119,78 @@ const LoginForm = () => {
   const isDark = theme === "dark";
   const logo = isDark ? logodark : logolight;
   return (
-    <Layout>
-      <NavBarLogin />
-      <Card
-        css={{
-          width: "400px",
-          height: "550px",
-          margin: "auto",
-          marginTop: "5%",
-        }}
-      >
-        <Text h3 css={{ margin: "auto", marginTop: "15%" }}>
-          {t("login.bienvenido")}
-        </Text>
-
-        <Card.Header>
-          <Avatar
-            src={logo}
-            zoomed
+    <div className={styles["layout"]}>
+      <div className={styles["navbar"]}>
+        <NavBarLogin />
+      </div>
+      <Layout>
+        <div className={styles["login"]}>
+          <Card
             css={{
+              width: "400px",
+              height: "550px",
               margin: "auto",
-              height: "100px",
-              width: "100px",
-              marginTop: "2%",
+              marginTop: "5%",
             }}
-          />
-        </Card.Header>
-
-        <Card.Body
-          css={{ py: "$3", alignContent: "center", alignItems: "center" }}
-        >
-          <Input
-            {...emailBindings}
-            onClearClick={resetEmail}
-            status={emailError ? "error" : "default"}
-            color={emailError ? "error" : "default"}
-            helperColor={emailError ? "error" : "default"}
-            helperText={emailError ? emailError : ""}
-            type="email"
-            label={t("login.email")}
-            width="300px"
-          />
-          <Spacer y={2} />
-          <Input.Password
-            {...passwordBindings}
-            label={t("login.password")}
-            status={passwordError ? "error" : "default"}
-            color={passwordError ? "error" : "default"}
-            helperColor={passwordError ? "error" : "default"}
-            helperText={passwordError || ""}
-            type="password"
-            width="300px"
-          />
-        </Card.Body>
-
-        <Card.Footer>
-          <Button
-            color="gradient"
-            auto
-            css={{ width: "40%", margin: "auto", marginBottom: "10%" }}
-            onPress={handleValidated}
           >
-            {t("login.login")}
-          </Button>
-        </Card.Footer>
-      </Card>
-    </Layout>
+            <Text h3 css={{ margin: "auto", marginTop: "15%" }}>
+              {t("login.bienvenido")}
+            </Text>
+
+            <Card.Header>
+              <Avatar
+                src={logo}
+                zoomed
+                css={{
+                  margin: "auto",
+                  height: "100px",
+                  width: "100px",
+                  marginTop: "2%",
+                }}
+              />
+            </Card.Header>
+
+            <Card.Body
+              css={{ py: "$3", alignContent: "center", alignItems: "center" }}
+            >
+              <Input
+                {...emailBindings}
+                onClearClick={resetEmail}
+                status={emailError ? "error" : "default"}
+                color={emailError ? "error" : "default"}
+                helperColor={emailError ? "error" : "default"}
+                helperText={emailError ? emailError : ""}
+                type="email"
+                label={t("login.email")}
+                width="300px"
+              />
+              <Spacer y={2} />
+              <Input.Password
+                {...passwordBindings}
+                label={t("login.password")}
+                status={passwordError ? "error" : "default"}
+                color={passwordError ? "error" : "default"}
+                helperColor={passwordError ? "error" : "default"}
+                helperText={passwordError || ""}
+                type="password"
+                width="300px"
+              />
+            </Card.Body>
+
+            <Card.Footer>
+              <Button
+                color="gradient"
+                auto
+                css={{ width: "40%", margin: "auto", marginBottom: "10%" }}
+                onPress={handleValidated}
+              >
+                {t("login.login")}
+              </Button>
+            </Card.Footer>
+          </Card>
+        </div>
+      </Layout>
+    </div>
   );
 };
 

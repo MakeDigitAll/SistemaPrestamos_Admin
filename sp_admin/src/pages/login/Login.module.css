@@ -1,0 +1,22 @@
+.layout {
+    width: 100%;
+    height: 100vh;
+    grid:
+      "navbar" auto
+      "login" auto
+      / auto;
+    gap: 8px;
+  }
+  
+  .navbar { grid-area: navbar; }
+  .login { grid-area: login; }
+
+  .navbar{
+    width: 100% !important;
+  }
+
+  .login{
+    justify-content: center !important;
+    align-items: center !important;
+  }
+

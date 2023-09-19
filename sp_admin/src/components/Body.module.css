@@ -1,0 +1,34 @@
+/* ------------------------------------------------------Mobile-------------------------------------------------------- */
+
+.layout {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid:
+      "navbar navbar" auto
+      "sidebar body" auto
+      "footer footer" auto
+      / auto 1fr;
+    gap: 8px;
+  }
+  
+  .navbar {
+    grid-area: navbar;
+
+  }
+  .body {
+    margin: 1%;
+    grid-area: body;
+    height: 85vh;
+  }
+
+  .sidebar {
+    margin: 1%;
+    display: block;
+    grid-area: sidebar;
+  }
+
+  .footer {
+    display: block;
+    grid-area: footer;
+  }
