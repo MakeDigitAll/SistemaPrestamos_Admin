@@ -47,7 +47,7 @@ export const useGetUsuariosPrestamistas = () => {
       );
       setUsuariosPrestamistas(usuariosDesencriptados);
     } catch (error: any) {
-      throw new Error("Error fetching active users:", error);
+      console.log(error);
     }
   }, []);
 

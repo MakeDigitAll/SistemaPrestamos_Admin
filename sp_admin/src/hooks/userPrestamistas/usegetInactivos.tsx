@@ -47,7 +47,7 @@ export const useGetUsuariosInactivos = () => {
       );
       setUsuariosInactivos(usuariosDesencriptados);
     } catch (error: any) {
-      throw new Error("Error fetching active users:", error);
+      console.log(error);
     }
   }, []);
 
@@ -59,7 +59,7 @@ export const useGetUsuariosInactivos = () => {
     try {
       fetchData();
     } catch (error) {
-      console.error("Error fetching active users:", error);
+      console.error(error);
     }
   };
 

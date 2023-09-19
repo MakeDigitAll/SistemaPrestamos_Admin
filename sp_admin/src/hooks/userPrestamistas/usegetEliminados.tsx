@@ -47,7 +47,7 @@ export const useGetUsuariosEliminados = () => {
       );
       setUsuariosEliminados(usuariosDesencriptados);
     } catch (error: any) {
-      throw new Error("Error fetching active users:", error);
+      console.log(error);
     }
   }, []);
 
@@ -59,7 +59,7 @@ export const useGetUsuariosEliminados = () => {
     try {
       fetchData();
     } catch (error) {
-      console.error("Error fetching active users:", error);
+      console.error(error);
     }
   };
 

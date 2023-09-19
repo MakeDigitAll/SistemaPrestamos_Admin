@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Legend, Tooltip, Cell } from "recharts";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { useGetUsuariosPrestamistas } from "../../hooks/userPrestamistas/usegetAllUsuarios";
+import { useGetUsuariosPrestamistas } from "./getData";
 import { UserPrestamista as UserTypePrestamista } from "../../types/UserPrestamista";
 import { useTranslation } from "react-i18next";
 
