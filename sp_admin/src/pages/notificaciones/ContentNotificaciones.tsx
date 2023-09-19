@@ -3,15 +3,17 @@ import { Button, Card } from "@nextui-org/react";
 import { useTranslation } from "react-i18next";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { useGetAllNotificaciones } from "./getData";
+import useGetAllNotificaciones from "./getData";
 import styles from "./Notificaciones.module.css";
 import { aesEncrypt } from "../../utils/encryption";
 import db from "../../services/service";
+import { toast } from "react-toastify";
 
 const ContentProfile = () => {
   const { t } = useTranslation();
   const [tabValue, setTabValue] = useState(0);
-  const data = useGetAllNotificaciones();
+  const { notificaciones, refetchNotifications } = useGetAllNotificaciones();
+
   const [notifications, setNotifications] = useState<any>([]);
   const [notificationsAllUnread, setNotificationsAllUnread] = useState<any>([]);
   const [notificationsAllReaded, setNotificationsAllReaded] = useState<any>([]);
@@ -23,33 +25,32 @@ const ContentProfile = () => {
     useState<any>([]);
   const [notificationsPrestamistasUnread, setNotificationsPrestamistasUnread] =
     useState<any>([]);
-
   const [subTabValue, setSubTabValue] = useState(0);
 
   useEffect(() => {
-    setNotifications(data);
-    if (data) {
+    setNotifications(notificaciones);
+    if (notificaciones) {
       // filtrar notificaciones dependiendo el caso
       // todas las notificaciones sin leer
-      const allUnread = data.filter(
+      const allUnread = notificaciones.filter(
         (notification: any) => JSON.parse(notification.isRead) === false
       );
       setNotificationsAllUnread(allUnread);
       // todas las notificaciones leídas
-      const allReaded = data.filter(
+      const allReaded = notificaciones.filter(
         (notification: any) => JSON.parse(notification.isRead) === true
       );
       setNotificationsAllReaded(allReaded);
 
       // notificaciones de afiliados sin leer
-      const afiliadosUnread = data.filter(
+      const afiliadosUnread = notificaciones.filter(
         (notification: any) =>
           JSON.parse(notification.isRead) === false &&
           JSON.parse(notification.isPrestamista) === false
       );
       setNotificationsAfiliadosUnread(afiliadosUnread);
       // notificaciones de afiliados leídas
-      const afiliadosReaded = data.filter(
+      const afiliadosReaded = notificaciones.filter(
         (notification: any) =>
           JSON.parse(notification.isRead) === true &&
           JSON.parse(notification.isPrestamista) === false
@@ -57,21 +58,21 @@ const ContentProfile = () => {
       setNotificationsAfiliadosReaded(afiliadosReaded);
 
       // notificaciones de prestamistas sin leer
-      const prestamistasUnread = data.filter(
+      const prestamistasUnread = notificaciones.filter(
         (notification: any) =>
           JSON.parse(notification.isRead) === false &&
           JSON.parse(notification.isPrestamista) === true
       );
       setNotificationsPrestamistasUnread(prestamistasUnread);
       // notificaciones de prestamistas leídas
-      const prestamistasReaded = data.filter(
+      const prestamistasReaded = notificaciones.filter(
         (notification: any) =>
           JSON.parse(notification.isRead) === true &&
           JSON.parse(notification.isPrestamista) === true
       );
       setNotificationsPrestamistasReaded(prestamistasReaded);
     }
-  }, [data]);
+  }, [notificaciones]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -88,12 +89,25 @@ const ContentProfile = () => {
     return null;
   }
 
-  const handleMarkAsRead = (idNotificacion: number) => {
+  const handleMarkAsRead = async (idNotificacion: number) => {
     const encryptedId = aesEncrypt(idNotificacion.toString());
     try {
-      const res = db.markNotificationAsRead(encryptedId) as any;
+      const res = (await db.markNotificationAsRead(encryptedId)) as any;
       if (res.status === 200) {
-        console.log("Notificación marcada como leída");
+        refetchNotifications();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteNotification = async (idNotificacion: number) => {
+    const encryptedId = aesEncrypt(idNotificacion.toString());
+    try {
+      const res = (await db.deleteNotification(encryptedId)) as any;
+      if (res.status === 200) {
+        toast.success("Notificación eliminada");
+        refetchNotifications();
       }
     } catch (error) {
       console.log(error);
@@ -157,13 +171,23 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
+                {subTabValue === 0 && (
+                  <Button
+                    className={styles["button-footer"]}
+                    onPress={() =>
+                      handleMarkAsRead(notification.idNotificacion)
+                    }
+                  >
+                    <p>{t("Marcar como leído")}</p>
+                  </Button>
+                )}
                 <Button
+                  color={"error"}
                   className={styles["button-footer"]}
-                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                  onPress={() =>
+                    handleDeleteNotification(notification.idNotificacion)
+                  }
                 >
-                  <p>{t("Marcar como leído")}</p>
-                </Button>
-                <Button color={"error"} className={styles["button-footer"]}>
                   <p>{t("Eliminar")}</p>
                 </Button>
               </Card.Footer>
@@ -202,13 +226,23 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
+                {subTabValue === 0 && (
+                  <Button
+                    className={styles["button-footer"]}
+                    onPress={() =>
+                      handleMarkAsRead(notification.idNotificacion)
+                    }
+                  >
+                    <p>{t("Marcar como leído")}</p>
+                  </Button>
+                )}
                 <Button
+                  color={"error"}
                   className={styles["button-footer"]}
-                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                  onPress={() =>
+                    handleDeleteNotification(notification.idNotificacion)
+                  }
                 >
-                  <p>{t("Marcar como leído")}</p>
-                </Button>
-                <Button color={"error"} className={styles["button-footer"]}>
                   <p>{t("Eliminar")}</p>
                 </Button>
               </Card.Footer>
@@ -246,13 +280,23 @@ const ContentProfile = () => {
                 <p>{notification.descripcion}</p>
               </Card.Body>
               <Card.Footer className={styles["card-noti-footer"]}>
+                {subTabValue === 0 && (
+                  <Button
+                    className={styles["button-footer"]}
+                    onPress={() =>
+                      handleMarkAsRead(notification.idNotificacion)
+                    }
+                  >
+                    <p>{t("Marcar como leído")}</p>
+                  </Button>
+                )}
                 <Button
+                  color={"error"}
                   className={styles["button-footer"]}
-                  onClick={() => handleMarkAsRead(notification.idNotificacion)}
+                  onPress={() =>
+                    handleDeleteNotification(notification.idNotificacion)
+                  }
                 >
-                  <p>{t("Marcar como leído")}</p>
-                </Button>
-                <Button color={"error"} className={styles["button-footer"]}>
                   <p>{t("Eliminar")}</p>
                 </Button>
               </Card.Footer>

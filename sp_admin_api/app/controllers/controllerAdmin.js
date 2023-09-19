@@ -298,3 +298,24 @@ exports.markNotificacionLeida = (req, res) => {
       }
     });
 };
+
+//eliminar notificacion
+exports.deleteNotificacion = (req, res) => {
+  const id = aesDecrypt(req.params.id);
+  //eliminar la notificacion
+  notificationsAdministradores
+    .destroy({
+      where: { idNotificacion: id },
+    })
+    .then((num) => {
+      if (num == 1) {
+        res.status(200).send({
+          message: "Notificacion eliminada correctamente.",
+        });
+      } else {
+        res.status(500).send({
+          message: `No se puede eliminar la notificacion con id=${id}. Tal vez la notificacion no fue encontrada o req.body está vacío!`,
+        });
+      }
+    });
+};

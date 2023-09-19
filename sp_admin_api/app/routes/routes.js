@@ -210,4 +210,9 @@ router.put("/admin-mark-notification-as-read/:id", verifyToken, (req, res) => {
   controllerAdmin.markNotificacionLeida(req, res);
 });
 
+//eliminar notificacion
+router.delete("/admin-delete-notification/:id", verifyToken, (req, res) => {
+  controllerAdmin.deleteNotificacion(req, res);
+});
+
 module.exports = router;

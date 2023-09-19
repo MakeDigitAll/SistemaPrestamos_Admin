@@ -4,7 +4,6 @@ import { aesDecrypt } from "../../utils/encryption";
 
 const useGetAllNotificaciones = () => {
   const [notificaciones, setNotificaciones] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const decryptData = (data: any) => {
     return {
@@ -21,7 +20,6 @@ const useGetAllNotificaciones = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      setIsLoading(true);
       const res = await db.getAllNotificaciones();
       // Desencriptar los datos recibidos
       const encryptedHistorialPagos = res.data;
@@ -31,10 +29,8 @@ const useGetAllNotificaciones = () => {
 
       // Establecer los datos desencriptados y mapeados en el estado
       setNotificaciones(decryptedHistorialPagos);
-      setIsLoading(false);
     } catch (error: any) {
       if (error) {
-        setIsLoading(false);
         console.log(error);
       }
     }
@@ -48,12 +44,7 @@ const useGetAllNotificaciones = () => {
     fetchData();
   };
 
-  //si no hay prestamos
-  if (isLoading) {
-    return null;
-  } else {
-    return notificaciones;
-  }
+  return { notificaciones, refetchNotifications };
 };
 
-export { useGetAllNotificaciones };
+export default useGetAllNotificaciones;

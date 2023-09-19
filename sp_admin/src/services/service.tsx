@@ -151,6 +151,10 @@ class AdminDataService {
   markNotificationAsRead(idNotificacion: string) {
     return http.put(`/admin-mark-notification-as-read/${idNotificacion}`);
   }
+
+  deleteNotification(idNotificacion: string) {
+    return http.delete(`/admin-delete-notification/${idNotificacion}`);
+  }
 }
 
 const adminDataServiceInstance = new AdminDataService();
