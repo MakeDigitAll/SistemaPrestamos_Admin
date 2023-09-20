@@ -107,9 +107,7 @@ export const CustomNavBar = ({ notificaciones }: CustomNavBarProps) => {
           Make DigitAll
         </Navbar.Content>
 
-        <Navbar.Brand css={{ mr: "$4" }}></Navbar.Brand>
-
-        <Navbar.Brand css={{ mr: "$4" }}>
+        <Navbar.Brand css={{ ml: "$24" }}>
           <Navbar.Content>
             {/* Verifica si hideSearch es verdadero antes de renderizar el componente */}
             {!hideSearch && (
