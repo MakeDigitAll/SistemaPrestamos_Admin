@@ -39,6 +39,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
+      isSemanal: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
     },
     {
       createdAt: false,
