@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "./getData";
 import { UserPrestamista as UserTypePrestamista } from "../../types/UserPrestamista";
 import { useTranslation } from "react-i18next";
+import styles from "./Dashboard.module.css";
 
 const ContentDashboard: React.FC = () => {
   const { t } = useTranslation();
@@ -94,50 +95,235 @@ const ContentDashboard: React.FC = () => {
   };
 
   return (
-    <Card
-      style={{
-        width: "fit-content",
-      }}
-    >
-      <div>
-        <Card.Header
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <h3>{t("dashboard.usuariosPrestamistas")}</h3>
-        </Card.Header>
-        <Card.Body style={{ marginTop: "-20%" }}>
-          {data.length > 0 ? (
-            <PieChart width={300} height={400}>
-              <Pie
-                data={data}
-                cx="50%"
-                cy="50%"
-                outerRadius={70}
-                dataKey="value"
-                label
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={entry.fill}
-                    onClick={() => handlePieClick(entry)}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          ) : (
-            <h4 style={{ textAlign: "center", marginTop: "20%" }}>
-              {t("dashboard.noDatos")}
-            </h4>
-          )}
-        </Card.Body>
+    <div className={styles["layout"]}>
+      <div className={styles["usuariosPrestamistas"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart width={300} height={400}>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
       </div>
-    </Card>
+
+      <div className={styles["usuariosAfiliados"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart width={300} height={400}>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
+      </div>
+
+      <div className={styles["UsuariosTotales"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart width={300} height={400}>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
+      </div>
+
+      <div className={styles["ingresos"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart className={styles["pie-chart"]}>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
+      </div>
+
+      <div className={styles["topAfiliados"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
+      </div>
+
+      <div className={styles["otro"]}>
+        <Card className={styles["card"]}>
+          <div>
+            <Card.Header>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </Card.Header>
+            <Card.Body>
+              {data.length > 0 ? (
+                <PieChart>
+                  <Pie
+                    data={data}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={70}
+                    dataKey="value"
+                    label
+                  >
+                    {data.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.fill}
+                        onClick={() => handlePieClick(entry)}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              ) : (
+                <h4 style={{ textAlign: "center", marginTop: "20%" }}>
+                  {t("dashboard.noDatos")}
+                </h4>
+              )}
+            </Card.Body>
+          </div>
+        </Card>
+      </div>
+    </div>
   );
 };
 
