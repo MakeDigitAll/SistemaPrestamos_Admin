@@ -8,6 +8,8 @@ export interface UserPrestamista {
   imagenPerfil: string | null;
   isActive: boolean;
   isDeleted: boolean;
+  isCompletedSuscription: boolean;
+  isEmailConfirmed: boolean;
   suscripciones: {
     idSuscripcion: number;
     fechaInicio: Date;

@@ -19,8 +19,12 @@ class AdminDataService {
     });
   }
   //obtener todos los usuarios prestamistas
-  getDashboardData() {
-    return http.get("/admin-get-data-dashboard");
+  getDashboardData(id: string) {
+    return http.get("/admin-get-data-dashboard", {
+      params: {
+        id: id,
+      },
+    });
   }
 
   //obtener todos los usuarios prestamistas activos

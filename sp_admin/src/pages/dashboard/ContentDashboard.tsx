@@ -25,18 +25,26 @@ const ContentDashboard: React.FC = () => {
   useEffect(() => {
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) => usuario.isActive && !usuario.isDeleted
+        (usuario: UserTypePrestamista) =>
+          usuario.isActive &&
+          !usuario.isDeleted &&
+          usuario.isCompletedSuscription
       );
       setUsuariosActivos(filteredUsuariosActivos);
 
       const filteredUsuariosInactivos = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
-          !usuario.isActive && !usuario.isDeleted
+          !usuario.isActive &&
+          !usuario.isDeleted &&
+          usuario.isCompletedSuscription
       );
       setUsuariosInactivos(filteredUsuariosInactivos);
 
       const filteredUsuariosEliminados = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) => !usuario.isActive && usuario.isDeleted
+        (usuario: UserTypePrestamista) =>
+          !usuario.isActive &&
+          usuario.isDeleted &&
+          usuario.isCompletedSuscription
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
     }

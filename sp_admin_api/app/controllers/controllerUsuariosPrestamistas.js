@@ -8,6 +8,8 @@ const prestamos = db.prestamos;
 const historialPrestamos = db.historialPagos;
 const amistadPrestamistaClientes = db.amistadPrestamistaClientes;
 const historialPagos = db.historialPagos;
+const NodeCache = require("node-cache");
+const myCache = new NodeCache();
 const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
@@ -724,6 +726,7 @@ exports.habilitarUsuarioPrestamistaEliminado = async (req, res) => {
 
 //getDataDashboard
 exports.getDashboardData = async (req, res) => {
+  const idUsuarioPrestamistaQuery = aesDecrypt(req.query.id);
   try {
     // Obtener los datos del prestamista
     const usuarioPrestamista = await usuariosPrestamistas.findAll({});
@@ -731,6 +734,11 @@ exports.getDashboardData = async (req, res) => {
       return res.status(400).send({
         message: "No se encontró el usuario prestamista.",
       });
+    }
+    const cachedData = myCache.get(idUsuarioPrestamistaQuery);
+
+    if (cachedData) {
+      return res.status(200).json(cachedData);
     }
 
     const dataToSend = {
@@ -846,6 +854,11 @@ exports.getDashboardData = async (req, res) => {
         numeroTelefono: aesEncrypt(usuario.numeroTelefono.toString()),
         isActive: aesEncrypt(usuario.isActive.toString()),
         codigoReferencia: aesEncrypt(usuario.codigoReferencia.toString()),
+        isCompletedSuscription: aesEncrypt(
+          usuario.isCompletedSuscription.toString()
+        ),
+        isEmailConfirmed: aesEncrypt(usuario.isEmailConfirmed.toString()),
+        isDeleted: aesEncrypt(usuario.isDeleted.toString()),
       };
 
       // Encriptar los datos de la suscripción
@@ -939,10 +952,7 @@ exports.getDashboardData = async (req, res) => {
         dataUsuariosAfiliadosEncriptados;
       dataToSend.usuarioPrestamista.push(userData);
     }
-
-    console.log(dataToSend);
-    console.log("Enviando datos del dashboard...");
-
+    myCache.set(idUsuarioPrestamistaQuery, dataToSend, 10);
     res.status(200).json(dataToSend);
   } catch (err) {
     console.log(err);
