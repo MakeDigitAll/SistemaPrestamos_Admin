@@ -39,7 +39,7 @@ export const useGetUsuariosPrestamistas = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await services.getAllUsuariosPrestamistas();
+      const response = await services.getDashboardData();
       const usuariosDesencriptados = await Promise.all(
         response.data.usuariosPrestamistas.map((usuario: any) =>
           desencriptarUsuario(usuario)

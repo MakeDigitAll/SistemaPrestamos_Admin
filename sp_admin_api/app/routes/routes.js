@@ -24,16 +24,9 @@ router.put("/admin/:id", verifyToken, (req, res) => {
 });
 
 // obtener todos los usuarios prestamistas de la base de datos que tengan la suscripción completada
-router.get(
-  "/admin-allusuarios-prestamistas-completed-suscription",
-  verifyToken,
-  (req, res) => {
-    controllerUsuariosPrestamistas.findAllUsuariosPrestamistaCompletedSuscription(
-      req,
-      res
-    );
-  }
-);
+router.get("/admin-get-data-dashboard", verifyToken, (req, res) => {
+  controllerUsuariosPrestamistas.getDashboardData(req, res);
+});
 
 //obtener todos los usuarios prestamistas activos de la base de datos
 router.get(

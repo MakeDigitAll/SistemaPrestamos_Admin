@@ -4,87 +4,13 @@ const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
 const imagenPrestamista = db.imagenPrestamista;
+const prestamos = db.prestamos;
+const historialPrestamos = db.historialPagos;
+const amistadPrestamistaClientes = db.amistadPrestamistaClientes;
+const historialPagos = db.historialPagos;
 const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
-
-//findAllUsuariosPrestamistaActivos
-exports.findAllUsuariosPrestamistaCompletedSuscription = async (req, res) => {
-  TOKEN_KEY = process.env.JWT_PRIVATE_KEY;
-  await usuariosPrestamistas
-    .findAll({
-      where: {
-        isCompletedSuscription: true,
-      },
-
-      include: [
-        {
-          model: suscripciones,
-          as: "suscripciones_prestamista",
-        },
-      ],
-    })
-    .then((data) => {
-      const suscripcionesPromises = data.map((user) =>
-        suscripciones.findAll({
-          where: {
-            idUsuarioPrestamista: user.idUsuarioPrestamista,
-          },
-        })
-      );
-      Promise.all(suscripcionesPromises)
-        .then((suscripcionesData) => {
-          // Asociar las suscripciones a los usuariosPrestamistas
-          const usuariosPrestamistas = data.map((user, index) => ({
-            idUsuarioPrestamista: aesEncrypt(
-              user.idUsuarioPrestamista.toString()
-            ),
-            correoElectronico: aesEncrypt(user.correoElectronico),
-            nombres: aesEncrypt(user.nombres),
-            apellidos: aesEncrypt(user.apellidos),
-            codigoReferencia: aesEncrypt(user.codigoReferencia),
-            isActive: aesEncrypt(user.isActive.toString()),
-            isDeleted: aesEncrypt(user.isDeleted.toString()),
-            numeroTelefono: aesEncrypt(user.numeroTelefono.toString()),
-            suscripciones: suscripcionesData[index].map((suscripcion) => ({
-              idSuscripcion: aesEncrypt(suscripcion.idSuscripcion.toString()),
-              idUsuarioPrestamista: aesEncrypt(
-                suscripcion.idUsuarioPrestamista.toString()
-              ),
-              idNivelFidelidad: aesEncrypt(
-                suscripcion.idNivelFidelidad.toString()
-              ),
-              idTipoSuscripcion: aesEncrypt(
-                suscripcion.idTipoSuscripcion.toString()
-              ),
-              fechaInicio: aesEncrypt(suscripcion.fechaInicio.toString()),
-              fechaFin: aesEncrypt(suscripcion.fechaFin.toString()),
-              isActive: aesEncrypt(suscripcion.isActive.toString()),
-            })),
-          }));
-
-          res.send({ usuariosPrestamistas });
-        })
-        .catch((err) => {
-          // Manejar el error
-          res.status(500).send({
-            message:
-              err.message ||
-              "Ocurrió un error al obtener las suscripciones de los usuariosPrestamistas.",
-          });
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      // Manejar el error
-      res.status(500).send({
-        message:
-          err.message ||
-          "Ocurrió un error al obtener los usuariosPrestamistas.",
-      });
-      console.log(err);
-    });
-};
 
 //findAllUsuariosPrestamistaActivos
 exports.findAllUsuariosPrestamistaActivos = async (req, res) => {
@@ -794,4 +720,232 @@ exports.habilitarUsuarioPrestamistaEliminado = async (req, res) => {
           idUsuarioPrestamista,
       });
     });
+};
+
+//getDataDashboard
+exports.getDashboardData = async (req, res) => {
+  try {
+    // Obtener los datos del prestamista
+    const usuarioPrestamista = await usuariosPrestamistas.findAll({});
+    if (!usuarioPrestamista) {
+      return res.status(400).send({
+        message: "No se encontró el usuario prestamista.",
+      });
+    }
+
+    const dataToSend = {
+      usuarioPrestamista: [],
+    };
+
+    for (const usuario of usuarioPrestamista) {
+      // Obtener los datos de la suscripcion del prestamista
+      const suscripcion = await suscripciones.findOne({
+        where: {
+          idUsuarioPrestamista: usuario.idUsuarioPrestamista,
+        },
+      });
+
+      // Obtener los datos de los usuarios afiliados
+      const amistadUsuarios = await amistadPrestamistaClientes.findAll({
+        where: {
+          idUsuarioPrestamista: usuario.idUsuarioPrestamista,
+        },
+      });
+
+      const dataUsuariosAfiliados = [];
+
+      for (const amistadUsuario of amistadUsuarios) {
+        const usuarioAfiliado = await usuariosAfiliados.findOne({
+          where: {
+            idUsuarioAfiliado: amistadUsuario.idUsuarioAfiliado,
+          },
+        });
+
+        // Obtener los préstamos del usuario afiliado
+        const prestamosUsuario = await prestamos.findAll({
+          where: {
+            idUsuarioAfiliado: usuarioAfiliado.idUsuarioAfiliado,
+            idUsuarioPrestamista: usuario.idUsuarioPrestamista,
+          },
+        });
+
+        const dataPrestamosAfiliado = [];
+
+        for (const prestamo of prestamosUsuario) {
+          // Obtener el historial de pagos del préstamo
+          const historialPagosPrestamo = await historialPagos.findAll({
+            where: {
+              idPrestamo: prestamo.idPrestamo,
+              idUsuarioPrestamista: usuario.idUsuarioPrestamista,
+              idUsuarioAfiliado: usuarioAfiliado.idUsuarioAfiliado,
+            },
+          });
+
+          const dataHistorialPagos = [];
+
+          for (const historialPago of historialPagosPrestamo) {
+            dataHistorialPagos.push({
+              idHistorialPago: historialPago.idHistorialPago.toString(),
+              idPrestamo: historialPago.idPrestamo.toString(),
+              idUsuarioPrestamista:
+                historialPago.idUsuarioPrestamista.toString(),
+              idUsuarioAfiliado: historialPago.idUsuarioAfiliado.toString(),
+              fechaPago: historialPago.fechaPago.toString(),
+              montoPagado: historialPago.montoPagado.toString(),
+              montoRestante: historialPago.montoRestante.toString(),
+              intereses: historialPago.intereses.toString(),
+              tipoPago: historialPago.tipoPago.toString(),
+              estadoPago: historialPago.estadoPago.toString(),
+            });
+          }
+
+          // Agregar el historial de pagos al préstamo
+          prestamo.dataValues.historialPagos = dataHistorialPagos;
+
+          // Agregar el préstamo al arreglo de préstamos del usuario afiliado
+          dataPrestamosAfiliado.push({
+            idPrestamo: prestamo.idPrestamo.toString(),
+            idUsuarioPrestamista: prestamo.idUsuarioPrestamista.toString(),
+            idUsuarioAfiliado: prestamo.idUsuarioAfiliado.toString(),
+            montoPrestado: prestamo.montoPrestado.toString(),
+            tiempoPrestamo: prestamo.tiempoPrestamo.toString(),
+            fechaPrestamo: prestamo.fechaPrestamo.toString(),
+            fechaFinPago: prestamo.fechaFinPago.toString(),
+            montoPorPagar: prestamo.montoPorPagar.toString(),
+            fechaProximoPago: prestamo.fechaProximoPago.toString(),
+            mesesRestantes: prestamo.mesesRestantes.toString(),
+            tasaInteresGeneral: prestamo.tasaInteresGeneral.toString(),
+            tasaInteresVencido: prestamo.tasaInteresVencido.toString(),
+            estadoPrestamo: prestamo.estadoPrestamo.toString(),
+            isActive: prestamo.isActive.toString(),
+            historialPagos: dataHistorialPagos,
+          });
+        }
+
+        // Agregar el arreglo de préstamos al usuario afiliado
+        usuarioAfiliado.dataValues.prestamos = dataPrestamosAfiliado;
+
+        dataUsuariosAfiliados.push({
+          idUsuarioAfiliado: usuarioAfiliado.idUsuarioAfiliado.toString(),
+          nombres: usuarioAfiliado.nombres.toString(),
+          apellidos: usuarioAfiliado.apellidos.toString(),
+          correoElectronico: usuarioAfiliado.correoElectronico.toString(),
+          numeroTelefono: usuarioAfiliado.numeroTelefono.toString(),
+          prestamos: dataPrestamosAfiliado,
+        });
+      }
+
+      // Encriptar los datos del prestamista
+      const encryptedUsuarioPrestamista = {
+        idUsuarioPrestamista: aesEncrypt(
+          usuario.idUsuarioPrestamista.toString()
+        ),
+        correoElectronico: aesEncrypt(usuario.correoElectronico.toString()),
+        nombres: aesEncrypt(usuario.nombres.toString()),
+        apellidos: aesEncrypt(usuario.apellidos.toString()),
+        numeroTelefono: aesEncrypt(usuario.numeroTelefono.toString()),
+        isActive: aesEncrypt(usuario.isActive.toString()),
+        codigoReferencia: aesEncrypt(usuario.codigoReferencia.toString()),
+      };
+
+      // Encriptar los datos de la suscripción
+      const encryptedDataSuscripcion = {
+        idSuscripcion: suscripcion
+          ? aesEncrypt(suscripcion.idSuscripcion.toString())
+          : null,
+        idUsuarioPrestamista: suscripcion
+          ? aesEncrypt(suscripcion.idUsuarioPrestamista.toString())
+          : null,
+        idNivelFidelidad: suscripcion
+          ? aesEncrypt(suscripcion.idNivelFidelidad.toString())
+          : null,
+        idTipoSuscripcion: suscripcion
+          ? aesEncrypt(suscripcion.idTipoSuscripcion.toString())
+          : null,
+        fechaInicio: suscripcion
+          ? aesEncrypt(suscripcion.fechaInicio.toString())
+          : null,
+        fechaFin: suscripcion
+          ? aesEncrypt(suscripcion.fechaFin.toString())
+          : null,
+        tiempoMeses: suscripcion
+          ? aesEncrypt(suscripcion.tiempoMeses.toString())
+          : null,
+        pagosAlCorriente: suscripcion
+          ? aesEncrypt(suscripcion.pagosAlCorriente.toString())
+          : null,
+        isActive: suscripcion
+          ? aesEncrypt(suscripcion.isActive.toString())
+          : null,
+      };
+
+      // Encriptar los datos de los usuarios afiliados
+      const dataUsuariosAfiliadosEncriptados = dataUsuariosAfiliados.map(
+        (usuarioAfiliado) => {
+          return {
+            idUsuarioAfiliado: aesEncrypt(
+              usuarioAfiliado.idUsuarioAfiliado.toString()
+            ),
+            nombres: aesEncrypt(usuarioAfiliado.nombres.toString()),
+            apellidos: aesEncrypt(usuarioAfiliado.apellidos.toString()),
+            correoElectronico: aesEncrypt(
+              usuarioAfiliado.correoElectronico.toString()
+            ),
+            numeroTelefono: aesEncrypt(
+              usuarioAfiliado.numeroTelefono.toString()
+            ),
+            prestamos: usuarioAfiliado.prestamos.map((prestamo) => {
+              return {
+                idPrestamo: aesEncrypt(prestamo.idPrestamo.toString()),
+                idUsuarioPrestamista: aesEncrypt(
+                  prestamo.idUsuarioPrestamista.toString()
+                ),
+                idUsuarioAfiliado: aesEncrypt(
+                  prestamo.idUsuarioAfiliado.toString()
+                ),
+                montoPorPagar: aesEncrypt(prestamo.montoPorPagar.toString()),
+                fechaProximoPago: aesEncrypt(
+                  prestamo.fechaProximoPago.toString()
+                ),
+                mesesRestantes: aesEncrypt(prestamo.mesesRestantes.toString()),
+                montoPrestado: aesEncrypt(prestamo.montoPrestado.toString()),
+                tiempoPrestamo: aesEncrypt(prestamo.tiempoPrestamo.toString()),
+                fechaPrestamo: aesEncrypt(prestamo.fechaPrestamo.toString()),
+                fechaFinPago: aesEncrypt(prestamo.fechaFinPago.toString()),
+                tasaInteresGeneral: aesEncrypt(
+                  prestamo.tasaInteresGeneral.toString()
+                ),
+                tasaInteresVencido: aesEncrypt(
+                  prestamo.tasaInteresVencido.toString()
+                ),
+                estadoPrestamo: aesEncrypt(prestamo.estadoPrestamo.toString()),
+                isActive: aesEncrypt(prestamo.isActive.toString()),
+              };
+            }),
+          };
+        }
+      );
+
+      // Construir el objeto de datos a enviar para este usuario prestamista
+      const userData = {
+        usuarioPrestamista: encryptedUsuarioPrestamista,
+      };
+
+      if (suscripcion) {
+        userData.usuarioPrestamista.suscripcion = encryptedDataSuscripcion;
+      }
+
+      userData.usuarioPrestamista.usuariosAfiliados =
+        dataUsuariosAfiliadosEncriptados;
+      dataToSend.usuarioPrestamista.push(userData);
+    }
+
+    console.log(dataToSend);
+    console.log("Enviando datos del dashboard...");
+
+    res.status(200).json(dataToSend);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Ocurrió un error en el servidor." });
+  }
 };
