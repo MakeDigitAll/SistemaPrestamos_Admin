@@ -332,7 +332,7 @@ const ContentAddUsuario: React.FC = () => {
     setSelectedSubscription(selectedSubscription);
   };
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
 
@@ -723,7 +723,7 @@ const ContentAddUsuario: React.FC = () => {
 
   const renderInputField = (
     label: string,
-    value: string,
+    _value: string,
     error: string,
     bindings: any,
     type: string,

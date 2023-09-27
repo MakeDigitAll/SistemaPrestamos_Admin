@@ -20,7 +20,7 @@ const LanguageDropdown: React.FC = () => {
   });
 
   const selectedValue = React.useMemo(
-    () => Array.from(selected).join(", ").replaceAll("_", " "),
+    () => Array.from(selected).join(", ").replace(/_/g, " "),
     [selected]
   );
 

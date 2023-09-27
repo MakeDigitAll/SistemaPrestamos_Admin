@@ -272,7 +272,12 @@ const ContentUsuariosActivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "25%" }}>
-              <Tooltip content={t("usuariosEliminados.enableUser")}>
+              <Tooltip
+                content={t("usuariosEliminados.enableUser")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalHabilitarUser(usuario)}>
                   <FaUserPlus size={20} fill="#979797" />
                 </IconButton>
@@ -280,7 +285,12 @@ const ContentUsuariosActivos: React.FC = () => {
             </Col>
 
             <Col css={{ d: "flex" }}>
-              <Tooltip content={t("usuariosEliminados.editUser")}>
+              <Tooltip
+                content={t("usuariosEliminados.editUser")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>

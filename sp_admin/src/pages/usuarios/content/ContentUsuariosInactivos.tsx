@@ -368,21 +368,36 @@ const ContentUsuariosInactivos: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "10%" }}>
-              <Tooltip content={t("usuariosInactivos.activateSubscription")}>
+              <Tooltip
+                content={t("usuariosInactivos.activateSubscription")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalSuscripciones(usuario)}>
                   <MdOutlineMoreTime size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content={t("usuariosInactivos.editUser")}>
+              <Tooltip
+                content={t("usuariosInactivos.editUser")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalEdit(usuario)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content={t("usuariosInactivos.deleteUser")}>
+              <Tooltip
+                content={t("usuariosInactivos.deleteUser")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalConfirmacion(usuario)}>
                   <DeleteIcon size={20} fill="#979797" />
                 </IconButton>

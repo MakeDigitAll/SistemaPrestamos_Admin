@@ -325,14 +325,24 @@ const ContentFidelidad: React.FC = () => {
         return (
           <Row justify="center" align="center">
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content={t("contentFidelidad.editFidelidad")}>
+              <Tooltip
+                content={t("contentFidelidad.editFidelidad")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalEdit(niveles)}>
                   <EditIcon size={20} fill="#979797" />
                 </IconButton>
               </Tooltip>
             </Col>
             <Col css={{ d: "flex", marginLeft: "20%" }}>
-              <Tooltip content={t("contentFidelidad.deleteFidelidad")}>
+              <Tooltip
+                content={t("contentFidelidad.deleteFidelidad")}
+                color={undefined}
+                css={undefined}
+                contentColor={undefined}
+              >
                 <IconButton onClick={() => openModalConfirmacion(niveles)}>
                   <DeleteIcon size={20} fill="#979797" />
                 </IconButton>
