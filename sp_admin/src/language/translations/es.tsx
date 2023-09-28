@@ -313,6 +313,8 @@ const esTranslation = {
     disponibles: "Disponibles",
     eliminados: "Eliminados",
     usuariosAfiliados: "Usuarios afiliados",
+    correoNoVerificado: "Correo no verificado",
+    sinSuscripcion: "Sin suscripción",
   },
 };
 

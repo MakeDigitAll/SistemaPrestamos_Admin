@@ -133,53 +133,94 @@ const ContentDashboard: React.FC = () => {
 
   // UseEffect para calcular los datos
   useEffect(() => {
+    //filtrar usuarios prestamistas con correo no verificado
+    const filteredUsuariosPrestamistasNoVerificados =
+      usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
+          usuario.isEmailConfirmed === false &&
+          usuario.isCompletedSuscription === false &&
+          usuario.isDeleted === false &&
+          usuario.isActive === false
+      );
+    setUsuariosPrestamistasNoVerificados(
+      filteredUsuariosPrestamistasNoVerificados
+    );
+
+    //filtrar usuarios prestamistas sin suscripcion
+    const filteredUsuariosPrestamistasSinSuscripcion =
+      usuariosPrestamistas.filter(
+        (usuario: UserTypePrestamista) =>
+          usuario.isEmailConfirmed === true &&
+          usuario.isCompletedSuscription === false &&
+          usuario.isDeleted === false &&
+          usuario.isActive === false
+      );
+    setUsuariosPrestaministasSinSuscripcion(
+      filteredUsuariosPrestamistasSinSuscripcion
+    );
+
     //filtrar usuarios prestamistas activos
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
-          usuario.isActive &&
-          !usuario.isDeleted &&
-          usuario.isCompletedSuscription
+          usuario.isEmailConfirmed === true &&
+          usuario.isCompletedSuscription === true &&
+          usuario.isDeleted === false &&
+          usuario.isActive === true
       );
       setUsuariosActivos(filteredUsuariosActivos);
 
       const filteredUsuariosInactivos = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
-          !usuario.isActive &&
-          !usuario.isDeleted &&
-          usuario.isCompletedSuscription
+          usuario.isEmailConfirmed === true &&
+          usuario.isCompletedSuscription === true &&
+          usuario.isDeleted === false &&
+          usuario.isActive === false
       );
       setUsuariosInactivos(filteredUsuariosInactivos);
 
       const filteredUsuariosEliminados = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
-          !usuario.isActive &&
-          usuario.isDeleted &&
-          usuario.isCompletedSuscription
+          usuario.isDeleted === true && usuario.isActive === false
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
     }
 
+    //usuarios afiliados
     if (usuariosAfiliados && usuariosAfiliados.length > 0) {
-      //usuarios afiliados
-
       //filtrar usuarios afiliados con prestamos
       const filteredUsuariosConPrestamos = usuariosAfiliados.filter(
-        (usuario: any) => usuario.isOnPrestamo
+        (usuario: any) =>
+          usuario.isEmailConfirmed === true &&
+          usuario.isOnPrestamo === true &&
+          usuario.isDeleted === false
       );
       setUsuariosConPrestamos(filteredUsuariosConPrestamos);
 
       //filtrar usuarios afiliados disponibles
       const filteredUsuariosDisponibles = usuariosAfiliados.filter(
-        (usuario: any) => !usuario.isOnPrestamo
+        (usuario: any) =>
+          usuario.isEmailConfirmed === true &&
+          usuario.isOnPrestamo === false &&
+          usuario.isDeleted === false
       );
       setUsuariosDisponibles(filteredUsuariosDisponibles);
 
       //filtrar usuarios afiliados eliminados
       const filteredUsuariosEliminadosAfiliados = usuariosAfiliados.filter(
-        (usuario: any) => usuario.isDeleted
+        (usuario: any) =>
+          usuario.isOnPrestamo === false && usuario.isDeleted === true
       );
       setUsuariosEliminadosAfiliados(filteredUsuariosEliminadosAfiliados);
+
+      //filtrar usuarios afiliados con correo no verificado
+      const filteredUsuariosAfiliadosNoVerificados = usuariosAfiliados.filter(
+        (usuario: any) =>
+          usuario.isEmailConfirmed === false &&
+          usuario.isOnPrestamo === false &&
+          usuario.isDeleted === false
+      );
+      setUsuariosAfiliadosNoVerificados(filteredUsuariosAfiliadosNoVerificados);
     }
 
     //usuarios totales activos prestamistas
@@ -223,6 +264,8 @@ const ContentDashboard: React.FC = () => {
       t("dashboard.activos"),
       t("dashboard.porSuscribir"),
       t("dashboard.eliminados"),
+      t("otros.correoNoVerificado"),
+      t("otros.sinSuscripcion"),
     ],
     datasets: [
       {
@@ -230,16 +273,22 @@ const ContentDashboard: React.FC = () => {
           usuariosActivos.length.toString(),
           usuariosInactivos.length.toString(),
           usuariosEliminados.length.toString(),
+          usuariosPrestamistasNoVerificados.length.toString(),
+          usuariosPrestamistasSinSuscripcion.length.toString(),
         ],
         backgroundColor: [
           "rgba(54, 162, 235, 0.2)",
           "rgba(255, 206, 86, 0.2)",
           "rgba(255, 99, 132, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
         ],
         borderColor: [
           "rgba(54, 162, 235, 1)",
           "rgba(255, 206, 86, 1)",
           "rgba(255, 99, 132, 1)",
+          "rgba(75, 192, 192, 1)",
+          "rgba(153, 102, 255, 1)",
         ],
         borderWidth: 2.5,
       },
@@ -252,6 +301,7 @@ const ContentDashboard: React.FC = () => {
       t("otros.conPrestamo"),
       t("otros.disponibles"),
       t("otros.eliminados"),
+      t("otros.correoNoVerificado"),
     ],
     datasets: [
       {
@@ -259,16 +309,19 @@ const ContentDashboard: React.FC = () => {
           usuariosConPrestamos.length.toString(),
           usuariosDisponibles.length.toString(),
           usuariosEliminadosAfiliados.length.toString(),
+          usuariosAfiliadosNoVerificados.length.toString(),
         ],
         backgroundColor: [
           "rgba(54, 162, 235, 0.2)",
           "rgba(255, 206, 86, 0.2)",
           "rgba(255, 99, 132, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
         ],
         borderColor: [
           "rgba(54, 162, 235, 1)",
           "rgba(255, 206, 86, 1)",
           "rgba(255, 99, 132, 1)",
+          "rgba(75, 192, 192, 1)",
         ],
         borderWidth: 2.5,
       },

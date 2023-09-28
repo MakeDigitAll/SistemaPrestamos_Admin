@@ -303,6 +303,8 @@ const enTranslation = {
     disponibles: "Available",
     eliminados: "Deleted",
     usuariosAfiliados: "Affiliate Users",
+    correoNoVerificado: "Email not verified",
+    sinSuscripcion: "Without subscription",
   },
 };
 
