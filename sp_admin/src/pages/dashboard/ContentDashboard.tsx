@@ -27,6 +27,19 @@ const ContentDashboard: React.FC = () => {
   const [usuariosEliminados, setUsuariosEliminados] = useState<
     UserTypePrestamista[]
   >([]);
+
+  //usuarios prestamistas con correo no verificado
+  const [
+    usuariosPrestamistasNoVerificados,
+    setUsuariosPrestamistasNoVerificados,
+  ] = useState<UserTypePrestamista[]>([]);
+
+  //usuarios con suscripcion incompleta
+  const [
+    usuariosPrestamistasSinSuscripcion,
+    setUsuariosPrestaministasSinSuscripcion,
+  ] = useState<UserTypePrestamista[]>([]);
+
   //---------------------Fin Usuarios Prestamistas---------------------
 
   //-------------------------Usuarios Afiliados---------------------
@@ -42,6 +55,10 @@ const ContentDashboard: React.FC = () => {
 
   //usuarios eliminados
   const [usuariosEliminadosAfiliados, setUsuariosEliminadosAfiliados] =
+    useState<UserTypePrestamista[]>([]);
+
+  //usuarios con correo no verificado
+  const [usuariosAfiliadosNoVerificados, setUsuariosAfiliadosNoVerificados] =
     useState<UserTypePrestamista[]>([]);
 
   //---------------------Fin Usuarios Afiliados---------------------
@@ -116,7 +133,7 @@ const ContentDashboard: React.FC = () => {
 
   // UseEffect para calcular los datos
   useEffect(() => {
-    //filtrar usuarios prestamistas
+    //filtrar usuarios prestamistas activos
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
@@ -141,7 +158,9 @@ const ContentDashboard: React.FC = () => {
           usuario.isCompletedSuscription
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
+    }
 
+    if (usuariosAfiliados && usuariosAfiliados.length > 0) {
       //usuarios afiliados
 
       //filtrar usuarios afiliados con prestamos
@@ -161,40 +180,41 @@ const ContentDashboard: React.FC = () => {
         (usuario: any) => usuario.isDeleted
       );
       setUsuariosEliminadosAfiliados(filteredUsuariosEliminadosAfiliados);
-
-      //usuarios totales activos prestamistas
-      const filteredUsuariosTotalesActivosTotales = usuariosPrestamistas.filter(
-        (usuario: any) => !usuario.isDeleted
-      );
-
-      //usuarios activos totales afiliados
-      const filteredUsuariosActivosTotalesAfiliados = usuariosAfiliados.filter(
-        (usuario: any) => !usuario.isDeleted
-      );
-
-      //usuarios activos totales
-      const usuariosActivosTotales = [
-        ...filteredUsuariosTotalesActivosTotales,
-        ...filteredUsuariosActivosTotalesAfiliados,
-      ];
-      setUsuariosTotalesActivosTotales(usuariosActivosTotales);
-
-      //usuarios inactivos totales prestamistas
-      const filteredUsuariosInactivosTotales = usuariosPrestamistas.filter(
-        (usuario: any) => usuario.isDeleted
-      );
-
-      //usuarios inactivos totales afiliados
-      const filteredUsuariosInactivosTotalesAfiliados =
-        usuariosAfiliados.filter((usuario: any) => usuario.isDeleted);
-
-      //usuarios inactivos totales
-      const usuariosInactivosTotales = [
-        ...filteredUsuariosInactivosTotales,
-        ...filteredUsuariosInactivosTotalesAfiliados,
-      ];
-      setUsuariosInactivosTotales(usuariosInactivosTotales);
     }
+
+    //usuarios totales activos prestamistas
+    const filteredUsuariosTotalesActivosTotales = usuariosPrestamistas.filter(
+      (usuario: any) => !usuario.isDeleted
+    );
+
+    //usuarios activos totales afiliados
+    const filteredUsuariosActivosTotalesAfiliados = usuariosAfiliados.filter(
+      (usuario: any) => !usuario.isDeleted
+    );
+
+    //usuarios activos totales
+    const usuariosActivosTotales = [
+      ...filteredUsuariosTotalesActivosTotales,
+      ...filteredUsuariosActivosTotalesAfiliados,
+    ];
+    setUsuariosTotalesActivosTotales(usuariosActivosTotales);
+
+    //usuarios inactivos totales prestamistas
+    const filteredUsuariosInactivosTotales = usuariosPrestamistas.filter(
+      (usuario: any) => usuario.isDeleted
+    );
+
+    //usuarios inactivos totales afiliados
+    const filteredUsuariosInactivosTotalesAfiliados = usuariosAfiliados.filter(
+      (usuario: any) => usuario.isDeleted
+    );
+
+    //usuarios inactivos totales
+    const usuariosInactivosTotales = [
+      ...filteredUsuariosInactivosTotales,
+      ...filteredUsuariosInactivosTotalesAfiliados,
+    ];
+    setUsuariosInactivosTotales(usuariosInactivosTotales);
   }, [usuariosPrestamistas]);
 
   //datos del chart de usuarios prestamistas
