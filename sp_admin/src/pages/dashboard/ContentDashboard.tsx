@@ -380,97 +380,116 @@ const ContentDashboard: React.FC = () => {
   return (
     <div className={styles["layout"]}>
       <div className={styles["usuariosPrestamistas"]}>
-        <Card className={styles["card"]}>
-          <div className={styles["center"]}>
-            <h3>{t("dashboard.usuariosPrestamistas")}</h3>
-          </div>
-          <Card.Body className={styles["body"]}>
-            <Doughnut
-              width={35}
-              height={20}
-              options={{ maintainAspectRatio: false }}
-              onClick={onClickUsersPrestamistas}
-              data={dataUsuariosPrestamistas}
-              ref={chartRefUsersPrestamistas}
-            />
-          </Card.Body>
-          <div className={styles["center"]}>
-            <p className="text-small text-default-500">
-              {t("otros.total")}
-              {": "}
-              {usuariosPrestamistas.length}
-            </p>
-          </div>
-        </Card>
+        <div className={styles["center-card"]}>
+          <Card className={styles["card"]}>
+            <div className={styles["center"]}>
+              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+            </div>
+            <Card.Body className={styles["body"]}>
+              <Doughnut
+                width={35}
+                height={20}
+                options={{ maintainAspectRatio: false }}
+                onClick={onClickUsersPrestamistas}
+                data={dataUsuariosPrestamistas}
+                ref={chartRefUsersPrestamistas}
+              />
+            </Card.Body>
+            <div className={styles["center"]}>
+              <p className="text-small text-default-500">
+                {t("otros.total")}
+                {": "}
+                {usuariosPrestamistas.length}
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
 
       <div className={styles["usuariosAfiliados"]}>
-        <Card className={styles["card"]}>
-          <div className={styles["center"]}>
-            <h3>{t("otros.usuariosAfiliados")}</h3>
-          </div>
-          <Card.Body className={styles["body"]}>
-            <Doughnut
-              width={35}
-              height={20}
-              options={{ maintainAspectRatio: false }}
-              onClick={onClickUsersAfiliados}
-              data={dataUsuariosAfiliados} //
-              ref={chartRefUsersAfiliados}
-            />
-          </Card.Body>
+        <div className={styles["center-card"]}>
+          <Card className={styles["card"]}>
+            <div className={styles["center"]}>
+              <h3>{t("otros.usuariosAfiliados")}</h3>
+            </div>
+            <Card.Body className={styles["body"]}>
+              <Doughnut
+                width={35}
+                height={20}
+                options={{ maintainAspectRatio: false }}
+                onClick={onClickUsersAfiliados}
+                data={dataUsuariosAfiliados} //
+                ref={chartRefUsersAfiliados}
+              />
+            </Card.Body>
 
-          <div className={styles["center"]}>
-            <p>
-              {t("otros.total")}
-              {": "}
-              {usuariosAfiliados.length}
-            </p>
-          </div>
-        </Card>
+            <div className={styles["center"]}>
+              <p>
+                {t("otros.total")}
+                {": "}
+                {usuariosAfiliados.length}
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
 
       <div className={styles["UsuariosTotales"]}>
-        <Card className={styles["card"]}>
-          <div className={styles["center"]}>
-            <h3>{t("otros.totalUsuarios")}</h3>
-          </div>
-          <Card.Body className={styles["body"]}>
-            <Doughnut
-              width={35}
-              height={20}
-              options={{ maintainAspectRatio: false }}
-              onClick={onClickUsersTotales}
-              data={dataUsuariosTotales}
-              ref={chartRefUsersTotales}
-            />
-          </Card.Body>
-          <div className={styles["center"]}>
-            <p>
-              {t("otros.total")}
-              {": "}
-              {usuariosTotalesActivosTotales.length +
-                usuariosInactivosTotales.length}
-            </p>
-          </div>
-        </Card>
+        <div className={styles["center-card"]}>
+          <Card className={styles["card"]}>
+            <div className={styles["center"]}>
+              <h3>{t("otros.totalUsuarios")}</h3>
+            </div>
+            <Card.Body className={styles["body"]}>
+              <Doughnut
+                width={35}
+                height={20}
+                options={{ maintainAspectRatio: false }}
+                onClick={onClickUsersTotales}
+                data={dataUsuariosTotales}
+                ref={chartRefUsersTotales}
+              />
+            </Card.Body>
+            <div className={styles["center"]}>
+              <p>
+                {t("otros.total")}
+                {": "}
+                {usuariosTotalesActivosTotales.length +
+                  usuariosInactivosTotales.length}
+              </p>
+            </div>
+          </Card>
+        </div>
       </div>
 
       <div className={styles["ingresos"]}>
-        <Card className={styles["card"]}>
-          <div className={styles["center"]}>
-            <h3>{t("otros.totalIngresos")}</h3>
-          </div>
-          <Card.Body className={styles["body"]}>
+        <div className={styles["center-card"]}>
+          <Card className={styles["card-bottom"]}>
             <div className={styles["center"]}>
-              <p className={styles["ingresos"]}>
-                {t("otros.total")}
-                {": $"}
-                {ingresosMensuales}
-              </p>
+              <h3>{t("otros.totalIngresos")}</h3>
             </div>
-          </Card.Body>
-        </Card>
+            <Card.Body className={styles["body"]}>
+              <div className={styles["center"]}>
+                <p className={styles["ingresos"]}>
+                  {t("otros.total")}
+                  {": $"}
+                  {ingresosMensuales}
+                </p>
+              </div>
+            </Card.Body>
+          </Card>
+        </div>
+      </div>
+
+      <div className={styles["ultimosUsuarios"]}>
+        <div className={styles["center-card"]}>
+          <Card className={styles["card-bottom"]}>
+            <div className={styles["center"]}>
+              <h3>{t("otros.ultimosUsuarios")}</h3>
+            </div>
+            <Card.Body className={styles["body"]}></Card.Body>
+          </Card>
+        </div>
       </div>
     </div>
   );

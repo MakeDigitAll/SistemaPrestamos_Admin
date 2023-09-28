@@ -317,6 +317,7 @@ const esTranslation = {
     sinSuscripcion: "Sin suscripción",
     total: "Total",
     totalIngresos: "Total de ingresos",
+    ultimosUsuarios: "Últimos usuarios",
   },
 };
 

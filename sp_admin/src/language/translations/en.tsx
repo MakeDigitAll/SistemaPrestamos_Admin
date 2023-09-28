@@ -307,6 +307,7 @@ const enTranslation = {
     sinSuscripcion: "Without subscription",
     total: "Total",
     totalIngresos: "Total Income",
+    ultimosUsuarios: "Last Users",
   },
 };
 
