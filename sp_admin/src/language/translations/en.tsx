@@ -305,6 +305,7 @@ const enTranslation = {
     usuariosAfiliados: "Affiliate Users",
     correoNoVerificado: "Email not verified",
     sinSuscripcion: "Without subscription",
+    total: "Total",
   },
 };
 

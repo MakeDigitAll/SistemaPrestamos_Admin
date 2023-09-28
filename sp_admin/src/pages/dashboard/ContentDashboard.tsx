@@ -277,18 +277,18 @@ const ContentDashboard: React.FC = () => {
           usuariosPrestamistasSinSuscripcion.length.toString(),
         ],
         backgroundColor: [
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
-          "rgba(153, 102, 255, 0.2)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86,  0.6)",
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
+          "rgba(153, 102, 255, 0.6)",
         ],
         borderColor: [
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(75, 192, 192, 1)",
-          "rgba(153, 102, 255, 1)",
+          "rgba(54, 162, 235, 0.8)",
+          "rgba(255, 206, 86,  0.8)",
+          "rgba(255, 99, 132,  0.8)",
+          "rgba(75, 192, 192,  0.8)",
+          "rgba(153, 102, 255,  0.8)",
         ],
         borderWidth: 2.5,
       },
@@ -312,16 +312,16 @@ const ContentDashboard: React.FC = () => {
           usuariosAfiliadosNoVerificados.length.toString(),
         ],
         backgroundColor: [
-          "rgba(54, 162, 235, 0.2)",
-          "rgba(255, 206, 86, 0.2)",
-          "rgba(255, 99, 132, 0.2)",
-          "rgba(75, 192, 192, 0.2)",
+          "rgba(54, 162, 235, 0.6)",
+          "rgba(255, 206, 86, 0.6)",
+          "rgba(255, 99, 132, 0.6)",
+          "rgba(75, 192, 192, 0.6)",
         ],
         borderColor: [
-          "rgba(54, 162, 235, 1)",
-          "rgba(255, 206, 86, 1)",
-          "rgba(255, 99, 132, 1)",
-          "rgba(75, 192, 192, 1)",
+          "rgba(54, 162, 235,  0.8)",
+          "rgba(255, 206, 86,  0.8)",
+          "rgba(255, 99, 132,  0.8)",
+          "rgba(75, 192, 192, 0.8)",
         ],
         borderWidth: 2.5,
       },
@@ -337,8 +337,8 @@ const ContentDashboard: React.FC = () => {
           usuariosTotalesActivosTotales.length.toString(),
           usuariosInactivosTotales.length.toString(),
         ],
-        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
-        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+        backgroundColor: ["rgba(54, 162, 235, 0.6)", "rgba(255, 99, 132, 0.6)"],
+        borderColor: ["rgba(54, 162, 235,  0.8)", "rgba(255, 99, 132,  0.8)"],
         borderWidth: 2.5,
       },
     ],
@@ -382,10 +382,10 @@ const ContentDashboard: React.FC = () => {
     <div className={styles["layout"]}>
       <div className={styles["usuariosPrestamistas"]}>
         <Card className={styles["card"]}>
-          <Card.Header className={styles["center"]}>
+          <div className={styles["center"]}>
             <h3>{t("dashboard.usuariosPrestamistas")}</h3>
-          </Card.Header>
-          <Card.Body>
+          </div>
+          <Card.Body className={styles["body"]}>
             <Doughnut
               width={35}
               height={20}
@@ -395,15 +395,22 @@ const ContentDashboard: React.FC = () => {
               ref={chartRefUsersPrestamistas}
             />
           </Card.Body>
+          <div className={styles["center"]}>
+            <p className="text-small text-default-500">
+              {t("otros.total")}
+              {": "}
+              {usuariosPrestamistas.length}
+            </p>
+          </div>
         </Card>
       </div>
 
       <div className={styles["usuariosAfiliados"]}>
         <Card className={styles["card"]}>
-          <Card.Header className={styles["center"]}>
+          <div className={styles["center"]}>
             <h3>{t("otros.usuariosAfiliados")}</h3>
-          </Card.Header>
-          <Card.Body>
+          </div>
+          <Card.Body className={styles["body"]}>
             <Doughnut
               width={35}
               height={20}
@@ -413,15 +420,23 @@ const ContentDashboard: React.FC = () => {
               ref={chartRefUsersAfiliados}
             />
           </Card.Body>
+
+          <div className={styles["center"]}>
+            <p>
+              {t("otros.total")}
+              {": "}
+              {usuariosAfiliados.length}
+            </p>
+          </div>
         </Card>
       </div>
 
       <div className={styles["UsuariosTotales"]}>
         <Card className={styles["card"]}>
-          <Card.Header className={styles["center"]}>
+          <div className={styles["center"]}>
             <h3>{t("otros.totalUsuarios")}</h3>
-          </Card.Header>
-          <Card.Body>
+          </div>
+          <Card.Body className={styles["body"]}>
             <Doughnut
               width={35}
               height={20}
@@ -431,6 +446,14 @@ const ContentDashboard: React.FC = () => {
               ref={chartRefUsersTotales}
             />
           </Card.Body>
+          <div className={styles["center"]}>
+            <p>
+              {t("otros.total")}
+              {": "}
+              {usuariosTotalesActivosTotales.length +
+                usuariosInactivosTotales.length}
+            </p>
+          </div>
         </Card>
       </div>
     </div>

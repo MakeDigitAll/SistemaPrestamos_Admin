@@ -37,7 +37,7 @@ const esTranslation = {
     usuariosActivos: "Usuarios activos",
     usuariosInactivos: "Usuarios inactivos",
     usuariosEliminados: "Usuarios eliminados",
-    usuariosPrestamistas: "Usuarios Prestamistas",
+    usuariosPrestamistas: "Usuarios prestamistas",
     activos: "Activos",
     inactivos: "Inactivos",
     porSuscribir: "Por suscribir",
@@ -315,6 +315,7 @@ const esTranslation = {
     usuariosAfiliados: "Usuarios afiliados",
     correoNoVerificado: "Correo no verificado",
     sinSuscripcion: "Sin suscripción",
+    total: "Total",
   },
 };
 
