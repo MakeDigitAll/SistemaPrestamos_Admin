@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, MouseEvent } from "react";
 import { Card } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "./getData";
-import { UserPrestamista as UserTypePrestamista } from "../../types/UserPrestamista";
 import { useTranslation } from "react-i18next";
 import styles from "./Dashboard.module.css";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
@@ -18,57 +17,49 @@ const ContentDashboard: React.FC = () => {
     useGetUsuariosPrestamistas();
 
   //-------------------------Usuarios Prestamistas---------------------
-  const [usuariosActivos, setUsuariosActivos] = useState<UserTypePrestamista[]>(
-    []
-  );
-  const [usuariosInactivos, setUsuariosInactivos] = useState<
-    UserTypePrestamista[]
-  >([]);
-  const [usuariosEliminados, setUsuariosEliminados] = useState<
-    UserTypePrestamista[]
-  >([]);
+  const [usuariosActivos, setUsuariosActivos] = useState<any[]>([]);
+  const [usuariosInactivos, setUsuariosInactivos] = useState<any[]>([]);
+  const [usuariosEliminados, setUsuariosEliminados] = useState<any[]>([]);
 
   //usuarios prestamistas con correo no verificado
   const [
     usuariosPrestamistasNoVerificados,
     setUsuariosPrestamistasNoVerificados,
-  ] = useState<UserTypePrestamista[]>([]);
+  ] = useState<any[]>([]);
 
   //usuarios con suscripcion incompleta
   const [
     usuariosPrestamistasSinSuscripcion,
     setUsuariosPrestaministasSinSuscripcion,
-  ] = useState<UserTypePrestamista[]>([]);
+  ] = useState<any[]>([]);
 
   //---------------------Fin Usuarios Prestamistas---------------------
 
   //-------------------------Usuarios Afiliados---------------------
   //usuarios con prestamos
-  const [usuariosConPrestamos, setUsuariosConPrestamos] = useState<
-    UserTypePrestamista[]
-  >([]);
+  const [usuariosConPrestamos, setUsuariosConPrestamos] = useState<any[]>([]);
 
   //usuarios disponibles (sin prestamos)
-  const [usuariosDisponibles, setUsuariosDisponibles] = useState<
-    UserTypePrestamista[]
-  >([]);
+  const [usuariosDisponibles, setUsuariosDisponibles] = useState<any[]>([]);
 
   //usuarios eliminados
   const [usuariosEliminadosAfiliados, setUsuariosEliminadosAfiliados] =
-    useState<UserTypePrestamista[]>([]);
+    useState<any[]>([]);
 
   //usuarios con correo no verificado
   const [usuariosAfiliadosNoVerificados, setUsuariosAfiliadosNoVerificados] =
-    useState<UserTypePrestamista[]>([]);
+    useState<any[]>([]);
+
+  const [ingresosMensuales, setIngresosMensuales] = useState<any[]>([]);
 
   //---------------------Fin Usuarios Afiliados---------------------
 
   //-------------------- Usuarios Totales ---------------------------
   const [usuariosTotalesActivosTotales, setUsuariosTotalesActivosTotales] =
-    useState<UserTypePrestamista[]>([]);
+    useState<any[]>([]);
   //UsuariosInactivos (eliminados)
   const [usuariosInactivosTotales, setUsuariosInactivosTotales] = useState<
-    UserTypePrestamista[]
+    any[]
   >([]);
 
   //-------------------- Fin Usuarios Totales ---------------------------
@@ -136,7 +127,7 @@ const ContentDashboard: React.FC = () => {
     //filtrar usuarios prestamistas con correo no verificado
     const filteredUsuariosPrestamistasNoVerificados =
       usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
+        (usuario: any) =>
           usuario.isEmailConfirmed === false &&
           usuario.isCompletedSuscription === false &&
           usuario.isDeleted === false &&
@@ -149,7 +140,7 @@ const ContentDashboard: React.FC = () => {
     //filtrar usuarios prestamistas sin suscripcion
     const filteredUsuariosPrestamistasSinSuscripcion =
       usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
+        (usuario: any) =>
           usuario.isEmailConfirmed === true &&
           usuario.isCompletedSuscription === false &&
           usuario.isDeleted === false &&
@@ -162,7 +153,7 @@ const ContentDashboard: React.FC = () => {
     //filtrar usuarios prestamistas activos
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
+        (usuario: any) =>
           usuario.isEmailConfirmed === true &&
           usuario.isCompletedSuscription === true &&
           usuario.isDeleted === false &&
@@ -170,8 +161,16 @@ const ContentDashboard: React.FC = () => {
       );
       setUsuariosActivos(filteredUsuariosActivos);
 
+      //calcular los ingresos mensuales de los usuarios prestamistas activos (sumar el costoMembresia de cada uno)
+      const ingresosMensuales = filteredUsuariosActivos.reduce(
+        (a: any, b: any) => a + b.suscripcion.costoMembresia,
+        0
+      );
+
+      setIngresosMensuales(ingresosMensuales);
+
       const filteredUsuariosInactivos = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
+        (usuario: any) =>
           usuario.isEmailConfirmed === true &&
           usuario.isCompletedSuscription === true &&
           usuario.isDeleted === false &&
@@ -180,7 +179,7 @@ const ContentDashboard: React.FC = () => {
       setUsuariosInactivos(filteredUsuariosInactivos);
 
       const filteredUsuariosEliminados = usuariosPrestamistas.filter(
-        (usuario: UserTypePrestamista) =>
+        (usuario: any) =>
           usuario.isDeleted === true && usuario.isActive === false
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
@@ -454,6 +453,23 @@ const ContentDashboard: React.FC = () => {
                 usuariosInactivosTotales.length}
             </p>
           </div>
+        </Card>
+      </div>
+
+      <div className={styles["ingresos"]}>
+        <Card className={styles["card"]}>
+          <div className={styles["center"]}>
+            <h3>{t("otros.totalIngresos")}</h3>
+          </div>
+          <Card.Body className={styles["body"]}>
+            <div className={styles["center"]}>
+              <p className={styles["ingresos"]}>
+                {t("otros.total")}
+                {": $"}
+                {ingresosMensuales}
+              </p>
+            </div>
+          </Card.Body>
         </Card>
       </div>
     </div>

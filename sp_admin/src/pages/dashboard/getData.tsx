@@ -41,6 +41,10 @@ export const useGetUsuariosPrestamistas = () => {
               tiempoMeses: aesDecrypt(data.suscripcion.tiempoMeses),
               pagosAlCorriente: aesDecrypt(data.suscripcion.pagosAlCorriente),
               isActive: JSON.parse(aesDecrypt(data.suscripcion.isActive)),
+              costoMembresia: JSON.parse(
+                aesDecrypt(data.suscripcion.costoMembresia)
+              ),
+              nombreSuscripcion: aesDecrypt(data.suscripcion.nombreSuscripcion),
             },
 
       //si hay nivel de fidelidad

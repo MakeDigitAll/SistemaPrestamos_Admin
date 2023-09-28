@@ -306,6 +306,7 @@ const enTranslation = {
     correoNoVerificado: "Email not verified",
     sinSuscripcion: "Without subscription",
     total: "Total",
+    totalIngresos: "Total Income",
   },
 };
 

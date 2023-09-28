@@ -3,6 +3,7 @@ const usuariosPrestamistas = db.usuariosPrestamistas;
 const usuariosAfiliados = db.usuariosAfiliados;
 const suscripciones = db.suscripciones;
 const datosUsuarioSuscripciones = db.datosUsuarioSuscripciones;
+const tipoSuscripciones = db.tipoSuscripciones;
 const imagenPrestamista = db.imagenPrestamista;
 const prestamos = db.prestamos;
 const historialPrestamos = db.historialPagos;
@@ -752,7 +753,9 @@ exports.getDashboardData = async (req, res) => {
       const suscripcion = await suscripciones.findOne({
         where: {
           idUsuarioPrestamista: usuario.idUsuarioPrestamista,
+          isActive: true,
         },
+        order: [["fechaInicio", "DESC"]],
       });
 
       // Obtener los datos de los usuarios afiliados
@@ -863,6 +866,16 @@ exports.getDashboardData = async (req, res) => {
         isDeleted: aesEncrypt(usuario.isDeleted.toString()),
       };
 
+      //si el usuario prestamista tiene suscripcion obtener el tipo de suscripcion
+      let infoSuscripcion = null;
+      if (suscripcion) {
+        const tipoSuscripcion = await tipoSuscripciones.findOne({
+          where: {
+            idTipoSuscripcion: suscripcion.idTipoSuscripcion,
+          },
+        });
+        infoSuscripcion = tipoSuscripcion;
+      }
       // Encriptar los datos de la suscripción
       const encryptedDataSuscripcion = {
         idSuscripcion: suscripcion
@@ -891,6 +904,12 @@ exports.getDashboardData = async (req, res) => {
           : null,
         isActive: suscripcion
           ? aesEncrypt(suscripcion.isActive.toString())
+          : null,
+        costoMembresia: infoSuscripcion
+          ? aesEncrypt(infoSuscripcion.costoMembresia.toString())
+          : null,
+        nombreSuscripcion: infoSuscripcion
+          ? aesEncrypt(infoSuscripcion.nombreSuscripcion.toString())
           : null,
       };
 

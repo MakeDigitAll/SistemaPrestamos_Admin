@@ -316,6 +316,7 @@ const esTranslation = {
     correoNoVerificado: "Correo no verificado",
     sinSuscripcion: "Sin suscripción",
     total: "Total",
+    totalIngresos: "Total de ingresos",
   },
 };
 
