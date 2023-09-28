@@ -14,8 +14,10 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const ContentDashboard: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const getUsuarios = useGetUsuariosPrestamistas();
-  const usuariosPrestamistas = getUsuarios.usuariosPrestamistas;
+  const { usuariosPrestamistas, usuariosAfiliados } =
+    useGetUsuariosPrestamistas();
+
+  //-------------------------Usuarios Prestamistas---------------------
   const [usuariosActivos, setUsuariosActivos] = useState<UserTypePrestamista[]>(
     []
   );
@@ -25,9 +27,25 @@ const ContentDashboard: React.FC = () => {
   const [usuariosEliminados, setUsuariosEliminados] = useState<
     UserTypePrestamista[]
   >([]);
+  //---------------------Fin Usuarios Prestamistas---------------------
+
+  //-------------------------Usuarios Afiliados---------------------
+  //usuarios con prestamos
+  const [usuariosConPrestamos, setUsuariosConPrestamos] = useState<
+    UserTypePrestamista[]
+  >([]);
+
+  //usuarios disponibles (sin prestamos)
+  const [usuariosDisponibles, setUsuariosDisponibles] = useState<
+    UserTypePrestamista[]
+  >([]);
+
+  //usuarios eliminados
+  const [usuariosEliminadosAfiliados, setUsuariosEliminadosAfiliados] =
+    useState<UserTypePrestamista[]>([]);
 
   //obtener el elemento cliqueado en dataUsuariosPrestamistas chart
-  const printElementAtEvent = (element: InteractionItem[]) => {
+  const printElementAtEventUsersPrestamistas = (element: InteractionItem[]) => {
     if (!element.length) return;
 
     const { index } = element[0];
@@ -44,6 +62,27 @@ const ContentDashboard: React.FC = () => {
     ) {
       navigate("/admin-usuarios-eliminados");
     }
+  };
+
+  //obtener el elemento cliqueado en dataUsuariosAfiliados chart
+  const printElementAtEventUsersAfiliados = (element: InteractionItem[]) => {
+    if (!element.length) return;
+
+    const { index } = element[0];
+    console.log(dataUsuariosAfiliados.labels[index]);
+
+    // //navegar segun el label de dataUsuariosPrestamistas
+    // if (dataUsuariosAfiliados.labels[index] === t("otros.conPrestamo")) {
+    //   navigate("/admin-usuarios-con-prestamo");
+    // } else if (
+    //   dataUsuariosAfiliados.labels[index] === t("otros.disponibles")
+    // ) {
+    //   navigate("/admin-usuarios-disponibles");
+    // } else if (
+    //   dataUsuariosAfiliados.labels[index] === t("otros.eliminados")
+    // ) {
+    //   navigate("/admin-usuarios-eliminados");
+    // }
   };
 
   // UseEffect para calcular los datos
@@ -74,7 +113,25 @@ const ContentDashboard: React.FC = () => {
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
 
-      //todo
+      //usuarios afiliados
+
+      //filtrar usuarios afiliados con prestamos
+      const filteredUsuariosConPrestamos = usuariosAfiliados.filter(
+        (usuario: any) => usuario.isOnPrestamo
+      );
+      setUsuariosConPrestamos(filteredUsuariosConPrestamos);
+
+      //filtrar usuarios afiliados disponibles
+      const filteredUsuariosDisponibles = usuariosAfiliados.filter(
+        (usuario: any) => !usuario.isOnPrestamo
+      );
+      setUsuariosDisponibles(filteredUsuariosDisponibles);
+
+      //filtrar usuarios afiliados eliminados
+      const filteredUsuariosEliminadosAfiliados = usuariosAfiliados.filter(
+        (usuario: any) => usuario.isDeleted
+      );
+      setUsuariosEliminadosAfiliados(filteredUsuariosEliminadosAfiliados);
     }
   }, [usuariosPrestamistas]);
 
@@ -107,8 +164,38 @@ const ContentDashboard: React.FC = () => {
     ],
   };
 
+  //datos del chart de usuarios afiliados
+  const dataUsuariosAfiliados = {
+    labels: [
+      t("otros.conPrestamo"),
+      t("otros.disponibles"),
+      t("otros.eliminados"),
+    ],
+    datasets: [
+      {
+        data: [
+          usuariosConPrestamos.length.toString(),
+          usuariosDisponibles.length.toString(),
+          usuariosEliminadosAfiliados.length.toString(),
+        ],
+        backgroundColor: [
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+          "rgba(255, 99, 132, 0.2)",
+        ],
+        borderColor: [
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+          "rgba(255, 99, 132, 1)",
+        ],
+        borderWidth: 2.5,
+      },
+    ],
+  };
+
   //referencia al chart de usuarios prestamistas
   const chartRefUsersPrestamistas = useRef<ChartJS>(null) as any;
+  const chartRefUsersAfiliados = useRef<ChartJS>(null) as any;
 
   //funcion para obtener el elemento cliqueado en dataUsuariosPrestamistas chart
   const onClickUsersPrestamistas = (event: MouseEvent<HTMLCanvasElement>) => {
@@ -117,8 +204,19 @@ const ContentDashboard: React.FC = () => {
     if (!chart) {
       return;
     }
-    printElementAtEvent(getElementAtEvent(chart, event));
+    printElementAtEventUsersPrestamistas(getElementAtEvent(chart, event));
   };
+
+  //funcion para obtener el elemento cliqueado en dataUsuariosAfiliados chart
+  const onClickUsersAfiliados = (event: MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRefUsersAfiliados;
+
+    if (!chart) {
+      return;
+    }
+    printElementAtEventUsersAfiliados(getElementAtEvent(chart, event));
+  };
+
   return (
     <div className={styles["layout"]}>
       <div className={styles["usuariosPrestamistas"]}>
@@ -134,6 +232,24 @@ const ContentDashboard: React.FC = () => {
               onClick={onClickUsersPrestamistas}
               data={dataUsuariosPrestamistas}
               ref={chartRefUsersPrestamistas}
+            />
+          </Card.Body>
+        </Card>
+      </div>
+
+      <div className={styles["usuariosAfiliados"]}>
+        <Card className={styles["card"]}>
+          <Card.Header className={styles["center"]}>
+            <h3>{t("otros.usuariosAfiliados")}</h3>
+          </Card.Header>
+          <Card.Body>
+            <Doughnut
+              width={35}
+              height={20}
+              options={{ maintainAspectRatio: false }}
+              onClick={onClickUsersAfiliados}
+              data={dataUsuariosAfiliados} //
+              ref={chartRefUsersAfiliados}
             />
           </Card.Body>
         </Card>

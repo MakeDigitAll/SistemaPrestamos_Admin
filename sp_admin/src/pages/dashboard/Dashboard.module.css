@@ -7,7 +7,7 @@
       / 33% 33% 33%;
   }
   
-  .usuariosPrestamistas { grid-area: usuariosPrestamistas; }
+  .usuariosPrestamistas { grid-area: usuariosPrestamistas;}
   .usuariosAfiliados { grid-area: usuariosAfiliados; }
   .UsuariosTotales { grid-area: UsuariosTotales; }
   .ingresos { grid-area: ingresos; }
@@ -19,5 +19,9 @@
     align-items: center;
     justify-content: center;
     height: 100%;
+  }
+
+  .card{
+    width: 90%
   }
 

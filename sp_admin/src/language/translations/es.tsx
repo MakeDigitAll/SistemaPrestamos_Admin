@@ -309,6 +309,10 @@ const esTranslation = {
     totalUsuarios: "Total de usuarios",
     prestamista: "Prestamista",
     afiliados: "Afiliados",
+    conPrestamo: "Con préstamo",
+    disponibles: "Disponibles",
+    eliminados: "Eliminados",
+    usuariosAfiliados: "Usuarios afiliados",
   },
 };
 

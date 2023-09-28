@@ -299,6 +299,10 @@ const enTranslation = {
     totalUsuarios: "Total Users",
     prestamista: "Lender",
     afiliados: "Affiliates",
+    conPrestamo: "With loan",
+    disponibles: "Available",
+    eliminados: "Deleted",
+    usuariosAfiliados: "Affiliate Users",
   },
 };
 

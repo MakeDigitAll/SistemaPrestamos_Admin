@@ -730,6 +730,8 @@ exports.getDashboardData = async (req, res) => {
   try {
     // Obtener los datos del prestamista
     const usuarioPrestamista = await usuariosPrestamistas.findAll({});
+
+    const usuarioAfiluadoData = await usuariosAfiliados.findAll({});
     if (!usuarioPrestamista) {
       return res.status(400).send({
         message: "No se encontró el usuario prestamista.",
@@ -951,6 +953,21 @@ exports.getDashboardData = async (req, res) => {
       userData.usuarioPrestamista.usuariosAfiliados =
         dataUsuariosAfiliadosEncriptados;
       dataToSend.usuarioPrestamista.push(userData);
+
+      //mandar los usuarios afiliados aparte de los usuarios prestamistas
+      dataToSend.usuariosAfiliados = usuarioAfiluadoData.map((usuario) => {
+        return {
+          idUsuarioAfiliado: aesEncrypt(usuario.idUsuarioAfiliado.toString()),
+          nombres: aesEncrypt(usuario.nombres.toString()),
+          apellidos: aesEncrypt(usuario.apellidos.toString()),
+          correoElectronico: aesEncrypt(usuario.correoElectronico.toString()),
+          numeroTelefono: aesEncrypt(usuario.numeroTelefono.toString()),
+          isOnPrestamo: aesEncrypt(usuario.isOnPrestamo.toString()),
+          isDeleted: aesEncrypt(usuario.isDeleted.toString()),
+          isEmailConfirmed: aesEncrypt(usuario.isEmailConfirmed.toString()),
+          createdAt: aesEncrypt(usuario.createdAt.toString()),
+        };
+      });
     }
     myCache.set(idUsuarioPrestamistaQuery, dataToSend, 10);
     res.status(200).json(dataToSend);

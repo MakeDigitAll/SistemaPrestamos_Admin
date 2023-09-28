@@ -6,8 +6,9 @@ import jwtDecode from "jwt-decode";
 
 export const useGetUsuariosPrestamistas = () => {
   const [usuariosPrestamistas, setUsuariosPrestamistas] = useState<any>([]);
+  const [usuariosAfiliados, setUsuariosAfiliados] = useState<any>([]);
 
-  const decryptData = (data: any) => {
+  const decryptDataPrestamista = (data: any) => {
     return {
       idUsuarioPrestamista: aesDecrypt(data.idUsuarioPrestamista),
       correoElectronico: aesDecrypt(data.correoElectronico),
@@ -166,6 +167,20 @@ export const useGetUsuariosPrestamistas = () => {
     };
   };
 
+  const decryptDataAfiliado = (data: any) => {
+    return {
+      idUsuarioAfiliado: aesDecrypt(data.idUsuarioAfiliado),
+      nombres: aesDecrypt(data.nombres),
+      apellidos: aesDecrypt(data.apellidos),
+      correoElectronico: aesDecrypt(data.correoElectronico),
+      numeroTelefono: aesDecrypt(data.numeroTelefono),
+      isOnPrestamo: JSON.parse(aesDecrypt(data.isOnPrestamo)),
+      isDeleted: JSON.parse(aesDecrypt(data.isDeleted)),
+      isEmailConfirmed: JSON.parse(aesDecrypt(data.isEmailConfirmed)),
+      createdAt: aesDecrypt(data.createdAt),
+    };
+  };
+
   const fetchData = useCallback(async () => {
     try {
       //obtener la cookie accessToken
@@ -179,10 +194,17 @@ export const useGetUsuariosPrestamistas = () => {
       );
       const usuariosDesencriptados = await Promise.all(
         response.data.usuarioPrestamista.map((usuario: any) =>
-          decryptData(usuario.usuarioPrestamista)
+          decryptDataPrestamista(usuario.usuarioPrestamista)
         )
       );
       setUsuariosPrestamistas(usuariosDesencriptados);
+
+      const usuariosAfiliadosDesencriptados = await Promise.all(
+        response.data.usuariosAfiliados.map((usuario: any) =>
+          decryptDataAfiliado(usuario)
+        )
+      );
+      setUsuariosAfiliados(usuariosAfiliadosDesencriptados);
     } catch (error: any) {
       console.log(error);
     }
@@ -199,5 +221,5 @@ export const useGetUsuariosPrestamistas = () => {
       console.error("Error fetching active users:", error);
     }
   };
-  return { usuariosPrestamistas, refetch };
+  return { usuariosPrestamistas, usuariosAfiliados, refetch };
 };
