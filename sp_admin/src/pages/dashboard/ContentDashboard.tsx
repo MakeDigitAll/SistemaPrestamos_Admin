@@ -26,23 +26,29 @@ const ContentDashboard: React.FC = () => {
     UserTypePrestamista[]
   >([]);
 
+  //obtener el elemento cliqueado en dataUsuariosPrestamistas chart
   const printElementAtEvent = (element: InteractionItem[]) => {
     if (!element.length) return;
 
     const { index } = element[0];
 
-    //navegar segun el label
-    if (data.labels[index] === t("dashboard.activos")) {
+    //navegar segun el label de dataUsuariosPrestamistas
+    if (dataUsuariosPrestamistas.labels[index] === t("dashboard.activos")) {
       navigate("/admin-usuarios-activos");
-    } else if (data.labels[index] === t("dashboard.porSuscribir")) {
+    } else if (
+      dataUsuariosPrestamistas.labels[index] === t("dashboard.porSuscribir")
+    ) {
       navigate("/admin-suscribir-usuario");
-    } else if (data.labels[index] === t("dashboard.eliminados")) {
+    } else if (
+      dataUsuariosPrestamistas.labels[index] === t("dashboard.eliminados")
+    ) {
       navigate("/admin-usuarios-eliminados");
     }
   };
 
-  // Filtra los usuariosPrestamistas activos
+  // UseEffect para calcular los datos
   useEffect(() => {
+    //filtrar usuarios prestamistas
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
         (usuario: UserTypePrestamista) =>
@@ -67,10 +73,13 @@ const ContentDashboard: React.FC = () => {
           usuario.isCompletedSuscription
       );
       setUsuariosEliminados(filteredUsuariosEliminados);
+
+      //todo
     }
   }, [usuariosPrestamistas]);
 
-  const data = {
+  //datos del chart de usuarios prestamistas
+  const dataUsuariosPrestamistas = {
     labels: [
       t("dashboard.activos"),
       t("dashboard.porSuscribir"),
@@ -98,10 +107,12 @@ const ContentDashboard: React.FC = () => {
     ],
   };
 
-  const chartRef = useRef<ChartJS>(null) as any;
+  //referencia al chart de usuarios prestamistas
+  const chartRefUsersPrestamistas = useRef<ChartJS>(null) as any;
 
-  const onClick = (event: MouseEvent<HTMLCanvasElement>) => {
-    const { current: chart } = chartRef;
+  //funcion para obtener el elemento cliqueado en dataUsuariosPrestamistas chart
+  const onClickUsersPrestamistas = (event: MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRefUsersPrestamistas;
 
     if (!chart) {
       return;
@@ -120,9 +131,9 @@ const ContentDashboard: React.FC = () => {
               width={35}
               height={20}
               options={{ maintainAspectRatio: false }}
-              onClick={onClick}
-              data={data}
-              ref={chartRef}
+              onClick={onClickUsersPrestamistas}
+              data={dataUsuariosPrestamistas}
+              ref={chartRefUsersPrestamistas}
             />
           </Card.Body>
         </Card>
