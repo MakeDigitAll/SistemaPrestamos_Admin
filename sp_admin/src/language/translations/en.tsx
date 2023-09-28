@@ -295,6 +295,11 @@ const enTranslation = {
     close: "Close",
     months: "Months",
   },
+  otros: {
+    totalUsuarios: "Total Users",
+    prestamista: "Lender",
+    afiliados: "Affiliates",
+  },
 };
 
 export default enTranslation;

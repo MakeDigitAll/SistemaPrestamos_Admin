@@ -305,6 +305,11 @@ const esTranslation = {
     close: "Cerrar",
     months: "Meses",
   },
+  otros: {
+    totalUsuarios: "Total de usuarios",
+    prestamista: "Prestamista",
+    afiliados: "Afiliados",
+  },
 };
 
 export default esTranslation;

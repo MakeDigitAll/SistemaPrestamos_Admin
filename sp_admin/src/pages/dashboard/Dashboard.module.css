@@ -1,10 +1,10 @@
 .layout {
+  height: 85vh;
     display: grid;
     grid:
-      "usuariosPrestamistas usuariosAfiliados UsuariosTotales" auto
-      "ingresos topAfiliados otro" auto
+      "usuariosPrestamistas usuariosAfiliados UsuariosTotales" 40%
+      "ingresos topAfiliados otro" 60%
       / 33% 33% 33%;
-
   }
   
   .usuariosPrestamistas { grid-area: usuariosPrestamistas; }
@@ -14,15 +14,10 @@
   .topAfiliados { grid-area: topAfiliados; }
   .otro { grid-area: otro; }
 
-
-
-  .card{
-    margin: 5px;
-    width: 95%;
-    height:100%;
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   }
 
-  .pie-chart{
-    width: 300px !important;
-    height: 300px!important;
-  }

@@ -31,8 +31,6 @@ const ContentDashboard: React.FC = () => {
 
     const { index } = element[0];
 
-    console.log(data.labels[index]);
-
     //navegar segun el label
     if (data.labels[index] === t("dashboard.activos")) {
       navigate("/admin-usuarios-activos");
@@ -114,14 +112,19 @@ const ContentDashboard: React.FC = () => {
     <div className={styles["layout"]}>
       <div className={styles["usuariosPrestamistas"]}>
         <Card className={styles["card"]}>
-          <div>
-            <Card.Header>
-              <h3>{t("dashboard.usuariosPrestamistas")}</h3>
-            </Card.Header>
-            <Card.Body>
-              <Doughnut onClick={onClick} data={data} ref={chartRef} />
-            </Card.Body>
-          </div>
+          <Card.Header className={styles["center"]}>
+            <h3>{t("dashboard.usuariosPrestamistas")}</h3>
+          </Card.Header>
+          <Card.Body>
+            <Doughnut
+              width={35}
+              height={20}
+              options={{ maintainAspectRatio: false }}
+              onClick={onClick}
+              data={data}
+              ref={chartRef}
+            />
+          </Card.Body>
         </Card>
       </div>
     </div>
