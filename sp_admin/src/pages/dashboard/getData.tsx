@@ -22,6 +22,7 @@ export const useGetUsuariosPrestamistas = () => {
       ),
       isDeleted: JSON.parse(aesDecrypt(data.isDeleted)),
       isEmailConfirmed: JSON.parse(aesDecrypt(data.isEmailConfirmed)),
+      createdAt: aesDecrypt(data.createdAt),
 
       //si hay suscripcion
       suscripcion:

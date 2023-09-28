@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, MouseEvent } from "react";
-import { Card } from "@nextui-org/react";
+import { Card, Text, Table } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useGetUsuariosPrestamistas } from "./getData";
 import { useTranslation } from "react-i18next";
@@ -20,6 +20,7 @@ const ContentDashboard: React.FC = () => {
   const [usuariosActivos, setUsuariosActivos] = useState<any[]>([]);
   const [usuariosInactivos, setUsuariosInactivos] = useState<any[]>([]);
   const [usuariosEliminados, setUsuariosEliminados] = useState<any[]>([]);
+  const [ultimos3Usuarios, setUltimos3Usuarios] = useState<any[]>([]);
 
   //usuarios prestamistas con correo no verificado
   const [
@@ -152,6 +153,16 @@ const ContentDashboard: React.FC = () => {
 
     //filtrar usuarios prestamistas activos
     if (usuariosPrestamistas && usuariosPrestamistas.length > 0) {
+      //setear los ultimos 3 usuarios prestaministas ordenados por fecha de creacio (createdAt)
+      const sortedUsuariosPrestamistas = usuariosPrestamistas.sort(
+        (a: any, b: any) => {
+          return (
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        }
+      );
+      setUltimos3Usuarios(sortedUsuariosPrestamistas.slice(0, 3));
+
       const filteredUsuariosActivos = usuariosPrestamistas.filter(
         (usuario: any) =>
           usuario.isEmailConfirmed === true &&
@@ -377,6 +388,32 @@ const ContentDashboard: React.FC = () => {
     printElementAtEventUsersTotales(getElementAtEvent(chart, event));
   };
 
+  //Si hay usuariosPrestamistas entonces muestra la tabla de usuariosPrestamistas
+  const columns = [
+    { name: t("usuariosInactivos.name"), uid: "nombres" },
+    { name: t("usuariosInactivos.lastName"), uid: "apellidos" },
+    { name: t("usuariosInactivos.referalCode"), uid: "codigoReferencia" },
+    { name: t("usuariosInactivos.Phone"), uid: "numeroTelefono" },
+  ];
+
+  const renderCell = (usuario: any, columnKey: React.Key) => {
+    const cellValue = usuario[columnKey as keyof any];
+
+    switch (columnKey) {
+      case "nombres":
+        return (
+          <Text>
+            {usuario.nombres} {usuario.apellidos}
+          </Text>
+        );
+      case "codigoReferencia":
+        return <Text>{usuario.codigoReferencia}</Text>;
+      case "numeroTelefono":
+        return <Text>{usuario.numeroTelefono}</Text>;
+    }
+    return cellValue as React.ReactNode;
+  };
+
   return (
     <div className={styles["layout"]}>
       <div className={styles["usuariosPrestamistas"]}>
@@ -487,7 +524,35 @@ const ContentDashboard: React.FC = () => {
             <div className={styles["center"]}>
               <h3>{t("otros.ultimosUsuarios")}</h3>
             </div>
-            <Card.Body className={styles["body"]}></Card.Body>
+
+            <Table
+              className={styles["table"]}
+              lined
+              aria-label={"ultimosUsuarios"}
+            >
+              <Table.Header columns={columns}>
+                {(column: any) => (
+                  <Table.Column
+                    key={column.uid}
+                    align={column.uid === "acciones" ? "center" : "start"}
+                    allowsSorting
+                  >
+                    {column.name}
+                  </Table.Column>
+                )}
+              </Table.Header>
+              <Table.Body items={ultimos3Usuarios}>
+                {(item: any) => (
+                  <Table.Row key={item.idUsuarioPrestamista}>
+                    {(columnKey: any) => (
+                      <Table.Cell key={columnKey}>
+                        {renderCell(item, columnKey)}
+                      </Table.Cell>
+                    )}
+                  </Table.Row>
+                )}
+              </Table.Body>
+            </Table>
           </Card>
         </div>
       </div>

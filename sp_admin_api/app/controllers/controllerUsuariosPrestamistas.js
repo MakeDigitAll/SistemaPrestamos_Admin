@@ -864,6 +864,7 @@ exports.getDashboardData = async (req, res) => {
         ),
         isEmailConfirmed: aesEncrypt(usuario.isEmailConfirmed.toString()),
         isDeleted: aesEncrypt(usuario.isDeleted.toString()),
+        createdAt: aesEncrypt(usuario.createdAt.toString()),
       };
 
       //si el usuario prestamista tiene suscripcion obtener el tipo de suscripcion
