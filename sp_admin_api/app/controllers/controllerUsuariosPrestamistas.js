@@ -9,8 +9,6 @@ const prestamos = db.prestamos;
 const historialPrestamos = db.historialPagos;
 const amistadPrestamistaClientes = db.amistadPrestamistaClientes;
 const historialPagos = db.historialPagos;
-const NodeCache = require("node-cache");
-const myCache = new NodeCache();
 const { aesDecrypt, aesEncrypt } = require("../utils/cryptoUtils");
 const generateReferralCode = require("../utils/referralCode");
 const bcrypt = require("bcrypt");
@@ -738,11 +736,6 @@ exports.getDashboardData = async (req, res) => {
         message: "No se encontró el usuario prestamista.",
       });
     }
-    const cachedData = myCache.get(idUsuarioPrestamistaQuery);
-
-    if (cachedData) {
-      return res.status(200).json(cachedData);
-    }
 
     const dataToSend = {
       usuarioPrestamista: [],
@@ -989,7 +982,6 @@ exports.getDashboardData = async (req, res) => {
         };
       });
     }
-    myCache.set(idUsuarioPrestamistaQuery, dataToSend, 10);
     res.status(200).json(dataToSend);
   } catch (err) {
     console.log(err);
