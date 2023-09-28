@@ -44,6 +44,18 @@ const ContentDashboard: React.FC = () => {
   const [usuariosEliminadosAfiliados, setUsuariosEliminadosAfiliados] =
     useState<UserTypePrestamista[]>([]);
 
+  //---------------------Fin Usuarios Afiliados---------------------
+
+  //-------------------- Usuarios Totales ---------------------------
+  const [usuariosTotalesActivosTotales, setUsuariosTotalesActivosTotales] =
+    useState<UserTypePrestamista[]>([]);
+  //UsuariosInactivos (eliminados)
+  const [usuariosInactivosTotales, setUsuariosInactivosTotales] = useState<
+    UserTypePrestamista[]
+  >([]);
+
+  //-------------------- Fin Usuarios Totales ---------------------------
+
   //obtener el elemento cliqueado en dataUsuariosPrestamistas chart
   const printElementAtEventUsersPrestamistas = (element: InteractionItem[]) => {
     if (!element.length) return;
@@ -80,6 +92,23 @@ const ContentDashboard: React.FC = () => {
     //   navigate("/admin-usuarios-disponibles");
     // } else if (
     //   dataUsuariosAfiliados.labels[index] === t("otros.eliminados")
+    // ) {
+    //   navigate("/admin-usuarios-eliminados");
+    // }
+  };
+
+  //obtener el elemento cliqueado en dataUsuariosTotales chart
+  const printElementAtEventUsersTotales = (element: InteractionItem[]) => {
+    if (!element.length) return;
+
+    const { index } = element[0];
+    console.log(dataUsuariosTotales.labels[index]);
+
+    // //navegar segun el label de dataUsuariosPrestamistas
+    // if (dataUsuariosTotales.labels[index] === t("dashboard.activos")) {
+    //   navigate("/admin-usuarios-activos");
+    // } else if (
+    //   dataUsuariosTotales.labels[index] === t("dashboard.eliminados")
     // ) {
     //   navigate("/admin-usuarios-eliminados");
     // }
@@ -132,6 +161,39 @@ const ContentDashboard: React.FC = () => {
         (usuario: any) => usuario.isDeleted
       );
       setUsuariosEliminadosAfiliados(filteredUsuariosEliminadosAfiliados);
+
+      //usuarios totales activos prestamistas
+      const filteredUsuariosTotalesActivosTotales = usuariosPrestamistas.filter(
+        (usuario: any) => !usuario.isDeleted
+      );
+
+      //usuarios activos totales afiliados
+      const filteredUsuariosActivosTotalesAfiliados = usuariosAfiliados.filter(
+        (usuario: any) => !usuario.isDeleted
+      );
+
+      //usuarios activos totales
+      const usuariosActivosTotales = [
+        ...filteredUsuariosTotalesActivosTotales,
+        ...filteredUsuariosActivosTotalesAfiliados,
+      ];
+      setUsuariosTotalesActivosTotales(usuariosActivosTotales);
+
+      //usuarios inactivos totales prestamistas
+      const filteredUsuariosInactivosTotales = usuariosPrestamistas.filter(
+        (usuario: any) => usuario.isDeleted
+      );
+
+      //usuarios inactivos totales afiliados
+      const filteredUsuariosInactivosTotalesAfiliados =
+        usuariosAfiliados.filter((usuario: any) => usuario.isDeleted);
+
+      //usuarios inactivos totales
+      const usuariosInactivosTotales = [
+        ...filteredUsuariosInactivosTotales,
+        ...filteredUsuariosInactivosTotalesAfiliados,
+      ];
+      setUsuariosInactivosTotales(usuariosInactivosTotales);
     }
   }, [usuariosPrestamistas]);
 
@@ -193,10 +255,26 @@ const ContentDashboard: React.FC = () => {
     ],
   };
 
+  //datos del chart de usuarios totales
+  const dataUsuariosTotales = {
+    labels: [t("dashboard.activos"), t("dashboard.eliminados")],
+    datasets: [
+      {
+        data: [
+          usuariosTotalesActivosTotales.length.toString(),
+          usuariosInactivosTotales.length.toString(),
+        ],
+        backgroundColor: ["rgba(54, 162, 235, 0.2)", "rgba(255, 99, 132, 0.2)"],
+        borderColor: ["rgba(54, 162, 235, 1)", "rgba(255, 99, 132, 1)"],
+        borderWidth: 2.5,
+      },
+    ],
+  };
+
   //referencia al chart de usuarios prestamistas
   const chartRefUsersPrestamistas = useRef<ChartJS>(null) as any;
   const chartRefUsersAfiliados = useRef<ChartJS>(null) as any;
-
+  const chartRefUsersTotales = useRef<ChartJS>(null) as any;
   //funcion para obtener el elemento cliqueado en dataUsuariosPrestamistas chart
   const onClickUsersPrestamistas = (event: MouseEvent<HTMLCanvasElement>) => {
     const { current: chart } = chartRefUsersPrestamistas;
@@ -215,6 +293,16 @@ const ContentDashboard: React.FC = () => {
       return;
     }
     printElementAtEventUsersAfiliados(getElementAtEvent(chart, event));
+  };
+
+  //funcion para obtener el elemento cliqueado en dataUsuariosTotales chart
+  const onClickUsersTotales = (event: MouseEvent<HTMLCanvasElement>) => {
+    const { current: chart } = chartRefUsersTotales;
+
+    if (!chart) {
+      return;
+    }
+    printElementAtEventUsersTotales(getElementAtEvent(chart, event));
   };
 
   return (
@@ -250,6 +338,24 @@ const ContentDashboard: React.FC = () => {
               onClick={onClickUsersAfiliados}
               data={dataUsuariosAfiliados} //
               ref={chartRefUsersAfiliados}
+            />
+          </Card.Body>
+        </Card>
+      </div>
+
+      <div className={styles["UsuariosTotales"]}>
+        <Card className={styles["card"]}>
+          <Card.Header className={styles["center"]}>
+            <h3>{t("otros.totalUsuarios")}</h3>
+          </Card.Header>
+          <Card.Body>
+            <Doughnut
+              width={35}
+              height={20}
+              options={{ maintainAspectRatio: false }}
+              onClick={onClickUsersTotales}
+              data={dataUsuariosTotales}
+              ref={chartRefUsersTotales}
             />
           </Card.Body>
         </Card>
