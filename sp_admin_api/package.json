@@ -4,7 +4,8 @@
   "description": "Api para administradores",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"NODE_ENV=development nodemon ./server.js\"",
+    "start": "NODE_ENV=production pm2 start ./server.js"
   },
   "keywords": [
     "nodejs",
@@ -30,6 +31,7 @@
     "sequelize": "^6.32.1"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "concurrently": "^8.2.1"
   }
 }

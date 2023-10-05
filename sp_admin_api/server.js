@@ -8,8 +8,18 @@ const createAdmin = require("./app/utils/createAdmin");
 const createNivelesFidelidad = require("./app/utils/createNivelesFidelidad");
 const createTipoSuscripciones = require("./app/utils/createTipoSuscripciones");
 
+//Variables de entorno
+const dotenv = require("dotenv");
+
+const env = process.env.NODE_ENV || "development"; // Si no se establece NODE_ENV, se asumirá desarrollo
+if (env === "development") {
+  dotenv.config({ path: ".env.dev" }); // Carga las variables de entorno para desarrollo
+} else if (env === "production") {
+  dotenv.config({ path: ".env.prod" }); // Carga las variables de entorno para producción
+}
+
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: [process.env.BASE_URL, process.env.BASE_URL_HTTPS],
   credentials: true,
 };
 
@@ -33,13 +43,11 @@ createNivelesFidelidad.createNivelesFidelidadIfNotExist();
 //crear tipos de suscripciones si no existen
 createTipoSuscripciones.createTipoSuscripcionesIfNotExist();
 
-//Variables de entorno
-require("dotenv").config();
-
 // Rutas
 app.use("/", routes);
 
-const port = 8080;
+const port = process.env.SERVER_PORT;
 app.listen(port, () => {
   console.log(`Servidor corriendo en el puerto ${port}`);
+  console.log(`Entorno: ${env}`);
 });
