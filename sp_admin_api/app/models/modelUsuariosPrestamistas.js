@@ -78,6 +78,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    claveInterbancaria: {
+      type: Sequelize.STRING,
+      allowNull: true,
+      validate: {
+        len: [1, 20],
+      },
+    },
   });
 
   return UsuariosPrestamistas;

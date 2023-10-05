@@ -36,12 +36,11 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false,
         defaultValue: false,
       },
-      
     },
     {
       tableName: "nivelesFidelidad", // Specify the table name explicitly
       timestamps: false, // If you don't want timestamps in the table
-    },
+    }
   );
   return NivelesFidelidad;
 };
