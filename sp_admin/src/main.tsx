@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
@@ -9,18 +8,16 @@ import lightTheme from "./themes/lightTheme";
 import darkTheme from "./themes/darkTheme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <NextUIProvider>
-      <NextThemesProvider
-        defaultTheme="system"
-        attribute="class"
-        value={{
-          light: lightTheme.className,
-          dark: darkTheme.className,
-        }}
-      >
-        <App />
-      </NextThemesProvider>
-    </NextUIProvider>
-  </React.StrictMode>
+  <NextUIProvider>
+    <NextThemesProvider
+      defaultTheme="system"
+      attribute="class"
+      value={{
+        light: lightTheme.className,
+        dark: darkTheme.className,
+      }}
+    >
+      <App />
+    </NextThemesProvider>
+  </NextUIProvider>
 );
