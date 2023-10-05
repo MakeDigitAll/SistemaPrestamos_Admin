@@ -71,7 +71,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       isSemanal: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
